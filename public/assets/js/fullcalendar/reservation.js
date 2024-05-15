@@ -1,5 +1,7 @@
 // Obtener dia actual restar uno y colotar a start date, sumar uno y colocar en end
 document.addEventListener('DOMContentLoaded', function () {
+    let checkLogin = $('#loginCheck').val();
+
     let formulario = document.getElementById('reserva');
     // Obtener la fecha actual para bloquear los días pasados.
     moment.locale('es'); //->colocar el idioma español.
@@ -61,7 +63,24 @@ document.addEventListener('DOMContentLoaded', function () {
             let end = null;
             let valHora = validaHoraActual(start);
 
-            $('#modal').modal('show');
+            // Falta validar el controlador
+
+            if (checkLogin === "1") {
+                $('#modal').modal('show');
+            } else {
+                $('#modal_message').modal('show');
+                $('#title_modal').html('¿No estás registrado?');
+                $('#messageModal').html(
+                    `
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <p>Debes estar registrado para realizar tu reserva</p>
+                            <p>Si ya cuentas con usuaario por favor <a href="/login">Inicia sesión.</a></p>
+                        </div>
+                    </div>
+                    `
+                );
+            }
 
             if (valHora) {
                 $('.mensaje').html('No se puede seleccionar una fecha anterior a la fecha actual.');

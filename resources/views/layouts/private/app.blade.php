@@ -92,7 +92,7 @@
         <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js" integrity="sha256-gqhxNoRraWeCppNZHezKGig+uPdmR/cntAtJsdTkm5A=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/locales-all.min.js" integrity="sha256-lomiTyENeSGOpm5TiwjdxUn87bSv1TL581KZ7bhEEh0=" crossorigin="anonymous"></script>
-        <script src="{{ asset('assets/js/fullcalendar/reservation.js') }}"></script>
+
         {{-- Personalized JS --}}
         @stack('js')
     </div>
