@@ -25,6 +25,7 @@
 </style>
 @endpush
 @section('content')
+<input type="hidden" id="loginCheck" value="{{Auth::check()}}">
 <div class="container-fluid">
     <div class="row bg-secondary py-5">
         <div class="col-md-12">
@@ -63,8 +64,10 @@
     </div>
 </div>
 @include('components.modal')
+@include('components.modal_message')
 @endsection
 @push('js')
+<script src="{{ asset('assets/js/fullcalendar/reservation.js') }}"></script>
 <script>
     function cleanInpust() {
         $("#modal").modal('hide');
@@ -85,6 +88,10 @@
         cleanInpust();
     });
 
+    $('#closeUpMsg').click(()=>{
+        $('#modal_message').modal('hide');
+    });
+
     $('#sede').change(() => {
         $('#lugar').removeAttr("disabled");
         $('#estado').val("Activo");
@@ -94,5 +101,7 @@
         let valor = $('#lugar').val();
         valor == 'CANCHA 1' ? $('#capacidad').val('20 Personas') : $('#capacidad').val('10 Personas');
     });
+
+
 </script>
 @endpush
