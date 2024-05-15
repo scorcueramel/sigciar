@@ -34,13 +34,17 @@
         <main>
             @yield('content')
         </main>
-
+        {{-- JQuery --}}
         <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
+        {{-- Fontawesome Pro --}}
         <script src="{{ asset('assets/js/fontawesome/all.min.js') }}"></script>
+        {{-- MomentJS (locale date) --}}
         <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
+        {{-- FullCalendar Free --}}
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js" integrity="sha256-gqhxNoRraWeCppNZHezKGig+uPdmR/cntAtJsdTkm5A=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/locales-all.min.js" integrity="sha256-lomiTyENeSGOpm5TiwjdxUn87bSv1TL581KZ7bhEEh0=" crossorigin="anonymous"></script>
-
+        {{-- Sweetalert2 --}}
+        <script src="{{ asset('assets/js/sweetalert/sweetalert2@11.js') }}"></script>
         {{-- Personalized JS --}}
         @stack('js')
     </div>

@@ -15,10 +15,20 @@ use App\Http\Controllers\ReservationController;
 */
 // Route List
 // Login
-Route::get('/', function () { return view('auth.login'); });
-// Reservation
-Route::get('/ciar/reserva',[ReservationController::class, 'index'])->name('reservation');
+Route::get('/', function () {
+    return view('auth.login');
+});
+
+// Reservation Público
+Route::get('/ciar/reserva', [ReservationController::class, 'index'])->name('reservation');
+Route::get('/ciar/obtener', [ReservationController::class, 'show'])->name('reservas.obtener');
+Route::get('/ciar/obtener/{id}/lugares', [ReservationController::class, 'getPlaces'])->name('reservas.obtener.lugares');
 
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::group(['prefix' => 'ciar/reservations'], function () {
+    Route::post('/conuslta/fecha', [ReservationController::class, 'dateQuery'])->name('reserva.consulta.fecha');
+    // Route::post('/agregar', [ReservationController::class, 'store'])->name('reserva.nuevo');
+});
