@@ -1,5 +1,5 @@
 @extends('layouts.private.app')
-
+@push('title','Home')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -12,7 +12,7 @@
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
-                            <p style="font-family: 'Asset', display; !important">{{ session('status') }}</p>
+                            <p>{{ session('status') }}</p>
                         </div>
                     @endif
 
