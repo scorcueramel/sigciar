@@ -22,8 +22,10 @@
     {{-- FullCalendar --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.css" integrity="sha256-EAq+X/hXd44MlSOCkm9hchPJT78vQ4UBTT7FBkQl9qE=" crossorigin="anonymous">
 
-
     @stack('css')
+
+    {{-- Personalized --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/personalized/style.css') }}">
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
