@@ -146,8 +146,8 @@
             $("#fin").val("");
             $("#estado").val("");
             $("#capacidad").val("");
-            $("#sede").val('0');
-            $("#lugar").val('0');
+            $("#sedeModal").val("");
+            $("#lugar").val("");
             $("#lugar").attr("disabled", "disabled");
         }
 
@@ -159,18 +159,24 @@
             cleanInpust();
         });
 
-        $('#closeUpMsg').click(() => {
-            $('#modal_message').modal('hide');
-        });
-
         $('#sede').change(() => {
             $('#lugar').removeAttr("disabled");
             $('#estado').val("Activo");
         });
 
-        $('#lugar').change(() => {
-            let valor = $('#lugar').val();
-            valor == 'CANCHA 1' ? $('#capacidad').val('20 Personas') : $('#capacidad').val('10 Personas');
-        });
+        // ANALIZAR COMO HACER LA CARGA DE LOS CAMPOS SEDE/LUGAR/PRECIO DESDE JS
+        // $('#lugar').change(()=>{
+        //     let lugarID = $('#lugar').val();
+        //     $.ajax({
+        //         type: "GET",
+        //         url: `/ciar/obtener/${lugarID}/lugares`,
+        //         success: function (res) {
+        //             let respuesta = res;
+        //             respuesta.forEach((e) => {
+        //                 console.log(e);
+        //             });
+        //         }
+        //     });
+        // });
     </script>
 @endpush

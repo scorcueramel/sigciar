@@ -30,5 +30,5 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'ciar/reservations'], function () {
     Route::post('/conuslta/fecha', [ReservationController::class, 'dateQuery'])->name('reserva.consulta.fecha');
-    // Route::post('/agregar', [ReservationController::class, 'store'])->name('reserva.nuevo');
+    Route::post('/nueva', [ReservationController::class, 'store'])->name('reserva.nuevo');
 });

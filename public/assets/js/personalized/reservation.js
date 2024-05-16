@@ -117,6 +117,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                     $('#modal').modal('show');
                                     $('#inicio').val(formatearFechaInicial(start));
                                     $('#fin').val(formatearFechaFinal(start));
+                                    $('#sede').val();
+                                    $('#lugar').val();
                                 } else {
 
                                 }
@@ -193,6 +195,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                     $('#modal').modal('show');
                                     $('#inicio').val(formatearFechaInicial(start));
                                     $('#fin').val(formatearFechaInicial(end));
+                                    $('#sede').val();
+                                    $('#lugar').val();
                                 } else {
                                     // $('.mensaje').html(respuesta);
                                 }
