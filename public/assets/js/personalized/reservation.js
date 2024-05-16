@@ -7,17 +7,25 @@ document.addEventListener('DOMContentLoaded', function () {
     var lugar = $("#lugar").val();
 
     $('#sede').change(() => {
-        sede = $('#sede').val();
+        sede = $('#sede').val()
+        $('#lugar').change(() => {
+            lugar = $('#lugar').val();
+        });
         axios
             .get(`/ciar/obtener/${sede}/lugares`)
             .then((resp) => {
                 let lugares = resp.data;
-                lugares.forEach((e) => {
-                    `
-                    <option value="${e.id}">${e.descripcion}</option>
-                    `
-                    console.log(e);
-                });
+                if (lugares.length > 0) {
+                    $('#lugar').html("");
+                    $('#lugar').append('<option value="" disabled selected>Seleccionar cancha</option>');
+                    lugares.forEach((e) => {
+                        $('#lugar').append(
+                            `
+                            <option value="${e.id}">${e.descripcion}</opttion>
+                            `
+                        );
+                    });
+                }
             })
             .catch((err) => {
                 console.log(err)
@@ -66,10 +74,10 @@ document.addEventListener('DOMContentLoaded', function () {
             hour12: true,
             meridiem: 'short'
         },
-        // validRange: {
-        //     start: fechaActual,
-        //     end: fechaLimite
-        // },
+        validRange: {
+            start: fechaActual,
+            end: fechaLimite
+        },
         // businessHours: [ //Horas de inactividad de las canchas
         //     {
         //         startTime: '09:00',
@@ -82,8 +90,6 @@ document.addEventListener('DOMContentLoaded', function () {
             let start = info.dateStr;
             let end = null;
             let valHora = validaHoraActual(start);
-
-
             if (sede != null && lugar != null) {
                 if (valHora) {
                     swalmessage(
@@ -105,7 +111,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             .post("/ciar/reservations/conuslta/fecha", { start, end })
                             .then((resp) => {
                                 let respuesta = resp.data.msg;
-
                                 let start = formatearFechaInicial(start);
                                 if (respuesta == 'ok') {
                                     formulario.reset();
