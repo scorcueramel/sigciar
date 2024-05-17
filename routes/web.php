@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
@@ -23,6 +24,7 @@ Route::get('/', function () {
 Route::get('/ciar/reserva', [ReservationController::class, 'index'])->name('reservation');
 Route::get('/ciar/obtener', [ReservationController::class, 'show'])->name('reservas.obtener');
 Route::get('/ciar/obtener/{id}/lugares', [ReservationController::class, 'getPlaces'])->name('reservas.obtener.lugares');
+Route::get('/ciar/obtener/tipo-docs',[RegisterController::class,'getTipyDocument'])->name('tipo.documentos');
 
 Auth::routes();
 

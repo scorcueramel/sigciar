@@ -17,7 +17,7 @@ class ReservationController extends Controller
     }
 
     public function getPlaces($id){
-        $sedes = DB::select('SELECT l.id, l.descripcion, l.abreviatura, l.costohora, l.estado, l.tipo FROM lugar l WHERE sede_id = ? ',[$id]);
+        $sedes = DB::select('SELECT l.id, l.descripcion, l.abreviatura, l.costohora, l.estado, l.tipo, l.sede_id FROM lugar l WHERE sede_id = ? ',[$id]);
         return response()->json($sedes);
     }
 

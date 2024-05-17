@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var lugar = $("#lugar").val();
 
     $('#sede').change(() => {
-        sede = $('#sede').val()
+        sede = $('#sede').val();
         $('#lugar').change(() => {
             lugar = $('#lugar').val();
         });
@@ -92,19 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let valHora = validaHoraActual(start);
             if (sede != null && lugar != null) {
                 if (valHora) {
-                    swalmessage(
-                        "warning",
-                        "Ups!",
-                        "No se puede seleccionar una <strong>fecha u hora anterior a la actual.</strong>",
-                        true,
-                        true,
-                        false,
-                        "",
-                        "Cerrar",
-                        "",
-                        "",
-                        false
-                    );
+                    swalmessage("warning", "Ups!", "No se puede seleccionar una <strong>fecha u hora anterior a la actual.</strong>", true, true, false, "", "Cerrar", "", "", false);
                 } else {
                     if (checkLogin === "1") {
                         axios
@@ -112,13 +100,14 @@ document.addEventListener('DOMContentLoaded', function () {
                             .then((resp) => {
                                 let respuesta = resp.data.msg;
                                 let start = formatearFechaInicial(start);
+
                                 if (respuesta == 'ok') {
                                     formulario.reset();
-                                    $('#modal').modal('show');
+                                    let sedeID = $('#sede').val();
                                     $('#inicio').val(formatearFechaInicial(start));
                                     $('#fin').val(formatearFechaFinal(start));
-                                    $('#sede').val();
-                                    $('#lugar').val();
+                                    obtenerSedeLugar(sedeID);
+                                    $('#modal').modal('show');
                                 } else {
 
                                 }
@@ -132,10 +121,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             "¿No estás registrado?",
                             `
                             <div class="text-center">
-                                <p>Debes estar registrado para realizar tu reserva.</p>
+                                <p>Debes estar registrado para realizar tu reserva, da click en el botón <strong>Registrate</strong>.</p>
                                 <p>Si ya cuentas con usuario por favor <a href="/login">Inicia sesión.</a></p>
                             </div>
-                        `,
+                            `,
                             true,
                             true,
                             true,
@@ -192,11 +181,11 @@ document.addEventListener('DOMContentLoaded', function () {
                                 let respuesta = resp.data.msg;
                                 if (respuesta == 'ok') {
                                     formulario.reset();
-                                    $('#modal').modal('show');
+                                    let sedeID = $('#sede').val();
                                     $('#inicio').val(formatearFechaInicial(start));
                                     $('#fin').val(formatearFechaInicial(end));
-                                    $('#sede').val();
-                                    $('#lugar').val();
+                                    obtenerSedeLugar(sedeID);
+                                    $('#modal').modal('show');
                                 } else {
                                     // $('.mensaje').html(respuesta);
                                 }
@@ -332,4 +321,26 @@ function validaHoraActual(hora) {
     if (fechaSeleccionada < fechaActual) {
         return true;
     }
+}
+
+function obtenerSedeLugar(id) {
+
+    let sedeTXT = $('#sede option:selected').text();
+    let lugarTXT = $('#lugar option:selected').text();
+
+    $('#sedeModal').val(sedeTXT);
+
+    $.ajax({
+        type: "GET",
+        url: `/ciar/obtener/${id}/lugares`,
+        success: function (res) {
+            let respuesta = res;
+            respuesta.forEach((e) => {
+                if (e.descripcion == lugarTXT.trim()) {
+                    $('#lugarModal').val(e.descripcion);
+                    $('#percioModal').val(e.costohora);
+                }
+            });
+        }
+    });
 }

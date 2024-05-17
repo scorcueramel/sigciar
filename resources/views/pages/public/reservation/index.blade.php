@@ -62,8 +62,8 @@
             <div class="col-md-12">
                 <div class="row mb-5">
                     <div class="col-md-12 text-center">
-                        <!-- <h1 class="title_rse text-white">Reserva de Espacios</h1> -->
-                        <h1 class="title_rse text-white">Calendario de Visitas</h1>
+                        <h1 class="title_rse text-white">Reserva de Espacios</h1>
+                        {{-- <h1 class="title_rse text-white">Calendario de Visitas</h1> --}}
                     </div>
                 </div>
                 <div class="row">
@@ -101,8 +101,7 @@
                         <div class="input-group mb-2">
                             <label class="input-group-text border-secondary shadow-sm" for="sede"><i
                                     class="fa-solid fa-buildings"></i></label>
-                            <select class="form-select border-secondary shadow-sm" id="sede" name="sede"
-                                onfocus="this.blur()">
+                            <select class="form-select border-secondary shadow-sm" id="sede" onfocus="this.blur()">
                                 <option value="0" selected disabled>Seleccionar sede</option>
                                 @foreach ($sede as $s)
                                     <option value="{{ $s->id }}">{{ $s->descripcion }}</option>
@@ -119,9 +118,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="input-group mb-3">
-                            <label class="input-group-text border-secondary shadow-sm" for="lugar"><i class="fa-solid fa-court-sport"></i></label>
-                            <select class="form-select border-secondary shadow-sm" id="lugar" name="lugar"
-                                onfocus="this.blur()" disabled>
+                            <label class="input-group-text border-secondary shadow-sm" for="lugar"><i
+                                    class="fa-solid fa-court-sport"></i></label>
+                            <select class="form-select border-secondary shadow-sm" id="lugar" onfocus="this.blur()" disabled>
                                 <option value="0" selected disabled>Seleccionar cancha</option>
                             </select>
                         </div>
@@ -147,8 +146,7 @@
             $("#estado").val("");
             $("#capacidad").val("");
             $("#sedeModal").val("");
-            $("#lugar").val("");
-            $("#lugar").attr("disabled", "disabled");
+            $("#lugarModal").val("");
         }
 
         $("#btnClose").on('click', () => {
@@ -163,20 +161,5 @@
             $('#lugar').removeAttr("disabled");
             $('#estado').val("Activo");
         });
-
-        // ANALIZAR COMO HACER LA CARGA DE LOS CAMPOS SEDE/LUGAR/PRECIO DESDE JS
-        // $('#lugar').change(()=>{
-        //     let lugarID = $('#lugar').val();
-        //     $.ajax({
-        //         type: "GET",
-        //         url: `/ciar/obtener/${lugarID}/lugares`,
-        //         success: function (res) {
-        //             let respuesta = res;
-        //             respuesta.forEach((e) => {
-        //                 console.log(e);
-        //             });
-        //         }
-        //     });
-        // });
     </script>
 @endpush
