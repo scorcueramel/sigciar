@@ -25,14 +25,14 @@
                             <input type="text" class="form-control" name="sede" id="sedeModal" tabindex="-1" onfocus="this.blur()" readonly>
                         </div>
                         <div class="col-md-6">
-                            <label for="lugar">Lugar:</label>
-                            <input type="text" class="form-control" name="lugar" id="lugar" tabindex="-1" onfocus="this.blur()" readonly>
+                            <label for="lugarModal">Lugar:</label>
+                            <input type="text" class="form-control" name="lugar" id="lugarModal" tabindex="-1" onfocus="this.blur()" readonly>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <label for="precio">Precio de reserva:</label>
-                            <input type="text" class="form-control" name="precio" id="precio" tabindex="-1" onfocus="this.blur()" readonly>
+                            <label for="percioModal">Precio de reserva:</label>
+                            <input type="text" class="form-control" name="precio" id="percioModal" tabindex="-1" onfocus="this.blur()" readonly>
                         </div>
                     </div>
                 </form>
