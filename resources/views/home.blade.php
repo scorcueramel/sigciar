@@ -1,4 +1,4 @@
-@extends('layouts.private.app')
+@extends('layouts.app')
 @push('title','Home')
 @section('content')
 <div class="container">
