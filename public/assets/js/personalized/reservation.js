@@ -91,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let start = info.dateStr;
             let end = null;
             let valHora = validaHoraActual(start);
+            let lugar = $('#lugar').val();
 
             if (valHora) {
                 swalmessage("warning", "Ups!", "No se puede seleccionar una <strong>fecha u hora anterior a la actual.</strong>", true, true, false, "", "Cerrar", "", "", false);
@@ -162,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let start = info.startStr;
             let end = info.endStr;
             let valHora = validaHoraActual(start);
-
+            let lugar = $('#lugar').val();
 
             if (valHora) {
                 swalmessage(
@@ -184,6 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         .post("/ciar/reservations/conuslta/fecha", { start, end })
                         .then((resp) => {
                             let respuesta = resp.data.msg;
+
                             if (respuesta == 'ok') {
                                 formulario.reset();
                                 let sedeID = $('#sede').val();
@@ -194,7 +196,6 @@ document.addEventListener('DOMContentLoaded', function () {
                                 $('#horaFin').val(formatearHora(end));
                                 obtenerSedeLugar(sedeID);
                                 if (sede != null && lugar != null) {
-                                    console.log(lugar);
                                     $('#modal').modal('show');
                                 } else {
                                     swalmessage(
