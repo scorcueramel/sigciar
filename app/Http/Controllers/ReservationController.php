@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lugar;
+use App\Models\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -12,13 +14,20 @@ class ReservationController extends Controller
     public function index()
     {
         //
+        $authenticate = false;
+        $personalInfo = null;
+
+        if(Auth::check()){
+            $authenticate = true;
+            $personalInfo = Persona::where('usuario_id',Auth::user()->id)->select('nombres','apepaterno','apematerno')->get();
+        }
         $sede = DB::select('SELECT * FROM sedes');
-        return view('pages.public.reservation.index',compact('sede'));
+        return view('pages.public.reservation.index',compact('sede','personalInfo','authenticate'));
     }
 
     public function getPlaces($id){
-        $sedes = DB::select('SELECT l.id, l.descripcion, l.abreviatura, l.costohora, l.estado, l.tipo, l.sede_id FROM lugar l WHERE sede_id = ? ',[$id]);
-        return response()->json($sedes);
+        $lugares = Lugar::where('sede_id',$id)->get();
+        return response()->json($lugares);
     }
 
     public function dateQuery(Request $request){
@@ -27,7 +36,7 @@ class ReservationController extends Controller
 
         $start = $fechasRecibidas["start"]; // desde el calendario
         $end = $fechasRecibidas["end"]; //desde el calendario
-        $fechasAlmacenadas = DB::select("SELECT s.inicio, s.fin FROM servicio s");
+        $fechasAlmacenadas = DB::select("SELECT s.inicio, s.fin FROM servicios s");
 
         $fecstart = substr($start,0,10) . " " . substr($start,11,8); //formatear fecha recibida del calendario
         $fecend = substr($end,0,10) . " " . substr($end,11,8); //formatear fecha recibida del calendario
@@ -60,7 +69,6 @@ class ReservationController extends Controller
     {
         //
     }
-
 
     public function show()
     {

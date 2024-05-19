@@ -11,6 +11,112 @@
                         <form method="POST" action="{{ route('register') }}">
                             @csrf
                             <div class="row mb-3">
+                                <label for="tipodocumento_id"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Tipo de documento:') }}</label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <label class="input-group-text" for="tipodocumento_id"><i
+                                                class="fa-solid fa-id-card"></i></label>
+                                        <select class="form-select" id="tipodocumento_id" name="tipodocumento_id" required>
+                                            <option value="" selected disabled>Seleccionar tipo</option>
+                                            @foreach ($tipoDocs as $tpd)
+                                                <option value="{{ $tpd->id }}">{{ $tpd->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="documentto"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Documento') }}</label>
+                                <div class="col-md-6">
+                                    <input id="documentto" type="number"
+                                        class="form-control @error('documento') is-invalid @enderror" name="documento"
+                                        value="{{ old('documento') }}" maxLength="12"
+                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                        inputmode="numeric" readonly required>
+
+                                    @error('documento')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="apepaterno"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Apellido Parterno') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="apepaterno" type="text"
+                                        class="form-control @error('apepaterno') is-invalid @enderror" name="apepaterno"
+                                        value="{{ old('apepaterno') }}" maxlength="50" required>
+
+                                    @error('apepaterno')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="apematerno"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Apellido Marterno') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="apematerno" type="text"
+                                        class="form-control @error('apematerno') is-invalid @enderror" name="apematerno"
+                                        value="{{ old('apematerno') }}" maxlength="50" required>
+
+                                    @error('apematerno')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="nombres"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Nombres') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="nombres" type="text"
+                                        class="form-control @error('nombres') is-invalid @enderror" name="nombres"
+                                        value="{{ old('nombres') }}" maxlength="50" required>
+
+                                    @error('nombres')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="movil"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('movil') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="movil" type="text"
+                                        class="form-control @error('movil') is-invalid @enderror" name="movil"
+                                        value="{{ old('movil') }}" maxLength="13"
+                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                        required>
+
+                                    @error('movil')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
                                 <label for="email"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Correo Eléctronico') }}</label>
 
@@ -73,4 +179,11 @@
         </div>
     </div>
 @endsection
-
+@push('js')
+    <script>
+        $('#tipodocumento_id').on('change', () => {
+            $('#documentto').removeAttr("readonly");
+            $("#documentto").val("")
+        });
+    </script>
+@endpush

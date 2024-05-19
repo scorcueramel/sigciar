@@ -36,14 +36,16 @@
                             <input type="hidden" id="loginCheck" value="{{ Auth::check() }}">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }}
+                                @if ($authenticate)
+                                {{ $personalInfo[0]->nombres.' '.$personalInfo[0]->apepaterno.' '.$personalInfo[0]->apematerno }}
+                                @endif
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    {{ __('Cerra Sesión') }}
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -121,7 +123,7 @@
                             <label class="input-group-text border-secondary shadow-sm" for="lugar"><i
                                     class="fa-solid fa-court-sport"></i></label>
                             <select class="form-select border-secondary shadow-sm" id="lugar" onfocus="this.blur()" disabled>
-                                <option value="0" selected disabled>Seleccionar cancha</option>
+                                <option selected disabled>Seleccionar cancha</option>
                             </select>
                         </div>
                     </div>
@@ -147,6 +149,7 @@
             $("#capacidad").val("");
             $("#sedeModal").val("");
             $("#lugarModal").val("");
+            $('#lugar :nth-child(0)').prop('selected', true);
         }
 
         $("#btnClose").on('click', () => {
@@ -159,7 +162,6 @@
 
         $('#sede').change(() => {
             $('#lugar').removeAttr("disabled");
-            $('#estado').val("Activo");
         });
     </script>
 @endpush

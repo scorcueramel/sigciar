@@ -87,61 +87,88 @@ document.addEventListener('DOMContentLoaded', function () {
         // ],
         events: '/ciar/obtener',
         dateClick: function (info) {
+            let fecha = info.dateStr;
             let start = info.dateStr;
             let end = null;
             let valHora = validaHoraActual(start);
-            if (sede != null && lugar != null) {
-                if (valHora) {
-                    swalmessage("warning", "Ups!", "No se puede seleccionar una <strong>fecha u hora anterior a la actual.</strong>", true, true, false, "", "Cerrar", "", "", false);
-                } else {
-                    if (checkLogin === "1") {
-                        axios
-                            .post("/ciar/reservations/conuslta/fecha", { start, end })
-                            .then((resp) => {
-                                let respuesta = resp.data.msg;
-                                let start = formatearFechaInicial(start);
 
-                                if (respuesta == 'ok') {
-                                    formulario.reset();
-                                    let sedeID = $('#sede').val();
-                                    $('#inicio').val(formatearFechaInicial(start));
-                                    $('#fin').val(formatearFechaFinal(start));
-                                    obtenerSedeLugar(sedeID);
+            if (valHora) {
+                swalmessage("warning", "Ups!", "No se puede seleccionar una <strong>fecha u hora anterior a la actual.</strong>", true, true, false, "", "Cerrar", "", "", false);
+            } else {
+                if (checkLogin === "1") {
+                    axios
+                        .post("/ciar/reservations/conuslta/fecha", { start, end })
+                        .then((resp) => {
+                            let respuesta = resp.data.msg;
+                            let start = formatearFechaInicial(start);
+                            if (respuesta == 'ok') {
+                                formulario.reset();
+                                let sedeID = $('#sede').val();
+                                $('#inicio').val(formatearFechaInicial(start));
+                                $('#fin').val(formatearFechaFinal(start));
+                                $('#fecha').val(formatearFecha(fecha))
+                                $('#horaInicio').val(horaSalida(start));
+                                $('#horaFin').val(horaSalida(start));
+                                obtenerSedeLugar(sedeID);
+                                if (sede != null && lugar != null ) {
                                     $('#modal').modal('show');
                                 } else {
-
+                                    swalmessage(
+                                        "warning",
+                                        "Ups!",
+                                        "Recuerda seleccionar una <strong>SEDE</strong> y posteriormente una <strong>CANCHA</strong> para realizar tu reserva",
+                                        true,
+                                        true,
+                                        false,
+                                        "",
+                                        "Cerrar",
+                                        "",
+                                        "",
+                                        false
+                                    );
                                 }
-                            })
-                            .catch((err) => {
-                                console.log(err)
-                            });
-                    } else {
-                        swalmessage(
-                            "warning",
-                            "¿No estás registrado?",
-                            `
+                            } else {
+
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        });
+                } else {
+                    swalmessage(
+                        "warning",
+                        "¿No estás registrado?",
+                        `
                             <div class="text-center">
                                 <p>Debes estar registrado para realizar tu reserva, da click en el botón <strong>Registrate</strong>.</p>
                                 <p>Si ya cuentas con usuario por favor <a href="/login">Inicia sesión.</a></p>
                             </div>
                             `,
-                            true,
-                            true,
-                            true,
-                            `<a href="/register" class="text-decoration-none text-white">Registrate</a>`,
-                            "Cerrar",
-                            "",
-                            "",
-                            true,
-                            false
-                        );
-                    }
+                        true,
+                        true,
+                        true,
+                        `<a href="/register" class="text-decoration-none text-white">Registrate</a>`,
+                        "Cerrar",
+                        "",
+                        "",
+                        true,
+                        false
+                    );
                 }
-            } else {
+            }
+        },
+        select: function (info) {
+            let fecha = info.startStr;
+            let start = info.startStr;
+            let end = info.endStr;
+            let valHora = validaHoraActual(start);
+
+
+            if (valHora) {
                 swalmessage(
                     "warning",
                     "Ups!",
-                    "Recuerda seleccionar una <strong>SEDE</strong> y posteriormente una <strong>CANCHA</strong> para realizar tu reserva",
+                    "No se puede seleccionar una <strong>fecha u hora anterior a la actual.</strong>",
                     true,
                     true,
                     false,
@@ -151,84 +178,67 @@ document.addEventListener('DOMContentLoaded', function () {
                     "",
                     false
                 );
-            }
-        },
-        select: function (info) {
-            let start = info.startStr;
-            let end = info.endStr;
-            let valHora = validaHoraActual(start);
-
-            if (sede != null && lugar != null) {
-                if (valHora) {
-                    swalmessage(
-                        "warning",
-                        "Ups!",
-                        "No se puede seleccionar una <strong>fecha u hora anterior a la actual.</strong>",
-                        true,
-                        true,
-                        false,
-                        "",
-                        "Cerrar",
-                        "",
-                        "",
-                        false
-                    );
-                } else {
-                    if (checkLogin === "1") {
-                        axios
-                            .post("/ciar/reservations/conuslta/fecha", { start, end })
-                            .then((resp) => {
-                                let respuesta = resp.data.msg;
-                                if (respuesta == 'ok') {
-                                    formulario.reset();
-                                    let sedeID = $('#sede').val();
-                                    $('#inicio').val(formatearFechaInicial(start));
-                                    $('#fin').val(formatearFechaInicial(end));
-                                    obtenerSedeLugar(sedeID);
+            } else {
+                if (checkLogin === "1") {
+                    axios
+                        .post("/ciar/reservations/conuslta/fecha", { start, end })
+                        .then((resp) => {
+                            let respuesta = resp.data.msg;
+                            if (respuesta == 'ok') {
+                                formulario.reset();
+                                let sedeID = $('#sede').val();
+                                $('#inicio').val(formatearFechaInicial(start));
+                                $('#fin').val(formatearFechaInicial(end));
+                                $('#fecha').val(formatearFecha(fecha));
+                                $('#horaInicio').val(formatearHora(start));
+                                $('#horaFin').val(formatearHora(end));
+                                obtenerSedeLugar(sedeID);
+                                if (sede != null && lugar != null) {
+                                    console.log(lugar);
                                     $('#modal').modal('show');
                                 } else {
-                                    // $('.mensaje').html(respuesta);
+                                    swalmessage(
+                                        "warning",
+                                        "Ups!",
+                                        "Recuerda seleccionar una <strong>SEDE</strong> y posteriormente una <strong>CANCHA</strong> para realizar tu reserva",
+                                        true,
+                                        true,
+                                        false,
+                                        "",
+                                        "Cerrar",
+                                        "",
+                                        "",
+                                        false
+                                    );
                                 }
-                            })
-                            .catch((err) => {
-                                console.log(err)
-                            });
-                    } else {
-                        swalmessage(
-                            "warning",
-                            "¿No estás registrado?",
-                            `
+                            } else {
+                                // $('.mensaje').html(respuesta);
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        });
+                } else {
+                    swalmessage(
+                        "warning",
+                        "¿No estás registrado?",
+                        `
                             <div class="text-center">
                                 <p>Debes estar registrado para realizar tu reserva.</p>
                                 <p>Si ya cuentas con usuario por favor <a href="/login">Inicia sesión.</a></p>
                             </div>
                         `,
-                            true,
-                            true,
-                            true,
-                            `<a href="/register" class="text-decoration-none text-white">Registrate</a>`,
-                            "Cerrar",
-                            "",
-                            "",
-                            true,
-                            false
-                        );
-                    }
+                        true,
+                        true,
+                        true,
+                        `<a href="/register" class="text-decoration-none text-white">Registrate</a>`,
+                        "Cerrar",
+                        "",
+                        "",
+                        true,
+                        false
+                    );
                 }
-            } else {
-                swalmessage(
-                    "warning",
-                    "Ups!",
-                    "Recuerda seleccionar una <strong>SEDE</strong> y posteriormente una <strong>CANCHA</strong> para realizar tu reserva",
-                    true,
-                    true,
-                    false,
-                    "",
-                    "Cerrar",
-                    "",
-                    "",
-                    false
-                );
             }
         }
     });
@@ -242,7 +252,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     cleanInpust();
                     $('#modal').modal('hide');
                     calendar.refetchEvents();
-                    // $('.mensaje').html(resp.data.msg);
                     swalmessage(
                         "success",
                         "Reserva Realizada",
@@ -274,7 +283,26 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// Formtear Fecha y Hora Inicial
+// Formtear Fecha Para Mostrar
+function formatearFecha(fecha) {
+    var fecha = fecha;
+    var fecha_date = fecha.split('T');
+    fecha_date = fecha_date[0];
+    var fecha_format = fecha_date.split('-');
+    var fecha_salida = fecha_format[2] + '/' + fecha_format[1] + '/' + fecha_format[0]
+    return fecha_salida;
+}
+// Formtear Hora Para Mostrar
+function formatearHora(hora) {
+    var fecha = hora;
+    var fecha_date = fecha.split('T');
+    var fecha_time = fecha_date[1].split(':');
+    fecha_date = fecha_date[0];
+    var horaSalida = fecha_time[0] + ':' + fecha_time[1];
+    return horaSalida;
+}
+
+// Formtear Fecha y Hora Inicial Para Almacenar
 function formatearFechaInicial(fechaHoraInicial) {
     var fecha = fechaHoraInicial;
     var fecha_date = fecha.split('T');
@@ -285,7 +313,7 @@ function formatearFechaInicial(fechaHoraInicial) {
     var fechaHoraInicialFormat = fecha_salida + ' ' + fecha_time[0] + ':' + fecha_time[1];
     return fechaHoraInicialFormat;
 }
-// Formtear Fecha y Hora Final
+// Formtear Fecha y Hora Final Para Almacenar
 function formatearFechaFinal(fechaHoraFinal) {
     var fecha = fechaHoraFinal;
     var fecha_date = fecha.split('T');
@@ -339,6 +367,7 @@ function obtenerSedeLugar(id) {
                 if (e.descripcion == lugarTXT.trim()) {
                     $('#lugarModal').val(e.descripcion);
                     $('#percioModal').val(e.costohora);
+                    $('#percioModalMostrar').val(e.costohora + '.00');
                 }
             });
         }
