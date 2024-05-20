@@ -86,35 +86,23 @@
 <script>
     function cleanInpust() {
         $("#modal").modal('hide');
-        $("#inicio").val("");
-        $("#fin").val("");
-        $("#estado").val("");
-        $("#capacidad").val("");
-        $("#sedeModal").val("");
-        $("#lugarModal").val("");
-        $('#lugar :nth-child(0)').prop('selected', true);
+        $('#sede option:first').prop('selected', true).trigger("change");
+        $('#lugar option:first').prop('selected', true).trigger("change");
+        $('#lugar').attr('disabled','disabled');
     }
-
-    $("#btnClose").on('click', () => {
-        cleanInpust();
-    });
-
-    $("#closeUp").on('click', () => {
-        cleanInpust();
-    });
 
     $('#sede').change(() => {
         $('#lugar').removeAttr("disabled");
     });
 
-    $('#btnReservar').click(()=>{
+    $('#btnReservar').click(() => {
         let precio = $('#percioModal').val()
         $('#modal_pago').modal('show');
         $('#modal').modal('hide');
         $('#btnPagar').val(`S/. ${precio}.00`);
     });
 
-    $('#closeUpPago').click(()=>{
+    $('#closeUpPago').click(() => {
         $('#modal_pago').modal('hide');
     });
 </script>
