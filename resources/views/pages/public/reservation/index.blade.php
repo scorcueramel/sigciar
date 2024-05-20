@@ -79,6 +79,7 @@
     </div>
 </div>
 @include('components.modal')
+@include('components.modal-pago')
 @endsection
 @push('js')
 <script src="{{ asset('assets/js/personalized/reservation.js') }}" type="module"></script>
@@ -104,6 +105,18 @@
 
     $('#sede').change(() => {
         $('#lugar').removeAttr("disabled");
+    });
+
+    $('#btnReservar').click(()=>{
+        let precio = $('#percioModal').val()
+        console.log(precio)
+        $('#modal_pago').modal('show');
+        $('#modal').modal('hide');
+        $('#btnPagar').val(`S/. ${precio}.00`);
+    });
+
+    $('#closeUpPago').click(()=>{
+        $('#modal_pago').modal('hide');
     });
 </script>
 @endpush

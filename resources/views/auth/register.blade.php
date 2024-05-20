@@ -8,7 +8,7 @@
                     <div class="card-header">{{ __('Registro de usuario') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('registro.cliente') }}">
                             @csrf
                             <div class="row mb-3">
                                 <label for="tipodocumento_id"
@@ -28,7 +28,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="documentto"
+                                <label for="documento"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Documento') }}</label>
                                 <div class="col-md-6">
                                     <input id="documentto" type="number"

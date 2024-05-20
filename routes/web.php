@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\PersonaRegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RegisterUser;
 use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\UserRegisterController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +22,13 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-// Reservation Público
+// Reserva Pública
 Route::get('/ciar/reserva', [ReservationController::class, 'index'])->name('reservation');
 Route::get('/ciar/obtener', [ReservationController::class, 'show'])->name('reservas.obtener');
 Route::get('/ciar/obtener/{id}/lugares', [ReservationController::class, 'getPlaces'])->name('reservas.obtener.lugares');
+// Registro Público
+Route::get('/ciar/registro/cliente', [PersonaRegisterController::class,'index'])->name('registro.cliente');
+Route::post('/ciar/registro/cliente', [PersonaRegisterController::class,'store'])->name('registro.cliente');
 
 Auth::routes();
 

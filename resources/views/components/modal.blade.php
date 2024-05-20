@@ -1,10 +1,10 @@
 <!-- Modal -->
-<div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalReserva" aria-hidden="true">
+<div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalPago" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalReserva">Detalles de tu reserva</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeUp"></button>
+            <div class="modal-header d-flex justify-content-between">
+                <h5 class="modal-title" id="modalPago">Detalles de tu reserva</h5>
+                <button type="button" class="btn btn-sm btn-danger px-3 py-2" id="closeUp">X</button>
             </div>
             <div class="modal-body">
                 <form id="reserva">
@@ -42,9 +42,8 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnClose">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="btnGuardar">Reservar</button>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-primary" id="btnReservar">Reservar Cancha</button>
             </div>
         </div>
     </div>

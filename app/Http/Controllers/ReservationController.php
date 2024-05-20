@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lugar;
 use App\Models\Persona;
+use App\Models\Sede;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +22,7 @@ class ReservationController extends Controller
             $authenticate = true;
             $personalInfo = Persona::where('usuario_id',Auth::user()->id)->select('nombres','apepaterno','apematerno')->get();
         }
-        $sede = DB::select('SELECT * FROM sedes');
+        $sede = Sede::where('estado','A')->select('id','descripcion','abreviatura','estado')->get();
         return view('pages.public.reservation.index',compact('sede','personalInfo','authenticate'));
     }
 
@@ -68,6 +69,8 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
         //
+        $reserva = $request->all();
+        dd($reserva);
     }
 
     public function show()
