@@ -20,9 +20,9 @@ return new class extends Migration
             $table->float('costohora',8,2);
             $table->string('estado',1);
             $table->string('tipo',1);
-            $table->string('usuario_creador',50);
-            $table->string('usuario_editor',50);
-            $table->string('usuario_ip',20);
+            $table->string('usuario_creador',50)->nullable(true);
+            $table->string('usuario_editor',50)->nullable(true);;
+            $table->string('ip_usuario',20);
             $table->foreignId('sede_id')->constrained('sedes');
             $table->softDeletes();
             $table->timestamps();

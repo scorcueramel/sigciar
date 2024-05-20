@@ -51,7 +51,7 @@ class PersonaRegisterController extends Controller
             'estado' => 'A',
             'usuario_creado' => 'AUTOREGISTRO',
             'usuario_editor' => 'AUTOREGISTRO',
-            'usuario_ip' => $request->ip(),
+            'ip_usuario' => $request->ip(),
             'usuario_id' => $user->id,
         ]);
 

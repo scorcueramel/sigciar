@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('servicio_inscripcions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('servicio_id')->constrained('servicios');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('persona_id')->constrained('users');
             $table->string('estado',1);
-            $table->string('usuario_creador',50);
-            $table->string('usuario_editor',50);
-            $table->string('usuario_ip',20);
+            $table->string('usuario_creador',50)->nullable(true);
+            $table->string('usuario_editor',50)->nullable(true);;
+            $table->string('ip_usuario',20);
             $table->softDeletes();
             $table->timestamps();
         });

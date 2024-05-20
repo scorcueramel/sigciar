@@ -16,6 +16,6 @@ class ServicioPlantilla extends Model
         'periodicidad_id',
         'usuario_creador',
         'usuario_editor',
-        'usuario_ip',
+        'ip_usuario',
     ];
 }

@@ -104,10 +104,12 @@ document.addEventListener('DOMContentLoaded', function () {
                             let respuesta = resp.data.msg;
                             let start = formatearFechaInicial(start);
                             if (respuesta == 'ok') {
-                                formulario.reset();
+                                // formulario.reset();
                                 let sedeID = $('#sede').val();
-                                $('#inicio').val(formatearFechaInicial(start));
-                                $('#fin').val(formatearFechaFinal(start));
+                                // $('#inicio').val(formatearFechaInicial(start));
+                                // $('#fin').val(formatearFechaFinal(start));
+                                $('#inicio').val(start);
+                                $('#fin').val(start);
                                 $('#fecha').val(formatearFecha(fecha))
                                 $('#horaInicio').val(horaSalida(start));
                                 $('#horaFin').val(horaSalida(start));
@@ -129,8 +131,20 @@ document.addEventListener('DOMContentLoaded', function () {
                                         false
                                     );
                                 }
-                            } else {
-
+                            }else{
+                                swalmessage(
+                                    "warning",
+                                    "Ups!",
+                                    `${respuesta}`,
+                                    true,
+                                    true,
+                                    false,
+                                    "",
+                                    "Cerrar",
+                                    "",
+                                    "",
+                                    false
+                                );
                             }
                         })
                         .catch((err) => {
@@ -188,10 +202,12 @@ document.addEventListener('DOMContentLoaded', function () {
                             let respuesta = resp.data.msg;
 
                             if (respuesta == 'ok') {
-                                formulario.reset();
+                                // formulario.reset();
                                 let sedeID = $('#sede').val();
-                                $('#inicio').val(formatearFechaInicial(start));
-                                $('#fin').val(formatearFechaInicial(end));
+                                // $('#inicio').val(formatearFechaInicial(start));
+                                // $('#fin').val(formatearFechaInicial(end));
+                                $('#inicio').val(start);
+                                $('#fin').val(end);
                                 $('#fecha').val(formatearFecha(fecha));
                                 $('#horaInicio').val(formatearHora(start));
                                 $('#horaFin').val(formatearHora(end));
@@ -213,8 +229,20 @@ document.addEventListener('DOMContentLoaded', function () {
                                         false
                                     );
                                 }
-                            } else {
-                                // $('.mensaje').html(respuesta);
+                            }else{
+                                swalmessage(
+                                    "warning",
+                                    "Ups!",
+                                    `${respuesta}`,
+                                    true,
+                                    true,
+                                    false,
+                                    "",
+                                    "Cerrar",
+                                    "",
+                                    "",
+                                    false
+                                );
                             }
                         })
                         .catch((err) => {
@@ -246,30 +274,49 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('btnPagar').addEventListener('click', function () {
-        const datos = new FormData(formulario);
+        // const datos = new FormData(formulario);
+        let inicio = $('#inicio').val();
+        let fin = $('#fin').val();
+        let personaId = $('#personaid').val();
+        let sede = $('#sede').val();
+        let lugar = $('#lugar').val();
+        let precio = $('#percioModal').val();
+
+        const datos =
+        {
+            'inicio': inicio,
+            'fin': fin,
+            'persona_id': personaId,
+            'sede': sede,
+            'lugar': lugar,
+            'precio': precio,
+        }
+        console.log(sede);
         axios
-            .post("/reserva/agregar", datos)
+            // .post("/reserva/agregar", datos)
+            .post("/ciar/reservations/nueva", datos)
             .then(
                 (resp) => {
+                    let respuesta = resp.data.msg;
                     cleanInpust();
-                    $('#modal').modal('hide');
+                    $('#modal_pago').modal('hide');
                     calendar.refetchEvents();
                     swalmessage(
                         "success",
                         "Reserva Realizada",
                         `
                             <div class="text-center">
-                                <p>Tu reserva se realizó con exito</p>
+                                <p>${respuesta}</p>
                             </div>
                         `,
                         true,
                         true,
-                        true,
+                        false,
                         "",
                         "Cerrar",
                         "",
                         "",
-                        true,
+                        false,
                         false
                     );
                 }

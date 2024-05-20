@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('servicio_horarios', function (Blueprint $table) {
             $table->id();
             $table->foreignId('servicioplantilla_id')->constrained('servicio_plantillas');
-            $table->string('dia',20);
+            $table->string('dia',20)->nullable(true);
             $table->time('horainicio');
             $table->time('horafin');
             $table->string('estado',1);
-            $table->string('usuario_creador',50);
-            $table->string('usuario_editor',50);
-            $table->string('usuario_ip',20);
+            $table->string('usuario_creador',50)->nullable(true);
+            $table->string('usuario_editor',50)->nullable(true);;
+            $table->string('ip_usuario',20);
             $table->softDeletes();
             $table->timestamps();
         });

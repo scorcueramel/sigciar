@@ -109,7 +109,6 @@
 
     $('#btnReservar').click(()=>{
         let precio = $('#percioModal').val()
-        console.log(precio)
         $('#modal_pago').modal('show');
         $('#modal').modal('hide');
         $('#btnPagar').val(`S/. ${precio}.00`);

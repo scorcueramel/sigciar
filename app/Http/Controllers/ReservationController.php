@@ -6,9 +6,11 @@ use App\Models\Lugar;
 use App\Models\Persona;
 use App\Models\Sede;
 use App\Models\Servicio;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ReservationController extends Controller
 {
@@ -21,7 +23,7 @@ class ReservationController extends Controller
 
         if (Auth::check()) {
             $authenticate = true;
-            $personalInfo = Persona::where('usuario_id', Auth::user()->id)->select('nombres', 'apepaterno', 'apematerno')->get();
+            $personalInfo = Persona::where('usuario_id', Auth::user()->id)->select('id', 'nombres', 'apepaterno', 'apematerno')->get();
         }
         $sede = Sede::where('estado', 'A')->select('id', 'descripcion', 'abreviatura', 'estado')->get();
         return view('pages.public.reservation.index', compact('sede', 'personalInfo', 'authenticate'));
@@ -71,9 +73,48 @@ class ReservationController extends Controller
 
     public function store(Request $request)
     {
-        //
-        $reserva = $request->all();
-        dd($reserva);
+        $validation = Validator::make($request->all(), [
+            "inicio" => ["required"],
+            "fin" => ["required"],
+            "persona_id" => ["required"],
+            "sede" => ["required"],
+            "lugar" => ["required"],
+        ]);
+
+        if ($validation->fails()) {
+            return redirect()->back()->with('error', $validation->errors());
+        }
+
+        $usc = Persona::where("usuario_id", Auth::user()->id)->select('nombres', 'apepaterno', 'apematerno')->get();
+        $usuario_creador = $usc[0]->nombres . ' ' . $usc[0]->apepaterno . ' ' . $usc[0]->apematerno;
+        $datosReserva = [
+            "inicio" => $request->inicio,
+            "fin" => $request->fin,
+            "persona_id" => $request->persona_id,
+            "tipo_servicio_id" => 1,
+            "sede" => $request->sede,
+            "lugar" => $request->lugar,
+            "capacidad" => 1,
+            "usuario_creador" => $usuario_creador,
+            "ip_usuario" => $request->ip(),
+            "created_at" => Carbon::now()->toDateTimeString(),
+            "periodicidad_id" => 1
+        ];
+
+        DB::select("SELECT servicio_alquiler(?,?,?,?,?,?,?,?,?,?,?)",
+        [$datosReserva["inicio"],
+        $datosReserva["fin"],
+        $datosReserva["persona_id"],
+        $datosReserva["lugar"],
+        $datosReserva["sede"],
+        $datosReserva["tipo_servicio_id"],
+        $datosReserva["capacidad"],
+        $datosReserva["usuario_creador"],
+        $datosReserva["ip_usuario"],
+        $datosReserva["created_at"],
+        $datosReserva["periodicidad_id"]]);
+
+        return response()->json(['msg'=>'Tu reserva fue generada satisfactoriamente!'],200);
     }
 
     public function show()
@@ -81,7 +122,7 @@ class ReservationController extends Controller
         //
         $reservations = DB::select('SELECT sr.id, sr.servicioplantilla_id, sr.inicio as "start", sr.fin as "end",
         sr.estado, sr.usuario_creador, sr.usuario_editor,
-        sr.usuario_ip , sr.deleted_at, sr.created_at, sr.updated_at
+        sr.ip_usuario , sr.deleted_at, sr.created_at, sr.updated_at
         FROM servicio_reservas sr');
 
         return response()->json($reservations);

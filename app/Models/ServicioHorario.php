@@ -17,6 +17,6 @@ class ServicioHorario extends Model
         'estado',
         'usuario_creador',
         'usuario_editor',
-        'usuario_ip',
+        'ip_usuario',
     ];
 }

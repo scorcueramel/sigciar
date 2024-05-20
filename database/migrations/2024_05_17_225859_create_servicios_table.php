@@ -22,9 +22,9 @@ return new class extends Migration
             $table->dateTime('inicio');
             $table->dateTime('fin');
             $table->string('estado',1);
-            $table->string('usuario_creador',50);
-            $table->string('usuario_editor',50);
-            $table->string('usuario_ip',20);
+            $table->string('usuario_creador',50)->nullable(true);
+            $table->string('usuario_editor',50)->nullable(true);;
+            $table->string('ip_usuario',20);
             $table->softDeletes();
             $table->timestamps();
         });

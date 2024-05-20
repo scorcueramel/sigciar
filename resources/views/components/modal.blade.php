@@ -7,8 +7,11 @@
                 <button type="button" class="btn btn-sm btn-danger px-3 py-2" id="closeUp">X</button>
             </div>
             <div class="modal-body">
-                <form id="reserva">
+                <form>
                     {{ csrf_field() }}
+                    @if (Auth::check())
+                        <input type="hidden" value="{{ $personalInfo[0]->id }}" name="personaid" id="personaid">
+                    @endif
                     <div class="row mb-2">
                         <div class="col-md-4">
                             <label for="fin">Fecha: </label>

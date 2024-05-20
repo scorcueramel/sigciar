@@ -22,7 +22,7 @@ class Persona extends Model
         'estado',
         'usuario_creado',
         'usuario_editor',
-        'usuario_ip',
+        'ip_usuario',
         'usuario_id',
     ];
 }

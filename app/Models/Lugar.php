@@ -17,7 +17,7 @@ class Lugar extends Model
         'tipo',
         'usuario_creador',
         'usuario_editor',
-        'usuario_ip',
+        'ip_usuario',
         'serde_id',
     ];
 }
