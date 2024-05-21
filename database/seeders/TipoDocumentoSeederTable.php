@@ -17,7 +17,7 @@ class TipoDocumentoSeederTable extends Seeder
     {
         //
         TipoDocumento::create([
-            'descripcion' => 'DNI',
+            'descripcion' => 'DOCUMENTO NACIONAL DE IDENTIDAD',
             'abreviatura' => 'DNI',
             'estado' => 'A'
         ]);

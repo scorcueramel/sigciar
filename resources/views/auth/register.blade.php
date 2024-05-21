@@ -18,9 +18,9 @@
                                         <label class="input-group-text" for="tipodocumento_id"><i
                                                 class="fa-solid fa-id-card"></i></label>
                                         <select class="form-select" id="tipodocumento_id" name="tipodocumento_id" required>
-                                            <option value="" selected disabled>Seleccionar tipo</option>
+                                            <option selected disabled>Seleccionar tipo</option>
                                             @foreach ($tipoDocs as $tpd)
-                                                <option value="{{ $tpd->id }}">{{ $tpd->descripcion }}</option>
+                                                <option value="{{ $tpd->id }}">{{ $tpd->descripcion }} ({{ $tpd->abreviatura }})</option>
                                             @endforeach
                                         </select>
                                     </div>

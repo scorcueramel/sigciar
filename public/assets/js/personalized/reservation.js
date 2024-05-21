@@ -6,9 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let formulario = document.getElementById('reserva');
     var sede = $("#sede").val();
 
-    $('#sede').change(() => {
+    $("#sede").delegate('select',"change",function () {
         sede = $('#sede').val();
-
         axios
             .get(`/ciar/obtener/${sede}/lugares`)
             .then((resp) => {
@@ -91,19 +90,18 @@ document.addEventListener('DOMContentLoaded', function () {
             let valHora = validaHoraActual(start);
             let lugar = $('#lugar').val();
 
-            if (sede != null && lugar != null) {
-                if (valHora) {
-                    validPastDateTime();
-                }
+
+            if (valHora) {
+                validPastDateTime();
+            } else {
                 if (checkLogin == "1") {
                     axios
                         .post("/ciar/reservations/conuslta/fecha", { start, end })
                         .then((resp) => {
                             let respuesta = resp.data.msg;
                             let fecStart = formatearFechaInicial(start);
-                            let lugar = $('#lugar').val();
-                            let sede = $('#sede').val();
                             if (respuesta == 'ok') {
+
                                 formulario.reset();
                                 let sedeID = $('#sede').val();
                                 // $('#inicio').val(formatearFechaInicial(start));
@@ -115,7 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
                                 $('#horaFin').val(formatearHora(start));
                                 obtenerSedeLugar(sedeID);
                                 if (sede != null && lugar != null) {
-
                                     $('#modal').modal('show');
                                 } else {
                                     sedeLugarSelection();
@@ -130,8 +127,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     notRegisterUser();
                 }
-            } else {
-                sedeLugarSelection();
             }
         },
         select: function (info) {
@@ -141,60 +136,44 @@ document.addEventListener('DOMContentLoaded', function () {
             let valHora = validaHoraActual(start);
             let lugar = $('#lugar').val();
 
-            if (sede != null && lugar != null) {
-                if (valHora) {
-                    validPastDateTime();
-                } else {
-                    if (checkLogin === "1") {
-                        axios
-                            .post("/ciar/reservations/conuslta/fecha", { start, end })
-                            .then((resp) => {
-                                let respuesta = resp.data.msg;
 
-                                let lugar = $('#lugar').val();
-                                let sede = $('#sede').val();
-                                if (respuesta == 'ok') {
-                                    formulario.reset();
-                                    let sedeID = $('#sede').val();
-                                    // $('#inicio').val(formatearFechaInicial(start));
-                                    // $('#fin').val(formatearFechaInicial(end));
-                                    $('#inicio').val(start);
-                                    $('#fin').val(end);
-                                    $('#fecha').val(formatearFecha(fecha));
-                                    $('#horaInicio').val(formatearHora(start));
-                                    $('#horaFin').val(formatearHora(end));
-                                    obtenerSedeLugar(sedeID);
-                                    if (sede != null && lugar != null) {
-                                        $('#modal').modal('show');
-                                    } else {
-                                        sedeLugarSelection();
-                                    }
-                                } else {
-                                    swalmessage(
-                                        "warning",
-                                        "Ups!",
-                                        `${respuesta}`,
-                                        true,
-                                        true,
-                                        false,
-                                        "",
-                                        "Cerrar",
-                                        "",
-                                        "",
-                                        false
-                                    );
-                                }
-                            })
-                            .catch((err) => {
-                                console.log(err)
-                            });
-                    } else {
-                        notRegisterUser();
-                    }
-                }
+            if (valHora) {
+                validPastDateTime();
             } else {
-                sedeLugarSelection();
+                if (checkLogin === "1") {
+                    axios
+                        .post("/ciar/reservations/conuslta/fecha", { start, end })
+                        .then((resp) => {
+                            let respuesta = resp.data.msg;
+
+                            if (respuesta == 'ok') {
+                                formulario.reset();
+                                let sedeID = $('#sede').val();
+                                // $('#inicio').val(formatearFechaInicial(start));
+                                // $('#fin').val(formatearFechaInicial(end));
+                                $('#inicio').val(start);
+                                $('#fin').val(end);
+                                $('#fecha').val(formatearFecha(fecha));
+                                $('#horaInicio').val(formatearHora(start));
+                                $('#horaFin').val(formatearHora(end));
+                                obtenerSedeLugar(sedeID);
+                                if (sede != null && lugar != null) {
+                                    $('#modal').modal('show');
+                                } else {
+                                    sedeLugarSelection();
+                                }
+                            } else {
+                                dateNotAvailability(respuesta);
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        });
+                } else {
+                    notRegisterUser();
+                }
             }
+
         }
     });
 

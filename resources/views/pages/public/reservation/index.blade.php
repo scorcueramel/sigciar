@@ -48,7 +48,7 @@
                     <div class="input-group mb-2">
                         <label class="input-group-text border-secondary shadow-sm" for="sede"><i class="fa-solid fa-buildings"></i></label>
                         <select class="form-select border-secondary shadow-sm" id="sede" onfocus="this.blur()">
-                            <option value="0" selected disabled>Seleccionar sede</option>
+                            <option selected disabled>Seleccionar sede</option>
                             @foreach ($sede as $s)
                             <option value="{{ $s->id }}">{{ $s->descripcion }}</option>
                             @endforeach
