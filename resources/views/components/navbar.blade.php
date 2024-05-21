@@ -28,7 +28,7 @@
                         @endif
                         @else
                         <li class="nav-item dropdown">
-                            <input type="hidden" id="loginCheck" value="{{ Auth::check() }}">
+
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 @if ($authenticate)
                                 {{ $personalInfo[0]->nombres.' '.$personalInfo[0]->apepaterno.' '.$personalInfo[0]->apematerno }}

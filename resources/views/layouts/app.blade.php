@@ -42,6 +42,7 @@
         {{-- Sweetalert2 --}}
         <script src="{{ asset('assets/js/sweetalert/sweetalert2@11.js') }}"></script>
         {{-- Personalized JS --}}
+        <script src="{{ asset('assets/js/personalized/reservation.js') }}" type="module"></script>
         @stack('js')
     </div>
 </body>

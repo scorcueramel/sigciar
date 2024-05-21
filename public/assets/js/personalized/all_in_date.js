@@ -50,6 +50,7 @@ function validaHoraActual(hora) {
     let fechaActual = fechaHoraActual.getDate();
     let fechaSeleccionada = horaSplit[0].slice(0, 2);
 
+
     if (fechaSeleccionada == fechaActual) {
         if (horaSeleccionada > horaActual) {
             return false;
@@ -89,4 +90,4 @@ function obtenerSedeLugar(id) {
     });
 }
 
-export {formatearFecha, formatearHora, formatearFechaInicial, formatearFechaFinal, validaHoraActual, obtenerSedeLugar};
+export { formatearFecha, formatearHora, formatearFechaInicial, formatearFechaFinal, validaHoraActual, obtenerSedeLugar };

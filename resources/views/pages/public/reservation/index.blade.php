@@ -4,6 +4,7 @@
 @section('content')
 @include('components.navbar')
 <div class="container-fluid">
+     <input type="hidden" id="loginCheck" value="{{ Auth::check() }}">
     <div class="row bg-secondary py-4">
         <div class="col-md-12">
             <div class="row mb-5">
@@ -82,7 +83,6 @@
 @include('components.modal-pago')
 @endsection
 @push('js')
-<script src="{{ asset('assets/js/personalized/reservation.js') }}" type="module"></script>
 <script>
     function cleanInpust() {
         $("#modal").modal('hide');
@@ -100,6 +100,10 @@
         $('#modal_pago').modal('show');
         $('#modal').modal('hide');
         $('#btnPagar').val(`S/. ${precio}.00`);
+    });
+
+    $('#closeUp').click(() => {
+        cleanInpust();
     });
 
     $('#closeUpPago').click(() => {
