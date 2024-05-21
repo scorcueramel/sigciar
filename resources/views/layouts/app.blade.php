@@ -41,6 +41,13 @@
         <script src="{{asset('assets/js/fullcalendar/locales-all.min.js')}}"></script>
         {{-- Sweetalert2 --}}
         <script src="{{ asset('assets/js/sweetalert/sweetalert2@11.js') }}"></script>
+
+        <script>
+            $('body').on('touchstart.dropdown', '.dropdown-menu', function(e) {
+                e.stopPropagation();
+            });
+        </script>
+
         {{-- Personalized JS --}}
         <script src="{{ asset('assets/js/personalized/reservation.js') }}" type="module"></script>
         @stack('js')
