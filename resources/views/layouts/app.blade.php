@@ -35,7 +35,6 @@
         </main>
         {{-- <!-- JQuery --> --}}
         <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
-        <!-- <script src="{{ asset('assets/js/jquery/jquery.slim.min.js') }}"></script> -->
         {{-- Fontawesome Pro --}}
         <script src="{{ asset('assets/js/fontawesome/all.min.js') }}"></script>
         {{-- MomentJS (locale date) --}}
