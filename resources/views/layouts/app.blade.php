@@ -15,7 +15,9 @@
     {{-- Personalized styles --}}
     <link rel="stylesheet" href="{{ asset('assets/css/global/style.css') }}">
     {{-- FullCalendar --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.css" integrity="sha256-EAq+X/hXd44MlSOCkm9hchPJT78vQ4UBTT7FBkQl9qE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{asset('assets/css/fullcalendar/main.min.css')}}" >
+    {{-- Select 2 --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     {{-- Personalized --}}
     <link rel="stylesheet" href="{{ asset('assets/css/personalized/style.css') }}">
 
@@ -41,12 +43,8 @@
         <script src="{{asset('assets/js/fullcalendar/locales-all.min.js')}}"></script>
         {{-- Sweetalert2 --}}
         <script src="{{ asset('assets/js/sweetalert/sweetalert2@11.js') }}"></script>
-
-        <script>
-            $('body').on('touchstart.dropdown', '.dropdown-menu', function(e) {
-                e.stopPropagation();
-            });
-        </script>
+        {{-- Select2 --}}
+        <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 
         {{-- Personalized JS --}}
         <script src="{{ asset('assets/js/personalized/reservation.js') }}" type="module"></script>

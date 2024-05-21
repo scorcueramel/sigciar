@@ -6,6 +6,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let formulario = document.getElementById('reserva');
     var sede = $("#sede").val();
 
+    $('#sede').select2({
+        minimumResultsForSearch: -1
+    });
+    $('#lugar').select2({
+        minimumResultsForSearch: -1
+    });
+
     $('#sede').change(() => {
         sede = $('#sede').val();
         axios
@@ -90,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
             let valHora = validaHoraActual(start);
             let lugar = $('#lugar').val();
 
-
             if (valHora) {
                 validPastDateTime();
             } else {
@@ -173,7 +179,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     notRegisterUser();
                 }
             }
-
         }
     });
 
