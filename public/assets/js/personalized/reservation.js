@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let formulario = document.getElementById('reserva');
     var sede = $("#sede").val();
 
-    $("#sede").delegate('select',"change",function () {
+    $('#sede').change(() => {
         sede = $('#sede').val();
         axios
             .get(`/ciar/obtener/${sede}/lugares`)
