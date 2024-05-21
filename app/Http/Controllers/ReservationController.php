@@ -60,9 +60,9 @@ class ReservationController extends Controller
             if ($fecstart < $fechaEnd && $fecend > $fechaEnd) {
                 return response()->json(["msg" => $message]);
             }
-            if ($fecstart >= $fechaStart && $fecend <= $fechaEnd) {
-                return response()->json(["msg" => $message]);
-            }
+            // if ($fecstart >= $fechaStart && $fecend <= $fechaEnd) {
+            //     return response()->json(["msg" => $message]);
+            // }
         }
         return response()->json(["msg" => "ok"]);
     }

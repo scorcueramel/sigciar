@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/fullcalendar/main.min.css')}}" >
     {{-- Select 2 --}}
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2-bootstrap-5-theme.min.css') }}">
     {{-- Personalized --}}
     <link rel="stylesheet" href="{{ asset('assets/css/personalized/style.css') }}">
 
@@ -34,6 +35,7 @@
         </main>
         {{-- <!-- JQuery --> --}}
         <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
+        <!-- <script src="{{ asset('assets/js/jquery/jquery.slim.min.js') }}"></script> -->
         {{-- Fontawesome Pro --}}
         <script src="{{ asset('assets/js/fontawesome/all.min.js') }}"></script>
         {{-- MomentJS (locale date) --}}

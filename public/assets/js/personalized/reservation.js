@@ -7,9 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var sede = $("#sede").val();
 
     $('#sede').select2({
+        theme: 'bootstrap-5',
         minimumResultsForSearch: -1
     });
     $('#lugar').select2({
+        theme: 'bootstrap-5',
         minimumResultsForSearch: -1
     });
 

@@ -160,7 +160,8 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-0 d-flex justify-content-between text-center">
+                            <!-- <div class="row mb-0 d-flex justify-content-between text-center"> -->
+                            <div class="row d-grid gap-2 col-6 mx-auto">
                                 <div class="col-md-6">
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Register') }}

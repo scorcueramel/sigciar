@@ -1,6 +1,12 @@
 @extends('layouts.app')
 @push('title', 'Reservas')
-
+@push('css')
+    <style>
+        .select2-selection{
+            border: 1px solid gray !important;
+        }
+    </style>
+@endpush
 @section('content')
 @include('components.navbar')
 <div class="container-fluid">
