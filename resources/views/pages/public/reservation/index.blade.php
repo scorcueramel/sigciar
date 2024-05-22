@@ -1,16 +1,16 @@
 @extends('layouts.app')
 @push('title', 'Reservas')
 @push('css')
-    <style>
-        .select2-selection{
-            border: 1px solid gray !important;
-        }
-    </style>
+<style>
+    .select2-selection {
+        border: 1px solid gray !important;
+    }
+</style>
 @endpush
 @section('content')
 @include('components.navbar')
 <div class="container-fluid">
-     <input type="hidden" id="loginCheck" value="{{ Auth::check() }}">
+    <input type="hidden" id="loginCheck" value="{{ Auth::check() }}">
     <div class="row bg-secondary py-4">
         <div class="col-md-12">
             <div class="row mb-5">
@@ -56,7 +56,7 @@
                             <i class="fa-solid fa-buildings"></i>
                         </label> --}}
                         <select class="form-select border-secondary shadow-sm" id="sede">
-                            <option selected disabled>Seleccionar sede</option>
+                            <option value="" select disabled>Seleccinar Sede</option>
                             @foreach ($sede as $s)
                             <option value="{{ $s->id }}">{{ $s->descripcion }}</option>
                             @endforeach
@@ -73,8 +73,7 @@
                 <div class="col-md-6">
                     <div class="input-group mb-3">
                         {{-- <label class="input-group-text border-secondary shadow-sm" for="lugar"><i class="fa-solid fa-court-sport"></i></label> --}}
-                        <select class="form-select border-secondary shadow-sm" id="lugar" disabled>
-                            <option selected disabled>Seleccionar cancha</option>
+                        <select class="form-select border-secondary shadow-sm" id="lugar">
                         </select>
                     </div>
                 </div>
@@ -94,9 +93,6 @@
 <script>
     function cleanInpust() {
         $("#modal").modal('hide');
-        $('#sede option:first').prop('selected', true).trigger("change");
-        $('#lugar option:first').prop('selected', true).trigger("change");
-        $('#lugar').attr('disabled','disabled');
     }
 
     $('#sede').change(() => {
@@ -111,12 +107,17 @@
     });
 
     $('#closeUp').click(() => {
-        // cleanInpust();
+        cleanInpust();
         $('#modal').modal('hide');
     });
 
     $('#closeUpPago').click(() => {
         $('#modal_pago').modal('hide');
+    });
+
+    $(document).ready(function() {
+        $('#sede option:first').prop('selected', true).trigger("change");
+        $('#lugar option:first').prop('selected', true).trigger("change");
     });
 </script>
 @endpush

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Persona;
 use Illuminate\Http\Request;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $authenticate = false;
+        $personalInfo = null;
+
+        if (Auth::check()) {
+            $authenticate = true;
+            $personalInfo = Persona::where('usuario_id', Auth::user()->id)->select('id', 'nombres', 'apepaterno', 'apematerno')->get();
+        }
+
+        return view('pages.private.admin.home', compact('authenticate','personalInfo'));
     }
 }

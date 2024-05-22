@@ -49,6 +49,7 @@
 
         {{-- Personalized JS --}}
         <script src="{{ asset('assets/js/personalized/reservation.js') }}" type="module"></script>
+
         @stack('js')
     </div>
 </body>

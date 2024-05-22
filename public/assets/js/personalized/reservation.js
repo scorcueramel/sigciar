@@ -1,50 +1,79 @@
-import swalmessage from "./Swal.js";
+import { validPastDateTime, sedeLugarSelection, dateNotAvailability, notRegisterUser, registeredSuccess } from './messages_reservation.js';
 import { formatearFecha, formatearHora, formatearFechaInicial, formatearFechaFinal, validaHoraActual, obtenerSedeLugar } from './all_in_date.js';
 
 document.addEventListener('DOMContentLoaded', function () {
-    let checkLogin = $('#loginCheck').val();
-    let formulario = document.getElementById('reserva');
     var sede = $("#sede").val();
-
     $('#sede').select2({
         theme: 'bootstrap-5',
-        minimumResultsForSearch: -1
+        minimumResultsForSearch: -1,
+        placeholder: "Seleccionar Sede",
     });
+
     $('#lugar').select2({
         theme: 'bootstrap-5',
-        minimumResultsForSearch: -1
+        minimumResultsForSearch: -1,
+        placeholder: "Seleccionar Lugar",
     });
+
+    chargeSelects(sede);
 
     $('#sede').change(() => {
-        sede = $('#sede').val();
-        axios
-            .get(`/ciar/obtener/${sede}/lugares`)
-            .then((resp) => {
-                let lugares = resp.data;
-                if (lugares.length > 0) {
-                    $('#lugar').html("");
-                    $('#lugar').append('<option value="" disabled selected>Seleccionar cancha</option>');
-                    lugares.forEach((e) => {
-                        $('#lugar').append(
-                            `
-                            <option value="${e.id}">${e.descripcion}</opttion>
-                            `
-                        );
-                    });
-                }
-            })
-            .catch((err) => {
-                console.log(err)
-            });
+        var sede = $('#sede').val();
+        var lugar = $('#lugar').val();
+        chargeSelects(sede);
+        chargeCalendar(sede, lugar);
     });
+
+    setTimeout(() => {
+        var lugar = $('#lugar').val();
+        chargeCalendar(sede, lugar);
+    }, 2500);
+
+    $('#lugar').change(() => {
+        var sede = $('#sede').val();
+        var lugar = $('#lugar').val();
+        chargeCalendar(sede, lugar);
+    });
+
+});
+
+$('#btnPagar').click(() => {
+    payPlace();
+});
+
+function chargeSelects(sede) {
+    axios
+        .get(`/ciar/obtener/${sede}/lugares`)
+        .then((resp) => {
+            var lugares = resp.data;
+            if (lugares.length > 0) {
+                $('#lugar').html("");
+                $('#lugar').append('<option value="" disabled selected>Seleccionar cancha</option>');
+                lugares.forEach((e) => {
+                    $('#lugar').append(
+                        `
+                            <option value="${e.id}">${e.descripcion}</opttion>
+                        `
+                    );
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+}
+
+function chargeCalendar(sede, lugar) {
+    var checkLogin = $('#loginCheck').val();
+    var formulario = document.getElementById('reserva');
     // Obtener la fecha actual para bloquear los días pasados.
     moment.locale('es'); //->colocar el idioma español.
-    let now = moment();  //formato pedido por el OP (los meses en español empiezan por minúscula).
-    let fechaActual = now.format('YYYY-MM-DD');
-    let feclimit = now.add(2, 'days');
-    let fechaLimite = feclimit.format("YYYY-MM-DD");
-
+    var now = moment();  //formato pedido por el OP (los meses en español empiezan por minúscula).
+    var fechaActual = now.format('YYYY-MM-DD');
+    var feclimit = now.add(2, 'days');
+    var fechaLimite = feclimit.format("YYYY-MM-DD");
     var calendarEl = document.getElementById('reservation');
+
     var calendar = new FullCalendar.Calendar(calendarEl, {
         allDaySlot: false,
         contentHeight: 20,
@@ -92,35 +121,37 @@ document.addEventListener('DOMContentLoaded', function () {
         //         daysOfWeek: [1, 2, 3, 4, 5, 6], //Días activos de lunes a sábado
         //     },
         // ],
-        events: '/ciar/obtener',
+        // events: '/ciar/obtener',
+        events: `/ciar/servicios/${sede}/${lugar}`,
         dateClick: function (info) {
-            console.log(info);
-            let fecha = info.dateStr;
-            let start = info.dateStr;
-            let end = null;
-            let valHora = validaHoraActual(start);
-            let lugar = $('#lugar').val();
+            var fecha = info.dateStr;
+            var start = info.dateStr;
+            var end = formatearFechaFinal(start);
+            var valHora = validaHoraActual(start);
+            var sede = $('#sede').val();
+            var lugar = $('#lugar').val();
+
+            console.log(sede, lugar);
 
             if (valHora) {
                 validPastDateTime();
             } else {
                 if (checkLogin == "1") {
                     axios
-                        .post("/ciar/reservations/conuslta/fecha", { start, end })
+                        .post("/ciar/reservations/conuslta/fecha", { start, end, sede, lugar })
                         .then((resp) => {
-                            let respuesta = resp.data.msg;
-                            let fecStart = formatearFechaInicial(start);
+                            var respuesta = resp.data.msg;
+                            var fecStart = formatearFechaInicial(start);
                             if (respuesta == 'ok') {
 
                                 formulario.reset();
-                                let sedeID = $('#sede').val();
-                                // $('#inicio').val(formatearFechaInicial(start));
-                                // $('#fin').val(formatearFechaFinal(start));
+                                var sedeID = $('#sede').val();
+
                                 $('#inicio').val(fecStart);
-                                $('#fin').val(fecStart);
+                                $('#fin').val(end);
                                 $('#fecha').val(formatearFecha(fecha))
                                 $('#horaInicio').val(formatearHora(start));
-                                $('#horaFin').val(formatearHora(start));
+                                $('#horaFin').val(formatearHora(end));
                                 obtenerSedeLugar(sedeID);
                                 if (sede != null && lugar != null) {
                                     $('#modal').modal('show');
@@ -140,11 +171,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         select: function (info) {
-            let fecha = info.startStr;
-            let start = info.startStr;
-            let end = info.endStr;
-            let valHora = validaHoraActual(start);
-            let lugar = $('#lugar').val();
+            var fecha = info.startStr;
+            var start = info.startStr;
+            var end = info.endStr;
+            var valHora = validaHoraActual(start);
+            var sede = $('#sede').val();
+            var lugar = $('#lugar').val();
 
 
             if (valHora) {
@@ -152,15 +184,14 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 if (checkLogin === "1") {
                     axios
-                        .post("/ciar/reservations/conuslta/fecha", { start, end })
+                        .post("/ciar/reservations/conuslta/fecha", { start, end, sede, lugar })
                         .then((resp) => {
-                            let respuesta = resp.data.msg;
+                            var respuesta = resp.data.msg;
 
                             if (respuesta == 'ok') {
                                 formulario.reset();
-                                let sedeID = $('#sede').val();
-                                // $('#inicio').val(formatearFechaInicial(start));
-                                // $('#fin').val(formatearFechaInicial(end));
+                                var sedeID = $('#sede').val();
+
                                 $('#inicio').val(start);
                                 $('#fin').val(end);
                                 $('#fecha').val(formatearFecha(fecha));
@@ -185,86 +216,42 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
-
-    document.getElementById('btnPagar').addEventListener('click', function () {
-        // const datos = new FormData(formulario);
-        let inicio = $('#inicio').val();
-        let fin = $('#fin').val();
-        let personaId = $('#personaid').val();
-        let sede = $('#sede').val();
-        let lugar = $('#lugar').val();
-        let precio = $('#percioModal').val();
-
-        const datos =
-        {
-            'inicio': inicio,
-            'fin': fin,
-            'persona_id': personaId,
-            'sede': sede,
-            'lugar': lugar,
-            'precio': precio,
-        }
-        axios
-            // .post("/reserva/agregar", datos)
-            .post("/ciar/reservations/nueva", datos)
-            .then(
-                (resp) => {
-                    let respuesta = resp.data.msg;
-                    cleanInpust();
-                    $('#modal_pago').modal('hide');
-                    calendar.refetchEvents();
-                    registeredSuccess(respuesta);
-                }
-            )
-            .catch(
-                (err) => {
-                    console.log(err);
-                }
-            );
-    });
-
     calendar.render();
-});
+}
 
-function validPastDateTime() {
-    swalmessage("warning", "Ups!", "No se puede seleccionar una <strong>fecha u hora anterior a la actual.</strong>", true, true, false, "", "Cerrar", "", "", false);
-}
-function sedeLugarSelection() {
-    swalmessage("warning", "Ups!", "Recuerda seleccionar una <strong>SEDE</strong> y posteriormente una <strong>CANCHA</strong> para realizar tu reserva", true, true, false, "", "Cerrar", "", "", false
-    );
-}
-function dateNotAvailability(respuesta) {
-    swalmessage("warning", "Ups!", `${respuesta}`, true, true, false, "", "Cerrar", "", "", false);
-}
-function notRegisterUser() {
-    swalmessage("warning", "¿No estás registrado?",
-        `
-            <div class="text-center">
-                <p>Debes estar registrado para realizar tu reserva, da click en el botón <strong>Registrate</strong>.</p>
-                <p>Si ya cuentas con usuario por favor <a href="/login">Inicia sesión.</a></p>
-            </div>
-            `, true, true, true,
-        `<a href="/register" class="text-decoration-none text-white">Registrate</a>`,
-        "Cerrar", "", "", true, false
-    );
-}
-function registeredSuccess(respuesta) {
-    swalmessage(
-        "success",
-        "Reserva Realizada",
-        `
-            <div class="text-center">
-                <p>${respuesta}</p>
-            </div>
-        `,
-        true,
-        true,
-        false,
-        "",
-        "Cerrar",
-        "",
-        "",
-        false,
-        false
-    );
+function payPlace() {
+    var inicio = $('#inicio').val();
+    var fin = $('#fin').val();
+    var personaId = $('#personaid').val();
+    var sede = $('#sede').val();
+    var lugar = $('#lugar').val();
+    var precio = $('#percioModal').val();
+
+    const datos =
+    {
+        'inicio': inicio,
+        'fin': fin,
+        'persona_id': personaId,
+        'sede': sede,
+        'lugar': lugar,
+        'precio': precio,
+    }
+    axios
+        .post("/ciar/reservations/nueva", datos)
+        .then(
+            (resp) => {
+                var respuesta = resp.data.msg;
+                cleanInpust();
+                $('#modal_pago').modal('hide');
+                calendar.refetchEvents();
+                registeredSuccess(respuesta);
+            }
+        )
+        .catch(
+            (err) => {
+                console.log(err);
+            }
+        );
+
+    chargeCalendar(sede, lugar)
 }

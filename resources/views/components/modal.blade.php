@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="lugarModal">Lugar:</label>
-                            <input type="text" class="form-control" name="lugar" id="lugarModal" tabindex="-1" onfocus="this.blur()" readonly>
+                            <input type="text" class="form-control" name="lugarModal" id="lugarModal" tabindex="-1" onfocus="this.blur()" readonly>
                         </div>
                         <div class="col-md-3">
                             <label for="percioModal">Precio de Reserva:</label>

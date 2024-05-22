@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Lugar;
 use App\Models\Persona;
 use App\Models\Sede;
-use App\Models\Servicio;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +13,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ReservationController extends Controller
 {
-
     public function index()
     {
         //
@@ -43,26 +41,34 @@ class ReservationController extends Controller
 
         $start = $fechasRecibidas["start"]; // desde el calendario
         $end = $fechasRecibidas["end"]; //desde el calendario
-        $fechasAlmacenadas = DB::select("SELECT s.inicio, s.fin FROM servicios s");
+        $sede = $fechasRecibidas["sede"]; //desde el calendario
+        $lugar = $fechasRecibidas["lugar"]; //desde el calendario
+
+        $fechasAlmacenadas = DB::select("SELECT s.inicio, s.fin, s.sede_id, s.lugar_id FROM servicios s");
 
         $fecstart = substr($start, 0, 10) . " " . substr($start, 11, 8); //formatear fecha recibida del calendario
         $fecend = substr($end, 0, 10) . " " . substr($end, 11, 8); //formatear fecha recibida del calendario
+        $sedeId = (int)$sede;
+        $lugarId = (int)$lugar;
 
         foreach ($fechasAlmacenadas as $key => $value) {
             $fechaStart = $fechasAlmacenadas[$key]->inicio; //fechas obtenidas de la BD
             $fechaEnd = $fechasAlmacenadas[$key]->fin; //fechas obtenidas de la BD
+            $sede_id = $fechasAlmacenadas[$key]->sede_id;
+            $lugar_id = $fechasAlmacenadas[$key]->lugar_id;
 
             //fechavista    //fechabd
-            if ($fecstart <= $fechaStart && $fecend > $fechaStart) {
+            if ($fecstart <= $fechaStart && $fecend > $fechaStart && $sedeId == $sede_id && $lugar_id == $lugarId) {
                 return response()->json(["msg" => $message]);
             }
-            if ($fecstart < $fechaEnd && $fecend > $fechaEnd) {
+            if ($fecstart < $fechaEnd && $fecend > $fechaEnd && $sedeId == $sede_id && $lugar_id == $lugarId) {
                 return response()->json(["msg" => $message]);
             }
-            if ($fecstart >= $fechaStart && $fecend <= $fechaEnd) {
-                dd();
-                return response()->json(["msg" => $message]);
-            }
+
+            // if ($fecstart >= $fechaStart && $fecend <= $fechaEnd) {
+            //     dd();
+            //     return response()->json(["msg" => $message]);
+            // }
         }
 
         return response()->json(["msg" => "ok"]);
@@ -89,7 +95,11 @@ class ReservationController extends Controller
         }
 
         $usc = Persona::where("usuario_id", Auth::user()->id)->select('nombres', 'apepaterno', 'apematerno')->get();
+
         $usuario_creador = $usc[0]->nombres . ' ' . $usc[0]->apepaterno . ' ' . $usc[0]->apematerno;
+
+        // dd($request->sede);
+
         $datosReserva = [
             "inicio" => $request->inicio,
             "fin" => $request->fin,
@@ -104,29 +114,31 @@ class ReservationController extends Controller
             "periodicidad_id" => 1
         ];
 
-        DB::select("SELECT servicio_alquiler(?,?,?,?,?,?,?,?,?,?,?)",
-        [$datosReserva["inicio"],
-        $datosReserva["fin"],
-        $datosReserva["persona_id"],
-        $datosReserva["lugar"],
-        $datosReserva["sede"],
-        $datosReserva["tipo_servicio_id"],
-        $datosReserva["capacidad"],
-        $datosReserva["usuario_creador"],
-        $datosReserva["ip_usuario"],
-        $datosReserva["created_at"],
-        $datosReserva["periodicidad_id"]]);
+        DB::select(
+            "SELECT servicio_alquiler(?,?,?,?,?,?,?,?,?,?,?)",
+            [
+                $datosReserva["inicio"],
+                $datosReserva["fin"],
+                $datosReserva["persona_id"],
+                $datosReserva["tipo_servicio_id"],
+                $datosReserva["sede"],
+                $datosReserva["lugar"],
+                $datosReserva["capacidad"],
+                $datosReserva["usuario_creador"],
+                $datosReserva["ip_usuario"],
+                $datosReserva["created_at"],
+                $datosReserva["periodicidad_id"]
+            ]
+        );
 
-        return response()->json(['msg'=>'Tu reserva fue generada satisfactoriamente!'],200);
+        return response()->json(['msg' => 'Tu reserva fue generada satisfactoriamente!'], 200);
     }
 
-    public function show()
+
+    public function show($sede, $lugar)
     {
-        //
-        $reservations = DB::select('SELECT sr.id, sr.servicioplantilla_id, sr.inicio as "start", sr.fin as "end",
-        sr.estado, sr.usuario_creador, sr.usuario_editor,
-        sr.ip_usuario , sr.deleted_at, sr.created_at, sr.updated_at
-        FROM servicio_reservas sr');
+        $reservations = DB::select('SELECT s.id, s.tiposervicio_id, s.sede_id, s.lugar_id, s.capacidad, s.inicio AS start, s.fin AS end, s.estado FROM servicios s WHERE s.sede_id = ? AND s.lugar_id = ?', [$sede, $lugar]);
+        // $reservations = DB::select('select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id, s.capacidad, s.inicio as start, s.fin as end, s.estado from servicios s');
 
         return response()->json($reservations);
     }

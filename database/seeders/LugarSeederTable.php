@@ -47,7 +47,7 @@ class LugarSeederTable extends Seeder
             'usuario_editor' => 'ADMIN',
             'ip_usuario' => '127.0.0.1',
             'tipo' => 'V',
-            'sede_id' => 1,
+            'sede_id' => 2,
         ]);
         Lugar::create([
             'descripcion' => 'CAMPO 2',
@@ -58,7 +58,7 @@ class LugarSeederTable extends Seeder
             'usuario_editor' => 'ADMIN',
             'ip_usuario' => '127.0.0.1',
             'tipo' => 'V',
-            'sede_id' => 2,
+            'sede_id' => 1,
         ]);
     }
 }
