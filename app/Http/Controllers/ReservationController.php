@@ -58,10 +58,10 @@ class ReservationController extends Controller
             $lugar_id = $fechasAlmacenadas[$key]->lugar_id;
 
             //fechavista    //fechabd
-            if ($fecstart <= $fechaStart && $fecend > $fechaStart && $sedeId == $sede_id && $lugar_id == $lugarId) {
+            if ($fecstart <= $fechaStart && $fecend > $fechaStart) {
                 return response()->json(["msg" => $message]);
             }
-            if ($fecstart < $fechaEnd && $fecend > $fechaEnd && $sedeId == $sede_id && $lugar_id == $lugarId) {
+            if ($fecstart < $fechaEnd && $fecend > $fechaEnd) {
                 return response()->json(["msg" => $message]);
             }
 
@@ -97,8 +97,6 @@ class ReservationController extends Controller
         $usc = Persona::where("usuario_id", Auth::user()->id)->select('nombres', 'apepaterno', 'apematerno')->get();
 
         $usuario_creador = $usc[0]->nombres . ' ' . $usc[0]->apepaterno . ' ' . $usc[0]->apematerno;
-
-        // dd($request->sede);
 
         $datosReserva = [
             "inicio" => $request->inicio,
@@ -138,7 +136,6 @@ class ReservationController extends Controller
     public function show($sede, $lugar)
     {
         $reservations = DB::select('SELECT s.id, s.tiposervicio_id, s.sede_id, s.lugar_id, s.capacidad, s.inicio AS start, s.fin AS end, s.estado FROM servicios s WHERE s.sede_id = ? AND s.lugar_id = ?', [$sede, $lugar]);
-        // $reservations = DB::select('select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id, s.capacidad, s.inicio as start, s.fin as end, s.estado from servicios s');
 
         return response()->json($reservations);
     }
