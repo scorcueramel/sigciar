@@ -39,7 +39,6 @@ class ReservationController extends Controller
     {
         $fechasRecibidas = $request->all();
 
-
         $message = "Este horario no se encuentra disponible, te sugerimos seleccionar otro.";
 
         $start = $fechasRecibidas["start"]; // desde el calendario
@@ -60,10 +59,12 @@ class ReservationController extends Controller
             if ($fecstart < $fechaEnd && $fecend > $fechaEnd) {
                 return response()->json(["msg" => $message]);
             }
-            // if ($fecstart >= $fechaStart && $fecend <= $fechaEnd) {
-            //     return response()->json(["msg" => $message]);
-            // }
+            if ($fecstart >= $fechaStart && $fecend <= $fechaEnd) {
+                dd();
+                return response()->json(["msg" => $message]);
+            }
         }
+
         return response()->json(["msg" => "ok"]);
     }
 

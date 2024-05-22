@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
         eventShortHeight: 'short',
         height: 750,
         initialView: 'timeGridDay',
+        // initialView: 'dayGridMonth',
         locale: 'es-PE',
         selectable: true,
         slotMinTime: '08:00',
@@ -93,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // ],
         events: '/ciar/obtener',
         dateClick: function (info) {
+            console.log(info);
             let fecha = info.dateStr;
             let start = info.dateStr;
             let end = null;
