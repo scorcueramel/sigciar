@@ -242,7 +242,10 @@ function payPlace() {
                 var respuesta = resp.data.msg;
                 cleanInpust();
                 $('#modal_pago').modal('hide');
-                calendar.refetchEvents();
+                // calendar.refetchEvents();
+                var sede = $('#sede').val();
+                var lugar = $('#lugar').val();
+                chargeCalendar(sede, lugar);
                 registeredSuccess(respuesta);
             }
         )
