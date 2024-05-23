@@ -42,7 +42,7 @@ $('#btnPagar').click(() => {
 
 function chargeSelects(sede) {
     axios
-        .get(`/ciar/obtener/${sede}/lugares`)
+        .get(`/publico/ciar/obtener/${sede}/lugares`)
         .then((resp) => {
             var lugares = resp.data;
             if (lugares.length > 0) {
@@ -121,7 +121,7 @@ function chargeCalendar(sede, lugar) {
         //     },
         // ],
         // events: '/ciar/obtener',
-        events: `/ciar/servicios/${sede}/${lugar}`,
+        events: `/publico/ciar/servicios/${sede}/${lugar}`,
         dateClick: function (info) {
             var fecha = info.dateStr;
             var start = info.dateStr;

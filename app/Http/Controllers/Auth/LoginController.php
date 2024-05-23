@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/ciar/reserva';
+    protected $redirectTo = '/publico/ciar/reserva';
 
     /**
      * Create a new controller instance.

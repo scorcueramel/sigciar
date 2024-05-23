@@ -24,14 +24,16 @@ Route::get('/', function () {
 // Route::get('/ciar/servicio/{sede}/{lugar}', [ReservationController::class, 'test'])->name('reservas.obtener');
 
 
-// Reserva Pública
-Route::get('/ciar/reserva', [ReservationController::class, 'index'])->name('reservation');
-// Route::get('/ciar/obtener', [ReservationController::class, 'show'])->name('reservas.obtener');
-Route::get('/ciar/servicios/{sede}/{lugar}', [ReservationController::class, 'show'])->name('reservas.obtener');
-Route::get('/ciar/obtener/{id}/lugares', [ReservationController::class, 'getPlaces'])->name('reservas.obtener.lugares');
-// Registro Público
-Route::get('/ciar/registro/cliente', [PersonaRegisterController::class,'index'])->name('registro.cliente');
-Route::post('/ciar/registro/cliente', [PersonaRegisterController::class,'store'])->name('registro.cliente');
+Route::group(['prefix' => 'publico'], function () {
+    // Reserva Pública
+    Route::get('/ciar/reserva', [ReservationController::class, 'index'])->name('reservation');
+    // Route::get('/ciar/obtener', [ReservationController::class, 'show'])->name('reservas.obtener');
+    Route::get('/ciar/servicios/{sede}/{lugar}', [ReservationController::class, 'show'])->name('reservas.obtener');
+    Route::get('/ciar/obtener/{id}/lugares', [ReservationController::class, 'getPlaces'])->name('reservas.obtener.lugares');
+    // Registro Público
+    Route::get('/ciar/registro/cliente', [PersonaRegisterController::class, 'index'])->name('registro.cliente');
+    Route::post('/ciar/registro/cliente', [PersonaRegisterController::class, 'store'])->name('registro.cliente');
+});
 
 Auth::routes();
 
