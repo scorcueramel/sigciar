@@ -137,7 +137,7 @@ function chargeCalendar(sede, lugar) {
             } else {
                 if (checkLogin == "1") {
                     axios
-                        .post("/ciar/reservations/conuslta/fecha", { start, end, sede, lugar })
+                        .post("/privado/ciar/reservations/conuslta/fecha", { start, end, sede, lugar })
                         .then((resp) => {
                             var respuesta = resp.data.msg;
                             var fecStart = formatearFechaInicial(start);
@@ -183,7 +183,7 @@ function chargeCalendar(sede, lugar) {
             } else {
                 if (checkLogin === "1") {
                     axios
-                        .post("/ciar/reservations/conuslta/fecha", { start, end, sede, lugar })
+                        .post("/privado/ciar/reservations/conuslta/fecha", { start, end, sede, lugar })
                         .then((resp) => {
                             var respuesta = resp.data.msg;
 
@@ -236,7 +236,7 @@ function payPlace() {
         'precio': precio,
     }
     axios
-        .post("/ciar/reservations/nueva", datos)
+        .post("/privado/ciar/reservations/nueva", datos)
         .then(
             (resp) => {
                 var respuesta = resp.data.msg;
