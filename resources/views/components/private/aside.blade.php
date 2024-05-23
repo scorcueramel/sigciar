@@ -49,8 +49,8 @@
 
             <ul class="menu-inner py-1">
                 <!-- Dashboard -->
-                <li class="menu-item active">
-                    <a href="index.html" class="menu-link">
+                <li class="menu-item {{ $activePage == 'home' ? 'active' : '' }}">
+                    <a href="{{route('home')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-home-circle"></i>
                         <div data-i18n="Analytics">Dashboard</div>
                     </a>
@@ -91,6 +91,57 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="menu-header small text-uppercase">
+                    <span class="menu-header-text">Espacios</span>
+                </li>
+                <li class="menu-item {{ $activePage == 'sedes.index' || $activePage == 'sedes.create'  ? 'active open' : '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'sedes.index' ? 'active' : '' }}">
+                        <i class="fa-regular fa-hotel" style="margin-right: 13px;"></i>
+                        <div data-i18n="Account Settings">Sedes</div>
+                    </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item {{ $activePage == 'sedes.index' ? 'active' : '' }}">
+                            <a href="{{route('sedes.index')}}" class="menu-link">
+                                <div data-i18n="Account">Todas las sedes</div>
+                            </a>
+                        </li>
+                        <li class="menu-item {{ $activePage == 'sedes.create' ? 'active' : '' }}">
+                            <a href="{{route('sedes.create')}}" class="menu-link">
+                                <div data-i18n="Notifications">Nueva Sede</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="pages-account-settings-connections.html" class="menu-link">
+                                <div data-i18n="Connections">Sobre las sedes</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="fa-regular fa-court-sport"style="margin-right: 13px;"></i>
+                        <div data-i18n="Account Settings">Canchas</div>
+                    </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item">
+                            <a href="pages-account-settings-account.html" class="menu-link">
+                                <div data-i18n="Account">Account</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="pages-account-settings-notifications.html" class="menu-link">
+                                <div data-i18n="Notifications">Notifications</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="pages-account-settings-connections.html" class="menu-link">
+                                <div data-i18n="Connections">Connections</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
 
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Pages</span>

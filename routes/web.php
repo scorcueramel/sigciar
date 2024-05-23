@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\PersonaRegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\SedesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,5 +47,10 @@ Route::group(['prefix' => 'ciar'], function () {
 
 // Rutas para el Administrador
 Route::group(['prefix'=>'admin'], function(){
-    Route::get('/ciar/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/ciar/dashboard', [HomeController::class, 'index'])->name('home');
+
+    Route::group(['prefix'=> 'sedes'], function () {
+        Route::get('/lista', [SedesController::class, 'index'])->name('sedes.index');
+        Route::get('/nueva', [SedesController::class, 'create'])->name('sedes.create');
+    });
 });
