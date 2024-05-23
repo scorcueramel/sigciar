@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.public.layout_public')
 @push('title', 'Reservas')
 @push('css')
 <style>
@@ -8,7 +8,7 @@
 </style>
 @endpush
 @section('content')
-@include('components.navbar')
+@include('components.public.navbar')
 <div class="container-fluid">
     <input type="hidden" id="loginCheck" value="{{ Auth::check() }}">
     <div class="row bg-secondary py-4">
@@ -87,8 +87,8 @@
         </div>
     </div>
 </div>
-@include('components.modal')
-@include('components.modal-pago')
+@include('components.public.modal')
+@include('components.public.modal-pago')
 @endsection
 @push('js')
 <script>

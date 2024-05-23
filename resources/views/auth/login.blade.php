@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.public.layout_public')
 @push('title','Iniciar Sesión')
 @section('content')
 <div class="container py-5 my-5">
