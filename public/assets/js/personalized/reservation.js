@@ -1,5 +1,5 @@
 import { validPastDateTime, sedeLugarSelection, dateNotAvailability, notRegisterUser, registeredSuccess } from './messages_reservation.js';
-import { formatearFecha, formatearHora, formatearFechaInicial, formatearFechaFinal, validaHoraActual, obtenerSedeLugar } from './all_in_date.js';
+import { formatearFecha, formatearHora, formatearHoraMobil, formatearFechaInicial, formatearFechaFinal, validaHoraActual, obtenerSedeLugar } from './all_in_date.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     var sede = $("#sede").val();
@@ -122,15 +122,13 @@ function chargeCalendar(sede, lugar) {
         // ],
         // events: '/ciar/obtener',
         events: `/publico/ciar/servicios/${sede}/${lugar}`,
-        dateClick: function (info) {
-            var fecha = info.dateStr;
-            var start = info.dateStr;
+        dateClick: function (infoClick) {
+            var fecha = infoClick.dateStr;
+            var start = infoClick.dateStr;
             var end = formatearFechaFinal(start);
             var valHora = validaHoraActual(start);
             var sede = $('#sede').val();
             var lugar = $('#lugar').val();
-
-            console.log(sede, lugar);
 
             if (valHora) {
                 validPastDateTime();
@@ -150,7 +148,7 @@ function chargeCalendar(sede, lugar) {
                                 $('#fin').val(end);
                                 $('#fecha').val(formatearFecha(fecha))
                                 $('#horaInicio').val(formatearHora(start));
-                                $('#horaFin').val(formatearHora(end));
+                                $('#horaFin').val(formatearHoraMobil(start));
                                 obtenerSedeLugar(sedeID);
                                 if (sede != null && lugar != null) {
                                     $('#modal').modal('show');
@@ -169,10 +167,10 @@ function chargeCalendar(sede, lugar) {
                 }
             }
         },
-        select: function (info) {
-            var fecha = info.startStr;
-            var start = info.startStr;
-            var end = info.endStr;
+        select: function (infoSelect) {
+            var fecha = infoSelect.startStr;
+            var start = infoSelect.startStr;
+            var end = infoSelect.endStr;
             var valHora = validaHoraActual(start);
             var sede = $('#sede').val();
             var lugar = $('#lugar').val();
@@ -242,10 +240,6 @@ function payPlace() {
                 var respuesta = resp.data.msg;
                 cleanInpust();
                 $('#modal_pago').modal('hide');
-                // calendar.refetchEvents();
-                var sede = $('#sede').val();
-                var lugar = $('#lugar').val();
-                chargeCalendar(sede, lugar);
                 registeredSuccess(respuesta);
             }
         )
@@ -254,6 +248,9 @@ function payPlace() {
                 console.log(err);
             }
         );
+
+    var sede = $('#sede').val();
+    var lugar = $('#lugar').val();
 
     chargeCalendar(sede, lugar)
 }

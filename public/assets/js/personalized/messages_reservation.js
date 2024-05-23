@@ -43,4 +43,19 @@ function registeredSuccess(respuesta) {
     );
 }
 
-export { validPastDateTime, sedeLugarSelection, dateNotAvailability, notRegisterUser, registeredSuccess }
+function duranteCarga() {
+    Swal.fire({
+        allowOutsideClick: false,
+        icon: 'info',
+        iconColor: '#005ea5',
+        text: 'Espere un momento por favor...',
+        timerProgressBar: true,
+        showConfirmButton: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    });
+}
+
+export { validPastDateTime, sedeLugarSelection, dateNotAvailability, notRegisterUser, registeredSuccess, duranteCarga }
