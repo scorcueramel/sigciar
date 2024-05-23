@@ -15,7 +15,12 @@ document.addEventListener('DOMContentLoaded', function () {
         placeholder: "Seleccionar Lugar",
     });
 
-    chargeSelects(sede);
+    setTimeout(() => {
+        var lugar = $('#lugar').val();
+        chargeCalendar(sede, lugar);
+    }, 2500);
+
+    // chargeSelects(sede);
 
     $('#sede').change(() => {
         var sede = $('#sede').val();
@@ -24,17 +29,11 @@ document.addEventListener('DOMContentLoaded', function () {
         chargeCalendar(sede, lugar);
     });
 
-    setTimeout(() => {
-        var lugar = $('#lugar').val();
-        chargeCalendar(sede, lugar);
-    }, 2500);
-
     $('#lugar').change(() => {
         var sede = $('#sede').val();
         var lugar = $('#lugar').val();
         chargeCalendar(sede, lugar);
     });
-
 });
 
 $('#btnPagar').click(() => {

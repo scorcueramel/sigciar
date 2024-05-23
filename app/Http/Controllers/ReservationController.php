@@ -24,7 +24,8 @@ class ReservationController extends Controller
             $personalInfo = Persona::where('usuario_id', Auth::user()->id)->select('id', 'nombres', 'apepaterno', 'apematerno')->get();
         }
         $sede = Sede::where('estado', 'A')->select('id', 'descripcion', 'abreviatura', 'estado')->get();
-        return view('pages.public.reservation.index', compact('sede', 'personalInfo', 'authenticate'));
+        $lugares = Lugar::all();
+        return view('pages.public.reservation.index', compact('sede', 'lugares', 'personalInfo', 'authenticate'));
     }
 
     public function getPlaces($id)
@@ -58,10 +59,12 @@ class ReservationController extends Controller
             $lugar_id = $fechasAlmacenadas[$key]->lugar_id;
 
             //fechavista    //fechabd
-            if ($fecstart <= $fechaStart && $fecend > $fechaStart) {
+            if (($fecstart <= $fechaStart && $fecend > $fechaStart) && ($sedeId == $sede_id && $lugarId ==  $lugar_id)) {
+
                 return response()->json(["msg" => $message]);
             }
-            if ($fecstart < $fechaEnd && $fecend > $fechaEnd) {
+            if (($fecstart < $fechaEnd && $fecend > $fechaEnd) && ($sedeId == $sede_id && $lugarId ==  $lugar_id)) {
+                dd("caso 2");
                 return response()->json(["msg" => $message]);
             }
 

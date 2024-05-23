@@ -74,6 +74,7 @@
                     <div class="input-group mb-3">
                         {{-- <label class="input-group-text border-secondary shadow-sm" for="lugar"><i class="fa-solid fa-court-sport"></i></label> --}}
                         <select class="form-select border-secondary shadow-sm" id="lugar">
+                            <option value="" select disabled>Seleccinar Lugar</option>
                         </select>
                     </div>
                 </div>

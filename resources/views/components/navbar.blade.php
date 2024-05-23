@@ -38,7 +38,7 @@
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Cerra Sesión') }}
+                                    {{ __('Cerrar Sesión') }}
                                     <i class="fa-regular fa-arrow-up-left-from-circle fa-rotate-90"></i>
                                 </a>
 
