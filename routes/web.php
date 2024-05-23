@@ -40,7 +40,7 @@ Auth::routes();
 Route::get('/ciar/home', [HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'privado'], function(){
-    Route::group(['prefix' => 'ciar/reservations'], function () {
+    Route::group(['prefix' => '/ciar/reservations'], function () {
         // Reserva privado consulta fecha
         Route::post('/conuslta/fecha', [ReservationController::class, 'dateQuery'])->name('reserva.consulta.fecha');
         Route::post('/nueva', [ReservationController::class, 'store'])->name('reserva.nuevo');
