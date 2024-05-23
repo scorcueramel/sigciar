@@ -91,7 +91,7 @@ function obtenerSedeLugar(id) {
 
     $.ajax({
         type: "GET",
-        url: `/publico/ciar/obtener/${id}/lugares`,
+        url: `/ciar/obtener/${id}/lugares`,
         success: function (res) {
             let respuesta = res;
             respuesta.forEach((e) => {

@@ -24,25 +24,27 @@ Route::get('/', function () {
 // Route::get('/ciar/servicio/{sede}/{lugar}', [ReservationController::class, 'test'])->name('reservas.obtener');
 
 
-Route::group(['prefix' => 'publico'], function () {
+Route::group(['prefix' => 'ciar'], function () {
     // Reserva publico
-    Route::get('/ciar/reserva', [ReservationController::class, 'index'])->name('reservation');
+    Route::get('/reserva', [ReservationController::class, 'index'])->name('reservation');
     // Route::get('/ciar/obtener', [ReservationController::class, 'show'])->name('reservas.obtener');
-    Route::get('/ciar/servicios/{sede}/{lugar}', [ReservationController::class, 'show'])->name('reservas.obtener');
-    Route::get('/ciar/obtener/{id}/lugares', [ReservationController::class, 'getPlaces'])->name('reservas.obtener.lugares');
+    Route::get('/servicios/{sede}/{lugar}', [ReservationController::class, 'show'])->name('reservas.obtener');
+    Route::get('/obtener/{id}/lugares', [ReservationController::class, 'getPlaces'])->name('reservas.obtener.lugares');
     // Registro
-    Route::get('/ciar/registro/cliente', [PersonaRegisterController::class, 'index'])->name('registro.cliente');
-    Route::post('/ciar/registro/cliente', [PersonaRegisterController::class, 'store'])->name('registro.cliente');
+    Route::get('/registro/cliente', [PersonaRegisterController::class, 'index'])->name('registro.cliente');
+    Route::post('/registro/cliente', [PersonaRegisterController::class, 'store'])->name('registro.cliente');
 });
 
 Auth::routes();
 
-Route::get('/ciar/home', [HomeController::class, 'index'])->name('home');
 
-Route::group(['prefix' => 'privado'], function(){
-    Route::group(['prefix' => '/ciar/reservations'], function () {
-        // Reserva privado consulta fecha
-        Route::post('/conuslta/fecha', [ReservationController::class, 'dateQuery'])->name('reserva.consulta.fecha');
-        Route::post('/nueva', [ReservationController::class, 'store'])->name('reserva.nuevo');
-    });
+// Reserva privado consulta fecha y registro de reserva
+Route::group(['prefix' => 'ciar'], function () {
+    Route::post('/conuslta/fecha', [ReservationController::class, 'dateQuery'])->name('reserva.consulta.fecha');
+    Route::post('/nueva', [ReservationController::class, 'store'])->name('reserva.nuevo');
+});
+
+// Rutas para el Administrador
+Route::group(['prefix'=>'admin'], function(){
+    Route::get('/ciar/home', [HomeController::class, 'index'])->name('home');
 });

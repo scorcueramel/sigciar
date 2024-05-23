@@ -42,7 +42,7 @@ $('#btnPagar').click(() => {
 
 function chargeSelects(sede) {
     axios
-        .get(`/publico/ciar/obtener/${sede}/lugares`)
+        .get(`/ciar/obtener/${sede}/lugares`)
         .then((resp) => {
             var lugares = resp.data;
             if (lugares.length > 0) {
@@ -121,7 +121,7 @@ function chargeCalendar(sede, lugar) {
         //     },
         // ],
         // events: '/ciar/obtener',
-        events: `/publico/ciar/servicios/${sede}/${lugar}`,
+        events: `/ciar/servicios/${sede}/${lugar}`,
         dateClick: function (infoClick) {
             var fecha = infoClick.dateStr;
             var start = infoClick.dateStr;
@@ -135,7 +135,7 @@ function chargeCalendar(sede, lugar) {
             } else {
                 if (checkLogin == "1") {
                     axios
-                        .post("/privado/ciar/reservations/conuslta/fecha", { start, end, sede, lugar })
+                        .post("/ciar/conuslta/fecha", { start, end, sede, lugar })
                         .then((resp) => {
                             var respuesta = resp.data.msg;
                             var fecStart = formatearFechaInicial(start);
@@ -181,7 +181,7 @@ function chargeCalendar(sede, lugar) {
             } else {
                 if (checkLogin === "1") {
                     axios
-                        .post("/privado/ciar/reservations/conuslta/fecha", { start, end, sede, lugar })
+                        .post("/ciar/conuslta/fecha", { start, end, sede, lugar })
                         .then((resp) => {
                             var respuesta = resp.data.msg;
 
@@ -234,7 +234,7 @@ function payPlace() {
         'precio': precio,
     }
     axios
-        .post("/privado/ciar/reservations/nueva", datos)
+        .post("/ciar/nueva", datos)
         .then(
             (resp) => {
                 var respuesta = resp.data.msg;
