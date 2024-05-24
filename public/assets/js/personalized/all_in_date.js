@@ -17,6 +17,14 @@ function formatearHora(hora) {
     return horaSalida;
 }
 
+function formatearHoraMobil(start){
+    var resDate = formatearFechaFinal(start);
+    var resHour = resDate.split(" ")[1];
+    var addMob = parseFloat(resHour.split(":"));
+    var horaSalida = (addMob < 10) ? "0"+addMob+":"+"00" : addMob+":"+"00";
+    return horaSalida;
+}
+
 // Formtear Fecha y Hora Inicial Para Almacenar
 function formatearFechaInicial(fechaHoraInicial) {
     var fecha = fechaHoraInicial;
@@ -27,6 +35,18 @@ function formatearFechaInicial(fechaHoraInicial) {
     var fecha_salida = fecha_format[2] + '/' + fecha_format[1] + '/' + fecha_format[0]
     var fechaHoraInicialFormat = fecha_salida + ' ' + fecha_time[0] + ':' + fecha_time[1];
     return fechaHoraInicialFormat;
+}
+
+// Formtear Fecha y Hora Final Para Almacenar
+function formatearFechaFinal(fechaHoraFinal) {
+    var fecha = fechaHoraFinal;
+    var fecha_date = fecha.split('T');
+    var fecha_time = fecha_date[1].split(':');
+    fecha_date = fecha_date[0];
+    var fecha_format = fecha_date.split('-');
+    var fecha_salida = fecha_format[2] + '/' + fecha_format[1] + '/' + fecha_format[0]
+    var fechaHoraFinalFormat = fecha_salida + ' ' + (parseInt(fecha_time[0]) + 1) + ':' + fecha_time[1];
+    return fechaHoraFinalFormat;
 }
 
 // Validar hora actual
@@ -80,4 +100,4 @@ function obtenerSedeLugar(id) {
     });
 }
 
-export { formatearFecha, formatearHora, validaHoraActual, obtenerSedeLugar };
+export { formatearFecha, formatearHora, validaHoraActual, formatearHoraMobil, formatearFechaInicial, formatearFechaFinal, obtenerSedeLugar };

@@ -46,7 +46,7 @@ Route::group(['prefix' => 'ciar'], function () {
 });
 
 // Rutas para el Administrador
-Route::group(['prefix'=>'admin'], function(){
+Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
     Route::get('/ciar/dashboard', [HomeController::class, 'index'])->name('home');
 
     Route::group(['prefix'=> 'sedes'], function () {

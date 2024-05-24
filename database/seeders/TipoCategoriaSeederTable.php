@@ -6,7 +6,7 @@ use App\Models\TipoCategoria;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CategoriaSeederTable extends Seeder
+class TipoCategoriaSeederTable extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,6 @@ class CategoriaSeederTable extends Seeder
      */
     public function run()
     {
-        //
         TipoCategoria::create([
             'descripcion' => 'USUARIO',
             'abreviatura' => 'US',
@@ -35,6 +34,10 @@ class CategoriaSeederTable extends Seeder
         TipoCategoria::create([
             'descripcion' => 'INSTRUCTOR',
             'abreviatura' => 'IT',
+        ]);
+        TipoCategoria::create([
+            'descripcion' => 'ADMINISTRADOR',
+            'abreviatura' => 'AD',
         ]);
     }
 }

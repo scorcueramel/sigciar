@@ -1,5 +1,5 @@
 import { validPastDateTime, sedeLugarSelection, dateNotAvailability, notRegisterUser, registeredSuccess } from './messages_reservation.js';
-import { formatearFecha, formatearHora, validaHoraActual, obtenerSedeLugar } from './all_in_date.js';
+import { formatearFecha, formatearHora, formatearHoraMobil, formatearFechaInicial, formatearFechaFinal, validaHoraActual, obtenerSedeLugar } from './all_in_date.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     // var sede = $("#sede").val();
@@ -163,7 +163,53 @@ function chargeCalendar(sede, lugar) {
                     notRegisterUser();
                 }
             }
-        }
+        },
+        dateClick: function (infoClick) {
+            var fecha = infoClick.dateStr;
+            var start = infoClick.dateStr;
+            var end = formatearFechaFinal(start);
+            var valHora = validaHoraActual(start);
+            var sede = $('#sede').val();
+            var lugar = $('#lugar').val();
+
+            if (valHora) {
+                validPastDateTime();
+            } else {
+                if (checkLogin == "1") {
+                    axios
+                        .post("/ciar/conuslta/fecha", { start, end, sede, lugar })
+                        .then((resp) => {
+                            var respuesta = resp.data.msg;
+                            var fecStart = formatearFechaInicial(start);
+                            if (respuesta == 'disponible') {
+
+                                formulario.reset();
+                                var sedeID = $('#sede').val();
+
+
+                                $('#inicio').val(fecStart);
+                                $('#fin').val(end);
+                                $('#fecha').val(formatearFecha(fecha))
+                                $('#horaInicio').val(formatearHora(start));
+                                $('#horaFin').val(formatearHoraMobil(start));
+                                obtenerSedeLugar(sedeID);
+                                if (sede != null && lugar != null) {
+                                    $('#modal').modal('show');
+                                } else {
+                                    sedeLugarSelection();
+                                }
+                            } else {
+                                dateNotAvailability(respuesta);
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        });
+                } else {
+                    notRegisterUser();
+                }
+            }
+        },
     });
 
     calendar.render();

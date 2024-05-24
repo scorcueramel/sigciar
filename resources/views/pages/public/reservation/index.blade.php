@@ -41,6 +41,14 @@
         </div>
     </div>
     <div class="row pt-4 pb-3 d-flex justify-content-center">
+        @if(Session::has('warning'))
+        <div class="col-md-10">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Upsss!</strong> {{Session::get('warning')}}.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        @endif
         <div class="col-md-10 options">
             <div class="row pb-4 align-items-center">
                 <div class="col-md-6">

@@ -17,33 +17,23 @@ class TipoServicioSeederTable extends Seeder
     {
         //
         TipoServicio::create([
-            'descripcion' => 'USUARIO',
-            'abreviatura' => 'US',
+            'descripcion' => 'ALQUILER DE CANCHAS DE TENIS',
+            'abreviatura' => 'ALQ',
             'estado' => 'A'
         ]);
         TipoServicio::create([
-            'descripcion' => 'MIEMBRO',
-            'abreviatura' => 'MB',
+            'descripcion' => 'NUTRICION',
+            'abreviatura' => 'NUT',
             'estado' => 'A'
         ]);
         TipoServicio::create([
-            'descripcion' => 'NUTRICIONISTA',
-            'abreviatura' => 'NT',
+            'descripcion' => 'ACADEMIA DE TENIS',
+            'abreviatura' => 'ACA',
             'estado' => 'A'
         ]);
         TipoServicio::create([
-            'descripcion' => 'PERSONAL TRAINER',
-            'abreviatura' => 'PT',
-            'estado' => 'A'
-        ]);
-        TipoServicio::create([
-            'descripcion' => 'INSTRUCTOR',
-            'abreviatura' => 'IT',
-            'estado' => 'A'
-        ]);
-        TipoServicio::create([
-            'descripcion' => 'ADMINISTRADOR',
-            'abreviatura' => 'IT',
+            'descripcion' => 'GIMNASIO',
+            'abreviatura' => 'GIM',
             'estado' => 'A'
         ]);
     }
