@@ -246,7 +246,6 @@ function payPlace() {
                 // var sede = $('#sede').val();
                 // var lugar = $('#lugar').val();
 
-                calendar.render();
             }
         )
         .catch(
@@ -254,4 +253,5 @@ function payPlace() {
                 console.log(err);
             }
         );
+    calendar.render();
 }
