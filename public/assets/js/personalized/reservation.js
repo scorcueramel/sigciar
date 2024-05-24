@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var sede = $('#sede').val();
         var lugar = $('#lugar').val();
         chargeCalendar(sede, lugar);
+        calendar.render();
     }, 2500);
 
     $('#sede').change(() => {
