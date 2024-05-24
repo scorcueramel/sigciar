@@ -36,9 +36,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 $('#btnPagar').click(() => {
     payPlace();
-    var sede = $('#sede').val();
-    var lugar = $('#lugar').val();
-    chargeCalendar(sede, lugar)
 });
 
 function chargeSelects(sede) {
@@ -240,9 +237,12 @@ function payPlace() {
         .then(
             (resp) => {
                 var respuesta = resp.data.msg;
+                var sede = $('#sede').val();
+                var lugar = $('#lugar').val();
                 cleanInpust();
                 $('#modal_pago').modal('hide');
                 registeredSuccess(respuesta);
+                chargeCalendar(sede, lugar)
             }
         )
         .catch(
