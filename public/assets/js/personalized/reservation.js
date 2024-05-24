@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     setTimeout(() => {
+        var sede = $('#sede').val();
         var lugar = $('#lugar').val();
         chargeCalendar(sede, lugar);
     }, 2500);
