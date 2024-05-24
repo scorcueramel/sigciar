@@ -22,9 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $('#sede').change(() => {
         var sede = $('#sede').val();
-        var lugar = $('#lugar').val();
+        // var lugar = $('#lugar').val();
         chargeSelects(sede);
-        chargeCalendar(sede, lugar);
+        // chargeCalendar(sede, lugar);
     });
 
     $('#lugar').change(() => {
