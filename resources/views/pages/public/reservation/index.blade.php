@@ -56,7 +56,7 @@
                             <i class="fa-solid fa-buildings"></i>
                         </label> --}}
                         <select class="form-select border-secondary shadow-sm" id="sede">
-                            <option value="" select disabled>Seleccinar Sede</option>
+                            <option value="" selected disabled>Seleccinar Sede</option>
                             @foreach ($sede as $s)
                             <option value="{{ $s->id }}">{{ $s->descripcion }}</option>
                             @endforeach
