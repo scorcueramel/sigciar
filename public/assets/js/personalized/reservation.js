@@ -1,5 +1,5 @@
 import { validPastDateTime, sedeLugarSelection, dateNotAvailability, notRegisterUser, registeredSuccess } from './messages_reservation.js';
-import { formatearFecha, formatearHora, formatearHoraMobil, formatearFechaInicial, formatearFechaFinal, validaHoraActual, obtenerSedeLugar } from './all_in_date.js';
+import { formatearFecha, formatearHora, validaHoraActual, obtenerSedeLugar } from './all_in_date.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     $('#sede').select2({
@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     setTimeout(() => {
+        var sede = $("#sede").val();
         var lugar = $('#lugar').val();
         chargeCalendar(sede, lugar);
     }, 2500);
