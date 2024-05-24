@@ -2,7 +2,7 @@ import { validPastDateTime, sedeLugarSelection, dateNotAvailability, notRegister
 import { formatearFecha, formatearHora, formatearHoraMobil, formatearFechaInicial, formatearFechaFinal, validaHoraActual, obtenerSedeLugar } from './all_in_date.js';
 
 document.addEventListener('DOMContentLoaded', function () {
-    var sede = $("#sede").val();
+    // var sede = $("#sede").val();
     $('#sede').select2({
         theme: 'bootstrap-5',
         minimumResultsForSearch: -1,
@@ -20,16 +20,15 @@ document.addEventListener('DOMContentLoaded', function () {
         chargeCalendar(sede, lugar);
     }, 2500);
 
-
-
     $('#sede').change(() => {
         var sede = $('#sede').val();
-        chargeSelects(sede);
         var lugar = $('#lugar').val();
+        chargeSelects(sede);
         chargeCalendar(sede, lugar);
     });
 
     $('#lugar').change(() => {
+        var sede = $('#sede').val();
         var lugar = $('#lugar').val();
         chargeCalendar(sede, lugar);
     });
