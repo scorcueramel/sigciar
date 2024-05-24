@@ -213,6 +213,7 @@ function chargeCalendar(sede, lugar) {
             }
         }
     });
+
     calendar.render();
 }
 
@@ -242,10 +243,10 @@ function payPlace() {
                 $('#modal_pago').modal('hide');
                 registeredSuccess(respuesta);
 
-                var sede = $('#sede').val();
-                var lugar = $('#lugar').val();
+                // var sede = $('#sede').val();
+                // var lugar = $('#lugar').val();
 
-                chargeCalendar(sede, lugar)
+                calendar.render();
             }
         )
         .catch(
