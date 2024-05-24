@@ -63,7 +63,7 @@
     @include('components.private.custom-button')
 
     {{-- Template scripts --}}
-    <script src="{{ asset('assets/template/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/template/js/popper.js') }}"></script>
     <script src="{{ asset('assets/template/js/bootstrap.js') }}"></script>
     <script src="{{ asset('assets/template/js/perfect-scrollbar.js') }}"></script>
@@ -84,7 +84,6 @@
 
     {{-- Personalized JS --}}
     @stack('js')
-    </div>
 </body>
 
 </html>

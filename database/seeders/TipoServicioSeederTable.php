@@ -41,5 +41,10 @@ class TipoServicioSeederTable extends Seeder
             'abreviatura' => 'IT',
             'estado' => 'A'
         ]);
+        TipoServicio::create([
+            'descripcion' => 'ADMINISTRADOR',
+            'abreviatura' => 'IT',
+            'estado' => 'A'
+        ]);
     }
 }

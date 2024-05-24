@@ -118,53 +118,7 @@ function chargeCalendar(sede, lugar) {
         //         daysOfWeek: [1, 2, 3, 4, 5, 6], //Días activos de lunes a sábado
         //     },
         // ],
-        // events: '/ciar/obtener',
         events: `/ciar/servicios/${sede}/${lugar}`,
-        dateClick: function (infoClick) {
-            var fecha = infoClick.dateStr;
-            var start = infoClick.dateStr;
-            var end = formatearFechaFinal(start);
-            var valHora = validaHoraActual(start);
-            var sede = $('#sede').val();
-            var lugar = $('#lugar').val();
-
-            if (valHora) {
-                validPastDateTime();
-            } else {
-                if (checkLogin == "1") {
-                    axios
-                        .post("/ciar/conuslta/fecha", { start, end, sede, lugar })
-                        .then((resp) => {
-                            var respuesta = resp.data.msg;
-                            var fecStart = formatearFechaInicial(start);
-                            if (respuesta == 'ok') {
-
-                                formulario.reset();
-                                var sedeID = $('#sede').val();
-
-                                $('#inicio').val(fecStart);
-                                $('#fin').val(end);
-                                $('#fecha').val(formatearFecha(fecha))
-                                $('#horaInicio').val(formatearHora(start));
-                                $('#horaFin').val(formatearHoraMobil(start));
-                                obtenerSedeLugar(sedeID);
-                                if (sede != null && lugar != null) {
-                                    $('#modal').modal('show');
-                                } else {
-                                    sedeLugarSelection();
-                                }
-                            } else {
-                                dateNotAvailability(respuesta);
-                            }
-                        })
-                        .catch((err) => {
-                            console.log(err)
-                        });
-                } else {
-                    notRegisterUser();
-                }
-            }
-        },
         select: function (infoSelect) {
             var fecha = infoSelect.startStr;
             var start = infoSelect.startStr;
@@ -172,7 +126,6 @@ function chargeCalendar(sede, lugar) {
             var valHora = validaHoraActual(start);
             var sede = $('#sede').val();
             var lugar = $('#lugar').val();
-
 
             if (valHora) {
                 validPastDateTime();
@@ -183,7 +136,7 @@ function chargeCalendar(sede, lugar) {
                         .then((resp) => {
                             var respuesta = resp.data.msg;
 
-                            if (respuesta == 'ok') {
+                            if (respuesta == 'disponible') {
                                 formulario.reset();
                                 var sedeID = $('#sede').val();
 

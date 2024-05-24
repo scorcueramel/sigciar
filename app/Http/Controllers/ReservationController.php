@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ReservationController extends Controller
 {
@@ -36,45 +37,25 @@ class ReservationController extends Controller
 
     public function dateQuery(Request $request)
     {
-        $fechasRecibidas = $request->all();
+        $msg = "Este horario no se encuentra disponible, te sugerimos elegir otro.";
 
-        $message = "Este horario no se encuentra disponible, te sugerimos seleccionar otro.";
+        $val_dispo = [
+            "start" => $request->start,
+            "end" => $request->end,
+            "sede" => $request->sede,
+            "lugar" => $request->lugar,
+        ];
 
-        $start = $fechasRecibidas["start"]; // desde el calendario
-        $end = $fechasRecibidas["end"]; //desde el calendario
-        $sede = $fechasRecibidas["sede"]; //desde el calendario
-        $lugar = $fechasRecibidas["lugar"]; //desde el calendario
+        $val_range_date = DB::select("select valida_disponibilidad(?,?,?,?)", [$val_dispo["start"], $val_dispo["end"], $val_dispo["sede"], $val_dispo["lugar"]]);
+        $response = $val_range_date[0]->valida_disponibilidad;
+        $split = Str::before($response, ',');
+        $split_end = Str::after($split, '(');
 
-        $fechasAlmacenadas = DB::select("SELECT s.inicio, s.fin, s.sede_id, s.lugar_id FROM servicios s");
-
-        $fecstart = substr($start, 0, 10) . " " . substr($start, 11, 8); //formatear fecha recibida del calendario
-        $fecend = substr($end, 0, 10) . " " . substr($end, 11, 8); //formatear fecha recibida del calendario
-        $sedeId = (int)$sede;
-        $lugarId = (int)$lugar;
-
-        foreach ($fechasAlmacenadas as $key => $value) {
-            $fechaStart = $fechasAlmacenadas[$key]->inicio; //fechas obtenidas de la BD
-            $fechaEnd = $fechasAlmacenadas[$key]->fin; //fechas obtenidas de la BD
-            $sede_id = $fechasAlmacenadas[$key]->sede_id;
-            $lugar_id = $fechasAlmacenadas[$key]->lugar_id;
-
-            //fechavista    //fechabd
-            if (($fecstart <= $fechaStart && $fecend > $fechaStart) && ($sedeId == $sede_id && $lugarId ==  $lugar_id)) {
-
-                return response()->json(["msg" => $message]);
-            }
-            if (($fecstart < $fechaEnd && $fecend > $fechaEnd) && ($sedeId == $sede_id && $lugarId ==  $lugar_id)) {
-                dd("caso 2");
-                return response()->json(["msg" => $message]);
-            }
-
-            // if ($fecstart >= $fechaStart && $fecend <= $fechaEnd) {
-            //     dd();
-            //     return response()->json(["msg" => $message]);
-            // }
+        if ($split_end === "0") {
+            return response()->json(["msg" => "disponible"]);
+        } elseif ($split_end === "1") {
+            return response()->json(["msg" => $msg]);
         }
-
-        return response()->json(["msg" => "ok"]);
     }
 
     public function create()
@@ -101,7 +82,7 @@ class ReservationController extends Controller
 
         $usuario_creador = $usc[0]->nombres . ' ' . $usc[0]->apepaterno . ' ' . $usc[0]->apematerno;
 
-        $datosReserva = [
+        $datos_reserva = [
             "inicio" => $request->inicio,
             "fin" => $request->fin,
             "persona_id" => $request->persona_id,
@@ -118,17 +99,17 @@ class ReservationController extends Controller
         DB::select(
             "SELECT servicio_alquiler(?,?,?,?,?,?,?,?,?,?,?)",
             [
-                $datosReserva["inicio"],
-                $datosReserva["fin"],
-                $datosReserva["persona_id"],
-                $datosReserva["tipo_servicio_id"],
-                $datosReserva["sede"],
-                $datosReserva["lugar"],
-                $datosReserva["capacidad"],
-                $datosReserva["usuario_creador"],
-                $datosReserva["ip_usuario"],
-                $datosReserva["created_at"],
-                $datosReserva["periodicidad_id"]
+                $datos_reserva["inicio"],
+                $datos_reserva["fin"],
+                $datos_reserva["persona_id"],
+                $datos_reserva["tipo_servicio_id"],
+                $datos_reserva["sede"],
+                $datos_reserva["lugar"],
+                $datos_reserva["capacidad"],
+                $datos_reserva["usuario_creador"],
+                $datos_reserva["ip_usuario"],
+                $datos_reserva["created_at"],
+                $datos_reserva["periodicidad_id"]
             ]
         );
 

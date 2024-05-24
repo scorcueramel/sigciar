@@ -16,7 +16,6 @@
             <div class="row mb-5">
                 <div class="col-md-12 text-center">
                     <h1 class="title_rse text-white">Reserva de Espacios</h1>
-                    {{-- <h1 class="title_rse text-white">Calendario de Visitas</h1> --}}
                 </div>
             </div>
             <div class="row">

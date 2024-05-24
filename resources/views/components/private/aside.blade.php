@@ -103,7 +103,7 @@
                     <ul class="menu-sub">
                         <li class="menu-item {{ $activePage == 'sedes.index' ? 'active' : '' }}">
                             <a href="{{route('sedes.index')}}" class="menu-link">
-                                <div data-i18n="Account">Todas las sedes</div>
+                                <div data-i18n="Account">Todas las Sedes</div>
                             </a>
                         </li>
                         <li class="menu-item {{ $activePage == 'sedes.create' ? 'active' : '' }}">
@@ -112,8 +112,8 @@
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="pages-account-settings-connections.html" class="menu-link">
-                                <div data-i18n="Connections">Sobre las sedes</div>
+                            <a href="#" class="menu-link">
+                                <div data-i18n="Connections">Sobre las Sedes</div>
                             </a>
                         </li>
                     </ul>
@@ -121,22 +121,22 @@
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="fa-regular fa-court-sport"style="margin-right: 13px;"></i>
-                        <div data-i18n="Account Settings">Canchas</div>
+                        <div data-i18n="Account Settings">Lugares</div>
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="pages-account-settings-account.html" class="menu-link">
-                                <div data-i18n="Account">Account</div>
+                            <a href="#" class="menu-link">
+                                <div data-i18n="Account">Todas los Lugares</div>
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="pages-account-settings-notifications.html" class="menu-link">
-                                <div data-i18n="Notifications">Notifications</div>
+                            <a href="#" class="menu-link">
+                                <div data-i18n="Notifications">Nueva Lugares</div>
                             </a>
                         </li>
                         <li class="menu-item">
                             <a href="pages-account-settings-connections.html" class="menu-link">
-                                <div data-i18n="Connections">Connections</div>
+                                <div data-i18n="Connections">Sobre las Lugares</div>
                             </a>
                         </li>
                     </ul>
