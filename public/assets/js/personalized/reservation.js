@@ -23,14 +23,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     $('#sede').change(() => {
-        chargeSelects(sede);
         var sede = $('#sede').val();
+        chargeSelects(sede);
         var lugar = $('#lugar').val();
         chargeCalendar(sede, lugar);
     });
 
     $('#lugar').change(() => {
-        var sede = $('#sede').val();
         var lugar = $('#lugar').val();
         chargeCalendar(sede, lugar);
     });
