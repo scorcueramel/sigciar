@@ -19,19 +19,21 @@ document.addEventListener('DOMContentLoaded', function () {
         var sede = $('#sede').val();
         var lugar = $('#lugar').val();
         chargeCalendar(sede, lugar);
-        calendar.render();
     }, 2500);
 
-    $('#sede').change(() => {
-        var sede = $('#sede').val();
-        chargeSelects(sede);
-    });
+});
 
-    $('#lugar').change(() => {
-        var sede = $('#sede').val();
-        var lugar = $('#lugar').val();
-        chargeCalendar(sede, lugar);
-    });
+$('#sede').change(() => {
+    var sede = $('#sede').val();
+    var lugar = $('#lugar').val();
+    chargeSelects(sede);
+    chargeCalendar(sede, lugar);
+});
+
+$('#lugar').change(() => {
+    var sede = $('#sede').val();
+    var lugar = $('#lugar').val();
+    chargeCalendar(sede, lugar);
 });
 
 $('#btnPagar').click(() => {
@@ -194,7 +196,7 @@ function payPlace() {
                 cleanInpust();
                 $('#modal_pago').modal('hide');
                 registeredSuccess(respuesta);
-                chargeCalendar(sede, lugar)
+                chargeCalendar(sede, lugar);
             }
         )
         .catch(
