@@ -11,6 +11,8 @@ class Sede extends Model
     protected $fillable = [
         'descripcion',
         'abreviatura',
+        'direccion',
+        'imagen',
         'estado',
     ];
 }

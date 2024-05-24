@@ -16,12 +16,12 @@ class SedesController extends Controller
     public function index()
     {
         //
-        $headerTable= Sede::where('estado','A')->select('id','descripcion','abreviatura','estado')->first()->toArray();
+        $headerTable= Sede::select('id','descripcion','abreviatura','estado')->first()->toArray();
         $keysSeded = [$keys, $values] = Arr::divide($headerTable)[0];
         $endHeaders = count($keysSeded);
         $sedesHeader = Arr::add($keysSeded, $endHeaders,'Acciones');
 
-        $sedesBody = Sede::where('estado','A')->select('id','descripcion','abreviatura','estado')->get();
+        $sedesBody = Sede::select('id','descripcion','abreviatura','estado')->orderBy('id','asc')->get();
 
         return view("pages.private.admin.sedes.index", compact("sedesHeader","sedesBody"));
     }

@@ -3,126 +3,78 @@
 @section('content')
 <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Sedes /</span> Crear Nueva </h4>
 
-<div class="alert alert-warning alert-dismissible mb-4" role="alert">
-    This is a warning dismissible alert — check it out!
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
 <!-- Basic Layout & Basic with Icons -->
 <div class="row">
-    <!-- Basic Layout -->
+    <!-- Basic with Icons -->
     <div class="col-xxl">
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center justify-content-between">
-                <h5 class="mb-0">Basic Layout</h5>
-                <small class="text-muted float-end">Default label</small>
+                <h5 class="mb-0">Formulario de registro</h5>
+                <small class="text-muted float-end">Nueva Sede</small>
             </div>
             <div class="card-body">
                 <form>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="basic-default-name" placeholder="John Doe" />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-default-company">Company</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="basic-default-company" placeholder="ACME Inc." />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Sede</label>
                         <div class="col-sm-10">
                             <div class="input-group input-group-merge">
-                                <input type="text" id="basic-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-default-email2" />
-                                <span class="input-group-text" id="basic-default-email2">@example.com</span>
+                                <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                                <input type="text" id="basic-icon-default-company" class="form-control" placeholder="Nombre para la sede" aria-label="Nombre para la sede" aria-describedby="basic-icon-default-company2" />
                             </div>
-                            <div class="form-text">You can use letters, numbers & periods</div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone No</label>
+                        <label class="col-sm-2 form-label" for="basic-icon-default-message">Dirección</label>
                         <div class="col-sm-10">
-                            <input type="text" id="basic-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-default-phone" />
+                            <div class="input-group input-group-merge">
+                                <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-trip"></i></span>
+                                <textarea id="basic-icon-default-message" class="form-control" placeholder="Dirección del establecimiento" aria-label="Dirección del establecimiento" aria-describedby="basic-icon-default-message2"></textarea>
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-default-message">Message</label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Imagen</label>
                         <div class="col-sm-10">
-                            <textarea id="basic-default-message" class="form-control" placeholder="Hi, Do you have a moment to talk Joe?" aria-label="Hi, Do you have a moment to talk Joe?" aria-describedby="basic-icon-default-message2"></textarea>
+                            <div class="input-group input-group-merge">
+                                <span id="basic-icon-default-email" class="input-group-text"><i class="bx bx-image-add"></i></span>
+                                <input class="form-control" type="file" id="basic-icon-default-email" placeholder="Carga una Imagen" aria-label="Cargar Imagen" aria-describedby="basic-icon-default-email" />
+                            </div>
+                            <div class="form-text">Seleccionas imagenes en formato .PNG .JPG .JPEG</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 form-label" for="basic-icon-default-phone">Estado</label>
+                        <div class="col-sm-10">
+                            <div class="input-group input-group-merge">
+                                <span id="basic-icon-default-phone2" class="input-group-text"><i class="bx bx-check-square"></i></span>
+                                <select class="form-select" id="basic-icon-default-phone" aria-label="Default select example">
+                                    <option selected disabled>Open this select menu</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            <div class="form-text">Inidica el estado inicial para la sede</div>
                         </div>
                     </div>
                     <div class="row justify-content-end">
                         <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Send</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <!-- Basic with Icons -->
+    <!-- Basic Layout -->
     <div class="col-xxl">
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center justify-content-between">
-                <h5 class="mb-0">Basic with Icons</h5>
-                <small class="text-muted float-end">Merged input group</small>
+                <h5 class="mb-0">Previsualización de imagen</h5>
+                <small class="text-muted float-end">Carga de imagen</small>
             </div>
             <div class="card-body">
-                <form>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Name</label>
-                        <div class="col-sm-10">
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                                <input type="text" class="form-control" id="basic-icon-default-fullname" placeholder="John Doe" aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Company</label>
-                        <div class="col-sm-10">
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
-                                <input type="text" id="basic-icon-default-company" class="form-control" placeholder="ACME Inc." aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email</label>
-                        <div class="col-sm-10">
-                            <div class="input-group input-group-merge">
-                                <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                <input type="text" id="basic-icon-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-icon-default-email2" />
-                                <span id="basic-icon-default-email2" class="input-group-text">@example.com</span>
-                            </div>
-                            <div class="form-text">You can use letters, numbers & periods</div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 form-label" for="basic-icon-default-phone">Phone No</label>
-                        <div class="col-sm-10">
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-phone2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                                <input type="text" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 form-label" for="basic-icon-default-message">Message</label>
-                        <div class="col-sm-10">
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
-                                <textarea id="basic-icon-default-message" class="form-control" placeholder="Hi, Do you have a moment to talk Joe?" aria-label="Hi, Do you have a moment to talk Joe?" aria-describedby="basic-icon-default-message2"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-end">
-                        <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Send</button>
-                        </div>
-                    </div>
-                </form>
+
             </div>
         </div>
     </div>

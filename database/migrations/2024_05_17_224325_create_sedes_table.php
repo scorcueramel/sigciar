@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('descripcion',100);
             $table->string('abreviatura',5);
+            $table->string('direccion',250)->nullable(true);
+            $table->string('imagen')->nullable(true);
             $table->string('estado',1);
             $table->timestamps();
         });
