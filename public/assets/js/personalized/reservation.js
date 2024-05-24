@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         chargeCalendar(sede, lugar);
     }, 2500);
 
-    // chargeSelects(sede);
+
 
     $('#sede').change(() => {
         var sede = $('#sede').val();
@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 $('#btnPagar').click(() => {
     payPlace();
+    var sede = $('#sede').val();
+    var lugar = $('#lugar').val();
+    chargeCalendar(sede, lugar)
 });
 
 function chargeSelects(sede) {
@@ -242,16 +245,10 @@ function payPlace() {
                 cleanInpust();
                 $('#modal_pago').modal('hide');
                 registeredSuccess(respuesta);
-
-                // var sede = $('#sede').val();
-                // var lugar = $('#lugar').val();
-
             }
         )
         .catch(
             (err) => {
                 console.log(err);
-            }
-        );
-    calendar.render();
+            });
 }
