@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sede;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class SedesController extends Controller
 {
@@ -14,7 +16,14 @@ class SedesController extends Controller
     public function index()
     {
         //
-        return view("pages.private.admin.sedes.index");
+        $headerTable= Sede::where('estado','A')->select('id','descripcion','abreviatura','estado')->first()->toArray();
+        $keysSeded = [$keys, $values] = Arr::divide($headerTable)[0];
+        $endHeaders = count($keysSeded);
+        $sedesHeader = Arr::add($keysSeded, $endHeaders,'Acciones');
+
+        $sedesBody = Sede::where('estado','A')->select('id','descripcion','abreviatura','estado')->get();
+
+        return view("pages.private.admin.sedes.index", compact("sedesHeader","sedesBody"));
     }
 
     /**

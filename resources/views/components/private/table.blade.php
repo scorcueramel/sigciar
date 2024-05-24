@@ -1,21 +1,21 @@
 <hr class="my-5" />
 
 <!-- Striped Rows -->
-<div class="card">
-    <h5 class="card-header">Descripción de tabla</h5>
+<div class="card pb-3">
+    <h5 class="card-header">{{ $titleTable }}</h5>
     <div class="table-responsive text-nowrap">
         <table class="table table-striped table-borderless">
-            <thead>
-                <tr>
+            <thead id="headertable">
+                {{-- <tr>
                     <th>Project</th>
                     <th>Client</th>
                     <th>Users</th>
                     <th>Status</th>
                     <th>Actions</th>
-                </tr>
+                </tr> --}}
             </thead>
-            <tbody class="table-border-bottom-0">
-                <tr>
+            <tbody class="table-border-bottom-0" id="bodytable">
+                {{-- <tr>
                     <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Angular Project</strong></td>
                     <td>Albert Cook</td>
                     <td>
@@ -132,7 +132,7 @@
                             </div>
                         </div>
                     </td>
-                </tr>
+                </tr> --}}
             </tbody>
         </table>
     </div>

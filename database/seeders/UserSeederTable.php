@@ -28,7 +28,7 @@ class UserSeederTable extends Seeder
             'fecharegistro' => Carbon::now()->toDateTimeString(),
             'tipodocumento_id' => 3,
             'documento' => '10483985296',
-            'tipocategoria_id' => 1,
+            'tipocategoria_id' => 6,
             'apepaterno' => 'CORCUERA',
             'apematerno' => 'MEL',
             'nombres' => 'SERGIO ALEJANDRO',
