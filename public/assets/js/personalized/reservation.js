@@ -241,6 +241,11 @@ function payPlace() {
                 cleanInpust();
                 $('#modal_pago').modal('hide');
                 registeredSuccess(respuesta);
+
+                var sede = $('#sede').val();
+                var lugar = $('#lugar').val();
+
+                chargeCalendar(sede, lugar)
             }
         )
         .catch(
@@ -248,9 +253,4 @@ function payPlace() {
                 console.log(err);
             }
         );
-
-    var sede = $('#sede').val();
-    var lugar = $('#lugar').val();
-
-    chargeCalendar(sede, lugar)
 }
