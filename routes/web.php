@@ -52,5 +52,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
     Route::group(['prefix'=> 'sedes'], function () {
         Route::get('/lista', [SedesController::class, 'index'])->name('sedes.index');
         Route::get('/nueva', [SedesController::class, 'create'])->name('sedes.create');
+        Route::post('/crear', [SedesController::class, 'store'])->name('sedes.store');
+        Route::get('/change/{id}/state', [SedesController::class, 'changeState'])->name('sedes.change.state');
     });
 });

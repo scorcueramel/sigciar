@@ -25,7 +25,8 @@ class ReservationController extends Controller
             $personalInfo = Persona::where('usuario_id', Auth::user()->id)->select('id', 'nombres', 'apepaterno', 'apematerno')->get();
         }
         $sede = Sede::where('estado', 'A')->select('id', 'descripcion', 'abreviatura', 'estado')->get();
-        $lugares = Lugar::all();
+        // $lugares = Lugar::all();
+        $lugares = null;
         return view('pages.public.reservation.index', compact('sede', 'lugares', 'personalInfo', 'authenticate'));
     }
 

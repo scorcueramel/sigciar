@@ -5,89 +5,102 @@ namespace App\Http\Controllers;
 use App\Models\Sede;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class SedesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $disk = 'public';
     public function index()
     {
         //
-        $headerTable= Sede::select('id','descripcion','abreviatura','estado')->first()->toArray();
+        $headerTable = Sede::select('id', 'descripcion', 'abreviatura', 'direccion', 'imagen', 'estado')->first()->toArray();
         $keysSeded = [$keys, $values] = Arr::divide($headerTable)[0];
         $endHeaders = count($keysSeded);
-        $sedesHeader = Arr::add($keysSeded, $endHeaders,'Acciones');
+        $sedesHeader = Arr::add($keysSeded, $endHeaders, 'Acciones');
+        // dd($sedesHeader);
+        $sedesBody = Sede::select('id', 'descripcion', 'abreviatura', 'direccion', 'imagen', 'estado')->orderBy('id', 'asc')->get();
 
-        $sedesBody = Sede::select('id','descripcion','abreviatura','estado')->orderBy('id','asc')->get();
-
-        return view("pages.private.admin.sedes.index", compact("sedesHeader","sedesBody"));
+        return view("pages.private.admin.sedes.index", compact("sedesHeader", "sedesBody"));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
+        // return view("pages.private.admin.sedes.create");
         return view("pages.private.admin.sedes.create");
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            'descripcion' => ['required'], ['max:100'],
+            'direccion' => ['required'], ['max:250'],
+            'estado' => ['required'],
+        ],[
+            'descripcion.required'=>'El campo descripción es obligatorio',
+            'descripcion.max'=>'El campo descripción solo permite 100 caraxteres máximo',
+            'direccion.required'=>'El campo dirección es obligatorio',
+            'direccion.max'=>'El campo dirección solo permite 250 caraxteres máximo',
+            'estado.required'=>'El campo estado es obligatorio',
+        ]);
+
+        if ($validation->fails()) {
+            return redirect()->back()->withErrors($validation)->withInput();
+        }
+
+        $sede = new Sede();
+        $sede->descripcion = Str::upper($request->descripcion);
+        $abreviatura = Str::upper(Str::of($request->descripcion)->substr(0,3));
+        $sede->abreviatura = Str::upper($abreviatura);
+        $sede->direccion = $request->direccion;
+         if ($imagen = $request->file('imagen')) {
+            $imgRename = date('YmdHis') . "." . $imagen->getClientOriginalExtension();
+            $sede['imagen'] = "$imgRename";
+            // Storage::putFileAs('', $imagen, $imgRename);
+            $imagen->storeAs('/sedes/', $imgRename, $this->disk);
+        } else {
+            $sede->imagen = 'default-img.png';
+        }
+        $sede->estado = $request->estado;
+        $sede->save();
+
+        $nombreSede = $sede->descripcion;
+
+        return redirect()->route('sedes.index')->with('success', "La sede $nombreSede fue registrada exitosamente!");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function changeState($id){
+        $sede = Sede::find($id);
+        if ($sede->estado == "I") {
+            $sede->estado = "A";
+            $nombreSede = $sede->descripcion;
+            $sede->save();
+            return redirect()->route('sedes.index')->with("success","La sede $nombreSede fue ACTIVADA exitosamente");
+        }
+        if ($sede->estado == "A") {
+            $sede->estado = "I";
+            $nombreSede = $sede->descripcion;
+            $sede->save();
+            return redirect()->route('sedes.index')->with("success","La sede $nombreSede fue DESACTIVADA exitosamente");
+        }
+    }
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

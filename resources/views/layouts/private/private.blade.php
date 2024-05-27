@@ -28,7 +28,6 @@
     {{-- Select 2 --}}
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2-bootstrap-5-theme.min.css') }}">
-
     @stack('css')
 
     <script src="{{asset('assets/template/js/helpers.js')}}"></script>
@@ -83,6 +82,13 @@
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 
     {{-- Personalized JS --}}
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
     @stack('js')
 </body>
 

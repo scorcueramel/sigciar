@@ -1,4 +1,4 @@
-@extends('layouts.public.layout_public')
+@extends('layouts.public.public')
 @push('title', 'Reservas')
 @push('css')
 <style>
@@ -44,7 +44,7 @@
         @if(Session::has('warning'))
         <div class="col-md-10">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Upsss!</strong> {{Session::get('warning')}}.
+                <strong>Lo sentimos!</strong> {{Session::get('warning')}}.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>

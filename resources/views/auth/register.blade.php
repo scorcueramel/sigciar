@@ -1,4 +1,4 @@
-@extends('layouts.public.layout_public')
+@extends('layouts.public.public')
 @push('title', 'Registrate ')
 @section('content')
     <div class="container">

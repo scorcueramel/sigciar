@@ -1,4 +1,4 @@
-@extends('layouts.private.layout_private', ['activePage' => 'home'])
+@extends('layouts.private.private', ['activePage' => 'home'])
 @push('title', 'Administración')
 @section('content')
 <div class="row">
