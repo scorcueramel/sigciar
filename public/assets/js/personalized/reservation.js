@@ -176,35 +176,39 @@ function chargeCalendar(sede, lugar) {
                 validPastDateTime();
             } else {
                 if (checkLogin == "1") {
-                    axios
-                        .post("/ciar/conuslta/fecha", { start, end, sede, lugar })
-                        .then((resp) => {
-                            var respuesta = resp.data.msg;
-                            var fecStart = formatearFechaInicial(start);
-                            if (respuesta == 'disponible') {
+                    if (sede != null && lugar != null) {
 
-                                formulario.reset();
-                                var sedeID = $('#sede').val();
+                        axios
+                            .post("/ciar/conuslta/fecha", { start, end, sede, lugar })
+                            .then((resp) => {
+                                var respuesta = resp.data.msg;
+                                var fecStart = formatearFechaInicial(start);
+                                if (respuesta == 'disponible') {
 
+                                    formulario.reset();
+                                    var sedeID = $('#sede').val();
 
-                                $('#inicio').val(fecStart);
-                                $('#fin').val(end);
-                                $('#fecha').val(formatearFecha(fecha))
-                                $('#horaInicio').val(formatearHora(start));
-                                $('#horaFin').val(formatearHoraMobil(start));
-                                obtenerSedeLugar(sedeID);
-                                if (sede != null && lugar != null) {
-                                    $('#modal').modal('show');
+                                    $('#inicio').val(fecStart);
+                                    $('#fin').val(end);
+                                    $('#fecha').val(formatearFecha(fecha))
+                                    $('#horaInicio').val(formatearHora(start));
+                                    $('#horaFin').val(formatearHoraMobil(start));
+                                    obtenerSedeLugar(sedeID);
+                                    if (sede != null && lugar != null) {
+                                        $('#modal').modal('show');
+                                    } else {
+                                        sedeLugarSelection();
+                                    }
                                 } else {
-                                    sedeLugarSelection();
+                                    dateNotAvailability(respuesta);
                                 }
-                            } else {
-                                dateNotAvailability(respuesta);
-                            }
-                        })
-                        .catch((err) => {
-                            console.log(err)
-                        });
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            });
+                    } else {
+                        sedeLugarSelection();
+                    }
                 } else {
                     notRegisterUser();
                 }

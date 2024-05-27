@@ -1,8 +1,3 @@
-{{-- <? php
-    $nombres = Persona::where('usuario_id',Auth::user()->id)->get();
-?> --}}
-
-
 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
     id="layout-navbar">
     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
