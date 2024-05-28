@@ -95,7 +95,7 @@
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Espacios</span>
                 </li>
-                <li class="menu-item {{ $activePage == 'sedes.index' || $activePage == 'sedes.create'  ? 'active open' : '' }}">
+                <li class="menu-item {{ $activePage == 'sedes.index' || $activePage == 'sedes.create' || $activePage == 'sedes.edit' ? 'active open' : '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'sedes.index' ? 'active' : '' }}">
                         <i class="fa-regular fa-hotel" style="margin-right: 13px;"></i>
                         <div data-i18n="Account Settings">Sedes</div>

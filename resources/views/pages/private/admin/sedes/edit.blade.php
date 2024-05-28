@@ -1,4 +1,4 @@
-@extends('layouts.private.private', ['activePage' => 'sedes.create'])
+@extends('layouts.private.private', ['activePage' => 'sedes.edit'])
 @push('title', 'Nueva Sede')
 @section('content')
 <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Sedes /</span> Crear Nueva </h4>
@@ -12,14 +12,14 @@
                 <small class="text-muted float-end">Nueva Sede</small>
             </div>
             <div class="card-body">
-                <form method="post" action="{{route('sedes.store')}}" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
+                <form method="post" action="{{route('sedes.update',$sede->id)}}" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
                     @csrf
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label" for="sede">Sede</label>
                         <div class="col-sm-10">
                             <div class="input-group input-group-merge">
                                 <span id="sede2" class="input-group-text"><i class="bx bx-buildings"></i></span>
-                                <input type="text" id="sede" class="form-control @error('descripcion') is-invalid @enderror" placeholder="Nombre para la sede" aria-label="Nombre para la sede" aria-describedby="sede2" name="descripcion" value="{{old('descripcion')}}" maxlength="100" autofocus required />
+                                <input type="text" id="sede" class="form-control @error('descripcion') is-invalid @enderror" placeholder="Nombre para la sede" aria-label="Nombre para la sede" aria-describedby="sede2" name="descripcion" value="{{old('descripcion') ?? $sede->descripcion}}" maxlength="100" autofocus required />
                                 @error('descripcion')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -34,7 +34,7 @@
                             <div class="input-group input-group-merge">
                                 <span id="direccion2" class="input-group-text"><i class="bx bx-trip"></i></span>
                                 <textarea id="direccion" class="form-control @error('direccion') is-invalid @enderror" placeholder="Dirección del establecimiento" aria-label="Dirección del establecimiento" aria-describedby="direccion2" name="direccion" maxlength="250" required="required">
-                                    {{old('direccion')}}
+                                {{old('direccion') ?? $sede->direccion}}
                                 </textarea>
                                 @error('direccion')
                                 <span class="invalid-feedback d-block" role="alert">
@@ -66,8 +66,8 @@
                                 <span id="estado2" class="input-group-text" required><i class="bx bx-check-square"></i></span>
                                 <select class="form-select" id="estado" aria-label="estado" name="estado">
                                     <option selected disabled>Selecciona un estado inicial para la sede</option>
-                                    <option value="A" {{ old('estado') == "A" ? "selected" : "" }}>BORRADOR</option>
-                                    <option value="I" {{ old('estado') == "I" ? "selected" : "" }}>PUBLICADO</option>
+                                    <option value="I" {{ $sede->estado == "I" ? "selected" : ""  }}>BORRADOR</option>
+                                    <option value="A" {{ $sede->estado == "A" ? "selected" : ""  }}>PUBLICADO</option>
                                 </select>
                             </div>
                             <div class="form-text">Inidica el estado inicial para la sede</div>
@@ -78,9 +78,12 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="row justify-content-end">
-                        <div class="col-sm-10">
+                    <div class="row justify-content-between">
+                        <div class="col-sm-6">
                             <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                        <div class="col-sm-6 text-end">
+                            <a href="{{route('sedes.index')}}" class="btn btn-danger">Volver</a>
                         </div>
                     </div>
                 </form>
@@ -90,14 +93,8 @@
     <!-- Basic Layout -->
     <div class="col-xxl" style="max-height: 355px;">
         <div class="card mb-4">
-            <!--
-                <div class="card-header d-flex align-items-center justify-content-between">
-                    <small class="text-muted float-end">Imagen cargada</small>
-                    <h5 class="mb-0">Previsualización de imagen</h5>
-                </div>
-            -->
             <div class="card-body d-flex justify-content-center">
-                <img class="img-fluid" src="{{ asset('assets/images/default-img.gif') }}" id="imagenSeleccionada" style="height: 355px;">
+                <img class="img-fluid"  id="imagenSeleccionada" style="height: 355px;">
             </div>
         </div>
     </div>
@@ -106,6 +103,12 @@
 @push('js')
 <script>
     $(document).ready(function() {
+        let imgContent = $('#imagenSeleccionada');
+        let rutaImgDefault = "{{ asset('/assets/images/default-img.png')}}";
+        let sedeImagen = @json($sede);
+        let rutaImgStorage = `/storage/sedes/${sedeImagen.imagen}`;
+        sedeImagen.imagen == null ? imgContent.attr('src',rutaImgDefault) : imgContent.attr('src',rutaImgStorage);
+
         $('#cargarImagen').change(function() {
             let reader = new FileReader();
             reader.onload = (e) => {
