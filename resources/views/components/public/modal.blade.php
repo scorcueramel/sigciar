@@ -1,53 +1,20 @@
-<!-- Modal -->
-<div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalPago" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header d-flex justify-content-between">
-                <h5 class="modal-title" id="modalPago">Detalles de tu reserva</h5>
-                <button type="button" class="btn btn-sm btn-danger px-3 py-2" id="closeUp">X</button>
+            <div class="modal-header">
+                @if ($titulo ?? false)
+                <h1 class="modal-title fs-5" id="modalLabel">{{ $titulo_modal}}</h1>
+                @endif
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form>
-                    {{ csrf_field() }}
-                    @if (Auth::check())
-                        <input type="hidden" value="{{ $personalInfo[0]->id }}" name="personaid" id="personaid">
-                    @endif
-                    <div class="row mb-2">
-                        <div class="col-md-4">
-                            <label for="fin">Fecha: </label>
-                            <input type="text" class="form-control" id="fecha" tabindex="-1" onfocus="this.blur()" readonly>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="inicio">Hora inicio:</label>
-                            <input type="text" class="form-control" id="horaInicio" tabindex="-1" onfocus="this.blur()" readonly>
-                            <input type="hidden" class="form-control" name="inicio" id="inicio" tabindex="-1" onfocus="this.blur()" readonly>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="fin">Hora Final:</label>
-                            <input type="text" class="form-control" id="horaFin" tabindex="-1" onfocus="this.blur()" readonly>
-                            <input type="hidden" class="form-control" name="fin" id="fin" tabindex="-1" onfocus="this.blur()" readonly>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-3">
-                            <label for="sedeModal">Sede:</label>
-                            <input type="text" class="form-control" name="sede" id="sedeModal" tabindex="-1" onfocus="this.blur()" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="lugarModal">Lugar:</label>
-                            <input type="text" class="form-control" name="lugarModal" id="lugarModal" tabindex="-1" onfocus="this.blur()" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="percioModal">Precio de Reserva:</label>
-                            <input type="text" class="form-control" id="percioModalMostrar" tabindex="-1" onfocus="this.blur()" readonly>
-                            <input type="hidden" class="form-control" name="precio" id="percioModal" tabindex="-1" onfocus="this.blur()" readonly>
-                        </div>
-                    </div>
-                </form>
+            <div class="modal-body modal_cuerpo">
             </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <button type="button" class="btn btn-primary" id="btnReservar">Reservar Cancha</button>
+            @if ($botones ?? false)
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{$boton_cerrar}}</button>
+                <button type="button" class="btn btn-primary" id="btn-guardar">{{$boton_guardar}}</button>
             </div>
+            @endif
         </div>
     </div>
 </div>

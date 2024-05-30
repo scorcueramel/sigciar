@@ -15,7 +15,7 @@
     {{-- Personalized styles --}}
     <link rel="stylesheet" href="{{ asset('assets/css/global/style.css') }}">
     {{-- FullCalendar --}}
-    <link rel="stylesheet" href="{{asset('assets/css/fullcalendar/main.min.css')}}" >
+    <link rel="stylesheet" href="{{asset('assets/css/fullcalendar/main.min.css')}}">
     {{-- Select 2 --}}
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2-bootstrap-5-theme.min.css') }}">
@@ -46,9 +46,21 @@
         <script src="{{ asset('assets/js/sweetalert/sweetalert2@11.js') }}"></script>
         {{-- Select2 --}}
         <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-
         {{-- Personalized JS --}}
         <script src="{{ asset('assets/js/personalized/reservation.js') }}" type="module"></script>
+
+        <script>
+            $(document).ready(function() {
+                $(function() {
+                    $('[data-toggle="tooltip"]').tooltip()
+                })
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+            });
+        </script>
 
         @stack('js')
     </div>

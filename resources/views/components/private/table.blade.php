@@ -2,7 +2,7 @@
 <div class="card pt-2">
     <h5 class="card-header">{{ $titleTable }}</h5>
     <div class="card-body">
-        <div class="text-nowrap table-responsive-md">
+        <div class="text-nowrap table-responsive-sm table-responsive-md table-responsive-lg">
             <table class="table table-striped table-borderless">
                 <thead id="headertable">
                 </thead>

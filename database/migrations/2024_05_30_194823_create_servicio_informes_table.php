@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('adjuntto',300);
             $table->string('estado',1);
             $table->string('usuario_creador',50)->nullable(true);
-            $table->string('usuario_editor',50)->nullable(true);;
+            $table->string('usuario_editor',50)->nullable(true);
             $table->string('ip_usuario',20);
             $table->softDeletes();
             $table->timestamps();

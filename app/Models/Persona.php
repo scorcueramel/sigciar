@@ -11,6 +11,7 @@ class Persona extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'imagen',
         'fecharegistro',
         'tipodocumento_id',
         'documento',

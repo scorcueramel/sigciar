@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Sede;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\File;
 
 
 class SedesController extends Controller
@@ -16,7 +16,6 @@ class SedesController extends Controller
     public function index()
     {
         //
-
         $headerTable = Sede::select('id', 'descripcion', 'abreviatura', 'direccion', 'imagen', 'estado')->first()->toArray();
         $keysSeded = [$keys, $values] = Arr::divide($headerTable)[0];
         $endHeaders = count($keysSeded);
@@ -54,7 +53,7 @@ class SedesController extends Controller
         $sede->descripcion = Str::upper($request->descripcion);
         $abreviatura = Str::upper(Str::of($request->descripcion)->substr(0, 3));
         $sede->abreviatura = Str::upper($abreviatura);
-        $sede->direccion = $request->direccion;
+        $sede->direccion = Str::upper($request->direccion);
         if ($imagen = $request->file('imagen')) {
             $imgRename = date('YmdHis') . "." . $imagen->getClientOriginalExtension();
             $sede['imagen'] = "$imgRename";
@@ -119,20 +118,18 @@ class SedesController extends Controller
             return redirect()->back()->withErrors($validation)->withInput();
         }
 
-        $sede = Sede::findOrFail($id);
+        $sede = Sede::find($id);
         $sede->descripcion = Str::upper($request->descripcion);
         $abreviatura = Str::upper(Str::of($request->descripcion)->substr(0, 3));
         $sede->abreviatura = Str::upper($abreviatura);
-        $sede->direccion = $request->direccion;
+        $sede->direccion = Str::upper($request->direccion);
         if ($request->imagen != null) {
             if ($imagen = $request->file('imagen')) {
-                if (Storage::disk($this->disk)->exists($sede->imagen)) {
-                    Storage::disk($this->disk)->delete($sede->imagen);
-                    Storage::delete($sede->imagen);
+                if (\File::exists(public_path('/storage/sedes/' . $sede->imagen))) {
+                    \File::delete(public_path('/storage/sedes/' . $sede->imagen));
                 }
                 $imgRename = date('YmdHis') . "." . $imagen->getClientOriginalExtension();
                 $sede['imagen'] = "$imgRename";
-                // Storage::putFileAs('', $imagen, $imgRename);
                 $imagen->storeAs('/sedes/', $imgRename, $this->disk);
             }
         }
@@ -144,8 +141,14 @@ class SedesController extends Controller
         return redirect()->route('sedes.index')->with('success', "La sede $nombreSede fue actualizada exitosamente!");
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //
+        $sede = Sede::findOrFail($request->id);
+        if (\File::exists(public_path('/storage/sedes/' . $sede->imagen))) {
+            \File::delete(public_path('/storage/sedes/' . $sede->imagen));
+        }
+        $sede->delete();
+        return redirect()->back()->with('success', 'La sede fue eliminada');
     }
 }

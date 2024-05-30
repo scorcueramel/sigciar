@@ -1,7 +1,7 @@
-@extends('layouts.private.private', ['activePage' => 'sedes.create'])
-@push('title', 'Nueva Sede')
+@extends('layouts.private.private', ['activePage' => 'lugares.create'])
+@push('title', 'Nuevo Lugar')
 @section('content')
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Sedes /</span> Crear Nueva </h4>
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Lugares /</span> Crear Nuevo </h4>
 <!-- Basic Layout & Basic with Icons -->
 <div class="row mb-3">
     <!-- Basic with Icons -->
@@ -9,17 +9,17 @@
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="mb-0">Formulario de registro</h5>
-                <small class="text-muted float-end">Nueva Sede</small>
+                <small class="text-muted float-end">Nuevo Lugar</small>
             </div>
             <div class="card-body">
-                <form method="post" action="{{route('sedes.store')}}" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
+                <form method="post" action="{{route('lugares.store')}}" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
                     @csrf
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="sede">Sede</label>
+                        <label class="col-sm-2 col-form-label" for="lugar">Lugar</label>
                         <div class="col-sm-10">
                             <div class="input-group input-group-merge">
-                                <span id="sede2" class="input-group-text"><i class="bx bx-buildings"></i></span>
-                                <input type="text" id="sede" class="form-control @error('descripcion') is-invalid @enderror" placeholder="Nombre para la sede" aria-label="Nombre para la sede" aria-describedby="sede2" name="descripcion" value="{{old('descripcion')}}" maxlength="100" autofocus required />
+                                <span id="lugar2" class="input-group-text"><i class="fa-regular fa-court-sport"></i></span>
+                                <input type="text" id="lugar" class="form-control @error('descripcion') is-invalid @enderror" placeholder="Nombre para la lugar" aria-label="Nombre para la lugar" aria-describedby="lugar2" name="descripcion" value="{{old('descripcion')}}" maxlength="100" autofocus required />
                                 @error('descripcion')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -29,12 +29,13 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 form-label" for="message">Dirección</label>
+                        <label class="col-sm-2 form-label" for="costohora">Costo Hora</label>
                         <div class="col-sm-10">
                             <div class="input-group input-group-merge">
-                                <span id="message2" class="input-group-text"><i class="bx bx-trip"></i></span>
-                                <textarea id="message" class="form-control @error('direccion') is-invalid @enderror"  placeholder="Dirección del establecimiento" aria-label="Dirección del establecimiento" aria-describedby="message2" maxlength="250" rows="1" name="direccion" required>{{old('direccion')}}</textarea>
-                                @error('direccion')
+                                <span id="lugar2" class="input-group-text"><i class="fa-regular fa-money-bill"></i></span>
+                                <input type="number" id="costohora" class="form-control @error('costohora') is-invalid @enderror" placeholder="S/.100.00" aria-label="Amount (to the nearest dollar)" value="{{ old('costohora') }}" name="costohora" required>
+                                <span class="input-group-text">.00</span>
+                                @error('costohora')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -43,14 +44,18 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="imagen">Imagen</label>
+                        <label class="col-sm-2 form-label" for="tipo">Tipo Costo</label>
                         <div class="col-sm-10">
                             <div class="input-group input-group-merge">
-                                <span id="imagen" class="input-group-text @error('imagen') @enderror"><i class="bx bx-image-add"></i></span>
-                                <input class="form-control" type="file" id="cargarImagen" placeholder="Carga una Imagen" aria-label="Cargar Imagen" aria-describedby="imagen" name="imagen" value="{{old('imagen')}}" accept="image/*" max-size="2000"/>
+                                <span id="tipo2" class="input-group-text"><i class='bx bx-rotate-right'></i></span>
+                                <select class="form-select" id="tipo" aria-label="tipo" name="tipo" required>
+                                    <option selected disabled>Selecciona tipo</option>
+                                    <option value="F" {{ old('tipo') == "F" ? "selected" : "" }}>FIJO</option>
+                                    <option value="V" {{ old('tipo') == "V" ? "selected" : "" }}>VARIABLE</option>
+                                </select>
                             </div>
-                            <div class="form-text">Seleccionas imagenes en formato .PNG .JPG .JPEG</div>
-                            @error('imagen')
+                            <div class="form-text">Inidica el tipo de costo por hora</div>
+                            @error('tipo')
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -63,13 +68,33 @@
                             <div class="input-group input-group-merge">
                                 <span id="estado2" class="input-group-text"><i class="bx bx-check-square"></i></span>
                                 <select class="form-select" id="estado" aria-label="estado" name="estado" required>
-                                    <option selected disabled>Selecciona un estado inicial para la sede</option>
+                                    <option selected disabled>Selecciona estado</option>
                                     <option value="A" {{ old('estado') == "A" ? "selected" : "" }}>PUBLICADO</option>
                                     <option value="I" {{ old('estado') == "I" ? "selected" : "" }}>BORRADOR</option>
                                 </select>
                             </div>
                             <div class="form-text">Inidica el estado inicial para la sede</div>
                             @error('estado')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 form-label" for="sede_id">Sedes</label>
+                        <div class="col-sm-10">
+                            <div class="input-group input-group-merge">
+                                <span id="sede_id2" class="input-group-text"><i class="fa-regular fa-hotel"></i></span>
+                                <select class="form-select" id="sede_id" aria-label="sede_id" name="sede_id" required>
+                                    <option selected disabled>Selecciona sede</option>
+                                    @foreach ($sedes as $sede)
+                                        <option value="{{ $sede->id }}">{{ $sede->descripcion }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-text">Debese seleccionar la sede a la que pernetece este lugar</div>
+                            @error('sede_id')
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -86,7 +111,7 @@
         </div>
     </div>
     <!-- Basic Layout -->
-    <div class="col-xxl" style="max-height: 335px;">
+    {{-- <div class="col-xxl" style="max-height: 355px;">
         <div class="card mb-4">
             <!--
                 <div class="card-header d-flex align-items-center justify-content-between">
@@ -95,10 +120,10 @@
                 </div>
             -->
             <div class="card-body d-flex justify-content-center">
-                <img class="img-fluid" src="{{ asset('assets/images/default-img.gif') }}" id="imagenSeleccionada" style="max-height: 335px;">
+                <img class="img-fluid" src="{{ asset('assets/images/default-img.gif') }}" id="imagenSeleccionada" style="max-height: 355px;">
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 @endsection
 @push('js')

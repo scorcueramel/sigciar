@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('personas', function (Blueprint $table) {
             $table->id();
+            $table->string('imagen')->nullable(true);
             $table->dateTime('fecharegistro');
             $table->foreignId('tipodocumento_id')->constrained('tipo_documentos');
             $table->string('documento')->unique();

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('direccion',250)->nullable(true);
             $table->string('imagen')->nullable(true);
             $table->string('estado',1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

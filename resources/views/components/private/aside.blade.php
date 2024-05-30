@@ -57,7 +57,7 @@
                 </li>
 
                 <!-- Layouts -->
-                <li class="menu-item">
+                <!-- <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
                         <div data-i18n="Layouts">Layouts</div>
@@ -90,7 +90,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
 
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Espacios</span>
@@ -118,24 +118,24 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <li class="menu-item {{ $activePage == 'lugares.index' || $activePage == 'lugares.create' || $activePage == 'lugares.edit' ? 'active open' : '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'lugares.index' ? 'active' : '' }}">
                         <i class="fa-regular fa-court-sport"style="margin-right: 13px;"></i>
                         <div data-i18n="Account Settings">Lugares</div>
                     </a>
                     <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
+                        <li class="menu-item {{ $activePage == 'lugares.index' ? 'active' : '' }}">
+                            <a href="{{route('lugares.index')}}" class="menu-link">
                                 <div data-i18n="Account">Todas los Lugares</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
+                        <li class="menu-item {{ $activePage == 'lugares.create' ? 'active' : '' }}">
+                            <a href="{{ route('lugares.create') }}" class="menu-link">
                                 <div data-i18n="Notifications">Nueva Lugares</div>
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="pages-account-settings-connections.html" class="menu-link">
+                            <a href="#" class="menu-link">
                                 <div data-i18n="Connections">Sobre las Lugares</div>
                             </a>
                         </li>

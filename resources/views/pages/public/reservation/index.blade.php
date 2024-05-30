@@ -94,7 +94,7 @@
         </div>
     </div>
 </div>
-@include('components.public.modal')
+@include('components.public.modal-detalle')
 @include('components.public.modal-pago')
 @endsection
 @push('js')

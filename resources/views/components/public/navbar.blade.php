@@ -28,7 +28,6 @@
                         @endif
                         @else
                         <li class="nav-item dropdown">
-
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 @if ($authenticate)
                                 {{ $personalInfo[0]->nombres.' '.$personalInfo[0]->apepaterno.' '.$personalInfo[0]->apematerno }}
@@ -45,6 +44,10 @@
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('prfole.user') }}">
+                                    {{ __('Mi Perfil') }}
+                                    <i class="fa-solid fa-user"></i>
+                                </a>
                             </div>
                         </li>
                         @endguest

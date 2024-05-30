@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\PersonaRegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LugaresController;
+use App\Http\Controllers\PerfilUsuarioController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SedesController;
 
@@ -38,11 +40,12 @@ Route::group(['prefix' => 'ciar'], function () {
 
 Auth::routes();
 
-
 // Reserva privado consulta fecha y registro de reserva
 Route::group(['prefix' => 'ciar'], function () {
     Route::post('/conuslta/fecha', [ReservationController::class, 'dateQuery'])->name('reserva.consulta.fecha');
     Route::post('/nueva', [ReservationController::class, 'store'])->name('reserva.nuevo');
+    Route::get('/mi-perfil',[PerfilUsuarioController::class, 'index'])->name('prfole.user');
+    Route::post('/cargar-foto-perfil', [PerfilUsuarioController::class,'updateImage'])->name('image.user.update');
 });
 
 // Rutas para el Administrador
@@ -56,5 +59,16 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/crear', [SedesController::class, 'store'])->name('sedes.store');
         Route::get('/editar/{id}', [SedesController::class, 'edit'])->name('sedes.edit');
         Route::post('/editar/{id}/guardar', [SedesController::class, 'update'])->name('sedes.update');
+        Route::post('/eliminar', [SedesController::class, 'destroy'])->name('sedes.destroy');
+    });
+
+    Route::group(['prefix'=> 'lugares'], function () {
+        Route::get('/lista', [LugaresController::class, 'index'])->name('lugares.index');
+        Route::post('/change/state', [LugaresController::class, 'changeState'])->name('lugares.change.state');
+        Route::get('/nueva', [LugaresController::class, 'create'])->name('lugares.create');
+        Route::post('/crear', [LugaresController::class, 'store'])->name('lugares.store');
+        Route::get('/editar/{id}', [LugaresController::class, 'edit'])->name('lugares.edit');
+        Route::post('/editar/{id}/guardar', [LugaresController::class, 'update'])->name('lugares.update');
+        Route::post('/eliminar', [LugaresController::class, 'destroy'])->name('lugares.destroy');
     });
 });

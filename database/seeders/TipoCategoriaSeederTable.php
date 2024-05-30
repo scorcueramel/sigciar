@@ -24,16 +24,12 @@ class TipoCategoriaSeederTable extends Seeder
             'abreviatura' => 'MB',
         ]);
         TipoCategoria::create([
-            'descripcion' => 'NUTRICIONISTA',
-            'abreviatura' => 'NT',
+            'descripcion' => 'RESPONSABLE',
+            'abreviatura' => 'RP',
         ]);
         TipoCategoria::create([
-            'descripcion' => 'PERSONAL TRAINER',
-            'abreviatura' => 'PT',
-        ]);
-        TipoCategoria::create([
-            'descripcion' => 'INSTRUCTOR',
-            'abreviatura' => 'IT',
+            'descripcion' => 'DONADOR',
+            'abreviatura' => 'DN',
         ]);
         TipoCategoria::create([
             'descripcion' => 'ADMINISTRADOR',

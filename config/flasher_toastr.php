@@ -14,6 +14,6 @@ return array(
         'local' => array(
             '/vendor/flasher/jquery.min.js',
             '/vendor/flasher/flasher-toastr.min.js',
-        ),
+        )
     ),
 );

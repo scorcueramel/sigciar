@@ -28,6 +28,8 @@
     {{-- Select 2 --}}
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2-bootstrap-5-theme.min.css') }}">
+    <link rel="stylesheet" href="{{asset('assets/css/global/style.css')}}">
+
     @stack('css')
 
     <script src="{{asset('assets/template/js/helpers.js')}}"></script>

@@ -2,7 +2,14 @@
 @push('title', 'Sedes')
 @section('content')
 @include('components.private.messages-session')
-<h4 class="fw-bold mt-3"><span class="text-muted fw-light">Sedes /</span> Todas </h4>
+<div class="row d-flex align-items-center">
+    <div class="col-md">
+        <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Sedes /</span> Todas </h4>
+    </div>
+    <div class="col-md text-end">
+        <a href="{{route('sedes.create')}}" class="btn btn-sm btn-info"><i class="fa-regular fa-hotel me-1"></i>Nuevo</a>
+    </div>
+</div>
 <div class="row p-3">
     @include('components.private.table', ['titleTable' => 'Lista General de las Sedes','paginate'=>$sedesBody])
 
@@ -24,7 +31,7 @@
                     <th>${headerSedes[1]}</th>
                     <th>${headerSedes[2]}</th>
                     <th>${headerSedes[3]}</th>
-                    <th>${headerSedes[4]}</th>
+                    <th class="text-center">${headerSedes[4]}</th>
                     <th>${headerSedes[5]}</th>
                     <th>${headerSedes[6]}</th>
                 </tr>
@@ -39,9 +46,9 @@
                     <td>${e.descripcion}</td>
                     <td>${e.abreviatura}</td>
                     <td>${e.direccion ?? 'sin dirección'}</td>
-                    <td>${e.imagen == null ? 'sin imagen' : '<button type="button" class="bg-transparent text-primary border-0 btn-modal-image" data-bs-toggle="modal" data-bs-target="#modalcomponent" data-imagen="'+e.imagen+'" data-descripcion="'+e.descripcion+'"><i class="fa-solid fa-panorama"></i></button>' }</td>
+                    <td class="text-center">${e.imagen == null ? 'sin imagen' : '<button type="button" class="bg-transparent text-primary border-0 btn-modal-image" data-bs-toggle="modal" data-bs-target="#modalcomponent" data-imagen="'+e.imagen+'" data-descripcion="'+e.descripcion+'"><i class="fa-solid fa-panorama"></i></button>' }</td>
                     <td>
-                        ${e.estado == "A" ? '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-success me-1">ACTIVO</span></button>' : '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-danger me-1">INACTIVO</span></button>'}
+                        ${e.estado == "A" ? '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-success me-1">PUBLICADO</span></button>' : '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-danger me-1">BORRADOR</span></button>'}
                     </td>
                     <td>
                         <div class="dropdown">
@@ -50,7 +57,7 @@
                             </button>
                             <div class="dropdown-menu">
                                 <a href="/admin/sedes/editar/${e.id}" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
-                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Eliminar</a>
+                                <button class="dropdown-item delete" data-id="${e.id}"><i class="bx bx-trash me-1"></i> Eliminar</button>
                             </div>
                         </div>
                     </td>
@@ -66,7 +73,7 @@
 
             $('#mcbody').html('<img src="" class="img-fluid mx-auto d-block" id="mostrarImagen" alt="imagen">');
             $('#mcbody').find('#mostrarImagen').attr('src', `${uriImg}`);
-            $('#mcLabel').html(`Sede / ${descripcion}`);
+            $('#mcLabel').html(`${descripcion}`);
         })
 
         $('.change-state').on('click', function() {
@@ -87,6 +94,44 @@
                 },
                 success: function(response) {
                     location.reload();
+                }
+            });
+        });
+
+        $('.delete').on('click', function() {
+            let id = $(this).attr('data-id');
+            Swal.fire({
+                title: "Seguro de eliminar?",
+                text: "Vas a eliminar esta sede",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si eliminar",
+                cancelButtonText: "No eliminar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'info',
+                        html: "Espere un momento porfavor ...",
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    $.ajax({
+                        type: "POST",
+                        url: `{{route('sedes.destroy')}}`,
+                        data: {
+                            id
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            location.reload();
+                        }
+                    });
                 }
             });
         });

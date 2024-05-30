@@ -25,14 +25,13 @@ class ReservationController extends Controller
             $personalInfo = Persona::where('usuario_id', Auth::user()->id)->select('id', 'nombres', 'apepaterno', 'apematerno')->get();
         }
         $sede = Sede::where('estado', 'A')->select('id', 'descripcion', 'abreviatura', 'estado')->get();
-        // $lugares = Lugar::all();
         $lugares = null;
         return view('pages.public.reservation.index', compact('sede', 'lugares', 'personalInfo', 'authenticate'));
     }
 
     public function getPlaces($id)
     {
-        $lugares = Lugar::where('sede_id', $id)->get();
+        $lugares = Lugar::where('estado','A')->where('sede_id', $id)->get();
         return response()->json($lugares);
     }
 
@@ -58,12 +57,6 @@ class ReservationController extends Controller
             return response()->json(["msg" => $msg]);
         }
     }
-
-    public function create()
-    {
-        //
-    }
-
 
     public function store(Request $request)
     {
@@ -117,29 +110,10 @@ class ReservationController extends Controller
         return response()->json(['msg' => 'Tu reserva fue generada satisfactoriamente!'], 200);
     }
 
-
     public function show($sede, $lugar)
     {
         $reservations = DB::select('SELECT s.id, s.tiposervicio_id, s.sede_id, s.lugar_id, s.capacidad, s.inicio AS start, s.fin AS end, s.estado FROM servicios s WHERE s.sede_id = ? AND s.lugar_id = ?', [$sede, $lugar]);
 
         return response()->json($reservations);
-    }
-
-
-    public function edit($id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-
-    public function destroy($id)
-    {
-        //
     }
 }
