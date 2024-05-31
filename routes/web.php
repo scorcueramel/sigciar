@@ -46,6 +46,8 @@ Route::group(['prefix' => 'ciar'], function () {
     Route::post('/nueva', [ReservationController::class, 'store'])->name('reserva.nuevo');
     Route::get('/mi-perfil',[PerfilUsuarioController::class, 'index'])->name('prfole.user');
     Route::post('/cargar-foto-perfil', [PerfilUsuarioController::class,'updateImage'])->name('image.user.update');
+    Route::post('/quitar-foto-perfil', [PerfilUsuarioController::class,'removeImage'])->name('image.user.remove');
+    Route::post('/editar-datos-usuario/{id}', [PerfilUsuarioController::class, 'update'])->name('user.editar');
 });
 
 // Rutas para el Administrador

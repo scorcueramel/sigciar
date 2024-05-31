@@ -34,7 +34,7 @@ class UserSeederTable extends Seeder
             'nombres' => 'SERGIO ALEJANDRO',
             'movil' => '+51 926911841',
             'estado' => 'A',
-            'usuario_creado' => 'AUTOREGISTRO',
+            'usuario_creador' => 'AUTOREGISTRO',
             'usuario_editor' => 'AUTOREGISTRO',
             'ip_usuario' => '127.0.0.1',
             'usuario_id' => $user->id,

@@ -161,13 +161,13 @@
                             </div>
 
                             <!-- <div class="row mb-0 d-flex justify-content-between text-center"> -->
-                            <div class="row d-grid gap-2 col-6 mx-auto">
-                                <div class="col-md-6">
+                            <div class="row justify-content-end">
+                                <div class="col-sm-5">
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Register') }}
                                     </button>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-sm-3">
                                     <a href="{{ route('login') }}" class="btn btn-danger">
                                         {{ __('Volver') }}
                                     </a>

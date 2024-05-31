@@ -49,7 +49,7 @@ class PersonaRegisterController extends Controller
             'nombres' => Str::upper($request->nombres),
             'movil' => $request->movil,
             'estado' => 'A',
-            'usuario_creado' => 'AUTOREGISTRO',
+            'usuario_creador' => 'AUTOREGISTRO',
             'usuario_editor' => 'AUTOREGISTRO',
             'ip_usuario' => $request->ip(),
             'usuario_id' => $user->id,

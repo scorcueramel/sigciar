@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bb15180687f37bb35ce1c30a472f76b",
+    "content-hash": "9d2d17e463808ff3f94d8c60ed87c17e",
     "packages": [
         {
             "name": "brick/math",
@@ -1044,6 +1044,56 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "jeybin/toastr",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jeybin/toastr.git",
+                "reference": "8ba0980f87888d7197a5f4c6a974b117e66cc6eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jeybin/toastr/zipball/8ba0980f87888d7197a5f4c6a974b117e66cc6eb",
+                "reference": "8ba0980f87888d7197a5f4c6a974b117e66cc6eb",
+                "shasum": ""
+            },
+            "require": {
+                "php-flasher/flasher-toastr-laravel": "^1.13"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Jeybin\\Toastr\\Providers\\ToastrServiceProvider"
+                    ],
+                    "aliases": {
+                        "Toastr": "Jeybin\\Toastr\\Facades\\ToastrFacades"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Jeybin\\Toastr\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "jeybin",
+                    "email": "jeybin@gmail.com"
+                }
+            ],
+            "description": "Simple helper for php-flasher",
+            "support": {
+                "issues": "https://github.com/jeybin/toastr/issues",
+                "source": "https://github.com/jeybin/toastr/tree/v1.0.3"
+            },
+            "time": "2023-02-14T10:42:51+00:00"
         },
         {
             "name": "laravel/framework",

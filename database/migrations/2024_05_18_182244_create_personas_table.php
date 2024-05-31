@@ -24,9 +24,10 @@ return new class extends Migration
             $table->string('apematerno',50);
             $table->string('nombres',100);
             $table->string('movil',15);
+            $table->string('directorio',20)->nullable(true);
             $table->string('estado',1);
-            $table->string('usuario_creado',50);
-            $table->string('usuario_editor',50)->nullable(true);;
+            $table->string('usuario_creador',50);
+            $table->string('usuario_editor',50)->nullable(true);
             $table->string('ip_usuario',50);
             $table->foreignId('usuario_id')->constrained('users');
             $table->softDeletes();
