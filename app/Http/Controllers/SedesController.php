@@ -53,7 +53,7 @@ class SedesController extends Controller
         $sede->descripcion = Str::upper($request->descripcion);
         $abreviatura = Str::upper(Str::of($request->descripcion)->substr(0, 3));
         $sede->abreviatura = Str::upper($abreviatura);
-        $sede->direccion = Str::upper($request->direccion);
+        $sede->direccion = $request->direccion;
         if ($imagen = $request->file('imagen')) {
             $imgRename = date('YmdHis') . "." . $imagen->getClientOriginalExtension();
             $sede['imagen'] = "$imgRename";
@@ -122,7 +122,7 @@ class SedesController extends Controller
         $sede->descripcion = Str::upper($request->descripcion);
         $abreviatura = Str::upper(Str::of($request->descripcion)->substr(0, 3));
         $sede->abreviatura = Str::upper($abreviatura);
-        $sede->direccion = Str::upper($request->direccion);
+        $sede->direccion = $request->direccion;
         if ($request->imagen != null) {
             if ($imagen = $request->file('imagen')) {
                 if (\File::exists(public_path('/storage/sedes/' . $sede->imagen))) {

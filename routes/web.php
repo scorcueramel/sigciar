@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\PersonaRegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LugaresController;
 use App\Http\Controllers\PerfilUsuarioController;
 use App\Http\Controllers\ReservationController;
@@ -20,7 +21,7 @@ use App\Http\Controllers\SedesController;
 */
 // Route List
 // Login
-Route::get('/', function () {
+Route::get('/login', function () {
     return view('auth.login');
 });
 
@@ -28,6 +29,11 @@ Route::get('/', function () {
 
 
 Route::group(['prefix' => 'ciar'], function () {
+    // Landing público
+    Route::get('/',[LandingController::class,'index'])->name('landing.index');
+    Route::get('/actividades',[LandingController::class, 'activities'])->name('landing.activities');
+    Route::get('/nuestras-promesas',[LandingController::class, 'promises'])->name('landing.promises');
+    Route::get('/noticicas',[LandingController::class, 'news'])->name('landing.news');
     // Reserva publico
     Route::get('/reserva', [ReservationController::class, 'index'])->name('reservation');
     // Route::get('/ciar/obtener', [ReservationController::class, 'show'])->name('reservas.obtener');

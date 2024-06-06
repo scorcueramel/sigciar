@@ -1,5 +1,5 @@
 @extends('layouts.private.private', ['activePage' => 'sedes.edit'])
-@push('title', 'Nueva Sede')
+@push('title', 'Editar Sede')
 @section('content')
 <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Sedes /</span> Editar : {{$sede->descripcion}}</h4>
 <!-- Basic Layout & Basic with Icons -->

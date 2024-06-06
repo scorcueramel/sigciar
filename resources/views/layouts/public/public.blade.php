@@ -8,6 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@stack('title') | {{ config('app.name', 'Laravel') }}</title>
+    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}" type="image/x-icon">
     <!-- Fonts -->
     <link rel="stylesheet" href="{{asset('assets/css/global/fonts.css')}}">
     {{-- Icons --}}
