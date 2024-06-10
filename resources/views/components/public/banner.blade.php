@@ -5,7 +5,7 @@
                 <picture>
                     <source srcset="{{ asset('assets/images/portada/portada1-xl.webp') }}" media="(min-width: 1200px)">
                     <source srcset="{{ asset('assets/images/portada/portada1-md.webp') }}" media="(min-width: 768px)">
-                    <img class="fondo position-absolute" src="images/portada/portada1-mobile.webp" alt="Centro internacional <span>de alto rendimiento</span>">
+                    <img class="fondo position-absolute" src="{{asset('assets/images/portada/portada1-mobile.webp')}}" alt="Centro internacional <span>de alto rendimiento</span>">
                 </picture>
                 <div class="container padding position-relative">
                     <div class="row justify-content-center justify-content-md-start">
@@ -21,7 +21,7 @@
                 <picture>
                     <source srcset="{{ asset('assets/images/portada/portada2-xl.webp') }}" media="(min-width: 1200px)">
                     <source srcset="{{ asset('assets/images/portada/portada2-md.webp') }}" media="(min-width: 768px)">
-                    <img class="fondo position-absolute" src="images/portada/portada2-mobile.webp" alt="Centro internacional <span>de alto rendimiento</span>">
+                    <img class="fondo position-absolute" src="{{asset('assets/images/portada/portada2-mobile.webp')}}" alt="Centro internacional <span>de alto rendimiento</span>">
                 </picture>
                 <div class="container padding position-relative">
                     <div class="row justify-content-center justify-content-md-start">
