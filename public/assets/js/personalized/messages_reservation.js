@@ -18,7 +18,7 @@ function notRegisterUser() {
                 <p>Si ya cuentas con usuario por favor <a href="/login">Inicia sesión.</a></p>
             </div>
             `, true, true, true,
-        `<a href="/register" class="text-decoration-none text-white">Registrate</a>`,
+        `<a href="/registro/cliente" class="text-decoration-none text-white">Registrate</a>`,
         "Cerrar", "", "", true, false
     );
 }

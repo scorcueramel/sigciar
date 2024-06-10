@@ -27,10 +27,11 @@ Route::get('/login', function () {
 
 // Route::get('/ciar/servicio/{sede}/{lugar}', [ReservationController::class, 'test'])->name('reservas.obtener');
 
+Route::get('/',[LandingController::class,'index'])->name('landing.index');
 
 Route::group(['prefix' => 'ciar'], function () {
-    // Landing público
     Route::get('/',[LandingController::class,'index'])->name('landing.index');
+    // Landing público
     Route::get('/actividades',[LandingController::class, 'activities'])->name('landing.activities');
     Route::get('/nuestras-promesas',[LandingController::class, 'promises'])->name('landing.promises');
     Route::get('/noticicas',[LandingController::class, 'news'])->name('landing.news');
