@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sedes', function (Blueprint $table) {
+        Schema::create('subtipo_servicios', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',100);
             $table->string('abreviatura',5);
-            $table->string('direccion',250)->nullable(true);
-            $table->string('imagen')->nullable(true);
             $table->string('estado',1);
-            $table->string('waze',500)->nullable(true);
-            $table->string('googlemaps',500)->nullable(true);
-            $table->softDeletes();
+            $table->string('imagen',50);
+            $table->foreignId('tiposervicio_id')->constrained('tipo_servicios');
             $table->timestamps();
         });
     }
@@ -34,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sedes');
+        Schema::dropIfExists('subtipo_servicios');
     }
 };

@@ -27,6 +27,9 @@
     <script src="{{asset('assets/auth/js/popper.min.js')}}"></script>
     <script src="{{asset('assets/auth/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('assets/auth/js/main.js')}}"></script>
+    {{-- Sweetalert2 --}}
+    <script src="{{ asset('assets/js/sweetalert/sweetalert2@11.js') }}"></script>
+    @stack('js')
 </body>
 
 </html>

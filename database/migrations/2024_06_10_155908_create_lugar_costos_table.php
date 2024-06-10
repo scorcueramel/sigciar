@@ -13,15 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sedes', function (Blueprint $table) {
+        Schema::create('lugar_costos', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',100);
             $table->string('abreviatura',5);
-            $table->string('direccion',250)->nullable(true);
-            $table->string('imagen')->nullable(true);
+            $table->float('costohora',8,2);
             $table->string('estado',1);
-            $table->string('waze',500)->nullable(true);
-            $table->string('googlemaps',500)->nullable(true);
+            $table->string('tipo',1);
+            $table->foreignId('lugars_id')->constrained('lugars');
+            $table->foreignId('tiposervicios_id')->constrained('tipo_servicios');
+            $table->string('usuario_creador',50);
+            $table->string('usuario_editor',50);
+            $table->string('ip_usuario',20);
+            $table->foreignId('sede_id')->constrained('sedes');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -34,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sedes');
+        Schema::dropIfExists('lugar_costos');
     }
 };

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('usuario_editor',50)->nullable(true);
             $table->string('ip_usuario',20);
             $table->foreignId('responsable_id')->constrained('personas');
+            $table->integer('horas');
             $table->softDeletes();
             $table->timestamps();
         });

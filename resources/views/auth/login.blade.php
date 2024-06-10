@@ -23,7 +23,7 @@
                             </div>
                         </div>
                         @endif
-                        <form action="{{ route('login') }}" method="post" autocomplete="off">
+                        <form action="{{ route('login') }}" method="post" autocomplete="off" id="login">
                             @csrf
                             <div class="form-group first">
                                 <label for="username">Correo</label>
@@ -74,3 +74,17 @@
     </div>
 </div>
 @endsection
+@push('js')
+<script>
+    $('#login').submit(function() {
+        Swal.fire({
+            icon: 'info',
+            html: "Espere un momento porfavor ...",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        })
+    });
+</script>
+@endpush
