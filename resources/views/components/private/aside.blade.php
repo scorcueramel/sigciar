@@ -144,12 +144,12 @@
 
 
                 <li class="menu-header small text-uppercase">
-                    <span class="menu-header-text">Entrenamientos</span>
+                    <span class="menu-header-text">Actividades</span>
                 </li>
                 <li class="menu-item {{ $activePage == 'entrenamientos.create' ? 'active open' : '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'entrenamientos.create' ? 'active' : '' }}">
                         <i class="fa-solid fa-tennis-ball" style="margin-right: 13px;"></i>
-                        <div data-i18n="Account Settings">Actividades</div>
+                        <div data-i18n="Account Settings">Tenis</div>
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item {{ $activePage == 'entrenamientos.create' ? 'active' : '' }}">
