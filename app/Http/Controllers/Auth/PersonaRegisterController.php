@@ -8,6 +8,7 @@ use App\Models\TipoDocumento;
 use App\Models\User;
 use Auth;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -23,8 +24,10 @@ class PersonaRegisterController extends Controller
 
     public function store(Request $request)
     {
+        // try {
+
         $validation = Validator::make($request->all(), [
-            'documento' => ['required','unique:personas'],
+            'documento' => ['required', 'unique:personas'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -33,13 +36,13 @@ class PersonaRegisterController extends Controller
             return redirect()->back()->withErrors($validation)->withInput();
         }
 
-
         $user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
         Persona::create([
+            'imagen' => null,
             'fecharegistro' => Carbon::now()->toDateTimeString(),
             'tipodocumento_id' => $request->tipodocumento_id,
             'documento' => $request->documento,
@@ -58,6 +61,9 @@ class PersonaRegisterController extends Controller
         $this->guard()->login($user);
 
         return redirect()->route('reservation');
+        // } catch (Exception $e) {
+        //     return redirect()->back()->with('error', "Error al momento de registrar $e")->withInput();
+        // }
     }
 
     protected function guard()

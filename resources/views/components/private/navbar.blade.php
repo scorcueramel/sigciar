@@ -83,7 +83,7 @@
                             <i class="bx bx-power-off me-2"></i>
                             <span class="align-middle">Log Out</span>
                         </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        <form id="logout-form" action="{{ route('logout.staff') }}" method="POST" class="d-none">
                             @csrf
                         </form>
                     </li>

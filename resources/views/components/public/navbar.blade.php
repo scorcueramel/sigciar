@@ -11,7 +11,6 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -35,6 +34,10 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('prfole.user') }}">
+                                    {{ __('Mi Perfil') }}
+                                    <i class="fa-solid fa-user"></i>
+                                </a>
                                 <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Cerrar Sesión') }}
@@ -44,10 +47,6 @@
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
-                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('prfole.user') }}">
-                                    {{ __('Mi Perfil') }}
-                                    <i class="fa-solid fa-user"></i>
-                                </a>
                             </div>
                         </li>
                         @endguest

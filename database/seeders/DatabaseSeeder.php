@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             TipoServicioSeederTable::class,
             PeriodicidadSeederTable::class,
             UserSeederTable::class,
+            RolesTableSeeder::class,
         ]);
     }
 }

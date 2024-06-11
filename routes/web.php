@@ -4,6 +4,8 @@ use App\Http\Controllers\Auth\PersonaRegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LoginMember;
+use App\Http\Controllers\LoginStaffController;
 use App\Http\Controllers\LugaresController;
 use App\Http\Controllers\PerfilUsuarioController;
 use App\Http\Controllers\ReservationController;
@@ -20,10 +22,16 @@ use App\Http\Controllers\SedesController;
 |
 */
 // Route List
-// Login
+// Login USERS
 Route::get('/login', function () {
     return view('auth.login');
 });
+// Login STAFF
+Route::get('/login-staff',function(){
+    return view('auth.login-staff');
+})->name('login.staff');
+Route::post('/login-staff',[LoginStaffController::class, 'login'])->name('login.staff');
+Route::post('/logout-staff',[LoginStaffController::class, 'logout'])->name('logout.staff');
 
 // Route::get('/ciar/servicio/{sede}/{lugar}', [ReservationController::class, 'test'])->name('reservas.obtener');
 
