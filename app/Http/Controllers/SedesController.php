@@ -22,13 +22,13 @@ class SedesController extends Controller
         $sedesHeader = Arr::add($keysSeded, $endHeaders, 'Acciones');
         $sedesBody = Sede::select('id', 'descripcion', 'abreviatura', 'direccion', 'imagen', 'estado')->orderBy('id', 'asc')->paginate(5);
 
-        return view("pages.private.admin.sedes.index", compact("sedesHeader", "sedesBody"));
+        return view("pages.private.sedes.index", compact("sedesHeader", "sedesBody"));
     }
 
     public function create()
     {
         //
-        return view("pages.private.admin.sedes.create");
+        return view("pages.private.sedes.create");
     }
 
     public function store(Request $request)
@@ -96,7 +96,7 @@ class SedesController extends Controller
     {
         //
         $sede = Sede::find($id);
-        return view('pages.private.admin.sedes.edit', compact('sede'));
+        return view('pages.private.sedes.edit', compact('sede'));
     }
 
     public function update(Request $request, $id)

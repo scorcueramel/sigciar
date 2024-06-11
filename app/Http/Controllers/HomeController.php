@@ -32,6 +32,6 @@ class HomeController extends Controller
             $personalInfo = Persona::where('usuario_id', Auth::user()->id)->select('id', 'nombres', 'apepaterno', 'apematerno')->get();
         }
 
-        return view('pages.private.admin.dashboard.index', compact('authenticate','personalInfo'));
+        return view('pages.private.dashboard.index', compact('authenticate','personalInfo'));
     }
 }

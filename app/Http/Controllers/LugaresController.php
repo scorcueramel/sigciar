@@ -28,14 +28,14 @@ class LugaresController extends Controller
         $lugaresHeader = Arr::add($keysLugar, $endHeaders, 'Acciones');
         $lugaresBody = Lugar::join('sedes','sedes.id','=','lugars.sede_id')->select('lugars.id', 'lugars.descripcion', 'lugars.abreviatura', 'lugars.costohora', 'lugars.estado', 'lugars.tipo', 'lugars.sede_id as sedeid','sedes.descripcion as sede')->orderBy('sedeid','asc')->paginate(5);
 
-        return view("pages.private.admin.lugares.index", compact("lugaresHeader", "lugaresBody"));
+        return view("pages.private.lugares.index", compact("lugaresHeader", "lugaresBody"));
     }
 
     public function create()
     {
         //
         $sedes = Sede::where('estado','A')->get();
-        return view("pages.private.admin.lugares.create", compact('sedes'));
+        return view("pages.private.lugares.create", compact('sedes'));
     }
 
     public function store(Request $request)
@@ -106,7 +106,7 @@ class LugaresController extends Controller
         //
         $lugar = Lugar::find($id);
         $sedes = Sede::where('estado','A')->get();
-        return view('pages.private.admin.lugares.edit', compact('lugar','sedes'));
+        return view('pages.private.lugares.edit', compact('lugar','sedes'));
     }
 
     public function update(Request $request, $id)
