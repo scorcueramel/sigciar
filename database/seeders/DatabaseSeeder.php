@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            RolesTableSeeder::class,
             TipoCategoriaSeederTable::class,
             TipoDocumentoSeederTable::class,
             SedeSeederTable::class,
@@ -23,7 +24,6 @@ class DatabaseSeeder extends Seeder
             TipoServicioSeederTable::class,
             PeriodicidadSeederTable::class,
             UserSeederTable::class,
-            RolesTableSeeder::class,
         ]);
     }
 }

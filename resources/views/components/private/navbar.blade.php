@@ -1,3 +1,11 @@
+<?php
+    use App\Models\Persona;
+
+    $person = Persona::where('id',Auth::user()->id)->get();
+    $persona = $person[0];
+    $role = Auth::user()->roles->pluck('name');
+?>
+
 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
     id="layout-navbar">
     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
@@ -42,8 +50,8 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <span class="fw-semibold d-block">John Doe</span>
-                                    <small class="text-muted">Admin</small>
+                                    <span class="fw-semibold d-block">{{$persona->nombres}}</span>
+                                    <small class="text-muted">{{$role[0]}}</small>
                                 </div>
                             </div>
                         </a>

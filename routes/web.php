@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\PersonaRegisterController;
+use App\Http\Controllers\TenisController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingController;
@@ -87,5 +88,12 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/editar/{id}', [LugaresController::class, 'edit'])->name('lugares.edit');
         Route::post('/editar/{id}/guardar', [LugaresController::class, 'update'])->name('lugares.update');
         Route::post('/eliminar', [LugaresController::class, 'destroy'])->name('lugares.destroy');
+    });
+
+    Route::group(['prefix'=>'actividades'], function(){
+        Route::get('nueva',[TenisController::class, 'create'])->name('tenis.create');
+        Route::get('/obtener/{id}/subcategorias', [TenisController::class, 'categoryCharge'])->name('obtener.subcategorias');
+        Route::get('/obtener/{id}/lugares', [TenisController::class, 'placesCharge'])->name('obtener.lugres');
+        Route::get('/obtener/{document}/miembro', [TenisController::class, 'searchMember'])->name('buscar.miembro');
     });
 });

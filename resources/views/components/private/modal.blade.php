@@ -14,8 +14,12 @@
             </div>
             @if ($withButtons)
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                @if($cancelbutton??false)
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{$mcTextCancelButton??''}}</button>
+                @endif
+                @if($aceptbutton??false)
                 <button type="button" class="btn btn-primary" id="mcButtonText">{{$mcTextButton??''}}</button>
+                @endif
             </div>
             @endif
         </div>

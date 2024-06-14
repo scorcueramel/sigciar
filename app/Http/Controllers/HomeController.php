@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Persona;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {

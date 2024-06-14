@@ -40,5 +40,6 @@ class UserSeederTable extends Seeder
             'usuario_id' => $user->id,
         ]);
 
+        $user->assignRole('ADMINISTRADOR');
     }
 }

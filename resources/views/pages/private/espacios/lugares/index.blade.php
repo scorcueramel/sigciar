@@ -45,7 +45,7 @@
                     <th class="text-center">SEDE</th>
                     <th>${headerLugares[7]}</th>
                 </tr>
-        `);
+    `);
     bodyLugares.data.forEach((e) => {
         bodyTable.append(`
                 <tr>
