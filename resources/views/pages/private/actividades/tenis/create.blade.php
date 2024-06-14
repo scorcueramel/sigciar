@@ -42,24 +42,24 @@
                                     <div class="col-md">
                                         @role('ADMINISTRADOR')
                                         <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label" for="responsable">Responsable</label>
+                                            <label class="col-sm-3 col-form-label" for="responsableAdmin">Responsable</label>
                                             <div class="col-sm-9">
                                                 <div class="input-group input-group-merge">
-                                                        <span id="estado2" class="input-group-text"><i
+                                                        <span id="responsableAdmin" class="input-group-text"><i
                                                                 class='bx bx-user'></i></span>
-                                                    <select class="selectpicker form-select" id="estado"
-                                                            aria-label="estado"
-                                                            name="estado" required>
+                                                    <select class="selectpicker form-select" id="responsableAdmin"
+                                                            aria-label="responsableAdmin"
+                                                            name="responsableAdmin" required>
                                                         <option value="" selected disabled>Selecciona un responsable
                                                         </option>
                                                         @foreach ($responsables as $resp)
                                                             <option value="{{ $resp->id }}"
-                                                                {{ old('estado') == 'A' ? 'selected' : '' }}>
+                                                                {{ old($resp->id) == $resp->id ? 'selected' : '' }}>
                                                                 {{ $resp->nombres }}
                                                                 {{ $resp->apepaterno }} {{ $resp->apematerno }}</option>
                                                         @endforeach
                                                     </select>
-                                                    @error('descripcion')
+                                                    @error('responsableAdmin')
                                                     <span class="invalid-feedback d-block" role="alert">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -77,12 +77,12 @@
                                                             <i class="bx bx-buildings"></i>
                                                         </span>
                                                     <input type="text" id="responsable"
-                                                           class="form-control ps-3 @error('descripcion') is-invalid @enderror"
-                                                           aria-label="Nombre para la responsable"
+                                                           class="form-control ps-3 @error('responsable') is-invalid @enderror"
+                                                           aria-label="Nombre para el/la responsable"
                                                            aria-describedby="responsable2" name="responsable"
                                                            value="{{ $responsable->nombres }} {{ $responsable->apepaterno }} {{ $responsable->apematerno }}"
                                                            readonly required/>
-                                                    @error('descripcion')
+                                                    @error('responsable')
                                                     <span class="invalid-feedback d-block" role="alert">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -104,11 +104,11 @@
                                                         <option value="" selected disabled>SELECCIONAR UNA ACTIVIDAD
                                                         </option>
                                                         @foreach ($actividades as $actividad)
-                                                            <option value="{{ $actividad->id }}">
+                                                            <option value="{{ $actividad->id }}" {{ old($actividad->id) == $actividad->id ? 'selected' : ''  }}>
                                                                 {{ $actividad->descripcion }}</option>
                                                         @endforeach
                                                     </select>
-                                                    @error('descripcion')
+                                                    @error('actividad')
                                                     <span class="invalid-feedback d-block" role="alert">
                                                             <strong>{{ $message }}</strong>
                                                         </span>
@@ -128,8 +128,8 @@
                                                         <option value="" selected disabled>SELECCIONA UNA CATEGORÍA
                                                         </option>
                                                     </select>
-                                                    @error('descripcion')
-                                                    <span class="invalid-feedback d-block" role="alert">
+                                                    @error('categoria')
+                                                        <span class="invalid-feedback d-block" role="alert">
                                                             <strong>{{ $message }}</strong>
                                                         </span>
                                                     @enderror
@@ -405,6 +405,34 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                        <div class="row">
+                                            <div class="col-sm col-md-6 col-lg-6">
+                                                <button type="button" class="btn btn-sm btn-warning">6 Cupos Disponibles <i class="fa-solid fa-rotate-reverse"></i></button>
+                                            </div>
+                                            <div class="col-sm col-md-6 col-lg-6 d-flex justify-content-end">
+                                                <button type="button" class="btn btn-sm btn-success">Agregar Inscripciones <i class="fa-solid fa-circle-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 my-4">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>DNI</th>
+                                                    <th>APILLODOS Y NOMBRES</th>
+                                                    <th>HORARIO</th>
+                                                    <th>PAGO</th>
+                                                    <th>ESTADO</th>
+                                                    <th>ESTADO PÁGO</th>
+                                                    <th>ACCIONES</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-7">
                                         <div class="row mb-3 d-flex align-items-center">
                                             <label class="col-sm-4 col-form-label" for="datos-inscripcion">Documento de
@@ -502,8 +530,7 @@
                                             <div class="card-body">
                                                 <div
                                                     class="text-nowrap table-responsive-sm table-responsive-md table-responsive-lg">
-                                                    <table class="table table-striped table-borderless"
-                                                    ">
+                                                    <table class="table table-striped table-borderless">
                                                     <thead>
                                                     <tr>
                                                         <th>DIA</th>
@@ -519,7 +546,6 @@
                                         </div>
                                     </div>
                                 </div>
-
 
                                 <input type="button" name="previous" class="previous btn btn-secondary btn-sm"
                                        value="Atrás"/>
