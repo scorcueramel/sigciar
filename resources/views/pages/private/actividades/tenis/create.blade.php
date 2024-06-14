@@ -286,7 +286,7 @@
                             <fieldset class="d-none">
                                 <h3> Paso 2: Definición de Horarios</h3>
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-7 col-lg-7">
+                                    <div class="col-sm-12 col-md-12 col-lg-7">
                                         <div class="row mb-3 d-flex">
                                             <label class="col-sm-9 col-form-label" for="horas">
                                                 Duración por actividad (en horas)
@@ -376,7 +376,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-12 col-md-5 col-lg-5">
+                                    <div class="col-sm-12 col-md-12 col-lg-5">
                                         <!-- Small table -->
 
                                         <div class="card">
@@ -405,7 +405,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-7">
+                                    <div class="col-sm-12 col-md-12 col-lg-7">
                                         <div class="row mb-3 d-flex align-items-center">
                                             <label class="col-sm-4 col-form-label" for="datos-inscripcion">Documento de
                                                 identidad</label>
@@ -497,7 +497,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-5">
+                                    <div class="col-sm-12 col-md-12 col-lg-5">
                                         <div class="card pt-2">
                                             <div class="card-body">
                                                 <div
