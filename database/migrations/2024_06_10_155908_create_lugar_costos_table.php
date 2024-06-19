@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('usuario_creador',50);
             $table->string('usuario_editor',50);
             $table->string('ip_usuario',20);
-            $table->foreignId('sede_id')->constrained('sedes');
             $table->softDeletes();
             $table->timestamps();
         });

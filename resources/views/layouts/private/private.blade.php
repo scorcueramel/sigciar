@@ -27,6 +27,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2-bootstrap-5-theme.min.css') }}">
     <link rel="stylesheet" href="{{asset('assets/css/global/style.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/template/css/datatables/dataTables.bootstrap5.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/template/css/datatables/datatables.min.css')}}">
+
 
     @stack('css')
 
@@ -80,6 +83,11 @@
     <script src="{{ asset('assets/js/sweetalert/sweetalert2@11.js') }}"></script>
     {{-- Select2 --}}
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+    {{-- Datatables --}}
+    <script src="{{ asset('assets/template/js/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/template/js/datatables/dataTables.js') }}"></script>
+    <script src="{{ asset('assets/template/js/datatables/dataTables.bootstrap5.js') }}"></script>
+
 
     {{-- Personalized JS --}}
     <script>
@@ -94,26 +102,24 @@
             });
         });
 
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function() {
+        (() => {
             'use strict'
 
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.querySelectorAll('.needs-validation')
+            const forms = document.querySelectorAll('.needs-validation')
 
             // Loop over them and prevent submission
-            Array.prototype.slice.call(forms)
-                .forEach(function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
 
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })();
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
     </script>
     @stack('js')
 </body>

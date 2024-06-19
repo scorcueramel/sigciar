@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('ip_usuario',20);
             $table->foreignId('responsable_id')->constrained('personas');
             $table->integer('horas');
+            $table->string('turno')->nullable(false);
+            $table->integer('subtiposervicio_id');
             $table->softDeletes();
             $table->timestamps();
         });

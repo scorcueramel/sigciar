@@ -20,5 +20,9 @@ class Servicio extends Model
         'usuario_creador',
         'usuario_editor',
         'ip_usuario',
+        'responsable_id',
+        'horas',
+        'turno',
+        'subtiposervicio_id',
     ];
 }

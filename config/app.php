@@ -199,6 +199,10 @@ return [
          *  Laravel Permission
          */
         Spatie\Permission\PermissionServiceProvider::class,
+        /*
+         *  Laravel Datatables
+          */
+        Yajra\DataTables\DataTablesServiceProvider::class,
     ],
 
     /*
@@ -214,6 +218,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        // Datatables
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
     ])->toArray(),
 
 ];

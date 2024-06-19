@@ -95,5 +95,9 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/obtener/{id}/subcategorias', [TenisController::class, 'categoryCharge'])->name('obtener.subcategorias');
         Route::get('/obtener/{id}/lugares', [TenisController::class, 'placesCharge'])->name('obtener.lugres');
         Route::get('/obtener/{document}/miembro', [TenisController::class, 'searchMember'])->name('buscar.miembro');
+        Route::get('/obtener/consto/{idlugar}/{idactividad}/lugar',[TenisController::class,'coastPlaces'])->name('obtener.costo.luagr');
+        Route::get('/obtener/imagen/{id}/categoria',[TenisController::class, 'renderImageForCategory'])->name('obtener.imagen.categoria');
+        Route::post('/nueva',[TenisController::class,'storeNewActivity'])->name('nueva.actividad');
+        Route::get('/nueva/inscripcion/redirigido',[TenisController::class, 'redirectAfterCreateActivity'])->name('redirigir.incripcion.actividad');
     });
 });

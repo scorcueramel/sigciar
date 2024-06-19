@@ -11,6 +11,10 @@
             border-radius: 50%;
             height: 35px;
         }
+
+        #imagenSeleccionada {
+            border-radius: 20px;
+        }
     </style>
 @endpush
 @section('content')
@@ -29,67 +33,57 @@
                     <div class="container">
                         <div class="progress mb-3">
                             <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0"
-                                 aria-valuemax="100">
+                                aria-valuemax="100">
                             </div>
                         </div>
-                        <form method="post" action="#" enctype="multipart/form-data" class="row g-3 needs-validation"
-                              novalidate>
-                            @csrf
-                            <input type="hidden" name="id" id="lastID">
+                        <form enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
                             <fieldset>
                                 <h3> Paso 1: Nueva Actividad</h3>
                                 <div class="row">
                                     <div class="col-md">
                                         @role('ADMINISTRADOR')
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label" for="responsableAdmin">Responsable</label>
-                                            <div class="col-sm-9">
-                                                <div class="input-group input-group-merge">
-                                                        <span id="responsableAdmin" class="input-group-text"><i
-                                                                class='bx bx-user'></i></span>
-                                                    <select class="selectpicker form-select" id="responsableAdmin"
-                                                            aria-label="responsableAdmin"
-                                                            name="responsableAdmin" required>
-                                                        <option value="" selected disabled>Selecciona un responsable
-                                                        </option>
-                                                        @foreach ($responsables as $resp)
-                                                            <option value="{{ $resp->id }}"
-                                                                {{ old($resp->id) == $resp->id ? 'selected' : '' }}>
-                                                                {{ $resp->nombres }}
-                                                                {{ $resp->apepaterno }} {{ $resp->apematerno }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('responsableAdmin')
-                                                    <span class="invalid-feedback d-block" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                    @enderror
+                                            <div class="row mb-3">
+                                                <label class="col-sm-3 col-form-label" for="respadmin">Responsable</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group input-group-merge">
+                                                        <span class="input-group-text"><i class='bx bx-user'></i></span>
+                                                        <select class="selectpicker form-select" id="respadmin"
+                                                            aria-label="respadmin" name="respadmin" required>
+                                                            <option value="" selected disabled>SELECCIONA UN RESPONSABLE
+                                                            </option>
+                                                            @foreach ($responsables as $resp)
+                                                                <option value="{{ $resp->id }}"
+                                                                    {{ old($resp->id) == $resp->id ? 'selected' : '' }}>
+                                                                    {{ $resp->nombres }}
+                                                                    {{ $resp->apepaterno }} {{ $resp->apematerno }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <span class="text-danger d-none responsableError" role="alert">
+                                                        <span class="msjResponsableError"></span>
+                                                    </span>
                                                 </div>
                                             </div>
-                                        </div>
                                         @endrole
+
                                         @role('RESPONSABLE')
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label" for="responsable">Responsable</label>
-                                            <div class="col-sm-9">
-                                                <div class="input-group input-group-merge">
-                                                        <span id="responsable2" class="input-group-text">
+                                            <div class="row mb-3">
+                                                <label class="col-sm-3 col-form-label" for="respnoadmin">Responsable</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group input-group-merge">
+                                                        <span id="respnoadmin2" class="input-group-text">
                                                             <i class="bx bx-buildings"></i>
                                                         </span>
-                                                    <input type="text" id="responsable"
-                                                           class="form-control ps-3 @error('responsable') is-invalid @enderror"
-                                                           aria-label="Nombre para el/la responsable"
-                                                           aria-describedby="responsable2" name="responsable"
-                                                           value="{{ $responsable->nombres }} {{ $responsable->apepaterno }} {{ $responsable->apematerno }}"
-                                                           readonly required/>
-                                                    @error('responsable')
-                                                    <span class="invalid-feedback d-block" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                    @enderror
+                                                        <input type="hidden" value="{{ $responsable->id }}" id="respadmin">
+                                                        <input type="text"
+                                                            class="form-control ps-3 @error('respadmin') is-invalid @enderror"
+                                                            aria-label="Nombre para el/la responsableNoAdmin"
+                                                            aria-describedby="respnoadmin2" name="respnoadmin"
+                                                            value="{{ $responsable->nombres }} {{ $responsable->apepaterno }} {{ $responsable->apematerno }}"
+                                                            readonly required />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         @endrole
 
                                         <div class="row mb-3">
@@ -99,21 +93,20 @@
                                                     <span id="actividad2" class="input-group-text"><i
                                                             class="fa-regular fa-person-running-fast"></i></span>
                                                     <select class="form-select" id="actividad" aria-label="actividad"
-                                                            name="actividad" aria-describedby="actividadFeedback"
-                                                            required>
+                                                        name="actividad" aria-describedby="actividadFeedback" required>
                                                         <option value="" selected disabled>SELECCIONAR UNA ACTIVIDAD
                                                         </option>
                                                         @foreach ($actividades as $actividad)
-                                                            <option value="{{ $actividad->id }}" {{ old($actividad->id) == $actividad->id ? 'selected' : ''  }}>
-                                                                {{ $actividad->descripcion }}</option>
+                                                            <option value="{{ $actividad->id }}"
+                                                                {{ old($actividad->id) == $actividad->id ? 'selected' : '' }}>
+                                                                {{ $actividad->descripcion }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
-                                                    @error('actividad')
-                                                    <span class="invalid-feedback d-block" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
                                                 </div>
+                                                <span class="text-danger d-none actividadError" role="alert">
+                                                    <span class="msjActividadError"></span>
+                                                </span>
                                             </div>
                                         </div>
 
@@ -124,32 +117,14 @@
                                                     <span id="categoria2" class="input-group-text"><i
                                                             class="fa-light fa-list"></i></span>
                                                     <select class="form-select" id="categoria" aria-label="categoria"
-                                                            name="categoria" disabled required>
+                                                        name="categoria" disabled required>
                                                         <option value="" selected disabled>SELECCIONA UNA CATEGORÍA
                                                         </option>
                                                     </select>
-                                                    @error('categoria')
-                                                        <span class="invalid-feedback d-block" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label" for="turno">Turno</label>
-                                            <div class="col-sm-6 d-flex justify-content-between">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                           id="diurno" name="turno"/>
-                                                    <label class="form-check-label" for="diurno"> Diurno </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                           id="nocturno" name="turno"/>
-                                                    <label class="form-check-label" for="nocturno"> Nocturno </label>
-                                                </div>
+                                                <span class="text-danger d-none categoriaError" role="alert">
+                                                    <span class="msjCategoriaError"></span>
+                                                </span>
                                             </div>
                                         </div>
 
@@ -160,7 +135,7 @@
                                                     <span id="sede2" class="input-group-text"><i
                                                             class="fa-regular fa-hotel"></i></span>
                                                     <select class="form-select" id="sede" aria-label="sede"
-                                                            name="sede" required>
+                                                        name="sede" required>
                                                         <option value="" selected disabled>SELECCIONA UNA SEDE
                                                         </option>
                                                         @foreach ($sedes as $sede)
@@ -168,12 +143,10 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
-                                                    @error('descripcion')
-                                                    <span class="invalid-feedback d-block" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
                                                 </div>
+                                                <span class="text-danger d-none sedeError" role="alert">
+                                                    <span class="msjSedeError"></span>
+                                                </span>
                                             </div>
                                         </div>
 
@@ -184,34 +157,42 @@
                                                     <span id="lugar2" class="input-group-text"><i
                                                             class="fa-regular fa-court-sport"></i></span>
                                                     <select class="form-select" id="lugar" aria-label="lugar"
-                                                            name="lugar" disabled required>
+                                                        name="lugar" disabled required>
                                                         <option value="" selected disabled>SELECCIONA UN LUGAR
                                                         </option>
                                                     </select>
-                                                    @error('descripcion')
-                                                    <span class="invalid-feedback d-block" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
                                                 </div>
+                                                <span class="text-danger d-none lugarError" role="alert">
+                                                    <span class="msjLugarError"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3 d-none turnos">
+                                            <label class="col-sm-3 col-form-label" for="turno">Turno</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group input-group-merge shadow-none">
+                                                    <div
+                                                        class="col-sm-12 d-flex justify-content-between contenedor-turnos">
+                                                    </div>
+                                                </div>
+                                                <span class="text-danger d-none turnosError" role="alert">
+                                                    <span class="msjTurnosError"></span>
+                                                </span>
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label" for="responsable">Inicio</label>
+                                            <label class="col-sm-3 col-form-label" for="fechaInicio">Inicio</label>
                                             <div class="col-sm-9">
                                                 <div class="input-group input-group-merge">
-
-                                                    <input type="date" id="responsable"
-                                                           class="form-control @error('descripcion') is-invalid @enderror"
-                                                           aria-label="Nombre para la responsable" name="inicio"
-                                                           required/>
-                                                    @error('descripcion')
-                                                    <span class="invalid-feedback d-block" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
+                                                    <input type="date" id="fechaInicio"
+                                                        class="form-control @error('fechaInicio') is-invalid @enderror"
+                                                        aria-label="Fecha de inicio" name="fechaInicio" required />
                                                 </div>
+                                                <span class="text-danger d-none fechaInicioError" role="alert">
+                                                    <span class="msjFechaInicioError"></span>
+                                                </span>
                                             </div>
                                         </div>
 
@@ -220,14 +201,12 @@
                                             <div class="col-sm-9">
                                                 <div class="input-group input-group-merge">
                                                     <input type="date" id="termino"
-                                                           class="form-control @error('descripcion') is-invalid @enderror"
-                                                           name="termino" required/>
-                                                    @error('descripcion')
-                                                    <span class="invalid-feedback d-block" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
+                                                        class="form-control @error('termino') is-invalid @enderror"
+                                                        name="termino" required />
                                                 </div>
+                                                <span class="text-danger d-none fechaFinError" role="alert">
+                                                    <span class="msjFechaFinError"></span>
+                                                </span>
                                             </div>
                                         </div>
 
@@ -238,17 +217,15 @@
                                                     <span id="cupos2" class="input-group-text"><i
                                                             class="fa-regular fa-input-numeric"></i></span>
                                                     <input type="number" id="cupos"
-                                                           class="form-control @error('descripcion') is-invalid @enderror"
-                                                           aria-label="Nombre para la cupos" aria-describedby="cupos2"
-                                                           name="cupos"
-                                                           oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                           maxlength="2" required/>
-                                                    @error('descripcion')
-                                                    <span class="invalid-feedback d-block" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
+                                                        class="form-control @error('cupos') is-invalid @enderror"
+                                                        aria-label="Nombre para la cupos" aria-describedby="cupos2"
+                                                        name="cupos"
+                                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                                        maxlength="3" required />
                                                 </div>
+                                                <span class="text-danger d-none cuposError" role="alert">
+                                                    <span class="msjCuposError"></span>
+                                                </span>
                                             </div>
                                         </div>
 
@@ -257,31 +234,26 @@
                                             <div class="col-sm-9">
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox" id="publicado"
-                                                           name="publicado"/>
+                                                        name="publicado" />
                                                     <label class="form-check-label" for="publicado">Publicado</label>
                                                 </div>
                                                 <div class="form-text">Inidica el estado inicial para la nueva
                                                     actividad
                                                 </div>
-                                                @error('estado')
-                                                <span class="invalid-feedback d-block" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col-md">
                                         <!-- Basic Layout -->
                                         <div class="d-flex justify-content-center">
                                             <img class="img-fluid" src="{{ asset('assets/images/default-img.gif') }}"
-                                                 id="imagenSeleccionada" style="max-height: 510px; height: 510px;">
+                                                id="imagenSeleccionada" style="max-height: 510px; height: 510px;">
                                         </div>
                                     </div>
+
                                 </div>
-
-                                <input type="button" class="next btn btn-primary btn-sm" value="Siguiente"/>
-
+                                <input type="button" class="next btn btn-primary btn-sm" value="Siguiente" />
                             </fieldset>
                             <fieldset class="d-none">
                                 <h3> Paso 2: Definición de Horarios</h3>
@@ -296,34 +268,27 @@
                                                     <span id="horas2" class="input-group-text"><i
                                                             class="fa-regular fa-input-numeric"></i></span>
                                                     <input type="number" id="horas"
-                                                           class="form-control @error('descripcion') is-invalid @enderror"
-                                                           oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                           name="horas" maxlength="2" required/>
-                                                    @error('descripcion')
-                                                    <span class="invalid-feedback d-block" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
+                                                        class="form-control @error('descripcion') is-invalid @enderror"
+                                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                                        name="horas" maxlength="2" required />
                                                 </div>
+                                                <span class="text-danger d-none definirHorarioError" role="alert">
+                                                    <span class="msjDefinirHorarioError"></span>
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-4 mb-3 d-flex justify-content-between">
-                                                <label class="col-sm-2 col-form-label" for="dias">Día</label>
-                                                <div class="col-sm-10">
+                                                <label class="col-sm-3 col-form-label" for="dias">Día</label>
+                                                <div class="col-sm-9">
                                                     <div class="input-group input-group-merge">
                                                         <span class="input-group-text">
                                                             <i class="fa-regular fa-calendar-range"></i>
                                                         </span>
                                                         <select class="form-select" id="dias" aria-label="dias"
-                                                                name="dias" required>
+                                                            name="dias" required>
                                                             <option value="" selected disabled>DÍA</option>
                                                         </select>
-                                                        @error('descripcion')
-                                                        <span class="invalid-feedback d-block" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -335,31 +300,21 @@
                                                             <i class="fa-regular fa-clock-two"></i>
                                                         </span>
                                                         <input class="form-control horas" type="time"
-                                                               aria-describedby="horaInicio2" name="horaInicio"
-                                                               id="horaInicio" required/>
-                                                        @error('descripcion')
-                                                        <span class="invalid-feedback d-block" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
+                                                            aria-describedby="horaInicio2" name="horaInicio"
+                                                            id="horaInicio" required />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-4 mb-3 d-flex justify-content-between">
-                                                <label class="col-sm-2 col-form-label" for="horaInicio">A</label>
+                                                <label class="col-sm-2 col-form-label" for="horaFin">A</label>
                                                 <div class="col-sm-10">
                                                     <div class="input-group input-group-merge">
                                                         <span id="horaFin2" class="input-group-text">
                                                             <i class="fa-regular fa-clock-eight-thirty"></i>
                                                         </span>
                                                         <input class="form-control horas" type="time"
-                                                               aria-describedby="horaFin" name="horaFin" id="horaFin"
-                                                               required/>
-                                                        @error('descripcion')
-                                                        <span class="invalid-feedback d-block" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
+                                                            aria-describedby="horaFin" name="horaFin" id="horaFin"
+                                                            required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -367,7 +322,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-12 d-flex justify-content-end align-items-center">
                                                 <button type="button" class="btn btn-sm btn-primary btn-add"
-                                                        id="btn-add-hour">
+                                                    id="btn-add-hour">
                                                     <i class="fa-solid fa-plus"></i>
                                                 </button>
                                                 <span class="ms-2">
@@ -377,8 +332,6 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-12 col-lg-5">
-                                        <!-- Small table -->
-
                                         <div class="card">
                                             <div class="table-responsive text-nowrap">
                                                 @include('components.private.table', [
@@ -387,170 +340,15 @@
                                                 ])
                                             </div>
                                         </div>
-                                        <!--/ Small table -->
+                                        <span class="text-danger d-none listaHorariosError" role="alert">
+                                            <span class="msjListaHorariosError text-center"></span>
+                                        </span>
                                     </div>
                                 </div>
                                 <input type="button" name="previous" class="previous btn btn-secondary btn-sm"
-                                       value="Atrás"/>
-                                <input type="button" class="next btn btn-primary btn-sm" value="Siguiente"/>
-                            </fieldset>
-                            <fieldset class="d-none">
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <h3> Paso 3: Inscripciones</h3>
-                                    </div>
-                                    <div class="col-sm">
-                                        <small class="text-danger" style="font-size: 15px">(Este paso es
-                                            opcional)</small>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-12 col-lg-12">
-                                        <div class="row">
-                                            <div class="col-sm col-md-6 col-lg-6">
-                                                <button type="button" class="btn btn-sm btn-warning">6 Cupos Disponibles <i class="fa-solid fa-rotate-reverse"></i></button>
-                                            </div>
-                                            <div class="col-sm col-md-6 col-lg-6 d-flex justify-content-end">
-                                                <button type="button" class="btn btn-sm btn-success">Agregar Inscripciones <i class="fa-solid fa-circle-plus"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-12 my-4">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>DNI</th>
-                                                    <th>APILLODOS Y NOMBRES</th>
-                                                    <th>HORARIO</th>
-                                                    <th>PAGO</th>
-                                                    <th>ESTADO</th>
-                                                    <th>ESTADO PÁGO</th>
-                                                    <th>ACCIONES</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-12 col-lg-7">
-                                        <div class="row mb-3 d-flex align-items-center">
-                                            <label class="col-sm-4 col-form-label" for="datos-inscripcion">Documento de
-                                                identidad</label>
-                                            <div class="col-sm-6">
-                                                <div class="input-group input-group-merge">
-                                                    <span id="datos-inscripcion2" class="input-group-text">
-                                                        <i class="fa-regular fa-address-card"></i>
-                                                    </span>
-                                                    <input type="number" id="documentomiembro"
-                                                           class="form-control @error('documentomiembro') is-invalid @enderror"
-                                                           aria-label="Nombre para los documentomiembro"
-                                                           aria-describedby="documentomiembro2"
-                                                           name="documentomiembro"/>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2 d-flex justify-content-end">
-                                                <button type="button" class="btn btn-primary" id="buscarMiembro">
-                                                    <i class="bx bx-search"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-sm-12">
-                                                <div class="input-group input-group-merge">
-                                                    <span id="miembro2" class="input-group-text">
-                                                        <i class="fa-regular fa-user-vneck"></i>
-                                                    </span>
-                                                    <input type="hidden" name="idmiembro" id="idmiembro">
-                                                    <input type="text" id="miembro"
-                                                           class="form-control ps-3 @error('descripcion') is-invalid @enderror"
-                                                           aria-describedby="miembro2"
-                                                           name="miembro"
-                                                           disabled required/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6 mb-3 d-flex justify-content-between">
-                                                <label class="col-sm-2 col-form-label"
-                                                       for="diasInscripcion">Días</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group input-group-merge">
-                                                        <span class="input-group-text">
-                                                            <i class="fa-regular fa-calendar-range"></i>
-                                                        </span>
-                                                        <select class="form-select" id="diasInscripcion"
-                                                                aria-label="diasInscripcion" name="diasInscripcion"
-                                                                disabled>
-                                                            <option value="" selected disabled>DÍAS</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mb-3 d-flex justify-content-between">
-                                                <label class="col-sm-4 col-form-label"
-                                                       for="diasInscripcion">Ingreso</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group input-group-merge">
-                                                        <span class="input-group-text">
-                                                            <i class="fa-regular fa-calendar-range"></i>
-                                                        </span>
-                                                        <select class="form-select" id="ingreso" aria-label="ingreso"
-                                                                name="ingreso" disabled>
-                                                            <option value="" selected disabled>HORARIOS</option>
-                                                            <option value="16:00">16:00</option>
-                                                            <option value="17:00">17:00</option>
-                                                            <option value="18:00">18:00</option>
-                                                            <option value="19:00">19:00</option>
-                                                            <option value="20:00">20:00</option>
-                                                        </select>
-                                                        @error('descripcion')
-                                                        <span class="invalid-feedback d-block" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12 d-flex justify-content-end align-items-center">
-                                                <button type="button" class="btn btn-sm btn-primary btn-add"
-                                                        id="btn-add-horario" disabled>
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                                <span class="ms-2">
-                                                    Agregar horario
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-5">
-                                        <div class="card pt-2">
-                                            <div class="card-body">
-                                                <div
-                                                    class="text-nowrap table-responsive-sm table-responsive-md table-responsive-lg">
-                                                    <table class="table table-striped table-borderless">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>DIA</th>
-                                                        <th>HORARIO</th>
-                                                        <th>QUITAR</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody class="table-border-bottom-0" id="tablainscripciones">
-                                                    </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <input type="button" name="previous" class="previous btn btn-secondary btn-sm"
-                                       value="Atrás"/>
-                                <input type="submit" name="submit" class="submit btn btn-primary btn-sm"
-                                       value="Guardar"/>
+                                    value="Atrás" />
+                                <input type="button" class=" btn btn-primary btn-sm" value="Guardar y Continuar"
+                                    id="guardarycontinuar" />
                             </fieldset>
                         </form>
                     </div>
@@ -571,11 +369,7 @@
         // arreglo de horarios
         var totalHorarios = new Array();
         var horasInscripcion = new Array();
-        $(document).ready(function () {
-            // obtener el ultimo id de servicios y sumarle 1
-            let lastID = @json($lastId);
-            $('#lastID').val(lastID[0].max + 1);
-
+        $(document).ready(function() {
             // Días del select para la sección horarios
             const dias = [
                 'LUNES',
@@ -607,7 +401,7 @@
             steps = $("fieldset").length;
 
             // Accionadores de botones siguiente y anterior
-            $(".next").click(function () {
+            $(".next").click(function() {
                 current_step = $(this).parent();
                 next_step = $(this).parent().next();
                 next_step.show();
@@ -615,7 +409,7 @@
                 setProgressBar(++current);
                 next_step.removeClass("d-none");
             });
-            $(".previous").click(function () {
+            $(".previous").click(function() {
                 current_step = $(this).parent();
                 next_step = $(this).parent().prev();
                 next_step.show();
@@ -635,13 +429,13 @@
         });
 
         // Obtener categorias basads en actividad
-        $("#actividad").on('change', function () {
+        $("#actividad").on('change', function() {
             let actividadId = $(this).val();
             $.ajax({
                 type: "GET",
                 url: `/admin/actividades/obtener/${actividadId}/subcategorias`,
-                success: function (data) {
-                    let datatype = typeof (data);
+                success: function(data) {
+                    let datatype = typeof(data);
                     let defaultOptionCategory = $("#categoria");
                     if (datatype === "string") {
                         $("#modalcomponent").modal('show');
@@ -662,7 +456,7 @@
                         });
                     }
                 },
-                error: function (err) {
+                error: function(err) {
                     $("#modalcomponent").modal('show');
                     $("#mcbody").html(err.responseJSON.message);
                 }
@@ -670,13 +464,13 @@
         });
 
         // Obtener sede basada en lugares
-        $("#sede").on('change', function () {
+        $("#sede").on('change', function() {
             let sedeId = $(this).val();
             $.ajax({
                 type: "GET",
                 url: `/admin/actividades/obtener/${sedeId}/lugares`,
-                success: function (data) {
-                    let datatype = typeof (data);
+                success: function(data) {
+                    let datatype = typeof(data);
                     let defaultOptionCategory = $("#lugar");
                     if (datatype === "string") {
                         $("#modalcomponent").modal('show');
@@ -697,7 +491,7 @@
                         });
                     }
                 },
-                error: function (err) {
+                error: function(err) {
                     $("#modalcomponent").modal('show');
                     $("#mcbody").html(err.responseJSON.message);
                 }
@@ -718,7 +512,7 @@
             `);
 
         // Click en boton quitar
-        $("#btn-add-hour").on("click", function () {
+        $("#btn-add-hour").on("click", function() {
             const dia = $("#dias");
             const duracion = $("#horas");
             const horaInicio = $("#horaInicio");
@@ -789,13 +583,13 @@
         }
 
         // buscar al miembro o usuario registrado en sistema
-        $("#buscarMiembro").on('click', function () {
+        $("#buscarMiembro").on('click', function() {
             let documento = $("#documentomiembro").val();
             $.ajax({
                 type: "GET",
                 url: `/admin/actividades/obtener/${documento}/miembro`,
-                success: function (data) {
-                    let datatype = typeof (data);
+                success: function(data) {
+                    let datatype = typeof(data);
                     if (datatype === "string") {
                         $("#modalcomponent").modal('show');
                         $("#mcbody").html(data);
@@ -808,7 +602,7 @@
                         $("#btn-add-horario").removeAttr("disabled");
                     }
                 },
-                error: function (err) {
+                error: function(err) {
                     $("#modalcomponent").modal('show');
                     $("#mcbody").html(err.responseJSON.message);
                 }
@@ -816,13 +610,14 @@
         });
 
         // agregar horario del miembro inscrito
-        $("#btn-add-horario").on('click', function () {
+        $("#btn-add-horario").on('click', function() {
             const diasInscripcion = $("#diasInscripcion");
             const miembro = $("#miembro");
             const idMiembro = $("#idmiembro").val();
             const ingreso = $("#ingreso");
 
-            if (miembro.val() === null || diasInscripcion.val() === null || ingreso.val() === null || idMiembro === null) {
+            if (miembro.val() === null || diasInscripcion.val() === null || ingreso.val() === null || idMiembro ===
+                null) {
                 Swal.fire({
                     title: '<strong>Lo sentimos <i class="fa-solid fa-face-scream"></i></strong>',
                     icon: "warning",
@@ -884,6 +679,246 @@
                 }
             }
 
+        }
+
+        // Obtener costo por lugar
+        $("#lugar").on('change', function() {
+            let idActividad = $('#actividad').val();
+            let idLugar = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: `/admin/actividades/obtener/consto/${idActividad}/${idLugar}/lugar`,
+                success: function(response) {
+                    if (response != null) {
+                        $(".contenedor-turnos").html("");
+                        response.forEach(function(e) {
+                            $(".contenedor-turnos").append(`
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="turno" value="${e.descripcion}" id="${e.descripcion}">
+                                    <label class="form-check-label" for="${e.descripcion}">
+                                        ${e.descripcion}
+                                    </label>
+                                </div>
+                            `)
+                        });
+                        $('.turnos').removeClass('d-none');
+                    }
+                }
+            });
+        });
+
+        // Obtener imagen de categoría
+        $("#categoria").on('change', function() {
+            let id = $(this).val();
+            Swal.fire({
+                icon: 'info',
+                html: "Espere un momento porfavor ...",
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            $.ajax({
+                type: "GET",
+                url: `/admin/actividades/obtener/imagen/${id}/categoria`,
+                success: function(response) {
+                    Swal.close();
+                    if (response) {
+                        let imagen = response.imagen;
+                        $('#imagenSeleccionada').attr('src', "/assets/images/actividades/" + imagen);
+                    }
+                }
+            });
+        });
+
+        // Registrar la nueva actividad
+        $("#guardarycontinuar").on('click', function(e) {
+            // e.preventDefault();
+            let responsable = $("#respadmin").val();
+            let actividad = $("#actividad").val();
+            let categoria = $("#categoria").val();
+            let turnoIsChecked = $("input[name=turno]:checked ");
+            let turno = turnoIsChecked.val();
+            let sede = $("#sede").val();
+            let lugar = $("#lugar").val();
+            let fechaInicio = $("#fechaInicio").val();
+            let termino = $("#termino").val();
+            let cupos = $("#cupos").val();
+            let publicado = $("#publicado").val();
+            let horasActividad = $("#horas").val();
+            let fechasDefinidas = [];
+            let data = {};
+
+            // Rellenar tabla de turnos y horarios
+            $("#tableComponent").find("tbody tr").each(function(idx, row) {
+                var JsonData = {};
+                JsonData.dias = $("td:eq(0)", row).text();
+                JsonData.horarios = $("td:eq(1)", row).text();
+                fechasDefinidas.push(JsonData);
+            });
+
+            if (responsable == null) {
+                messagesInfo('Lo sentimos', 'warning',
+                    'Parece que no seleccionaste ningún <br/><strong>Responsable</strong>,<br/> selecciona uno y luego continua',
+                    'Verificar');
+                $('.responsableError').removeClass('d-none');
+                $('.msjResponsableError').html("Porfavor selecciona un responsable");
+                return;
+            } else {
+                $('.responsableError').addClass('d-none');
+            }
+
+            if (actividad == null) {
+                messagesInfo('Lo sentimos', 'warning',
+                    'Parece que no seleccionaste ninguna <br/><strong>Actividad</strong>,<br/> selecciona una y luego continua',
+                    'Verificar');
+                $('.actividadError').removeClass('d-none');
+                $('.msjActividadError').html("Porfavor selecciona una actividad");
+                return;
+            } else {
+                $('.actividadError').addClass('d-none');
+            }
+
+            if (categoria == null) {
+                messagesInfo('Lo sentimos', 'warning',
+                    'Parece que no seleccionaste ninguna <br/><strong>Categoría</strong>,<br/> selecciona una y luego continua',
+                    'Verificar');
+                $('.categoriaError').removeClass('d-none');
+                $('.msjCategoriaError').html('Porfavor selecciona una categoría');
+                return;
+            } else {
+                $('.categoriaError').addClass('d-none');
+            }
+
+            if (sede == null) {
+                messagesInfo('Lo sentimos', 'warning',
+                    'Parece que no seleccionaste ninguna <br/><strong>Sede</strong>,<br/> selecciona una y luego continua',
+                    'Verificar');
+                $('.sedeError').removeClass('d-none');
+                $('.msjSedeError').html('Porfavor selecciona una sede');
+                return;
+            } else {
+                $('.sedeError').addClass('d-none');
+            }
+
+            if (lugar == null) {
+                messagesInfo('Lo sentimos', 'warning',
+                    'Parece que no seleccionaste ningún <br/><strong>Lugar</strong>,<br/> selecciona uno y luego continua',
+                    'Verificar');
+                $('.lugarError').removeClass('d-none');
+                $('.msjLugarError').html('Porfavor selecciona un lugar');
+                return;
+            } else {
+                $('.lugarError').addClass('d-none');
+            }
+
+            if (turnoIsChecked == false) {
+                messagesInfo('Lo sentimos', 'warning',
+                    'Parece que no seleccionaste ningún <br/><strong>Turno</strong>,<br/> selecciona uno y luego continua',
+                    'Verificar');
+                $('.turnosError').removeClass('d-none');
+                $('.msjTurnosError').html('Porfavor selecciona un turno');
+                return;
+            } else {
+                $('.turnosError').addClass('d-none');
+            }
+
+            if (fechaInicio == "") {
+                messagesInfo('Lo sentimos', 'warning',
+                    'Parece que no seleccionaste ninguna <br/><strong>Fecha de Inicio</strong>,<br/> selecciona una y luego continua',
+                    'Verificar');
+                $('.fechaInicioError').removeClass('d-none');
+                $('.msjFechaInicioError').html('Porfavor selecciona una fecha de Inicio');
+                return;
+            } else {
+                $('.fechaInicioError').addClass('d-none');
+            }
+
+            if (termino == "") {
+                messagesInfo('Lo sentimos', 'warning',
+                    'Parece que no seleccionaste ninguna <br/><strong>Fecha de Termino</strong>,<br/> selecciona una y luego continua',
+                    'Verificar');
+                $('.fechaFinError').removeClass('d-none');
+                $('.msjFechaFinError').html('Porfavor selecciona una fecha de termino');
+
+                return;
+            } else {
+                $('.fechaFinError').addClass('d-none');
+            }
+
+            if (cupos == "") {
+                messagesInfo('Lo sentimos', 'warning',
+                    'Parece que no ingresaste ninguna cantidad de <br/><strong>Cupos</strong>,<br/> indica la cantidad de cupos y luego continua',
+                    'Verificar');
+                $('.cuposError').removeClass('d-none');
+                $('.msjCuposError').html('Porfavor Ingresa una cantidad de cupos');
+                return;
+            } else {
+                $('.cuposError').addClass('d-none');
+            }
+
+            if (horasActividad == "") {
+                messagesInfo('Lo sentimos', 'warning',
+                    'Parece que no indicaste la cantidad de <br/><strong>Horas</strong>,<br/> indica la cantidad de horas y luego continua',
+                    'Verificar');
+                $('.definirHorarioError').removeClass('d-none');
+                $('.msjDefinirHorarioError').html('Porfavor Ingresa una cantidad de horas');
+                return;
+            } else {
+                $('.definirHorarioError').addClass('d-none');
+            }
+
+            if (fechasDefinidas.length <= 0) {
+                messagesInfo('Lo sentimos', 'warning',
+                    'Parece que no indicaste <br/><strong>Fechas y Horas</strong>,<br/> para esta actividad, indicalas y luego continua',
+                    'Verificar');
+                $('.listaHorariosError').removeClass('d-none');
+                $('.msjListaHorariosError').html('Porfavor define fechas y horas');
+                return;
+            } else {
+                $('.listaHorariosError').addClass('d-none');
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('nueva.actividad') }}",
+                data: {
+                    responsable,
+                    actividad,
+                    categoria,
+                    turno,
+                    sede,
+                    lugar,
+                    fechaInicio,
+                    termino,
+                    cupos,
+                    publicado,
+                    horasActividad,
+                    fechasDefinidas,
+                },
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'info',
+                        html: "Espere un momento porfavor ...",
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    window.location.href = "{{ route('redirigir.incripcion.actividad') }}";
+                }
+            });
+        });
+
+        function messagesInfo(title, icon, bodyMessage, textButton) {
+            Swal.fire({
+                title: `<strong>${title} <i class="fa-solid fa-face-scream"></i></strong>`,
+                icon: `${icon}`,
+                html: `<p>${bodyMessage}</p>`,
+                showCloseButton: true,
+                focusConfirm: true,
+                confirmButtonText: `${textButton}`,
+            });
         }
     </script>
 @endpush

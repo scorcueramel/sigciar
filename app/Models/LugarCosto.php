@@ -20,6 +20,5 @@ class LugarCosto extends Model
         'usuario_creador',
         'usuario_editor',
         'ip_usuario',
-        'sede_id',
     ];
 }
