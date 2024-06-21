@@ -5,6 +5,9 @@
     .select2-selection {
         border: 1px solid gray !important;
     }
+    #conluz{
+        font-size: 25px;
+    }
 </style>
 @endpush
 @section('content')
@@ -83,6 +86,20 @@
                         <select class="form-select border-secondary shadow-sm" id="lugar">
                             <option value="" select disabled>Seleccinar Lugar</option>
                         </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="lugar" class="descripcion">
+                        <i class="fa-regular fa-circle-right"></i> Con Luz:
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="form-check form-switch ms-4">
+                            <input class="form-check-input" type="checkbox" role="switch" id="conluz" name="conluz">
+                        </div>
                     </div>
                 </div>
             </div>

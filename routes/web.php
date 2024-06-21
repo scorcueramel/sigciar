@@ -11,6 +11,7 @@ use App\Http\Controllers\LugaresController;
 use App\Http\Controllers\PerfilUsuarioController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SedesController;
+use App\Http\Controllers\IncripcionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +99,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/obtener/consto/{idlugar}/{idactividad}/lugar',[TenisController::class,'coastPlaces'])->name('obtener.costo.luagr');
         Route::get('/obtener/imagen/{id}/categoria',[TenisController::class, 'renderImageForCategory'])->name('obtener.imagen.categoria');
         Route::post('/nueva',[TenisController::class,'storeNewActivity'])->name('nueva.actividad');
-        Route::get('/nueva/inscripcion/redirigido',[TenisController::class, 'redirectAfterCreateActivity'])->name('redirigir.incripcion.actividad');
+        Route::get('/nueva/inscripcion/{plantilla}/{horario}/redirigido',[TenisController::class, 'redirectAfterCreateActivity'])->name('redirigir.incripcion.actividad');
+        Route::get('/obtener/{idRegistro}/{$dia}/horas',[TenisController::class,'getHoursForDay'])->name('obtener.horarios.inscripciones');
     });
 });

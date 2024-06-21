@@ -33,7 +33,7 @@
                     <div class="container">
                         <div class="progress mb-3">
                             <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0"
-                                aria-valuemax="100">
+                                 aria-valuemax="100">
                             </div>
                         </div>
                         <form enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
@@ -42,48 +42,48 @@
                                 <div class="row">
                                     <div class="col-md">
                                         @role('ADMINISTRADOR')
-                                            <div class="row mb-3">
-                                                <label class="col-sm-3 col-form-label" for="respadmin">Responsable</label>
-                                                <div class="col-sm-9">
-                                                    <div class="input-group input-group-merge">
-                                                        <span class="input-group-text"><i class='bx bx-user'></i></span>
-                                                        <select class="selectpicker form-select" id="respadmin"
+                                        <div class="row mb-3">
+                                            <label class="col-sm-3 col-form-label" for="respadmin">Responsable</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group input-group-merge">
+                                                    <span class="input-group-text"><i class='bx bx-user'></i></span>
+                                                    <select class="selectpicker form-select" id="respadmin"
                                                             aria-label="respadmin" name="respadmin" required>
-                                                            <option value="" selected disabled>SELECCIONA UN RESPONSABLE
-                                                            </option>
-                                                            @foreach ($responsables as $resp)
-                                                                <option value="{{ $resp->id }}"
-                                                                    {{ old($resp->id) == $resp->id ? 'selected' : '' }}>
-                                                                    {{ $resp->nombres }}
-                                                                    {{ $resp->apepaterno }} {{ $resp->apematerno }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <span class="text-danger d-none responsableError" role="alert">
+                                                        <option value="" selected disabled>SELECCIONA UN RESPONSABLE
+                                                        </option>
+                                                        @foreach ($responsables as $resp)
+                                                            <option value="{{ $resp->id }}"
+                                                                {{ old($resp->id) == $resp->id ? 'selected' : '' }}>
+                                                                {{ $resp->nombres }}
+                                                                {{ $resp->apepaterno }} {{ $resp->apematerno }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <span class="text-danger d-none responsableError" role="alert">
                                                         <span class="msjResponsableError"></span>
                                                     </span>
-                                                </div>
                                             </div>
+                                        </div>
                                         @endrole
 
                                         @role('RESPONSABLE')
-                                            <div class="row mb-3">
-                                                <label class="col-sm-3 col-form-label" for="respnoadmin">Responsable</label>
-                                                <div class="col-sm-9">
-                                                    <div class="input-group input-group-merge">
+                                        <div class="row mb-3">
+                                            <label class="col-sm-3 col-form-label" for="respnoadmin">Responsable</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group input-group-merge">
                                                         <span id="respnoadmin2" class="input-group-text">
                                                             <i class="bx bx-buildings"></i>
                                                         </span>
-                                                        <input type="hidden" value="{{ $responsable->id }}" id="respadmin">
-                                                        <input type="text"
-                                                            class="form-control ps-3 @error('respadmin') is-invalid @enderror"
-                                                            aria-label="Nombre para el/la responsableNoAdmin"
-                                                            aria-describedby="respnoadmin2" name="respnoadmin"
-                                                            value="{{ $responsable->nombres }} {{ $responsable->apepaterno }} {{ $responsable->apematerno }}"
-                                                            readonly required />
-                                                    </div>
+                                                    <input type="hidden" value="{{ $responsable->id }}" id="respadmin">
+                                                    <input type="text"
+                                                           class="form-control ps-3 @error('respadmin') is-invalid @enderror"
+                                                           aria-label="Nombre para el/la responsableNoAdmin"
+                                                           aria-describedby="respnoadmin2" name="respnoadmin"
+                                                           value="{{ $responsable->nombres }} {{ $responsable->apepaterno }} {{ $responsable->apematerno }}"
+                                                           readonly required/>
                                                 </div>
                                             </div>
+                                        </div>
                                         @endrole
 
                                         <div class="row mb-3">
@@ -93,7 +93,8 @@
                                                     <span id="actividad2" class="input-group-text"><i
                                                             class="fa-regular fa-person-running-fast"></i></span>
                                                     <select class="form-select" id="actividad" aria-label="actividad"
-                                                        name="actividad" aria-describedby="actividadFeedback" required>
+                                                            name="actividad" aria-describedby="actividadFeedback"
+                                                            required>
                                                         <option value="" selected disabled>SELECCIONAR UNA ACTIVIDAD
                                                         </option>
                                                         @foreach ($actividades as $actividad)
@@ -117,7 +118,7 @@
                                                     <span id="categoria2" class="input-group-text"><i
                                                             class="fa-light fa-list"></i></span>
                                                     <select class="form-select" id="categoria" aria-label="categoria"
-                                                        name="categoria" disabled required>
+                                                            name="categoria" disabled required>
                                                         <option value="" selected disabled>SELECCIONA UNA CATEGORÍA
                                                         </option>
                                                     </select>
@@ -135,7 +136,7 @@
                                                     <span id="sede2" class="input-group-text"><i
                                                             class="fa-regular fa-hotel"></i></span>
                                                     <select class="form-select" id="sede" aria-label="sede"
-                                                        name="sede" required>
+                                                            name="sede" required>
                                                         <option value="" selected disabled>SELECCIONA UNA SEDE
                                                         </option>
                                                         @foreach ($sedes as $sede)
@@ -157,7 +158,7 @@
                                                     <span id="lugar2" class="input-group-text"><i
                                                             class="fa-regular fa-court-sport"></i></span>
                                                     <select class="form-select" id="lugar" aria-label="lugar"
-                                                        name="lugar" disabled required>
+                                                            name="lugar" disabled required>
                                                         <option value="" selected disabled>SELECCIONA UN LUGAR
                                                         </option>
                                                     </select>
@@ -187,8 +188,8 @@
                                             <div class="col-sm-9">
                                                 <div class="input-group input-group-merge">
                                                     <input type="date" id="fechaInicio"
-                                                        class="form-control @error('fechaInicio') is-invalid @enderror"
-                                                        aria-label="Fecha de inicio" name="fechaInicio" required />
+                                                           class="form-control @error('fechaInicio') is-invalid @enderror"
+                                                           aria-label="Fecha de inicio" name="fechaInicio" required/>
                                                 </div>
                                                 <span class="text-danger d-none fechaInicioError" role="alert">
                                                     <span class="msjFechaInicioError"></span>
@@ -201,8 +202,8 @@
                                             <div class="col-sm-9">
                                                 <div class="input-group input-group-merge">
                                                     <input type="date" id="termino"
-                                                        class="form-control @error('termino') is-invalid @enderror"
-                                                        name="termino" required />
+                                                           class="form-control @error('termino') is-invalid @enderror"
+                                                           name="termino" required/>
                                                 </div>
                                                 <span class="text-danger d-none fechaFinError" role="alert">
                                                     <span class="msjFechaFinError"></span>
@@ -217,14 +218,33 @@
                                                     <span id="cupos2" class="input-group-text"><i
                                                             class="fa-regular fa-input-numeric"></i></span>
                                                     <input type="number" id="cupos"
-                                                        class="form-control @error('cupos') is-invalid @enderror"
-                                                        aria-label="Nombre para la cupos" aria-describedby="cupos2"
-                                                        name="cupos"
-                                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                        maxlength="3" required />
+                                                           class="form-control @error('cupos') is-invalid @enderror"
+                                                           aria-label="Nombre para la cupos" aria-describedby="cupos2"
+                                                           name="cupos"
+                                                           oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                                           maxlength="3" required/>
                                                 </div>
                                                 <span class="text-danger d-none cuposError" role="alert">
                                                     <span class="msjCuposError"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3 d-flex">
+                                            <label class="col-sm-6 col-form-label" for="horas">
+                                                Duración por actividad (en horas)
+                                            </label>
+                                            <div class="col-sm-6">
+                                                <div class="input-group input-group-merge">
+                                                    <span id="horas2" class="input-group-text"><i
+                                                            class="fa-regular fa-input-numeric"></i></span>
+                                                    <input type="number" id="horas"
+                                                           class="form-control @error('descripcion') is-invalid @enderror"
+                                                           oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                                           name="horas" maxlength="2" required/>
+                                                </div>
+                                                <span class="text-danger d-none definirHorarioError" role="alert">
+                                                    <span class="msjDefinirHorarioError"></span>
                                                 </span>
                                             </div>
                                         </div>
@@ -234,7 +254,7 @@
                                             <div class="col-sm-9">
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox" id="publicado"
-                                                        name="publicado" />
+                                                           name="publicado"/>
                                                     <label class="form-check-label" for="publicado">Publicado</label>
                                                 </div>
                                                 <div class="form-text">Inidica el estado inicial para la nueva
@@ -248,35 +268,17 @@
                                         <!-- Basic Layout -->
                                         <div class="d-flex justify-content-center">
                                             <img class="img-fluid" src="{{ asset('assets/images/default-img.gif') }}"
-                                                id="imagenSeleccionada" style="max-height: 510px; height: 510px;">
+                                                 id="imagenSeleccionada" style="max-height: 510px; height: 510px;">
                                         </div>
                                     </div>
 
                                 </div>
-                                <input type="button" class="next btn btn-primary btn-sm" value="Siguiente" />
+                                <input type="button" class="next btn btn-primary btn-sm" value="Siguiente"/>
                             </fieldset>
                             <fieldset class="d-none">
                                 <h3> Paso 2: Definición de Horarios</h3>
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-7">
-                                        <div class="row mb-3 d-flex">
-                                            <label class="col-sm-9 col-form-label" for="horas">
-                                                Duración por actividad (en horas)
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <div class="input-group input-group-merge">
-                                                    <span id="horas2" class="input-group-text"><i
-                                                            class="fa-regular fa-input-numeric"></i></span>
-                                                    <input type="number" id="horas"
-                                                        class="form-control @error('descripcion') is-invalid @enderror"
-                                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                        name="horas" maxlength="2" required />
-                                                </div>
-                                                <span class="text-danger d-none definirHorarioError" role="alert">
-                                                    <span class="msjDefinirHorarioError"></span>
-                                                </span>
-                                            </div>
-                                        </div>
                                         <div class="row mb-3">
                                             <div class="col-md-4 mb-3 d-flex justify-content-between">
                                                 <label class="col-sm-3 col-form-label" for="dias">Día</label>
@@ -286,7 +288,7 @@
                                                             <i class="fa-regular fa-calendar-range"></i>
                                                         </span>
                                                         <select class="form-select" id="dias" aria-label="dias"
-                                                            name="dias" required>
+                                                                name="dias" required>
                                                             <option value="" selected disabled>DÍA</option>
                                                         </select>
                                                     </div>
@@ -300,8 +302,8 @@
                                                             <i class="fa-regular fa-clock-two"></i>
                                                         </span>
                                                         <input class="form-control horas" type="time"
-                                                            aria-describedby="horaInicio2" name="horaInicio"
-                                                            id="horaInicio" required />
+                                                               aria-describedby="horaInicio2" name="horaInicio"
+                                                               id="horaInicio" required/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -313,8 +315,8 @@
                                                             <i class="fa-regular fa-clock-eight-thirty"></i>
                                                         </span>
                                                         <input class="form-control horas" type="time"
-                                                            aria-describedby="horaFin" name="horaFin" id="horaFin"
-                                                            required />
+                                                               aria-describedby="horaFin" name="horaFin" id="horaFin"
+                                                               required/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -322,7 +324,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-12 d-flex justify-content-end align-items-center">
                                                 <button type="button" class="btn btn-sm btn-primary btn-add"
-                                                    id="btn-add-hour">
+                                                        id="btn-add-hour">
                                                     <i class="fa-solid fa-plus"></i>
                                                 </button>
                                                 <span class="ms-2">
@@ -346,9 +348,9 @@
                                     </div>
                                 </div>
                                 <input type="button" name="previous" class="previous btn btn-secondary btn-sm"
-                                    value="Atrás" />
+                                       value="Atrás"/>
                                 <input type="button" class=" btn btn-primary btn-sm" value="Guardar y Continuar"
-                                    id="guardarycontinuar" />
+                                       id="guardarycontinuar"/>
                             </fieldset>
                         </form>
                     </div>
@@ -369,7 +371,7 @@
         // arreglo de horarios
         var totalHorarios = new Array();
         var horasInscripcion = new Array();
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Días del select para la sección horarios
             const dias = [
                 'LUNES',
@@ -401,7 +403,7 @@
             steps = $("fieldset").length;
 
             // Accionadores de botones siguiente y anterior
-            $(".next").click(function() {
+            $(".next").click(function () {
                 current_step = $(this).parent();
                 next_step = $(this).parent().next();
                 next_step.show();
@@ -409,7 +411,7 @@
                 setProgressBar(++current);
                 next_step.removeClass("d-none");
             });
-            $(".previous").click(function() {
+            $(".previous").click(function () {
                 current_step = $(this).parent();
                 next_step = $(this).parent().prev();
                 next_step.show();
@@ -429,13 +431,13 @@
         });
 
         // Obtener categorias basads en actividad
-        $("#actividad").on('change', function() {
+        $("#actividad").on('change', function () {
             let actividadId = $(this).val();
             $.ajax({
                 type: "GET",
                 url: `/admin/actividades/obtener/${actividadId}/subcategorias`,
-                success: function(data) {
-                    let datatype = typeof(data);
+                success: function (data) {
+                    let datatype = typeof (data);
                     let defaultOptionCategory = $("#categoria");
                     if (datatype === "string") {
                         $("#modalcomponent").modal('show');
@@ -456,7 +458,7 @@
                         });
                     }
                 },
-                error: function(err) {
+                error: function (err) {
                     $("#modalcomponent").modal('show');
                     $("#mcbody").html(err.responseJSON.message);
                 }
@@ -464,13 +466,13 @@
         });
 
         // Obtener sede basada en lugares
-        $("#sede").on('change', function() {
+        $("#sede").on('change', function () {
             let sedeId = $(this).val();
             $.ajax({
                 type: "GET",
                 url: `/admin/actividades/obtener/${sedeId}/lugares`,
-                success: function(data) {
-                    let datatype = typeof(data);
+                success: function (data) {
+                    let datatype = typeof (data);
                     let defaultOptionCategory = $("#lugar");
                     if (datatype === "string") {
                         $("#modalcomponent").modal('show');
@@ -491,7 +493,7 @@
                         });
                     }
                 },
-                error: function(err) {
+                error: function (err) {
                     $("#modalcomponent").modal('show');
                     $("#mcbody").html(err.responseJSON.message);
                 }
@@ -512,7 +514,7 @@
             `);
 
         // Click en boton quitar
-        $("#btn-add-hour").on("click", function() {
+        $("#btn-add-hour").on("click", function () {
             const dia = $("#dias");
             const duracion = $("#horas");
             const horaInicio = $("#horaInicio");
@@ -583,13 +585,13 @@
         }
 
         // buscar al miembro o usuario registrado en sistema
-        $("#buscarMiembro").on('click', function() {
+        $("#buscarMiembro").on('click', function () {
             let documento = $("#documentomiembro").val();
             $.ajax({
                 type: "GET",
                 url: `/admin/actividades/obtener/${documento}/miembro`,
-                success: function(data) {
-                    let datatype = typeof(data);
+                success: function (data) {
+                    let datatype = typeof (data);
                     if (datatype === "string") {
                         $("#modalcomponent").modal('show');
                         $("#mcbody").html(data);
@@ -602,7 +604,7 @@
                         $("#btn-add-horario").removeAttr("disabled");
                     }
                 },
-                error: function(err) {
+                error: function (err) {
                     $("#modalcomponent").modal('show');
                     $("#mcbody").html(err.responseJSON.message);
                 }
@@ -610,7 +612,7 @@
         });
 
         // agregar horario del miembro inscrito
-        $("#btn-add-horario").on('click', function() {
+        $("#btn-add-horario").on('click', function () {
             const diasInscripcion = $("#diasInscripcion");
             const miembro = $("#miembro");
             const idMiembro = $("#idmiembro").val();
@@ -682,16 +684,16 @@
         }
 
         // Obtener costo por lugar
-        $("#lugar").on('change', function() {
+        $("#lugar").on('change', function () {
             let idActividad = $('#actividad').val();
             let idLugar = $(this).val();
             $.ajax({
                 type: "GET",
                 url: `/admin/actividades/obtener/consto/${idActividad}/${idLugar}/lugar`,
-                success: function(response) {
+                success: function (response) {
                     if (response != null) {
                         $(".contenedor-turnos").html("");
-                        response.forEach(function(e) {
+                        response.forEach(function (e) {
                             $(".contenedor-turnos").append(`
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="turno" value="${e.descripcion}" id="${e.descripcion}">
@@ -708,7 +710,7 @@
         });
 
         // Obtener imagen de categoría
-        $("#categoria").on('change', function() {
+        $("#categoria").on('change', function () {
             let id = $(this).val();
             Swal.fire({
                 icon: 'info',
@@ -721,7 +723,7 @@
             $.ajax({
                 type: "GET",
                 url: `/admin/actividades/obtener/imagen/${id}/categoria`,
-                success: function(response) {
+                success: function (response) {
                     Swal.close();
                     if (response) {
                         let imagen = response.imagen;
@@ -732,7 +734,7 @@
         });
 
         // Registrar la nueva actividad
-        $("#guardarycontinuar").on('click', function(e) {
+        $("#guardarycontinuar").on('click', function (e) {
             // e.preventDefault();
             let responsable = $("#respadmin").val();
             let actividad = $("#actividad").val();
@@ -750,7 +752,7 @@
             let data = {};
 
             // Rellenar tabla de turnos y horarios
-            $("#tableComponent").find("tbody tr").each(function(idx, row) {
+            $("#tableComponent").find("tbody tr").each(function (idx, row) {
                 var JsonData = {};
                 JsonData.dias = $("td:eq(0)", row).text();
                 JsonData.horarios = $("td:eq(1)", row).text();
@@ -896,7 +898,7 @@
                     horasActividad,
                     fechasDefinidas,
                 },
-                success: function(response) {
+                success: function (response) {
                     Swal.fire({
                         icon: 'info',
                         html: "Espere un momento porfavor ...",
@@ -905,7 +907,15 @@
                             Swal.showLoading();
                         }
                     });
-                    window.location.href = "{{ route('redirigir.incripcion.actividad') }}";
+
+                    if(response.respRegistro === "exito"){
+                        window.location.href = `/admin/actividades/nueva/inscripcion/${response.idPlantilla}/${response.idRegistro}/redirigido`;
+                    }else{
+                        messagesInfo('Lo sentimos', 'warning',
+                            'Parece que algo sucedio, comunicate con el administrador',
+                            'Entiendo');
+                        Swal.close();
+                    }
                 }
             });
         });

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use DateTime;
+use Illuminate\Support\Str;
 
 class TenisController extends Controller
 {
@@ -28,7 +29,7 @@ class TenisController extends Controller
     }
 
     // get categories by id activity
-    public function categoryCharge($id)
+    public function categoryCharge(string $id)
     {
         $subtiposervicio = SubtipoServicio::where('tiposervicios_id', $id)->orderBy('id', 'desc')->get();
 
@@ -39,8 +40,9 @@ class TenisController extends Controller
             return response()->json($subtiposervicio);
         }
     }
+
     // get category by idPlaces
-    public function placesCharge($id)
+    public function placesCharge(string $id)
     {
         $lugares = Lugar::where('sede_id', $id)->get();
         if (count($lugares) == 0) {
@@ -51,21 +53,20 @@ class TenisController extends Controller
         }
     }
 
-    public function coastPlaces($idActividad, $idLugar)
+    public function coastPlaces(string $idActividad, string $idLugar)
     {
         // $lugar_costo = DB::select("select id,descripcion,costohora as costo,tipo from 	public.lugar_costos
         //                         where tiposervicios_id=? and lugars_id = ?", [$idActividad, $idLugar]);
-        $lugar_costo = DB::select("select id,descripcion,costohora as costo,tipo from 	public.lugar_costos
-                                   where tiposervicios_id=? and lugars_id = ?
-                                   union
-                                   select 0 as id, 'AMBOS' as descripcion,0 as costo, 'V' as tipo", [$idActividad, $idLugar]);
+        $lugar_costo = DB::select("SELECT id,descripcion,costohora AS costo,tipo FROM 	public.lugar_costos
+                                   WHERE tiposervicios_id=? AND lugars_id = ?
+                                   UNION SELECT 0 AS id, 'AMBOS' AS descripcion,0 AS costo, 'V' AS tipo", [$idActividad, $idLugar]);
         return response()->json($lugar_costo);
     }
 
     // get member by document
-    public function searchMember($document)
+    public function searchMember(string $document)
     {
-        $findMember = Persona::where('documento', $document)->where('tipocategoria_id', 2)->get();
+        $findMember = Persona::where('documento', $document)->where('tipocategoria_id','<>',3)->where('tipocategoria_id','<>',4)->where('tipocategoria_id','<>',5)->get();
         if (count($findMember) <= 0) {
             $findMember = "Parece que el documento: $document no es de un miembro o no se encuentra registrado, favor de verificar que el documento ingresado sea correcto y corresponda a un miembro, luego volver a itentar";
             return response()->json($findMember);
@@ -74,8 +75,9 @@ class TenisController extends Controller
         }
     }
 
-    public function renderImageForCategory($id){
-        $imagen = SubtipoServicio::where('id',$id)->select("imagen")->get();
+    public function renderImageForCategory(string $id)
+    {
+        $imagen = SubtipoServicio::where('id', $id)->select("imagen")->get();
         return response()->json($imagen[0]);
     }
 
@@ -86,53 +88,77 @@ class TenisController extends Controller
         $categoria = $request->categoria;
         $sede = $request->sede;
         $lugar = $request->lugar;
-        $fechaInicio = $request->fechaInicio;
-        $termino = $request->termino;
+        $fechaInicio = $request->fechaInicio." 00:00:00";
+        $termino = $request->termino." 00:00:00";
         $cupos = $request->cupos;
         $horasActividad = $request->horasActividad;
         $turno = $request->turno;
-        $usuario = Persona::where('usuario_id',Auth::user()->id)->get();
-        $usuario_creador = $usuario[0]->nombres." ".$usuario[0]->apepaterno." ".$usuario[0]->apematerno;
+        $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
+        $nombre_usuario = $usuario[0]->nombres . " " . $usuario[0]->apepaterno . " " . $usuario[0]->apematerno;
         $ip = $request->ip();
         $created_at = new DateTime();
         $creacion = $created_at->format('Y-m-d H:i:s');
+        $fechasDefinidas = $request->fechasDefinidas;
 
-        $validation = Validator::make($request->all(), [
-            'actividad' => 'required',
-            'categoria' => 'required',
-            'sede' => 'required',
-            'lugar' => 'required',
-            'fechaInicio' => 'required',
-            'termino' => 'required',
-            'cupos' => 'required',
-            'horasActividad' => 'required',
-        ], [
-            'actividad.required' => 'Porfavor selecciona una actividad',
-            'categoria.required' => 'Porfavor selecciona una categoría',
-            'sede.required' => 'Porfavor selecciona una sede',
-            'lugar.required' => 'Porfavor selecciona un lugar',
-            'fechaInicio.required' => 'Porfavor ingresa una fecha de inicio',
-            'termino.required' => 'Porfavor ingresa una fecha de termino',
-            'cupos.required' => 'Porfavor ingresa la cantidad de cupos',
-            'horasActividad.required' => 'Porfavor indica las horas por actividad',
-        ]);
+        $validation = Validator::make($request->all(),
+            [
+                'actividad' => 'required',
+                'categoria' => 'required',
+                'sede' => 'required',
+                'lugar' => 'required',
+                'fechaInicio' => 'required',
+                'termino' => 'required',
+                'cupos' => 'required',
+                'horasActividad' => 'required',
+            ],
+            [
+                'actividad.required' => 'Porfavor selecciona una actividad',
+                'categoria.required' => 'Porfavor selecciona una categoría',
+                'sede.required' => 'Porfavor selecciona una sede',
+                'lugar.required' => 'Porfavor selecciona un lugar',
+                'fechaInicio.required' => 'Porfavor ingresa una fecha de inicio',
+                'termino.required' => 'Porfavor ingresa una fecha de termino',
+                'cupos.required' => 'Porfavor ingresa la cantidad de cupos',
+                'horasActividad.required' => 'Porfavor indica las horas por actividad',
+            ]);
 
         if ($validation->fails()) {
             $error = $validation->errors();
             return response()->json(['error' => $error]);
         }
 
-        return response()->json($resp = 'ok');
+        $servicioTenisCrear = DB::select("SELECT servicio_tenis_crear(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[$fechaInicio,$termino,$responsable,$actividad,$sede,$lugar,$cupos,2,$nombre_usuario,$ip,$creacion,$turno,$categoria,$horasActividad]);
 
-        // $servicioTenisCrear = DB::select("SELECT servicio_tenis_crear($fechaInicio,$termino,$responsable,$actividad,$sede,$lugar,$cupos,2,$usuario_creador,$ip,$creacion,$turno)");
+        $idRespuesta = $servicioTenisCrear[0]->servicio_tenis_crear;
 
-        // dd($servicioTenisCrear);
+        $idPlantillaConvert = Str::of($idRespuesta)->after(',')->before(')');
+        $idRegistroConvert = Str::of($idRespuesta)->before(',')->after('(');
 
-        // $servicioTenisHoras = DB::select("SELECT servicio_tenis_horario(:p_servicioplantilla_id, :p_dia, :p_horas, :p_desde, :p_hasta, :p_usuario_creador, :p_ip_usuario, :p_created_at);");
+        foreach ($fechasDefinidas as $fecha) {
+            $dia = $fecha["dias"];
+            $hInicio = Str::of($fecha["horarios"])->before(' ');
+            $hFin = Str::of($fecha["horarios"])->after('- ');
+            $servicioTenisHoras = DB::select("SELECT servicio_tenis_horario(?,?,?,?,?,?,?);",[$idPlantillaConvert,$dia,$hInicio,$hFin,$nombre_usuario,$ip,$creacion]);
+        }
 
+        $respuestaHorarios = $servicioTenisHoras[0]->servicio_tenis_horario;
+        $respuesta = Str::of($respuestaHorarios)->after(',')->before(')');
+
+        return response()->json(['idPlantilla'=>$idPlantillaConvert,'idRegistro'=>$idRegistroConvert,'respRegistro'=>$respuesta]);
     }
 
-    public function redirectAfterCreateActivity(){
-        return view('pages.private.actividades.inscripciones.create-to-activity');
+    public function redirectAfterCreateActivity(string $plantilla, string $registro)
+    {
+        $plantillaId = $plantilla;
+        $registroId = $registro;
+
+        $diasPorActividad = DB::select("select dia FROM servicioinscripcion_listardias(?);",[$registroId]);
+        return view('pages.private.actividades.inscripciones.create-to-activity', compact('diasPorActividad','registro'));
+    }
+
+    public function getHoursForDay(string $idRegister,string $day){
+        $hours = DB::select("select horarios FROM servicioinscripcion_listarhora(?,?)",[$idRegister,$day]);
+        dd($hours);
+        return null;
     }
 }

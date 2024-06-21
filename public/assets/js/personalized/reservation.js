@@ -226,6 +226,7 @@ function payPlace() {
     var sede = $('#sede').val();
     var lugar = $('#lugar').val();
     var precio = $('#percioModal').val();
+    var conluz = $('#conluz').val();
 
     const datos =
     {
@@ -235,6 +236,7 @@ function payPlace() {
         'sede': sede,
         'lugar': lugar,
         'precio': precio,
+        'conluz':conluz
     }
     axios
         .post("/ciar/nueva", datos)

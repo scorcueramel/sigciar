@@ -31,7 +31,7 @@ class ReservationController extends Controller
 
     public function getPlaces($id)
     {
-        $lugares = Lugar::where('estado','A')->where('sede_id', $id)->get();
+        $lugares = Lugar::where('estado', 'A')->where('sede_id', $id)->get();
         return response()->json($lugares);
     }
 
@@ -87,11 +87,12 @@ class ReservationController extends Controller
             "usuario_creador" => $usuario_creador,
             "ip_usuario" => $request->ip(),
             "created_at" => Carbon::now()->toDateTimeString(),
-            "periodicidad_id" => 1
+            "periodicidad_id" => 1,
+            "conluz" => (string)$request->conluz
         ];
 
         DB::select(
-            "SELECT servicio_alquiler(?,?,?,?,?,?,?,?,?,?,?)",
+            "SELECT servicio_alquiler(?,?,?,?,?,?,?,?,?,?,?,?)",
             [
                 $datos_reserva["inicio"],
                 $datos_reserva["fin"],
@@ -103,7 +104,8 @@ class ReservationController extends Controller
                 $datos_reserva["usuario_creador"],
                 $datos_reserva["ip_usuario"],
                 $datos_reserva["created_at"],
-                $datos_reserva["periodicidad_id"]
+                $datos_reserva["periodicidad_id"],
+                $datos_reserva["conluz"]
             ]
         );
 
@@ -112,7 +114,14 @@ class ReservationController extends Controller
 
     public function show($sede, $lugar)
     {
-        $reservations = DB::select('SELECT s.id, s.tiposervicio_id, s.sede_id, s.lugar_id, s.capacidad, s.inicio AS start, s.fin AS end, s.estado FROM servicios s WHERE s.sede_id = ? AND s.lugar_id = ?', [$sede, $lugar]);
+        //$reservations = DB::select('SELECT s.id, s.tiposervicio_id, s.sede_id, s.lugar_id, s.capacidad, s.inicio AS start, s.fin AS end, s.estado
+        //FROM servicios s WHERE s.sede_id = ? AND s.lugar_id = ?', [$sede, $lugar]);
+        $reservations = DB::select("select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
+                                          s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
+                                          from servicio_reservas sr
+                                          left join public.servicio_plantillas sp on sr.servicioplantilla_id = sp.id
+                                          left join public.servicios s on sp.servicio_id = s.id
+                                          WHERE s.sede_id = ? AND s.lugar_id = ? AND sr.estado= 'CA'", [$sede, $lugar]);
 
         return response()->json($reservations);
     }
