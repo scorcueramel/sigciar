@@ -352,6 +352,9 @@
                                 <input type="button" class=" btn btn-primary btn-sm" value="Guardar y Continuar"
                                        id="guardarycontinuar"/>
                             </fieldset>
+                            <fieldset class="d-none">
+                                <div class="row"></div>
+                            </fieldset>
                         </form>
                     </div>
                 </div>
@@ -574,105 +577,6 @@
                             <td>${el.horainicio} - ${el.horafin}</td>
                             <td>
                                 <button type='button' class='btn btn-sm btn-danger' onclick='removerElemento("${i}");'>
-                                    <i class='fa-solid fa-ban'></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-                }
-            }
-
-        }
-
-        // buscar al miembro o usuario registrado en sistema
-        $("#buscarMiembro").on('click', function () {
-            let documento = $("#documentomiembro").val();
-            $.ajax({
-                type: "GET",
-                url: `/admin/actividades/obtener/${documento}/miembro`,
-                success: function (data) {
-                    let datatype = typeof (data);
-                    if (datatype === "string") {
-                        $("#modalcomponent").modal('show');
-                        $("#mcbody").html(data);
-                    } else {
-                        let nombres = `${data[0].nombres} ${data[0].apepaterno} ${data[0].apematerno}`;
-                        $("#idmiembro").val(data[0].id);
-                        $("#miembro").val(nombres.toString());
-                        $("#diasInscripcion").removeAttr("disabled");
-                        $("#ingreso").removeAttr("disabled");
-                        $("#btn-add-horario").removeAttr("disabled");
-                    }
-                },
-                error: function (err) {
-                    $("#modalcomponent").modal('show');
-                    $("#mcbody").html(err.responseJSON.message);
-                }
-            });
-        });
-
-        // agregar horario del miembro inscrito
-        $("#btn-add-horario").on('click', function () {
-            const diasInscripcion = $("#diasInscripcion");
-            const miembro = $("#miembro");
-            const idMiembro = $("#idmiembro").val();
-            const ingreso = $("#ingreso");
-
-            if (miembro.val() === null || diasInscripcion.val() === null || ingreso.val() === null || idMiembro ===
-                null) {
-                Swal.fire({
-                    title: '<strong>Lo sentimos <i class="fa-solid fa-face-scream"></i></strong>',
-                    icon: "warning",
-                    html: `<p>Debes rellenar todos los campos para agregarlo a la tabla</p>`,
-                    showCloseButton: true,
-                    focusConfirm: true,
-                    confirmButtonText: `Entiendo`,
-                });
-            } else {
-                horasInscripcion.push({
-                    "diasInscripcion": diasInscripcion.val(),
-                    "miembro": miembro.val(),
-                    "idMiembro": idMiembro,
-                    "ingreso": ingreso.val(),
-                });
-
-                bodyTableScriptions.html("");
-
-                for (let i = 0; i < horasInscripcion.length; i++) {
-                    const el = horasInscripcion[i];
-                    bodyTableScriptions.append(`
-                        <tr>
-                            <td>${el.diasInscripcion}</td>
-                            <td>${el.ingreso}</td>
-                            <td>
-                                <button type='button' class='btn btn-sm btn-danger' onclick='removerElementoInscrito("${i}");'>
-                                    <i class='fa-solid fa-ban'></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-                }
-            }
-        });
-
-        // funcion remover de tabla inscripciones
-        function removerElementoInscrito(indice) {
-            if (horasInscripcion.length > 0) {
-                for (let i = 0; i < horasInscripcion.length; i++) {
-                    if (i == indice) {
-                        horasInscripcion.splice(indice, 1);
-                    }
-                }
-                bodyTableScriptions.html("");
-
-                for (let i = 0; i < horasInscripcion.length; i++) {
-                    const el = horasInscripcion[i];
-                    bodyTableScriptions.append(`
-                        <tr>
-                            <td>${el.diasInscripcion}</td>
-                            <td>${el.ingreso}</td>
-                            <td>
-                                <button type='button' class='btn btn-sm btn-danger' onclick='removerElementoInscrito("${i}");'>
                                     <i class='fa-solid fa-ban'></i>
                                 </button>
                             </td>

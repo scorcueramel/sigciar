@@ -8,6 +8,38 @@
         </div>
         <div class="row padding3 justify-content-center">
             <div class="swiper swTenis col-11 col-md-11" data-aos="fade-up" data-aos-duration="1000">
+                @if(!is_null($actividades))
+                    <div class="swiper-wrapper">
+                    @foreach($actividades as $actividad)
+                        <div class="swiper-slide col-12 col-md-4 py-4">
+                            <div class="item-actividades position-relative">
+                                <div class="contenedor-item">
+                                    <figure class="imagen-item">
+                                        <a href="#">
+                                            <img src="{{asset('assets/images/actividades/'.$actividad->imagen)}}" class="w-100" />
+                                        </a>
+                                    </figure>
+
+                                    <div class="overlay-item text-start">
+                                        <div class="info-item py-3 px-3">
+                                            <h3 class="titulo-item altas mb-0">
+                                                <a href="#">{{$actividad->titulo}}</a>
+                                            </h3>
+                                            <div class="edades altas">{{$actividad->subtitulo}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="tag-item">{{$actividad->medicion}}</div>
+                                    <div class="precio text-start">
+                                        desde S/ {{$actividad->desde}} <span class="frecuencia">/ 4 clases al mes</span>
+                                        <a href="#" class="enlace"><img src="{{asset('assets/images/link.svg')}}" /></a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    @endforeach
+                    </div>
+                @else
                 <div class="swiper-wrapper">
                     <div class="swiper-slide col-12 col-md-4 py-4">
                         <div class="item-actividades position-relative">
@@ -140,6 +172,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 <div class="swiper-button-prev arrow"><svg>
                         <use href="{{asset('assets/images/icons.svg')}}#arrow-prev" />
                     </svg></div>

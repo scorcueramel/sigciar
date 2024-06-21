@@ -153,6 +153,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <a href="{{route('home')}}" class="btn btn-sm btn-secondary">Terminar</a>
                                 <input type="button" name="submit" class="btn btn-primary btn-sm" id="guardarRegistro"
                                        value="Guardar"/>
                             </fieldset>
@@ -194,8 +195,8 @@
 
         // Agregar cabecera a la tabla horarios
         const headerTable = $('#headertable');
+        // Referencia el cuerpo de la tabla
         const bodyTable = $('#bodytable');
-        const bodyTableScriptions = $("#tablainscripciones");
 
         headerTable.append(`
                 <tr>
@@ -223,7 +224,7 @@
                         $("#miembro").val(nombres.toString());
                         $("#diasInscripcion").removeAttr("disabled");
                         $("#ingreso").removeAttr("disabled");
-                        $("#btn-add-horario").removeAttr("disabled");
+
                         $('.miembroEncontrado').attr('d-none');
                     }
                 },
@@ -232,80 +233,6 @@
                     $("#mcbody").html(err.responseJSON.message);
                 }
             });
-        });
-
-        // agregar horario del miembro inscrito
-        $("#btn-add-horario").on('click', function () {
-            const documento = $("#documentomiembro");
-            const nombreMiembro = $("#miembro");
-            const idMiembro = $("#idMiembro").val();
-            const diasInscripcion = $("#diasInscripcion");
-            const horasInscripcion = $("#horasInscripcion");
-            const ingreso = $("#ingreso");
-
-            if (documento.val() === '') {
-                messagesInfo('<strong>Lo sentimos <i class="fa-solid fa-face-scream"></i></strong>', 'warning', `<p>Debes rellenar el campo documentos de indentidad</p>`, 'Entiendo')
-                $('.documentoMiembro').removeClass('d-none');
-                $('.msjDocumentoMiembro').html("Porfavor selecciona un responsable");
-                return;
-            } else {
-                $('.documentoMiembro').attr('d-none');
-            }
-
-            if (nombreMiembro.val() === '') {
-                messagesInfo('<strong>Lo sentimos <i class="fa-solid fa-face-scream"></i></strong>', 'warning', `<p>Debes encontrar un miembro para registrarlo en la tabla</p>`, 'Entiendo')
-                $('.miembroEncontrado').removeClass('d-none');
-                $('.msjMiembroEncontrado').html("Porfavor selecciona un mimembro a quien asignar la actividad");
-                return;
-            } else {
-                $('.miembroEncontrado').attr('d-none');
-            }
-
-            if (diasInscripcion.val() === null) {
-                messagesInfo('<strong>Lo sentimos <i class="fa-solid fa-face-scream"></i></strong>', 'warning', `<p>Debes seleccionar un día para poder continuar con el registro</p>`, 'Entiendo')
-                $('.diasError').removeClass('d-none');
-                $('.msjDiasError').html("Porfavor selecciona un día");
-                return;
-            } else {
-                $('.diasError').attr('d-none');
-            }
-
-            if (horasInscripcion.val() === null) {
-                messagesInfo('<strong>Lo sentimos <i class="fa-solid fa-face-scream"></i></strong>', 'warning', `<p>Debes seleccionar un horario para poder continuar con el registro</p>`, 'Entiendo')
-                $('.horasError').removeClass('d-none');
-                $('.msjHorasError').html("Porfavor selecciona un horario");
-                return;
-            } else {
-                $('.horasError').attr('d-none');
-            }
-
-            if (documento.val() === '' || nombreMiembro.val() === '' || diasInscripcion.val() === '' || diasInscripcion.val() === '' || idMiembro === '') {
-
-            } else {
-                horasInscripcion.push({
-                    "documento": documento.val(),
-                    "nombreMiembro": nombreMiembro.val(),
-                    "diasInscripcion": diasInscripcion,
-                    "ingreso": ingreso.val(),
-                });
-
-                bodyTableScriptions.html("");
-
-                for (let i = 0; i < horasInscripcion.length; i++) {
-                    const el = horasInscripcion[i];
-                    bodyTableScriptions.append(`
-                        <tr>
-                            <td>${el.diasInscripcion}</td>
-                            <td>${el.ingreso}</td>
-                            <td>
-                                <button type='button' class='btn btn-sm btn-danger' onclick='removerElementoInscrito("${i}");'>
-                                    <i class='fa-solid fa-ban'></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-                }
-            }
         });
 
         // quitaar el error de días y solicitar los horarios
@@ -345,29 +272,29 @@
         $("#btn-add-hour").on("click", function () {
             const dia = $("#diasInscripcion");
             const hora = $("#horasInscripcion");
-            let totalHorarios = new Array();
+
+            for (let i = 0; i < totalHorarios.length; i++) {
+                const el = totalHorarios[i];
+                if(el.dia === dia.val()){
+                    messagesInfo('<strong>Lo sentimos</strong>','warning',`<p>El día <strong>${dia.val()}</strong> ya fue registrado, te sugerimos quitarlo y modificar el horario seleccionado</p>`,`Entiendo`);
+                    return;
+                }
+            }
 
             if (dia.val() === '' || hora.val() === null ) {
-                Swal.fire({
-                    title: '<strong>Lo sentimos <i class="fa-solid fa-face-scream"></i></strong>',
-                    icon: "warning",
-                    html: `<p>Debes seleccionar un dia y una hora como minimo</p>`,
-                    showCloseButton: true,
-                    focusConfirm: true,
-                    confirmButtonText: `Entiendo`,
-                }).then((resp) => {
-                    dia.focus();
-                });
+                messagesInfo('<strong>Lo sentimos</strong>','warning',`<p>Es obligatorio seleccionar un Día y una Hora</p>`,`Entiendo`)
             }
             else {
                 totalHorarios.push({
                     "dia": dia.val(),
                     "hora": hora.val()
                 });
-                // bodyTable.html("");
+
+                bodyTable.html("");
 
                 for (let i = 0; i < totalHorarios.length; i++) {
                     const el = totalHorarios[i];
+
                     bodyTable.append(`
                         <tr>
                             <td>${el.dia}</td>
@@ -383,27 +310,40 @@
             }
         });
 
-        $("#guardarRegistro").
+        //
+        $("#guardarRegistro").on("click",function (){
+            const idmiembro = $("#idMiembro");
+            let fechasDefinidas = [];
 
+            // Rellenar tabla de turnos y horarios
+            $("#tableComponent").find("tbody tr").each(function (idx, row) {
+                var JsonData = {};
+                JsonData.dias = $("td:eq(0)", row).text();
+                JsonData.horarios = $("td:eq(1)", row).text();
+                fechasDefinidas.push(JsonData);
+            });
 
-        // funcion remover de tabla inscripciones
-        function removerElementoInscrito(indice) {
-            if (horasInscripcion.length > 0) {
-                for (let i = 0; i < horasInscripcion.length; i++) {
+            console.log(idmiembro.val(),fechasDefinidas);
+        });
+
+        // funcion remover de tabla horarios
+        function removerElemento(indice) {
+            if (totalHorarios.length > 0) {
+                for (let i = 0; i < totalHorarios.length; i++) {
+                    const el = totalHorarios[i];
                     if (i == indice) {
-                        horasInscripcion.splice(indice, 1);
+                        totalHorarios.splice(indice, 1);
                     }
                 }
-                bodyTableScriptions.html("");
-
-                for (let i = 0; i < horasInscripcion.length; i++) {
-                    const el = horasInscripcion[i];
-                    bodyTableScriptions.append(`
+                bodyTable.html("");
+                for (let i = 0; i < totalHorarios.length; i++) {
+                    const el = totalHorarios[i];
+                    bodyTable.append(`
                         <tr>
-                            <td>${el.diasInscripcion}</td>
-                            <td>${el.ingreso}</td>
+                            <td>${el.dia}</td>
+                            <td>${el.hora}</td>
                             <td>
-                                <button type='button' class='btn btn-sm btn-danger' onclick='removerElementoInscrito("${i}");'>
+                                <button type='button' class='btn btn-sm btn-danger' onclick='removerElemento("${i}");'>
                                     <i class='fa-solid fa-ban'></i>
                                 </button>
                             </td>
