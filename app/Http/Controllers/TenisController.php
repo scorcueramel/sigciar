@@ -158,7 +158,7 @@ class TenisController extends Controller
 
     public function getHoursForDay(string $idRegister,string $day){
         $hours = DB::select("select horarios FROM servicioinscripcion_listarhora(?,?)",[$idRegister,$day]);
-        dd($hours);
-        return null;
+
+        return response()->json($hours);
     }
 }

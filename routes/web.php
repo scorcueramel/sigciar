@@ -100,6 +100,6 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/obtener/imagen/{id}/categoria',[TenisController::class, 'renderImageForCategory'])->name('obtener.imagen.categoria');
         Route::post('/nueva',[TenisController::class,'storeNewActivity'])->name('nueva.actividad');
         Route::get('/nueva/inscripcion/{plantilla}/{horario}/redirigido',[TenisController::class, 'redirectAfterCreateActivity'])->name('redirigir.incripcion.actividad');
-        Route::get('/obtener/{idRegistro}/{$dia}/horas',[TenisController::class,'getHoursForDay'])->name('obtener.horarios.inscripciones');
+        Route::get('/obtener/{idRegistro}/{dia}/horas',[TenisController::class,'getHoursForDay'])->name('obtener.horarios.inscripciones');
     });
 });
