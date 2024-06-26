@@ -18,7 +18,7 @@
             <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Tenis Actividades /</span> Todas </h4>
         </div>
         <div class="col-md text-end">
-            <a href="#" class="btn btn-sm btn-info"><i class="fa-regular fa-newspaper"></i>
+            <a href="{{ route('tenis.create') }}" class="btn btn-sm btn-info"><i class="fa-regular fa-newspaper"></i>
                 Nueva</a>
         </div>
     </div>
@@ -40,12 +40,12 @@
                                 <th>CAPACIDAD</th>
                                 <th>INICIO</th>
                                 <th>FIN</th>
-                                <th>HORA</th>
+                                <th>HORAS POR ACTIVIDAD</th>
                                 <th>TURNO</th>
                                 <th>RESPONSABLE</th>
                                 <th>TÍTULO</th>
                                 <th>SUBTÍTULO</th>
-                                <th></th>
+                                <th>ACCIONES</th>
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
@@ -56,6 +56,13 @@
         </div>
     </div>
 @endsection
+@include('components.private.modal', [
+    'tamanio'=>'modal-sm',
+    'withTitle' => true,
+    'withButtons' => true,
+    'cancelbutton' => true,
+    'mcTextCancelButton' => 'Cerrar',
+])
 @push('js')
     <script>
         $(document).ready(() => {
@@ -169,6 +176,67 @@
                 }
             });
         }
+
+        function showDetail(id){
+            $.ajax({
+                method:'GET',
+                url:`/admin/actividades/detalle/${id}/actividad`,
+                success:function(resp){
+                    let data = resp[0];
+                    $("#mcLabel").html(`
+                        ${data.titulo} <br>
+                        <span style="font-size: 14px; font-weight: normal">${data.subtitulo}</span>
+                    `)
+                    $("#mcbody").html(`
+                        <div class="row mb-2">
+                            <div class="col-sm-auto" style="font-weight: bold">
+                                Responsable
+                            </div>
+                            <div class="col-sm-auto">
+                                ${data.responsable}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-auto" style="font-weight: bold">
+                                Inicio
+                            </div>
+                            <div class="col-sm-auto">
+                                ${new Date(data.inicio).toLocaleDateString("en-US")}
+                            </div>
+                            <div class="col-sm-auto" style="font-weight: bold">
+                                Fin
+                            </div>
+                            <div class="col-sm-auto">
+                                ${new Date(data.fin).toLocaleDateString("en-US")}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4" style="font-weight: bold">
+                                Horas Act.
+                            </div>
+                            <div class="col-sm-auto">
+                                ${data.hora} hrs.
+                            </div>
+                            <div class="col-sm-auto" style="font-weight: bold">
+                                Cupos
+                            </div>
+                            <div class="col-sm-auto">
+                                ${data.capacidad}
+                            </div>
+                        </div>
+                    `);
+                    console.log(resp);
+                },
+                error: function(err){
+                    console.log(err)
+                }
+            });
+        }
+
+        $(".cancelButton").on('click',function (){
+            $("#mcbody").html('');
+            $("#mcLabel").html('');
+        });
 
     </script>
 @endpush

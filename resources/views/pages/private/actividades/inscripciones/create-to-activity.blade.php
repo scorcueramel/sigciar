@@ -154,7 +154,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a href="{{route('home')}}" class="btn btn-sm btn-secondary">Terminar</a>
+                                <a href="{{route('tenis.index')}}" class="btn btn-sm btn-secondary">Terminar</a>
                                 <input type="button" name="submit" class="btn btn-primary btn-sm" id="guardarRegistro"
                                        value="Guardar"/>
                             </fieldset>

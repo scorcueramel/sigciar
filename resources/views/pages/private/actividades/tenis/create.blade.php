@@ -252,10 +252,17 @@
                                         <div class="row mb-3">
                                             <label class="col-sm-3 form-label" for="publicado">Publicado</label>
                                             <div class="col-sm-9">
-                                                <div class="form-check form-switch mb-2">
-                                                    <input class="form-check-input" type="checkbox" id="publicado"
-                                                           name="publicado"/>
-                                                    <label class="form-check-label" for="publicado">Publicado</label>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="publicado" value="A" id="SI">
+                                                    <label class="form-check-label" for="si">
+                                                        SI
+                                                    </label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="publicado" value="I" id="NO" checked>
+                                                    <label class="form-check-label" for="no">
+                                                        NO
+                                                    </label>
                                                 </div>
                                                 <div class="form-text">Inidica el estado inicial para la nueva
                                                     actividad
@@ -651,7 +658,8 @@
             let fechaInicio = $("#fechaInicio").val();
             let termino = $("#termino").val();
             let cupos = $("#cupos").val();
-            let publicado = $("#publicado").val();
+            let publicadoIsChecked = $("input[name=publicado]:checked ");
+            let publicado = publicadoIsChecked.val();
             let horasActividad = $("#horas").val();
             let fechasDefinidas = [];
             let data = {};

@@ -96,7 +96,6 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/tablaactividades',[TenisController::class,'tableActivity'])->name('tabla.tenis');
         Route::post('/change/state', [TenisController::class, 'changeState'])->name('tenis.change.state');
         Route::post('/actividades/eliminar',[TenisController::class, 'destroyActivity'])->name('tenis.actividad.eliminar');
-
         Route::get('nueva',[TenisController::class, 'create'])->name('tenis.create');
         Route::get('/obtener/{id}/subcategorias', [TenisController::class, 'categoryCharge'])->name('obtener.subcategorias');
         Route::get('/obtener/{id}/lugares', [TenisController::class, 'placesCharge'])->name('obtener.lugres');
@@ -106,6 +105,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/nueva',[TenisController::class,'storeNewActivity'])->name('nueva.actividad');
         Route::get('/nueva/inscripcion/{plantilla}/{horario}/redirigido',[TenisController::class, 'redirectAfterCreateActivity'])->name('redirigir.incripcion.actividad');
         Route::get('/obtener/{idRegistro}/{dia}/horas',[TenisController::class,'getHoursForDay'])->name('obtener.horarios.inscripciones');
+        Route::get('/detalle/{id}/actividad',[TenisController::class,'show'])->name('show.actividad');
     });
 
     Route::group(['prefix'=>'categorias'], function (){

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CategoriaNoticia;
 use App\Models\Lugar;
 use App\Models\Persona;
 use App\Models\Sede;
@@ -26,7 +25,10 @@ class TenisController extends Controller
 
     public function tableActivity()
     {
-        $tableActivity = DB::select("select
+        $user = Auth::user();
+        $persona = Persona::where('usuario_id',$user->id)->get();
+        if($user->hasRole('ADMINISTRADOR')){
+            $tableActivity = DB::select("select
                                         s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
                                         s2.descripcion as sede,s2.direccion as direccion_sede,
                                         l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
@@ -40,30 +42,66 @@ class TenisController extends Controller
                                      left join personas p on s.responsable_id = p.id
                                      left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
                                      where s.deleted_at is null");
+        }else{
+            $tableActivity = DB::select("select
+                s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
+                s2.descripcion as sede,s2.direccion as direccion_sede,
+                l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
+                s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
+                s.responsable_id as responsable_id, concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable,
+                ss.titulo as titulo,ss.subtitulo as subtitulo
+            from servicios s
+                     left join tipo_servicios ts on s.tiposervicio_id = ts.id
+                     left join sedes s2 on s.sede_id = s2.id
+                     left join lugars l on s.lugar_id = l.id
+                     left join personas p on s.responsable_id = p.id
+                     left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
+            where s.deleted_at is null and responsable_id = ?",[$persona[0]->id]);
+        }
+
 
         return datatables()->of($tableActivity)
-            ->addColumn('direccion_sede', function ($row){
-                return $row->direccion_sede == "" ?  "SIN DIRECCIÓN" : $row->direccion_sede;
+            ->addColumn('turno', function ($row) {
+                if ($row->turno == "DIURNO") {
+                    return 'DIURNO <i class="fa-solid fa-sun text-warning"></i>';
+                }
+                if ($row->turno == "NOCTURNO") {
+                    return 'NOCTURNO <i class="fa-solid fa-moon-stars text-primary"></i>';
+                }
+                if ($row->turno == "AMBOS") {
+                    return 'AMBOS <i class="fa-solid fa-sun text-warning me-2"></i> <i class="fa-solid fa-moon-stars text-primary"></i>';
+                }
             })
-            ->addColumn('hora', function ($row){
-                return $row->hora == "" ?  "SIN HORA" : $row->hora;
+            ->addColumn('inicio', function ($row) {
+                $inicio = \DateTime::createFromFormat('Y-m-d H:i:s', $row->inicio);
+                return $inicio->format('d/m/Y');
             })
-            ->addColumn('titulo', function ($row){
-                return $row->titulo == "" ?  "SIN TÍTULO" : $row->titulo;
+            ->addColumn('fin', function ($row) {
+                $fin = \DateTime::createFromFormat('Y-m-d H:i:s', $row->fin);
+                return $fin->format('d/m/Y');
             })
-            ->addColumn('subtitulo', function ($row){
-                return $row->subtitulo == "" ?  "SIN SUBTITULO" : $row->subtitulo;
+            ->addColumn('direccion_sede', function ($row) {
+                return $row->direccion_sede == "" ? "SIN DIRECCIÓN" : $row->direccion_sede;
             })
-            ->addColumn('subtitulo', function ($row){
-                return $row->subtitulo == "" ?  "SIN SUBTITULO" : $row->subtitulo;
+            ->addColumn('hora', function ($row) {
+                return $row->hora == "" ? "SIN HORA" : $row->hora;
+            })
+            ->addColumn('titulo', function ($row) {
+                return $row->titulo == "" ? "SIN TÍTULO" : $row->titulo;
+            })
+            ->addColumn('subtitulo', function ($row) {
+                return $row->subtitulo == "" ? "SIN SUBTITULO" : $row->subtitulo;
+            })
+            ->addColumn('subtitulo', function ($row) {
+                return $row->subtitulo == "" ? "SIN SUBTITULO" : $row->subtitulo;
             })
             ->addColumn('acciones', function ($row) {
                 return '<div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                <i class="bx bx-dots-vertical-rounded"></i>
+                                <i class="fa-duotone fa-gear"></i>
                             </button>
                             <div class="dropdown-menu">
-                                <a href="/admin/lugares/editar/' . $row->id . '" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
+                                <button data-bs-toggle="modal" data-bs-target="#modalcomponent" onclick="showDetail(' . $row->id . ')" class="dropdown-item"><i class="bx bx-message-alt-detail me-1"></i> Detalle</button>
                                 <button class="dropdown-item delete" onclick="deleteActivity(' . $row->id . ')"><i class="bx bx-trash me-1"></i> Eliminar</button>
                             </div>
                         </div>';
@@ -77,7 +115,7 @@ class TenisController extends Controller
                     <button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" onclick="changeState(' . $row->id . ')"><span class="badge bg-label-danger me-1">BORRADOR</span></button>';
                 }
             })
-            ->rawColumns(['titulo', 'subtitulo', 'direccion_sede', 'sede_imagen', 'hora', 'estado', 'acciones'])
+            ->rawColumns(['titulo', 'subtitulo', 'direccion_sede', 'sede_imagen', 'hora', 'inicio', 'estado', 'turno', 'acciones'])
             ->make(true);
     }
 
@@ -91,8 +129,8 @@ class TenisController extends Controller
             $servicio->save();
             return back()->with(["success" => "La sede $nombreCategoria fue ACTIVADA"]);
         }
-        if ($servicio->estado  == "A") {
-            $servicio->estado  = "I";
+        if ($servicio->estado == "A") {
+            $servicio->estado = "I";
             $nombreCategoria = $servicio->descripcion;
             $servicio->save();
             return back()->with(["success" => "La sede $nombreCategoria fue DESACTIVADA"]);
@@ -184,35 +222,36 @@ class TenisController extends Controller
         $created_at = new DateTime();
         $creacion = $created_at->format('Y-m-d H:i:s');
         $fechasDefinidas = $request->fechasDefinidas;
+        $estado = $request->publicado;
 
         $validation = Validator::make($request->all(),
-            [
-                'actividad' => 'required',
-                'categoria' => 'required',
-                'sede' => 'required',
-                'lugar' => 'required',
-                'fechaInicio' => 'required',
-                'termino' => 'required',
-                'cupos' => 'required',
-                'horasActividad' => 'required',
-            ],
-            [
-                'actividad.required' => 'Porfavor selecciona una actividad',
-                'categoria.required' => 'Porfavor selecciona una categoría',
-                'sede.required' => 'Porfavor selecciona una sede',
-                'lugar.required' => 'Porfavor selecciona un lugar',
-                'fechaInicio.required' => 'Porfavor ingresa una fecha de inicio',
-                'termino.required' => 'Porfavor ingresa una fecha de termino',
-                'cupos.required' => 'Porfavor ingresa la cantidad de cupos',
-                'horasActividad.required' => 'Porfavor indica las horas por actividad',
-            ]);
+        [
+            'actividad' => 'required',
+            'categoria' => 'required',
+            'sede' => 'required',
+            'lugar' => 'required',
+            'fechaInicio' => 'required',
+            'termino' => 'required',
+            'cupos' => 'required',
+            'horasActividad' => 'required',
+        ],
+        [
+            'actividad.required' => 'Porfavor selecciona una actividad',
+            'categoria.required' => 'Porfavor selecciona una categoría',
+            'sede.required' => 'Porfavor selecciona una sede',
+            'lugar.required' => 'Porfavor selecciona un lugar',
+            'fechaInicio.required' => 'Porfavor ingresa una fecha de inicio',
+            'termino.required' => 'Porfavor ingresa una fecha de termino',
+            'cupos.required' => 'Porfavor ingresa la cantidad de cupos',
+            'horasActividad.required' => 'Porfavor indica las horas por actividad',
+        ]);
 
         if ($validation->fails()) {
             $error = $validation->errors();
             return response()->json(['error' => $error]);
         }
 
-        $servicioTenisCrear = DB::select("SELECT servicio_tenis_crear(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [$fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad]);
+        $servicioTenisCrear = DB::select("SELECT servicio_tenis_crear(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [$fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad, $estado]);
 
         $idRespuesta = $servicioTenisCrear[0]->servicio_tenis_crear;
 
@@ -246,7 +285,6 @@ class TenisController extends Controller
     public function getHoursForDay(string $idRegister, string $day)
     {
         $hours = DB::select("select horarios FROM servicioinscripcion_listarhora(?,?)", [$idRegister, $day]);
-
         return response()->json($hours);
     }
 
@@ -256,5 +294,27 @@ class TenisController extends Controller
         $actividad = Servicio::find($request->id);
         $actividad->delete();
         return redirect()->back()->with('success', 'La actividad fue eliminada');
+    }
+
+    // edti activity
+    public function show(string $id)
+    {
+        $detalleActividad = DB::select("select
+                                        s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
+                                        s2.descripcion as sede,s2.direccion as direccion_sede,
+                                        l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
+                                        s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
+                                        concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable,
+                                        ss.titulo as titulo,ss.subtitulo as subtitulo
+                                     from servicios s
+                                     left join tipo_servicios ts on s.tiposervicio_id = ts.id
+                                     left join sedes s2 on s.sede_id = s2.id
+                                     left join lugars l on s.lugar_id = l.id
+                                     left join personas p on s.responsable_id = p.id
+                                     left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
+                                     where s.deleted_at is null
+                                     and s.id = ?", [$id]);
+
+        return response()->json($detalleActividad);
     }
 }
