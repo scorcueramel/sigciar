@@ -111,11 +111,6 @@
                                 <div data-i18n="Notifications">Nueva Sede</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
-                                <div data-i18n="Connections">Sobre las Sedes</div>
-                            </a>
-                        </li>
                     </ul>
                 </li>
                 <li class="menu-item {{ $activePage == 'lugares.index' || $activePage == 'lugares.create' || $activePage == 'lugares.edit' ? 'active open' : '' }}">
@@ -134,27 +129,23 @@
                                 <div data-i18n="Notifications">Nueva Lugares</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
-                                <div data-i18n="Connections">Sobre las Lugares</div>
-                            </a>
-                        </li>
                     </ul>
                 </li>
 
 
+                {{-- Sección de actividades --}}
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Actividades</span>
                 </li>
-                <li class="menu-item {{ $activePage == 'tenis.create' ? 'active open' : '' }}">
+                <li class="menu-item {{$activePage == 'tenis.index' ||$activePage == 'tenis.create' ? 'active open' : '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'tenis.create' ? 'active' : '' }}">
                         <i class="fa-solid fa-tennis-ball" style="margin-right: 13px;"></i>
                         <div data-i18n="Account Settings">Tenis</div>
                     </a>
                     <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="pages-account-settings-notifications.html" class="menu-link">
-                                <div data-i18n="Notifications">Actividades Activas</div>
+                        <li class="menu-item {{ $activePage == 'tenis.index' ? 'active' : '' }}">
+                            <a href="{{route('tenis.index')}}" class="menu-link">
+                                <div data-i18n="Notifications">Todas las Actividades</div>
                             </a>
                         </li>
                         <li class="menu-item {{ $activePage == 'tenis.create' ? 'active' : '' }}">
@@ -162,56 +153,50 @@
                                 <div data-i18n="Account">Nueva Actividad</div>
                             </a>
                         </li>
-                        {{--
-                        <li class="menu-item">
-                            <a href="pages-account-settings-connections.html" class="menu-link">
-                                <div data-i18n="Connections">Connections</div>
+                    </ul>
+                </li>
+
+                {{-- Sección de Noticias --}}
+                <li class="menu-header small text-uppercase">
+                    <span class="menu-header-text">INFORMACIÓN</span>
+                </li>
+                <li class="menu-item {{ $activePage == 'categorias.index' ||  $activePage == 'categorias.create' ? 'active open' : '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'categorias.create' ? 'active' : '' }}">
+                        <i class="fa-regular fa-layer-group" style="margin-right: 13px;"></i>
+                        <div data-i18n="Account Settings">Categorías</div>
+                    </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item {{ $activePage == 'categorias.index' ? 'active' : '' }}">
+                            <a href="{{route('categorias.index')}}" class="menu-link">
+                                <div data-i18n="Account">Todas las Categorías</div>
                             </a>
                         </li>
-                        --}}
+                        <li class="menu-item {{ $activePage == 'categorias.create' ? 'active' : '' }}">
+                            <a href="{{ route('categorias.create') }}" class="menu-link">
+                                <div data-i18n="Account">Nueva Categoría</div>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
-                        <div data-i18n="Authentications">Authentications</div>
+                        <i class="fa-solid fa-newspaper" style="margin-right: 13px"></i>
+                        <div data-i18n="Authentications">Noticas</div>
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
                             <a href="auth-login-basic.html" class="menu-link" target="_blank">
-                                <div data-i18n="Basic">Login</div>
+                                <div data-i18n="Basic">Todas las Noticias</div>
                             </a>
                         </li>
                         <li class="menu-item">
                             <a href="auth-register-basic.html" class="menu-link" target="_blank">
-                                <div data-i18n="Basic">Register</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                                <div data-i18n="Basic">Forgot Password</div>
+                                <div data-i18n="Basic">Nueva Noticia</div>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-                        <div data-i18n="Misc">Misc</div>
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="pages-misc-error.html" class="menu-link">
-                                <div data-i18n="Error">Error</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="pages-misc-under-maintenance.html" class="menu-link">
-                                <div data-i18n="Under Maintenance">Under Maintenance</div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+
                 <!-- Components -->
                 <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
                 <!-- Cards -->

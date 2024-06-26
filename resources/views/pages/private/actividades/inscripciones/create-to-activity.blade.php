@@ -147,6 +147,7 @@
                                             <div class="table-responsive text-nowrap">
                                                 @include('components.private.table', [
                                                     'titleTable' => '',
+                                                    'searchable'=>false,
                                                     'paginate' => 0,
                                                 ])
                                             </div>

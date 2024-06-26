@@ -17,9 +17,9 @@ class SedesController extends Controller
     {
         //
         $headerTable = Sede::select('id', 'descripcion', 'abreviatura', 'direccion', 'imagen', 'estado')->first()->toArray();
-        $keysSeded = [$keys, $values] = Arr::divide($headerTable)[0];
-        $endHeaders = count($keysSeded);
-        $sedesHeader = Arr::add($keysSeded, $endHeaders, 'Acciones');
+        $keysSedes = [$keys, $values] = Arr::divide($headerTable)[0];
+        $endHeaders = count($keysSedes);
+        $sedesHeader = Arr::add($keysSedes, $endHeaders, 'Acciones');
         $sedesBody = Sede::select('id', 'descripcion', 'abreviatura', 'direccion', 'imagen', 'estado')->orderBy('id', 'asc')->paginate(5);
 
         return view("pages.private.espacios.sedes.index", compact("sedesHeader", "sedesBody"));

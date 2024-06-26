@@ -18,6 +18,7 @@
     </div>
     @include('components.private.table', [
     'titleTable' => 'Lista de lugares',
+    'searchable'=>false,
     'paginate' => $lugaresBody,
     ])
 </div>

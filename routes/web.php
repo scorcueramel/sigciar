@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\PersonaRegisterController;
+use App\Http\Controllers\NoticiasController;
 use App\Http\Controllers\TenisController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -11,7 +12,7 @@ use App\Http\Controllers\LugaresController;
 use App\Http\Controllers\PerfilUsuarioController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SedesController;
-use App\Http\Controllers\IncripcionesController;
+use App\Http\Controllers\CategoriasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +48,6 @@ Route::group(['prefix' => 'ciar'], function () {
     Route::get('/noticicas',[LandingController::class, 'news'])->name('landing.news');
     // Reserva publico
     Route::get('/reserva', [ReservationController::class, 'index'])->name('reservation');
-    // Route::get('/ciar/obtener', [ReservationController::class, 'show'])->name('reservas.obtener');
     Route::get('/servicios/{sede}/{lugar}', [ReservationController::class, 'show'])->name('reservas.obtener');
     Route::get('/obtener/{id}/lugares', [ReservationController::class, 'getPlaces'])->name('reservas.obtener.lugares');
     // Registro
@@ -92,6 +92,11 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
     });
 
     Route::group(['prefix'=>'actividades'], function(){
+        Route::get('/lista',[TenisController::class,'index'])->name('tenis.index');
+        Route::get('/tablaactividades',[TenisController::class,'tableActivity'])->name('tabla.tenis');
+        Route::post('/change/state', [TenisController::class, 'changeState'])->name('tenis.change.state');
+        Route::post('/actividades/eliminar',[TenisController::class, 'destroyActivity'])->name('tenis.actividad.eliminar');
+
         Route::get('nueva',[TenisController::class, 'create'])->name('tenis.create');
         Route::get('/obtener/{id}/subcategorias', [TenisController::class, 'categoryCharge'])->name('obtener.subcategorias');
         Route::get('/obtener/{id}/lugares', [TenisController::class, 'placesCharge'])->name('obtener.lugres');
@@ -101,5 +106,13 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/nueva',[TenisController::class,'storeNewActivity'])->name('nueva.actividad');
         Route::get('/nueva/inscripcion/{plantilla}/{horario}/redirigido',[TenisController::class, 'redirectAfterCreateActivity'])->name('redirigir.incripcion.actividad');
         Route::get('/obtener/{idRegistro}/{dia}/horas',[TenisController::class,'getHoursForDay'])->name('obtener.horarios.inscripciones');
+    });
+
+    Route::group(['prefix'=>'categorias'], function (){
+        Route::get('/lista', [CategoriasController::class, 'index'])->name('categorias.index');
+        Route::get('/nueva', [CategoriasController::class, 'create'])->name('categorias.create');
+        Route::post('/nueva', [CategoriasController::class, 'store'])->name('categorias.nueva');
+        Route::post('/change/state', [CategoriasController::class, 'changeState'])->name('categorias.change.state');
+        Route::get('/tablacategorias',[CategoriasController::class,'tableCategories'])->name('tabla.categorias');
     });
 });

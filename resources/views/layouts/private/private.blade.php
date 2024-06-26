@@ -28,7 +28,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2-bootstrap-5-theme.min.css') }}">
     <link rel="stylesheet" href="{{asset('assets/css/global/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/template/css/datatables/dataTables.bootstrap5.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/template/css/datatables/datatables.min.css')}}">
 
 
     @stack('css')
@@ -84,10 +83,11 @@
     {{-- Select2 --}}
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     {{-- Datatables --}}
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('assets/template/js/datatables/datatables.min.js') }}"></script>
     <script src="{{ asset('assets/template/js/datatables/datatables.min.js') }}"></script>
     <script src="{{ asset('assets/template/js/datatables/dataTables.js') }}"></script>
     <script src="{{ asset('assets/template/js/datatables/dataTables.bootstrap5.js') }}"></script>
-
 
     {{-- Personalized JS --}}
     <script>
