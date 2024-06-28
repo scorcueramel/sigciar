@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="{{asset('assets/template/css/datatables/dataTables.bootstrap5.css')}}">
 
     <link href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.bootstrap5.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 
     @stack('css')
@@ -74,7 +75,12 @@
     <script src="{{ asset('assets/template/js/apexcharts.js') }}"></script>
     <script src="{{ asset('assets/template/js/main.js') }}"></script>
     <script src="{{ asset('assets/template/js/dashboards-analytics.js') }}"></script>
-
+    {{-- Full calendar --}}
+    {{-- MomentJS (locale date) --}}
+    <script src="{{asset('assets/js/fullcalendar/moment-with-locales.min.js')}}"></script>
+    {{-- FullCalendar Free --}}
+    <script src="{{asset('assets/js/fullcalendar/main.min.js')}}"></script>
+    <script src="{{asset('assets/js/fullcalendar/locales-all.min.js')}}"></script>
     {{-- MomentJS (locale date) --}}
     <script src="{{asset('assets/js/fullcalendar/moment-with-locales.min.js')}}"></script>
     {{-- FullCalendar Free --}}

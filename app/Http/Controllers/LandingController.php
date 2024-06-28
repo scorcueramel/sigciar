@@ -58,7 +58,11 @@ class LandingController extends Controller
                     and tipo_servicios.id = 3
                     and servicios.estado= 'A'");
 
-        return view("pages.public.landing.activities",compact("actividades"));
+        return view("pages.public.landing.actividades.activities",compact("actividades"));
+    }
+
+    public function activitiesDetails(string $id){
+        // pendiente de recibir la vista detalle de actividad
     }
     //END SECTION ACTIVITY
 

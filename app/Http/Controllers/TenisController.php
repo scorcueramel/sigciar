@@ -42,7 +42,8 @@ class TenisController extends Controller
                                      left join personas p on s.responsable_id = p.id
                                      left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
                                      where s.deleted_at is null");
-        }else{
+        }
+        else{
             $tableActivity = DB::select("select
                 s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
                 s2.descripcion as sede,s2.direccion as direccion_sede,
@@ -58,7 +59,6 @@ class TenisController extends Controller
                      left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
             where s.deleted_at is null and responsable_id = ?",[$persona[0]->id]);
         }
-
 
         return datatables()->of($tableActivity)
             ->addColumn('turno', function ($row) {
@@ -278,7 +278,7 @@ class TenisController extends Controller
         $registroId = $registro;
 
         $diasPorActividad = DB::select("select dia FROM servicioinscripcion_listardias(?);", [$registroId]);
-        return view('pages.private.actividades.inscripciones.create-to-activity', compact('diasPorActividad', 'registro'));
+        return view('pages.private.actividades.inscripciones.create-to-activity', compact('diasPorActividad', 'registro','plantillaId'));
     }
 
     // get hour for day
@@ -286,6 +286,33 @@ class TenisController extends Controller
     {
         $hours = DB::select("select horarios FROM servicioinscripcion_listarhora(?,?)", [$idRegister, $day]);
         return response()->json($hours);
+    }
+
+    public function storeInscripcion(Request $request){
+
+        $user = Auth::user();
+        $persona = Persona::where('usuario_id',$user->id)->get();
+        $usuarioActivo = $persona[0]->nombres;
+        $servicioId = $request->idplantilla;
+        $fechasDefinias = $request->fechasDefinidas;
+        $usuarioId = $request->idmiembro;
+        $ip = $request->ip();
+        $miembro = Persona::findOrFail($usuarioId);
+        $inscrito = $miembro->nombres;
+
+        $request->validate([
+            'idplantilla',
+            'idmiembro',
+            'fechasDefinidas'
+        ]);
+
+        foreach ($fechasDefinias as $fd){
+            $dia = $fd['dias'];
+            $hora = $fd['horarios'];
+            DB::select('SELECT servicio_inscripcion(?,?,?,?,?,?)',[$servicioId,$dia,$usuarioId,$hora,$usuarioActivo,$ip]);
+        }
+
+        return response()->json(['success'=>'ok']);
     }
 
     // destroy by activity
@@ -300,20 +327,20 @@ class TenisController extends Controller
     public function show(string $id)
     {
         $detalleActividad = DB::select("select
-                                        s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
-                                        s2.descripcion as sede,s2.direccion as direccion_sede,
-                                        l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
-                                        s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
-                                        concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable,
-                                        ss.titulo as titulo,ss.subtitulo as subtitulo
-                                     from servicios s
-                                     left join tipo_servicios ts on s.tiposervicio_id = ts.id
-                                     left join sedes s2 on s.sede_id = s2.id
-                                     left join lugars l on s.lugar_id = l.id
-                                     left join personas p on s.responsable_id = p.id
-                                     left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
-                                     where s.deleted_at is null
-                                     and s.id = ?", [$id]);
+                                            s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
+                                            s2.descripcion as sede,s2.direccion as direccion_sede,
+                                            l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
+                                            s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
+                                            concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable,
+                                            ss.titulo as titulo,ss.subtitulo as subtitulo
+                                         from servicios s
+                                         left join tipo_servicios ts on s.tiposervicio_id = ts.id
+                                         left join sedes s2 on s.sede_id = s2.id
+                                         left join lugars l on s.lugar_id = l.id
+                                         left join personas p on s.responsable_id = p.id
+                                         left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
+                                         where s.deleted_at is null
+                                         and s.id = ?", [$id]);
 
         return response()->json($detalleActividad);
     }

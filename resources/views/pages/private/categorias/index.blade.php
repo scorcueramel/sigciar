@@ -122,8 +122,8 @@
         function deleteCategory(id) {
             var id = id;
             Swal.fire({
-                title: "Seguro de eliminar?",
-                text: "Vas a eliminar este lugar",
+                title: "Eliminar Categoría?",
+                text: "Vas a eliminar esta categoría",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -142,7 +142,7 @@
                     });
                     $.ajax({
                         type: "POST",
-                        url: `{{ route('lugares.destroy') }}`,
+                        url: `{{ route('categorias.destroy') }}`,
                         data: {
                             id
                         },

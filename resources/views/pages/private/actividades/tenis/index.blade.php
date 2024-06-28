@@ -5,6 +5,7 @@
         tbody > tr > td {
             font-size: 14px !important;
         }
+
         thead > tr > td {
             font-size: 13px !important;
             font-weight: 700;
@@ -27,26 +28,27 @@
         <div class="card pt-2">
             <div class="card-body">
                 <div class="text-nowrap table-responsive p-3">
-                    <table class="table table-striped table-borderless table-hover nowrap" id="table" style="width:100%">
+                    <table class="table table-striped table-borderless table-hover nowrap" id="table"
+                           style="width:100%">
                         <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>ESTADO</th>
-                                <th>TIPO SERVICIO</th>
-                                <th>SEDE</th>
-                                <th>DIRECCIÓN SEDE</th>
-                                <th>LUGAR DESCRIPCIÓN</th>
-                                <th>COSTO HORA</th>
-                                <th>CAPACIDAD</th>
-                                <th>INICIO</th>
-                                <th>FIN</th>
-                                <th>HORAS POR ACTIVIDAD</th>
-                                <th>TURNO</th>
-                                <th>RESPONSABLE</th>
-                                <th>TÍTULO</th>
-                                <th>SUBTÍTULO</th>
-                                <th>ACCIONES</th>
-                            </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>ESTADO</th>
+                            <th>TIPO SERVICIO</th>
+                            <th>SEDE</th>
+                            <th>DIRECCIÓN SEDE</th>
+                            <th>LUGAR DESCRIPCIÓN</th>
+                            <th>COSTO HORA</th>
+                            <th>CAPACIDAD</th>
+                            <th>INICIO</th>
+                            <th>FIN</th>
+                            <th>HORAS POR ACTIVIDAD</th>
+                            <th>TURNO</th>
+                            <th>RESPONSABLE</th>
+                            <th>TÍTULO</th>
+                            <th>SUBTÍTULO</th>
+                            <th>ACCIONES</th>
+                        </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
                         </tbody>
@@ -78,22 +80,22 @@
                 "aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "Todos"]],
                 "ajax": "{{route('tabla.tenis')}}",
                 "columns": [
-                    { data: 'id' },
-                    { data: 'estado' },
-                    { data: 'tipo_servicio' },
-                    { data: 'sede' },
-                    { data: 'direccion_sede' },
-                    { data: 'lugar_descripcion' },
-                    { data: 'lugar_costo_hora' },
-                    { data: 'capacidad' },
-                    { data: 'inicio' },
-                    { data: 'fin' },
-                    { data: 'hora' },
-                    { data: 'turno' },
-                    { data: 'responsable' },
-                    { data: 'titulo' },
-                    { data: 'subtitulo' },
-                    { data: 'acciones' }
+                    {data: 'id'},
+                    {data: 'estado'},
+                    {data: 'tipo_servicio'},
+                    {data: 'sede'},
+                    {data: 'direccion_sede'},
+                    {data: 'lugar_descripcion'},
+                    {data: 'lugar_costo_hora'},
+                    {data: 'capacidad'},
+                    {data: 'inicio'},
+                    {data: 'fin'},
+                    {data: 'hora'},
+                    {data: 'turno'},
+                    {data: 'responsable'},
+                    {data: 'titulo'},
+                    {data: 'subtitulo'},
+                    {data: 'acciones'}
                 ],
                 "language": {
                     "lengthMenu": "Mostrar " +
@@ -103,12 +105,12 @@
                             <option value='20'>20</option>
                             <option value='-1'>Todos</option>
                         </select>` +
-                        " registros por página",
-                    "zeroRecords": "Sin Resultados Actualmente",
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                        " Registros Por Página",
+                    "zeroRecords": "Sin Resultados",
+                    "info": "Mostrando Página _PAGE_ de _PAGES_",
                     "infoEmpty": "Sin Resultados",
-                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                    "search": "Buscar: ",
+                    "infoFiltered": "(Filtro de _MAX_ Registros Totales)",
+                    "search": "Búscar ",
                     "paginate": {
                         "next": "›",
                         "previous": "‹"
@@ -142,8 +144,8 @@
         function deleteActivity(id) {
             var id = id;
             Swal.fire({
-                title: "Seguro de eliminar?",
-                text: "Vas a eliminar esta actividad",
+                title: "Eliminar Actividad?",
+                text: "Seguro de eliminar esta actividad",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -177,66 +179,120 @@
             });
         }
 
-        function showDetail(id){
+        function showDetail(id) {
             $.ajax({
-                method:'GET',
-                url:`/admin/actividades/detalle/${id}/actividad`,
-                success:function(resp){
+                method: 'GET',
+                url: `/admin/actividades/detalle/${id}/actividad`,
+                success: function (resp) {
                     let data = resp[0];
                     $("#mcLabel").html(`
                         ${data.titulo} <br>
                         <span style="font-size: 14px; font-weight: normal">${data.subtitulo}</span>
                     `)
                     $("#mcbody").html(`
-                        <div class="row mb-2">
-                            <div class="col-sm-auto" style="font-weight: bold">
-                                Responsable
-                            </div>
-                            <div class="col-sm-auto">
-                                ${data.responsable}
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-auto" style="font-weight: bold">
-                                Inicio
-                            </div>
-                            <div class="col-sm-auto">
-                                ${new Date(data.inicio).toLocaleDateString("en-US")}
-                            </div>
-                            <div class="col-sm-auto" style="font-weight: bold">
-                                Fin
-                            </div>
-                            <div class="col-sm-auto">
-                                ${new Date(data.fin).toLocaleDateString("en-US")}
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-4" style="font-weight: bold">
-                                Horas Act.
-                            </div>
-                            <div class="col-sm-auto">
-                                ${data.hora} hrs.
-                            </div>
-                            <div class="col-sm-auto" style="font-weight: bold">
-                                Cupos
-                            </div>
-                            <div class="col-sm-auto">
-                                ${data.capacidad}
-                            </div>
-                        </div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        Responsable
+                                    </td>
+                                    <td>
+                                        ${data.responsable}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Inicio
+                                    </td>
+                                    <td>
+                                        ${new Date(data.inicio).toLocaleDateString("es-PE")}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Fin
+                                    </td>
+                                    <td>
+                                        ${new Date(data.fin).toLocaleDateString("es-PE")}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Horas x Actividad
+                                    </td>
+                                    <td>
+                                        ${data.hora} hrs.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Cupos
+                                    </td>
+                                    <td>
+                                        ${data.capacidad}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Costo
+                                    </td>
+                                    <td>
+                                        ${data.lugar_costo_hora}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Lugar
+                                    </td>
+                                    <td>
+                                        ${data.lugar_descripcion}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Dirección
+                                    </td>
+                                    <td>
+                                        ${data.direccion_sede ?? 'SIN DIRECCION'}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Sede
+                                    </td>
+                                    <td>
+                                        ${data.sede ?? 'SIN SEDE'}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Estado
+                                    </td>
+                                    <td>
+                                        <span class="badge rounded-pill text-bg-secondary ${data.estado == 'A' ? 'bg-success' : 'bg-danger'}">${data.estado == 'A' ? 'PUBLICADO' : 'BORRADOR'}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Tipo Servicio
+                                    </td>
+                                    <td>
+                                        ${data.tipo_servicio}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     `);
-                    console.log(resp);
                 },
-                error: function(err){
+                error: function (err) {
                     console.log(err)
                 }
             });
         }
 
-        $(".cancelButton").on('click',function (){
+        $(".cancelButton").on('click', function () {
             $("#mcbody").html('');
             $("#mcLabel").html('');
         });
-
     </script>
 @endpush

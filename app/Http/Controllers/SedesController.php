@@ -96,7 +96,7 @@ class SedesController extends Controller
     {
         //
         $sede = Sede::find($id);
-        return view('pages.private.espacios.edit', compact('sede'));
+        return view('pages.private.espacios.sedes.edit', compact('sede'));
     }
 
     public function update(Request $request, $id)

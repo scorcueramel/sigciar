@@ -13,6 +13,7 @@ use App\Http\Controllers\PerfilUsuarioController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SedesController;
 use App\Http\Controllers\CategoriasController;
+use App\Http\Controllers\InscripcionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +44,10 @@ Route::get('/',[LandingController::class,'index'])->name('landing.index');
 Route::group(['prefix' => 'ciar'], function () {
     Route::get('/',[LandingController::class,'index'])->name('landing.index');
     // Landing público
+    /*ACTIVIDADES*/
     Route::get('/actividades',[LandingController::class, 'activities'])->name('landing.activities');
+    Route::get('/detalle/{id}/actividad',[LandingController::class,'activitiesDetails'])->name('actividades.detalle');
+    /*END ACTIVIDADES*/
     Route::get('/nuestras-promesas',[LandingController::class, 'promises'])->name('landing.promises');
     Route::get('/noticicas',[LandingController::class, 'news'])->name('landing.news');
     // Reserva publico
@@ -69,7 +73,8 @@ Route::group(['prefix' => 'ciar'], function () {
 
 // Rutas para el Administrador
 Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
-    Route::get('/ciar/dashboard', [HomeController::class, 'index'])->name('home');
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
+    Route::get('/carga/actividades',[HomeController::class, 'activities'])->name('calendario.home');
 
     Route::group(['prefix'=> 'sedes'], function () {
         Route::get('/lista', [SedesController::class, 'index'])->name('sedes.index');
@@ -106,6 +111,13 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/nueva/inscripcion/{plantilla}/{horario}/redirigido',[TenisController::class, 'redirectAfterCreateActivity'])->name('redirigir.incripcion.actividad');
         Route::get('/obtener/{idRegistro}/{dia}/horas',[TenisController::class,'getHoursForDay'])->name('obtener.horarios.inscripciones');
         Route::get('/detalle/{id}/actividad',[TenisController::class,'show'])->name('show.actividad');
+        Route::post('/inscribir/miembro', [TenisController::class,'storeInscripcion'])->name('inscribir.miembro');
+    });
+
+    Route::group(['prefix'=>'inscripciones'],function (){
+        Route::get('/lista',[InscripcionesController::class,'index'])->name('inscrpiciones.index');
+        Route::get('/{id}/editar',[InscripcionesController::class,'edit'])->name('inscrpiciones.edit');
+        Route::get('/nueva',[InscripcionesController::class,'create'])->name('inscrpiciones.create');
     });
 
     Route::group(['prefix'=>'categorias'], function (){
@@ -114,5 +126,8 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/nueva', [CategoriasController::class, 'store'])->name('categorias.nueva');
         Route::post('/change/state', [CategoriasController::class, 'changeState'])->name('categorias.change.state');
         Route::get('/tablacategorias',[CategoriasController::class,'tableCategories'])->name('tabla.categorias');
+        Route::get('/editar/{id}/categoria', [CategoriasController::class, 'edit'])->name('categorias.edit');
+        Route::post('/editar/{id}/categoria',[CategoriasController::class,'update'])->name('categorias.update');
+        Route::post('/eliminar', [CategoriasController::class,'destroy'])->name('categorias.destroy');
     });
 });

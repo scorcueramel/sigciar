@@ -25,7 +25,7 @@ class CategoriasController extends Controller
                                 <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
                             <div class="dropdown-menu">
-                                <a href="/admin/lugares/editar/'.$row['id'].'" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
+                                <a href="/admin/categorias/editar/'.$row['id'].'/categoria" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
                                 <button class="dropdown-item delete" onclick="deleteCategory('.$row['id'].')"><i class="bx bx-trash me-1"></i> Eliminar</button>
                             </div>
                         </div>';
@@ -43,7 +43,6 @@ class CategoriasController extends Controller
             ->rawColumns(['estado','acciones'])
             ->make(true);
     }
-
 
     public function create()
     {
@@ -67,9 +66,7 @@ class CategoriasController extends Controller
         $categoria = new CategoriaNoticia();
         $categoria->nombre = Str::upper($request->get('nombre'));
         $categoria->slug = $request->get('slug');
-        if($request->estado == 'off'){
-            $categoria->estado = 'I';
-        }
+        $categoria->estado = $request->get('estado');
         $categoria->save();
 
         return redirect()->route('categorias.index');
@@ -96,23 +93,42 @@ class CategoriasController extends Controller
 
     }
 
-    public function show($id)
+    public function show(string $id)
     {
         //
     }
 
-    public function edit($id)
+    public function edit(string $id)
     {
-        //
+        $categoria = CategoriaNoticia::findOrFail($id);
+        return view("pages.private.categorias.edit", compact("categoria"));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nombre'=>'required','max:100',
+            'slug'=>'required','max:150',
+            'estado'=>'required',
+        ],[
+            'nombre.required'=>'El campo nombre es obligatorio',
+            'nombre.max'=>'El máximo de longitud para este campo es 100 caracteres',
+            'slug.required'=>'El campo slug es obligatorio',
+            'slug.max'=>'El máximo de longitud para este campo es 150 caracteres',
+            'estado.required' => 'El campo Estado es obligatorio',
+        ]);
+
+        $categoria = CategoriaNoticia::findOrFail($id);
+        $categoria->nombre = Str::upper($request->get('nombre'));
+        $categoria->slug = $request->get('slug');
+        $categoria->estado = $request->get('estado');
+        $categoria->save();
+        return redirect()->route('categorias.index')->with('success', "La categoría fue actualizada exitosamente!");
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        CategoriaNoticia::findOrFail($request->id)->delete();
+        return redirect()->back()->with('success', 'La categoria fue eliminada');
     }
 }
