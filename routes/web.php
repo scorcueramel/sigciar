@@ -115,9 +115,10 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
     });
 
     Route::group(['prefix'=>'inscripciones'],function (){
-        Route::get('/lista',[InscripcionesController::class,'index'])->name('inscrpiciones.index');
-        Route::get('/{id}/editar',[InscripcionesController::class,'edit'])->name('inscrpiciones.edit');
-        Route::get('/nueva',[InscripcionesController::class,'create'])->name('inscrpiciones.create');
+        Route::get('/lista',[InscripcionesController::class,'index'])->name('inscripciones.index');
+        Route::get('/tablaainscrpiciones',[InscripcionesController::class,'tableInscriptions'])->name('tabla.inscripciones');
+        Route::get('/{id}/editar',[InscripcionesController::class,'edit'])->name('inscripciones.edit');
+        Route::get('/nueva',[InscripcionesController::class,'create'])->name('inscripciones.create');
     });
 
     Route::group(['prefix'=>'categorias'], function (){

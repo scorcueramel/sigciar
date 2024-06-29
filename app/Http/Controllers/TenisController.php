@@ -26,8 +26,8 @@ class TenisController extends Controller
     public function tableActivity()
     {
         $user = Auth::user();
-        $persona = Persona::where('usuario_id',$user->id)->get();
-        if($user->hasRole('ADMINISTRADOR')){
+        $persona = Persona::where('usuario_id', $user->id)->get();
+        if ($user->hasRole('ADMINISTRADOR')) {
             $tableActivity = DB::select("select
                                         s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
                                         s2.descripcion as sede,s2.direccion as direccion_sede,
@@ -42,8 +42,7 @@ class TenisController extends Controller
                                      left join personas p on s.responsable_id = p.id
                                      left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
                                      where s.deleted_at is null");
-        }
-        else{
+        } else {
             $tableActivity = DB::select("select
                 s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
                 s2.descripcion as sede,s2.direccion as direccion_sede,
@@ -57,7 +56,7 @@ class TenisController extends Controller
                      left join lugars l on s.lugar_id = l.id
                      left join personas p on s.responsable_id = p.id
                      left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
-            where s.deleted_at is null and responsable_id = ?",[$persona[0]->id]);
+            where s.deleted_at is null and responsable_id = ?", [$persona[0]->id]);
         }
 
         return datatables()->of($tableActivity)
@@ -224,27 +223,29 @@ class TenisController extends Controller
         $fechasDefinidas = $request->fechasDefinidas;
         $estado = $request->publicado;
 
-        $validation = Validator::make($request->all(),
-        [
-            'actividad' => 'required',
-            'categoria' => 'required',
-            'sede' => 'required',
-            'lugar' => 'required',
-            'fechaInicio' => 'required',
-            'termino' => 'required',
-            'cupos' => 'required',
-            'horasActividad' => 'required',
-        ],
-        [
-            'actividad.required' => 'Porfavor selecciona una actividad',
-            'categoria.required' => 'Porfavor selecciona una categoría',
-            'sede.required' => 'Porfavor selecciona una sede',
-            'lugar.required' => 'Porfavor selecciona un lugar',
-            'fechaInicio.required' => 'Porfavor ingresa una fecha de inicio',
-            'termino.required' => 'Porfavor ingresa una fecha de termino',
-            'cupos.required' => 'Porfavor ingresa la cantidad de cupos',
-            'horasActividad.required' => 'Porfavor indica las horas por actividad',
-        ]);
+        $validation = Validator::make(
+            $request->all(),
+            [
+                'actividad' => 'required',
+                'categoria' => 'required',
+                'sede' => 'required',
+                'lugar' => 'required',
+                'fechaInicio' => 'required',
+                'termino' => 'required',
+                'cupos' => 'required',
+                'horasActividad' => 'required',
+            ],
+            [
+                'actividad.required' => 'Porfavor selecciona una actividad',
+                'categoria.required' => 'Porfavor selecciona una categoría',
+                'sede.required' => 'Porfavor selecciona una sede',
+                'lugar.required' => 'Porfavor selecciona un lugar',
+                'fechaInicio.required' => 'Porfavor ingresa una fecha de inicio',
+                'termino.required' => 'Porfavor ingresa una fecha de termino',
+                'cupos.required' => 'Porfavor ingresa la cantidad de cupos',
+                'horasActividad.required' => 'Porfavor indica las horas por actividad',
+            ]
+        );
 
         if ($validation->fails()) {
             $error = $validation->errors();
@@ -278,7 +279,7 @@ class TenisController extends Controller
         $registroId = $registro;
 
         $diasPorActividad = DB::select("select dia FROM servicioinscripcion_listardias(?);", [$registroId]);
-        return view('pages.private.actividades.inscripciones.create-to-activity', compact('diasPorActividad', 'registro','plantillaId'));
+        return view('pages.private.actividades.inscripciones.create-to-activity', compact('diasPorActividad', 'registro', 'plantillaId'));
     }
 
     // get hour for day
@@ -288,10 +289,11 @@ class TenisController extends Controller
         return response()->json($hours);
     }
 
-    public function storeInscripcion(Request $request){
+    public function storeInscripcion(Request $request)
+    {
 
         $user = Auth::user();
-        $persona = Persona::where('usuario_id',$user->id)->get();
+        $persona = Persona::where('usuario_id', $user->id)->get();
         $usuarioActivo = $persona[0]->nombres;
         $servicioId = $request->idplantilla;
         $fechasDefinias = $request->fechasDefinidas;
@@ -306,13 +308,13 @@ class TenisController extends Controller
             'fechasDefinidas'
         ]);
 
-        foreach ($fechasDefinias as $fd){
+        foreach ($fechasDefinias as $fd) {
             $dia = $fd['dias'];
             $hora = $fd['horarios'];
-            DB::select('SELECT servicio_inscripcion(?,?,?,?,?,?)',[$servicioId,$dia,$usuarioId,$hora,$usuarioActivo,$ip]);
+            DB::select('SELECT servicio_inscripcion(?,?,?,?,?,?)', [$servicioId, $dia, $usuarioId, $hora, $usuarioActivo, $ip]);
         }
 
-        return response()->json(['success'=>'ok']);
+        return response()->json(['success' => 'ok']);
     }
 
     // destroy by activity

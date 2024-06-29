@@ -121,19 +121,19 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-item {{$activePage == 'inscrpiciones.edit' || $activePage == 'inscrpiciones.index' ||$activePage == 'inscrpiciones.create' ? 'active open' : '' }}">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'inscrpiciones.create' ? 'active' : '' }}">
+                <li class="menu-item {{$activePage == 'inscripciones.edit' || $activePage == 'inscripciones.index' ||$activePage == 'inscripciones.create' ? 'active open' : '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'inscripciones.create' ? 'active' : '' }}">
                         <i class="fa-solid fa-money-check-pen" style="margin-right: 13px;"></i>
                         <div data-i18n="Account Settings">Inscripciones</div>
                     </a>
                     <ul class="menu-sub">
-                        <li class="menu-item {{ $activePage == 'tenises.index' ? 'active' : '' }}">
-                            <a href="{{route('inscrpiciones.index')}}" class="menu-link">
+                        <li class="menu-item {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">
+                            <a href="{{route('inscripciones.index')}}" class="menu-link">
                                 <div data-i18n="Notifications">Todas las Inscripciones</div>
                             </a>
                         </li>
-                        <li class="menu-item {{ $activePage == 'tenis.create' ? 'active' : '' }}">
-                            <a href="{{ route('inscrpiciones.create') }}" class="menu-link">
+                        <li class="menu-item {{ $activePage == 'inscripciones.create' ? 'active' : '' }}">
+                            <a href="{{ route('inscripciones.create') }}" class="menu-link">
                                 <div data-i18n="Account">Nuevo Inscribir</div>
                             </a>
                         </li>
