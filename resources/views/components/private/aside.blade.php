@@ -134,7 +134,7 @@
                         </li>
                         <li class="menu-item {{ $activePage == 'inscripciones.create' ? 'active' : '' }}">
                             <a href="{{ route('inscripciones.create') }}" class="menu-link">
-                                <div data-i18n="Account">Nuevo Inscribir</div>
+                                <div data-i18n="Account">Inscribir Nuevo</div>
                             </a>
                         </li>
                     </ul>
