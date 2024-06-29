@@ -68,10 +68,10 @@ class InscripcionesController extends Controller
             ->addColumn('estado_pago', function ($row) {
                 if ($row->estado_pago == "A") {
                     return '
-                    <button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" onclick="changeState()"><span class="badge bg-label-success me-1">PUBLICADO</span></button>';
+                    <button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" onclick="changeState()"><span class="badge bg-label-success me-1">PAGADO</span></button>';
                 } else {
                     return '
-                    <button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" onclick="changeState()"><span class="badge bg-label-danger me-1">BORRADOR</span></button>';
+                    <button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" onclick="changeState()"><span class="badge bg-label-danger me-1">PENDIENTE</span></button>';
                 }
             })
             ->addColumn('acciones', function ($row) {
