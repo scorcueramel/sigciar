@@ -119,6 +119,9 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/tablaainscrpiciones',[InscripcionesController::class,'tableInscriptions'])->name('tabla.inscripciones');
         Route::get('/{id}/editar',[InscripcionesController::class,'edit'])->name('inscripciones.edit');
         Route::get('/nueva',[InscripcionesController::class,'create'])->name('inscripciones.create');
+        Route::get('/obtener/{id}/dias',[InscripcionesController::class, 'getDaysActivity'])->name('inscripciones.days.activity');
+        Route::get('/obtener/{idServicio}/{dia}/horas',[InscripcionesController::class,'getHoursForDay'])->name('inscripciones.obtener.horarios');
+        Route::post('/nueva',[InscripcionesController::class,'store'])->name('inscripciones.store');
     });
 
     Route::group(['prefix'=>'categorias'], function (){

@@ -1,7 +1,14 @@
 @extends('layouts.private.private', ['activePage' => 'inscripciones.index'])
 @push('title', 'Inscripciones')
 @section('content')
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Inscripciones /</span> Todas</h4>
+<div class="row">
+    <div class="col-md">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Inscripciones /</span> Todas</h4>
+    </div>
+    <div class="col-md d-flex align-items-center justify-content-end">
+        <a href="{{route('inscripciones.create')}}" class="btn btn-sm btn-info"><i class="fa-solid fa-file me-1"></i>Nuevo</a>
+    </div>
+</div>
 <!-- Basic Layout & Basic with Icons -->
 <div class="row mb-3">
     <!-- Basic with Icons -->
@@ -16,9 +23,9 @@
                         <table class="table table-striped table-borderless table-hover nowrap" id="table" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>TIPO DE SERVICIO</th>
-                                    <th>DOCUMENTO DE MIEMBRO</th>
+                                    <th>DOCUMENTO</th>
                                     <th>NOMBRES DEL MIEMBRO</th>
+                                    <th>TIPO DE SERVICIO</th>
                                     <th>HORARIOS</th>
                                     <th>MONTO A PAGAR</th>
                                     <th>ESTADO DE INSCRIPCIÓN</th>
@@ -61,13 +68,13 @@
             "ajax": "{{route('tabla.inscripciones')}}",
             "columns": [
                 {
-                    data: 'descripcion'
-                },
-                {
                     data: 'documento'
                 },
                 {
                     data: 'apeynom'
+                },
+                {
+                    data: 'descripcion'
                 },
                 {
                     data: 'horario'

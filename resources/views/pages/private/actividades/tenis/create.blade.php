@@ -1,5 +1,5 @@
 @extends('layouts.private.private', ['activePage' => 'tenis.create'])
-@push('title', 'Nueva Sede')
+@push('title', 'Nueva Actividad')
 @push('css')
     <style>
         #regiration_form fieldset:not(:first-of-type) {

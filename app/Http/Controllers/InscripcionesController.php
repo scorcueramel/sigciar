@@ -85,18 +85,65 @@ class InscripcionesController extends Controller
                             </div>
                         </div>';
             })
-            ->rawColumns([ 'estado_pago','acciones'])
+            ->rawColumns(['estado_pago', 'acciones'])
             ->make(true);
     }
 
     public function create()
     {
-        //
+        $actividades = DB::select("select distinct
+                                    servicios.id as servicios_id,
+                                    subtipo_servicios.titulo,
+                                    subtipo_servicios.subtitulo,
+                                    lugar_costos.costohora as desde
+                                    from servicios
+                                    left join public.tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
+                                    left join public.subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
+                                    left join public.sedes on servicios.sede_id = sedes.id
+                                    left join public.lugars on servicios.lugar_id = lugars.id
+                                    left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
+                                    left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
+                                    where subtipo_servicios.titulo  is not null
+                                    and tipo_servicios.id = 3
+                                    and servicios.estado= 'A'");
+        return view("pages.private.actividades.inscripciones.create", compact("actividades"));
+    }
+
+    public function getDaysActivity(string $idactivity){
+        $diasPorActividad = DB::select("select dia FROM servicioinscripcion_listardias(?);", [$idactivity]);
+        return response()->json($diasPorActividad);
+    }
+
+    public function getHoursForDay(string $idRegister, string $day)
+    {
+        $hours = DB::select("select horarios FROM servicioinscripcion_listarhora(?,?)", [$idRegister, $day]);
+        return response()->json($hours);
     }
 
     public function store(Request $request)
     {
-        //
+
+        $user = Auth::user();
+        $persona = Persona::where('usuario_id', $user->id)->get();
+        $usuarioActivo = $persona[0]->nombres;
+        $servicioId = $request->idservicio;
+        $fechasDefinias = $request->fechasDefinidas;
+        $usuarioId = $request->idmiembro;
+        $ip = $request->ip();
+
+        $request->validate([
+            'idplantilla',
+            'idmiembro',
+            'fechasDefinidas'
+        ]);
+
+        foreach ($fechasDefinias as $fd) {
+            $dia = $fd['dias'];
+            $hora = $fd['horarios'];
+            DB::select('SELECT servicio_inscripcion(?,?,?,?,?,?)', [$servicioId, $dia, $usuarioId, $hora, $usuarioActivo, $ip]);
+        }
+
+        return response()->json(['success' => 'ok']);
     }
 
     public function show($id)

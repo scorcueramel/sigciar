@@ -64,7 +64,7 @@
         <!-- Overlay -->
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    @include('components.private.custom-button')
+    <!-- @include('components.private.custom-button') -->
 
     {{-- Template scripts --}}
     <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
