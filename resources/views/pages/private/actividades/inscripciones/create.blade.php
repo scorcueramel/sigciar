@@ -31,7 +31,7 @@
                                         <select class="form-select" aria-label="Seleccionar actividad" id="actividad" name="actividad">
                                             <option value="" selected disabled>SELECCIONAR</option>
                                             @foreach ($actividades as $actividad)
-                                            <option value="{{$actividad->servicios_id}}">{{$actividad->titulo}} / {{$actividad->subtitulo}} / PEN. {{$actividad->desde}}.00</option>
+                                            <option value="{{$actividad->servicios_id}}">{{$actividad->titulo}} / {{$actividad->subtitulo}} / {{ $actividad->turno }} / PEN. {{$actividad->desde}}.00</option>
                                             @endforeach
                                         </select>
                                     </div>

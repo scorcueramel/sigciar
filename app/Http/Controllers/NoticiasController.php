@@ -9,12 +9,12 @@ class NoticiasController extends Controller
 
     public function index()
     {
-        return view("");
+        return view("pages.private.noticias.index");
     }
 
     public function create()
     {
-        //
+        return view("pages.private.noticias.create");
     }
 
     public function store(Request $request)

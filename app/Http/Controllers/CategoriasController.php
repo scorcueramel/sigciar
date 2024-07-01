@@ -65,7 +65,6 @@ class CategoriasController extends Controller
 
         $categoria = new CategoriaNoticia();
         $categoria->nombre = Str::upper($request->get('nombre'));
-        $categoria->slug = $request->get('slug');
         $categoria->estado = $request->get('estado');
         $categoria->save();
 
@@ -93,9 +92,9 @@ class CategoriasController extends Controller
 
     }
 
-    public function show(string $id)
+    public function show(string $slug)
     {
-        //
+
     }
 
     public function edit(string $id)
@@ -108,7 +107,6 @@ class CategoriasController extends Controller
     {
         $request->validate([
             'nombre'=>'required','max:100',
-            'slug'=>'required','max:150',
             'estado'=>'required',
         ],[
             'nombre.required'=>'El campo nombre es obligatorio',
@@ -120,7 +118,6 @@ class CategoriasController extends Controller
 
         $categoria = CategoriaNoticia::findOrFail($id);
         $categoria->nombre = Str::upper($request->get('nombre'));
-        $categoria->slug = $request->get('slug');
         $categoria->estado = $request->get('estado');
         $categoria->save();
         return redirect()->route('categorias.index')->with('success', "La categoría fue actualizada exitosamente!");

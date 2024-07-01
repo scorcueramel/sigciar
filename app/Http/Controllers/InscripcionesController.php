@@ -95,6 +95,7 @@ class InscripcionesController extends Controller
                                     servicios.id as servicios_id,
                                     subtipo_servicios.titulo,
                                     subtipo_servicios.subtitulo,
+                                    servicios.turno,
                                     lugar_costos.costohora as desde
                                     from servicios
                                     left join public.tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id

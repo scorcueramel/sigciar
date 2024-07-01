@@ -134,4 +134,9 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/editar/{id}/categoria',[CategoriasController::class,'update'])->name('categorias.update');
         Route::post('/eliminar', [CategoriasController::class,'destroy'])->name('categorias.destroy');
     });
+
+    Route::group(['prefix'=> 'noticias'], function (){
+        Route::get('/lista', [NoticiasController::class,'index'])->name('noticias.index');
+        Route::get('/nueva', [NoticiasController::class,'create'])->name('noticias.create');
+    });
 });
