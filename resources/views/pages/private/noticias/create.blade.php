@@ -31,15 +31,12 @@
                     <div class="row mb-3">
                         <label class="col-sm-2 form-label" for="extracto">Extracto</label>
                         <div class="col-sm-10">
-                            <div class="input-group input-group-merge">
-                                <span id="extracto2" class="input-group-text"><i class="bx bx-trip"></i></span>
-                                <textarea id="extracto" class="form-control @error('extracto') is-invalid @enderror"  placeholder="Extracto para la noticia" aria-label="Extracto para la noticia" aria-describedby="extracto2" maxlength="250" rows="1" name="extracto" required>{{old('extracto')}}</textarea>
-                                @error('extracto')
-                                <span class="invalid-feedback d-block" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
+                            <textarea id="extracto" class="form-control @error('extracto') is-invalid @enderror" placeholder="Extracto para la noticia" aria-label="Extracto para la noticia" aria-describedby="extracto2" maxlength="250" rows="1" name="extracto" required>{{old('extracto')}}</textarea>
+                            @error('extracto')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -47,7 +44,7 @@
                         <div class="col-sm-10">
                             <div class="input-group input-group-merge">
                                 <span id="imagen" class="input-group-text @error('imagen') @enderror"><i class="bx bx-image-add"></i></span>
-                                <input class="form-control" type="file" id="cargarImagen" placeholder="Carga una Imagen" aria-label="Cargar Imagen" aria-describedby="imagen" name="imagen" value="{{old('imagen')}}" accept="image/*" max-size="2000"/>
+                                <input class="form-control" type="file" id="cargarImagen" placeholder="Carga una Imagen" aria-label="Cargar Imagen" aria-describedby="imagen" name="imagen" value="{{old('imagen')}}" accept="image/*" max-size="2000" />
                             </div>
                             <div class="form-text">Seleccionas imagenes en formato .PNG .JPG .JPEG</div>
                             @error('imagen')
