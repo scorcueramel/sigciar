@@ -9,18 +9,18 @@
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="mb-0">Formulario de registro</h5>
-                <small class="text-muted float-end">Nueva Sede</small>
+                <small class="text-muted float-end">Nueva Noticia</small>
             </div>
             <div class="card-body">
                 <form method="post" action="#" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
                     @csrf
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="sede">Sede</label>
+                        <label class="col-sm-2 col-form-label" for="titulo">Título</label>
                         <div class="col-sm-10">
                             <div class="input-group input-group-merge">
-                                <span id="sede2" class="input-group-text"><i class="bx bx-buildings"></i></span>
-                                <input type="text" id="sede" class="form-control @error('descripcion') is-invalid @enderror" placeholder="Nombre para la sede" aria-label="Nombre para la sede" aria-describedby="sede2" name="descripcion" value="{{old('descripcion')}}" maxlength="100" autofocus required />
-                                @error('descripcion')
+                                <span id="titulo2" class="input-group-text"><i class="fa-regular fa-heading"></i></span>
+                                <input type="text" id="titulo" class="form-control @error('titulo') is-invalid @enderror" placeholder="Título de la nota" aria-label="Título de la nota" aria-describedby="titulo2" name="titulo" value="{{old('titulo')}}" maxlength="100" autofocus required />
+                                @error('titulo')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -29,12 +29,12 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 form-label" for="message">Dirección</label>
+                        <label class="col-sm-2 form-label" for="extracto">Extracto</label>
                         <div class="col-sm-10">
                             <div class="input-group input-group-merge">
-                                <span id="message2" class="input-group-text"><i class="bx bx-trip"></i></span>
-                                <textarea id="message" class="form-control @error('direccion') is-invalid @enderror"  placeholder="Dirección del establecimiento" aria-label="Dirección del establecimiento" aria-describedby="message2" maxlength="250" rows="1" name="direccion" required>{{old('direccion')}}</textarea>
-                                @error('direccion')
+                                <span id="extracto2" class="input-group-text"><i class="bx bx-trip"></i></span>
+                                <textarea id="extracto" class="form-control @error('extracto') is-invalid @enderror"  placeholder="Extracto para la noticia" aria-label="Extracto para la noticia" aria-describedby="extracto2" maxlength="250" rows="1" name="extracto" required>{{old('extracto')}}</textarea>
+                                @error('extracto')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

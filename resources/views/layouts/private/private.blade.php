@@ -29,9 +29,8 @@
     <link rel="stylesheet" href="{{asset('assets/css/global/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/template/css/datatables/dataTables.bootstrap5.css')}}">
 
-    <link href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.bootstrap5.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('assets/template/css/datatables/responsive.bootstrap5.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
 
     @stack('css')
 
@@ -130,6 +129,7 @@
             })
         })()
     </script>
+
     @stack('js')
 </body>
 
