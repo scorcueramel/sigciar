@@ -138,5 +138,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
     Route::group(['prefix'=> 'noticias'], function (){
         Route::get('/lista', [NoticiasController::class,'index'])->name('noticias.index');
         Route::get('/nueva', [NoticiasController::class,'create'])->name('noticias.create');
+        Route::post('/nueva', [NoticiasController::class, 'store'])->name('noticias.store');
+        Route::post('/change/state', [NoticiasController::class, 'changeState'])->name('categorias.change.state');
     });
 });

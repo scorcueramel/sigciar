@@ -15,7 +15,6 @@ class SedesController extends Controller
     protected $disk = 'public';
     public function index()
     {
-        //
         $headerTable = Sede::select('id', 'descripcion', 'abreviatura', 'direccion', 'imagen', 'estado')->first()->toArray();
         $keysSedes = [$keys, $values] = Arr::divide($headerTable)[0];
         $endHeaders = count($keysSedes);
@@ -27,7 +26,6 @@ class SedesController extends Controller
 
     public function create()
     {
-        //
         return view("pages.private.espacios.sedes.create");
     }
 

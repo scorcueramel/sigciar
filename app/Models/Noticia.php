@@ -11,12 +11,11 @@ class Noticia extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'titutlo',
+        'titulo',
         'extracto',
         'cuerpo',
         'estado',
         'imagen_destacada',
-        'imagen_cuerpo',
         'categoria_id',
     ];
 
@@ -25,4 +24,8 @@ class Noticia extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function setTituloAttribute($value){
+        $this->attributes['titulo'] = strtolower($value);
+    }
 }

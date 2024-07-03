@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('noticias', function (Blueprint $table) {
             $table->id();
-            $table->string('titutlo',120)->nullable(false);
-            $table->string('extracto',200)->nullable(false);
-            $table->string('cuerpo',900)->nullable(false);
-            $table->string('estado',5)->nullable(false)->default('A');
+            $table->string('titulo',200)->nullable(false);
+            $table->text('extracto')->nullable(false);
+            $table->text('cuerpo')->nullable(false);
+            $table->string('estado',5)->nullable(false);
             $table->string('imagen_destacada',50)->nullable(false);
-            $table->string('imagen_cuerpo',50)->nullable(true);
             $table->foreignId('categoria_id')->constrained('categoria_noticias');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

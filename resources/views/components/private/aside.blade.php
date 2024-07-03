@@ -165,7 +165,7 @@
                 <li class="menu-item {{ $activePage == 'noticias.index' ||  $activePage == 'noticias.create' ? 'active open' : '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'categorias.create' ? 'active' : '' }}">
                         <i class="fa-solid fa-newspaper" style="margin-right: 13px"></i>
-                        <div data-i18n="Authentications">Noticas</div>
+                        <div data-i18n="Authentications">Noticias</div>
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item {{ $activePage == 'noticias.index' ? 'active' : '' }}">
