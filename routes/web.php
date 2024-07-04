@@ -48,8 +48,12 @@ Route::group(['prefix' => 'ciar'], function () {
     Route::get('/actividades',[LandingController::class, 'activities'])->name('landing.activities');
     Route::get('/detalle/{id}/actividad',[LandingController::class,'activitiesDetails'])->name('actividades.detalle');
     /*END ACTIVIDADES*/
+
+    /* SECTION NEWS */
     Route::get('/nuestras-promesas',[LandingController::class, 'promises'])->name('landing.promises');
     Route::get('/noticicas',[LandingController::class, 'news'])->name('landing.news');
+    Route::get('/noticias/{slug}',[LandingController::class,'newsDetails'])->name('landing.news.details');
+    /** END SECTION NEWS */
     // Reserva publico
     Route::get('/reserva', [ReservationController::class, 'index'])->name('reservation');
     Route::get('/servicios/{sede}/{lugar}', [ReservationController::class, 'show'])->name('reservas.obtener');
@@ -139,6 +143,10 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/lista', [NoticiasController::class,'index'])->name('noticias.index');
         Route::get('/nueva', [NoticiasController::class,'create'])->name('noticias.create');
         Route::post('/nueva', [NoticiasController::class, 'store'])->name('noticias.store');
-        Route::post('/change/state', [NoticiasController::class, 'changeState'])->name('categorias.change.state');
+        Route::post('/change/state', [NoticiasController::class, 'changeState'])->name('noticias.change.state');
+        Route::get('/detalle/{id}/noticia', [NoticiasController::class, 'show'])->name('noticias.detalles');
+        Route::get('/editra/{id}/noticia', [NoticiasController::class, 'edit'])->name('noticias.edit');
+        Route::post('/editra/noticia', [NoticiasController::class, 'update'])->name('noticias.update');
+        Route::post('/eliminar', [NoticiasController::class, 'destroy'])->name('noticias.destroy');
     });
 });

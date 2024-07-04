@@ -20,6 +20,54 @@
                 <h2 class="titulo mainColor altas fw-bold mt-5 mb-4">últimas novedades</h2>
             </div>
         </div>
+        <div class="row mb-3">
+            <!-- Basic with Icons -->
+            <div class="col-xxl">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <form action="{{ route('landing.news') }}" method="GET" class="row d-flex align-items-center justify-content-end mt-3">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Búscador" aria-label="Búscador" aria-describedby="buscador" name="buscar" value="{{ $buscar ?? '' }}">
+                                    <button type="submit" class="btn btn-sm btn-primary" id="buscador">Búscar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (count($noticias) > 0)
+        <div class="row padding2">
+            @foreach ($noticias as $noticia)
+            <div class="col-12 col-md-4 py-4">
+                <div class="item-noticias position-relative">
+                    <div class="contenedor-item">
+                        <figure class="imagen-item">
+                            <a href="#">
+                                <img src="{{asset('/storage/noticias/'.$noticia->imagen_destacada)}}" class="w-100" />
+                            </a>
+                        </figure>
+
+                        <div class="overlay-item text-start">
+                            <div class="info-item py-3 px-3">
+                                <h3 class="titulo-item mb-0">
+                                    <a href="#">{{ Str::ucfirst(Str::limit($noticia->titulo, 80)) }}</a>
+                                </h3>
+                                <div class="edades altas"><a href="{{ route('landing.news.details',$noticia->slug) }}" class="enlace"><img src="{{asset('assets/images/link.svg')}}" /></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-12 mb-4">
+                {{ $noticias->appends(['buscar' => $buscar]) }}
+            </div>
+        </div>
+        @else
         <div class="row padding2">
             <div class="col-12 col-md-4 py-4">
                 <div class="item-noticias position-relative">
@@ -202,6 +250,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 </section>
 

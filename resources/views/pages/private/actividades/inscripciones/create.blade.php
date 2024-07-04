@@ -319,7 +319,7 @@
 
         $.ajax({
             method: 'POST',
-            url: "/admin/actividades/inscribir/miembro",
+            url: "{{route('inscripciones.store')}}",
             data: {
                 idservicio,
                 idmiembro,
@@ -327,6 +327,7 @@
             },
             success: function(resp) {
                 let data = resp;
+
                 if (data.success == 'ok') {
                     window.location.href = "{{ route('inscripciones.index') }}";
                 }

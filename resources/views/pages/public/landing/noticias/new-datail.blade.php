@@ -1,20 +1,20 @@
 @extends('layouts.public.landing')
 @push('title', 'Actividades')
 @section('content')
-    @include('components.public.header',['sedes'=>"/ciar/#sedes"])
-    <section class="banner esInterna position-relative">
-        <div class="container padding position-relative">
-            <div class="row justify-content-center justify-content-md-start position-relative">
-                <div class="col-11 col-md-12 col-xl-12 text-center">
-                    <div class="padding2"></div>
-                    <h2 class="titulo altas fw-bold mb-3 mb-lg-4">Actividades</h2>
-                </div>
+@include('components.public.header',['sedes'=>"/ciar/#sedes"])
+<section class="banner esInterna position-relative">
+    <div class="container padding position-relative">
+        <div class="row justify-content-center justify-content-md-start position-relative">
+            <div class="col-11 col-md-12 col-xl-12 text-center">
+                <div class="padding2"></div>
+                <h2 class="titulo altas fw-bold mb-3 mb-lg-4">{{$noticia->titulo}}</h2>
             </div>
         </div>
-    </section>
-    <section class="noticias-detalle mt-5" id="noticias-detalle">
-        <div class="container">
-            <div class="row justify-content-center">
+    </div>
+</section>
+<section class="noticias-detalle mt-5" id="noticias-detalle">
+    <div class="container">
+        <!-- <div class="row justify-content-center">
                 <div class="col-12 col-md-8">
                     <p class="fecha">May 24, 2024</p>
                     <h2 class="titulo mainColor altas fw-bold mt-2 mb-5">Machac sorprende a Djokovic para alcanzar su 1ª
@@ -112,9 +112,36 @@
                         </div>
                     </div>
                 </div>
+            </div> -->
+        <div class="row d-flex justify-content-between">
+            <div class="col-md-9">
+                {!! $noticia->cuerpo !!}
+            </div>
+            <div class="col-md-3 mt-4">
+                @if (count($noticiasCategoria) > 0)
+                <div class="row mb-3">
+                    <div class="col-md-12 mb-3 mt-2">
+                        Mas noticias de interés
+                    </div>
+                    <div class="col-md-12">
+                        @foreach ($noticiasCategoria as $notcat)
+                        <a href="{{ route('landing.news.details',$notcat->slug) }}" style="text-decoration: none; cursor: pointer">
+                            <div class="card" style="width: 16rem; background: #f1f1f1; border-radius: 10px; padding:10px">
+                                <img class="card-img-top img-fluid img-thumbnail" src="{{asset('/storage/noticias/'.$notcat->imagen_destacada)}}" alt="Card image cap" width="200">
+                                <div class="card-body mt-2">
+                                    <p style="font-size:14px">{{ Str::ucfirst(Str::limit($notcat->titulo, 60)) }}</p>
+                                    Ver más
+                                </div>
+                            </div>
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
-    </section>
-    @include('components.public.footer')
-    @include('components.public.fixed')
+    </div>
+</section>
+@include('components.public.footer')
+@include('components.public.fixed')
 @endsection

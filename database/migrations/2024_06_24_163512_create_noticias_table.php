@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('cuerpo')->nullable(false);
             $table->string('estado',5)->nullable(false);
             $table->string('imagen_destacada',50)->nullable(false);
+            $table->string('slug',400)->nullable(true)->unique();
             $table->foreignId('categoria_id')->constrained('categoria_noticias');
             $table->softDeletes();
             $table->timestamps();

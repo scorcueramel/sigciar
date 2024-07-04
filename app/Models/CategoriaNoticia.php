@@ -32,8 +32,4 @@ class CategoriaNoticia extends Model
             ->allowDuplicateSlugs();
     }
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
 }

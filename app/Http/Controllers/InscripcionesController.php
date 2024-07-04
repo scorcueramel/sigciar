@@ -39,7 +39,7 @@ class InscripcionesController extends Controller
                                             left join public.servicio_inscripcions ins on s.id = ins.servicio_id
                                             left join public.personas per on ins.persona_id = per.id
                                             left join public.servicio_pagos pag on ins.id = pag.servicioinscripcion_id
-                                            where s.id = 38");
+                                            ");
         } else {
             $inscripciones = DB::select("SELECT distinct
                                             s.id as servicios_id,
@@ -61,7 +61,7 @@ class InscripcionesController extends Controller
                                             left join public.servicio_inscripcions ins on s.id = ins.servicio_id
                                             left join public.personas per on ins.persona_id = per.id
                                             left join public.servicio_pagos pag on ins.id = pag.servicioinscripcion_id
-                                            where s.id = 38 and responsable_id = ?", [$persona[0]->id]);
+                                            where responsable_id = ?", [$persona[0]->id]);
         }
 
         return datatables()->of($inscripciones)
@@ -126,7 +126,7 @@ class InscripcionesController extends Controller
 
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
-        $usuarioActivo = $persona[0]->nombres;
+        $usuarioActivo = $persona[0]->nombres." ".$persona[0]->appaterno." ".$persona[0]->apematerno;
         $servicioId = $request->idservicio;
         $fechasDefinias = $request->fechasDefinidas;
         $usuarioId = $request->idmiembro;
