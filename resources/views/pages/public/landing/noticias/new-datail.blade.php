@@ -125,12 +125,12 @@
                     </div>
                     <div class="col-md-12">
                         @foreach ($noticiasCategoria as $notcat)
-                        <a href="{{ route('landing.news.details',$notcat->slug) }}" style="text-decoration: none; cursor: pointer">
+                        <a class="mb-2" href="{{ route('landing.news.details',$notcat->slug) }}" style="text-decoration: none; cursor: pointer">
                             <div class="card" style="width: 16rem; background: #f1f1f1; border-radius: 10px; padding:10px">
                                 <img class="card-img-top img-fluid img-thumbnail" src="{{asset('/storage/noticias/'.$notcat->imagen_destacada)}}" alt="Card image cap" width="200">
                                 <div class="card-body mt-2">
                                     <p style="font-size:14px">{{ Str::ucfirst(Str::limit($notcat->titulo, 60)) }}</p>
-                                    Ver más
+                                    <p style="font-size:12px">Ver más</p>
                                 </div>
                             </div>
                         </a>
