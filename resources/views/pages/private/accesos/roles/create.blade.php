@@ -47,7 +47,7 @@
                     <form action="javascript:void(0);">
                         <div class="row">
                             <div class="mt-4">
-                                <button type="submit" class="btn btn-primary me-2">Crear Usuario</button>
+                                <button type="submit" class="btn btn-primary me-2">Crear Rol</button>
                                 <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                             </div>
                         </div>
