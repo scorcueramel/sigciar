@@ -116,8 +116,11 @@
                     </div>
 
                     <div class="row justify-content-end">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <button type="submit" class="btn btn-primary">Actualizar Noticia</button>
+                        </div>
+                        <div class="col-sm-6 text-end">
+                            <a href="{{route('noticias.index')}}" class="btn btn-danger">Cancelar</a>
                         </div>
                     </div>
                 </div>

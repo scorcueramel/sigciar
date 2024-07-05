@@ -14,6 +14,8 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SedesController;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\InscripcionesController;
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\RolesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -148,5 +150,15 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/editra/{id}/noticia', [NoticiasController::class, 'edit'])->name('noticias.edit');
         Route::post('/editra/noticia', [NoticiasController::class, 'update'])->name('noticias.update');
         Route::post('/eliminar', [NoticiasController::class, 'destroy'])->name('noticias.destroy');
+    });
+
+    Route::group(['prefix'=> 'usuarios'], function (){
+        Route::get('/lista',[UsuarioController::class, 'index'])->name('usuarios.index');
+        Route::get('/nuevo',[UsuarioController::class,'create'])->name('usuarios.create');
+    });
+
+    Route::group(['prefix'=> 'roles'], function (){
+        Route::get('/lista',[RolesController::class, 'index'])->name('roles.index');
+        Route::get('/nuevo',[RolesController::class,'create'])->name('roles.create');
     });
 });

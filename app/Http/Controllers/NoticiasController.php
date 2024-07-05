@@ -12,15 +12,17 @@ use Illuminate\Support\Str;
 class NoticiasController extends Controller
 {
     public $disk = "public";
+
     public function index(Request $request)
     {
         $buscar = Str::lower($request->buscar);
 
-        $noticias = Noticia::leftJoin('categoria_noticias','categoria_noticias.id','=','noticias.categoria_id')->select("noticias.id as noticia_id","categoria_noticias.nombre as nombre","categoria_noticias.id as categoria_id","noticias.titulo as titulo","noticias.extracto as extracto","noticias.cuerpo as cuerpo","noticias.estado as estado","noticias.imagen_destacada as imagen_destacada","noticias.slug as slug")
-        ->where('noticias.titulo','LIKE','%'.$buscar.'%')
-        ->orderBy('estado','asc')
-        ->paginate(6);
-        return view("pages.private.noticias.index", compact("noticias","buscar"));
+        $noticias = Noticia::leftJoin('categoria_noticias', 'categoria_noticias.id', '=', 'noticias.categoria_id')
+                            ->select("noticias.id as noticia_id", "categoria_noticias.nombre as nombre", "categoria_noticias.id as categoria_id", "noticias.titulo as titulo", "noticias.extracto as extracto", "noticias.cuerpo as cuerpo", "noticias.estado as estado", "noticias.imagen_destacada as imagen_destacada", "noticias.slug as slug")
+                            ->where('noticias.titulo', 'LIKE', '%' . $buscar . '%')
+                            ->orderBy('estado', 'asc')
+                            ->paginate(6);
+        return view("pages.private.noticias.index", compact("noticias", "buscar"));
     }
 
     public function create()
@@ -66,7 +68,7 @@ class NoticiasController extends Controller
 
         $noticia = new Noticia();
         $noticia->categoria_id = $request->categoria;
-        $noticia->setAttribute('titulo',$request->titulo);
+        $noticia->setAttribute('titulo', $request->titulo);
         $noticia->extracto = $request->extracto;
         $noticia->cuerpo = $request->cuerpo;
         $noticia->estado = $request->estado;
@@ -85,22 +87,22 @@ class NoticiasController extends Controller
 
     public function show(string $id)
     {
-        $noticia = Noticia::leftJoin('categoria_noticias','categoria_noticias.id','=','noticias.categoria_id')
-                            ->select("noticias.id as noticia_id","categoria_noticias.nombre as nombre","noticias.titulo as titulo",
-                            "noticias.extracto as extracto","noticias.cuerpo as cuerpo","noticias.estado as estado",
-                            "noticias.imagen_destacada as imagen_destacada","categoria_noticias.slug as slug")
-                            ->where('noticias.id','=', $id)->get();
+        $noticia = Noticia::leftJoin('categoria_noticias', 'categoria_noticias.id', '=', 'noticias.categoria_id')
+            ->select("noticias.id as noticia_id", "categoria_noticias.nombre as nombre", "noticias.titulo as titulo",
+                "noticias.extracto as extracto", "noticias.cuerpo as cuerpo", "noticias.estado as estado",
+                "noticias.imagen_destacada as imagen_destacada", "categoria_noticias.slug as slug")
+            ->where('noticias.id', '=', $id)->get();
 
         return response()->json($noticia);
     }
 
     public function edit(string $id)
     {
-        $categorias = CategoriaNoticia::where('estado','A')->get();
-        $noticiaObtenida = Noticia::leftJoin('categoria_noticias','categoria_noticias.id','=','noticias.categoria_id')->select("noticias.id as noticia_id","categoria_noticias.nombre as nombre","noticias.titulo as titulo","noticias.extracto as extracto","noticias.cuerpo as cuerpo","noticias.estado as estado","noticias.categoria_id as categoria_id","noticias.imagen_destacada as imagen_destacada","categoria_noticias.slug as slug")->where('noticias.id','=', $id)->get();
+        $categorias = CategoriaNoticia::where('estado', 'A')->get();
+        $noticiaObtenida = Noticia::leftJoin('categoria_noticias', 'categoria_noticias.id', '=', 'noticias.categoria_id')->select("noticias.id as noticia_id", "categoria_noticias.nombre as nombre", "noticias.titulo as titulo", "noticias.extracto as extracto", "noticias.cuerpo as cuerpo", "noticias.estado as estado", "noticias.categoria_id as categoria_id", "noticias.imagen_destacada as imagen_destacada", "categoria_noticias.slug as slug")->where('noticias.id', '=', $id)->get();
         $noticia = $noticiaObtenida[0];
 
-        return view('pages.private.noticias.edit', compact('noticia','categorias'));
+        return view('pages.private.noticias.edit', compact('noticia', 'categorias'));
     }
 
     public function update(Request $request)
@@ -126,7 +128,7 @@ class NoticiasController extends Controller
         $id = $request->id;
         $noticia = Noticia::findOrFail($id);
         $noticia->categoria_id = $request->categoria;
-        $noticia->setAttribute('titulo',$request->titulo);
+        $noticia->setAttribute('titulo', $request->titulo);
         $noticia->extracto = $request->extracto;
         $noticia->cuerpo = $request->cuerpo;
         $noticia->estado = $request->estado;

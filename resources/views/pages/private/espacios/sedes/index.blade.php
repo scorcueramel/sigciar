@@ -10,22 +10,22 @@
         <a href="{{route('sedes.create')}}" class="btn btn-sm btn-info"><i class="fa-regular fa-hotel me-1"></i>Nuevo</a>
     </div>
 </div>
-<div class="row p-3">
-    @include('components.private.table', ['titleTable' => 'Lista General de las Sedes','searchable'=>false,'paginate'=>$sedesBody])
 
-    @endsection
-    @include('components.private.modal',['withTitle'=>true,'withButtons'=>false])
-    @push('js')
-    <script>
-        // Ejecuta la acción de buscar de la barra de búsqueda.
-        // $('#buscador').click(()=>{
-        //     alert('The Watcher');
-        // });
-        let headerSedes = @json($sedesHeader);
-        let headerTable = $('#headertable');
-        let bodySedes = @json($sedesBody);
-        let bodyTable = $('#bodytable');
-        headerTable.append(`
+@include('components.private.table', ['titleTable' => 'Lista General de las Sedes','searchable'=>false,'paginate'=>$sedesBody])
+
+@endsection
+@include('components.private.modal',['withTitle'=>true,'withButtons'=>false])
+@push('js')
+<script>
+    // Ejecuta la acción de buscar de la barra de búsqueda.
+    // $('#buscador').click(()=>{
+    //     alert('The Watcher');
+    // });
+    let headerSedes = @json($sedesHeader);
+    let headerTable = $('#headertable');
+    let bodySedes = @json($sedesBody);
+    let bodyTable = $('#bodytable');
+    headerTable.append(`
                 <tr>
                     <th>${headerSedes[0]}</th>
                     <th>${headerSedes[1]}</th>
@@ -37,8 +37,8 @@
                 </tr>
         `);
 
-        bodySedes.data.forEach((e) => {
-            bodyTable.append(`
+    bodySedes.data.forEach((e) => {
+        bodyTable.append(`
                 <tr>
                     <td>
                         <i class="bx bxs-circle text-primary me-3"></i>
@@ -63,77 +63,77 @@
                     </td>
                 </tr>
         `);
+    });
+
+    $('.btn-modal-image').on('click', function() {
+        var imagen = $(this).attr('data-imagen');
+        var descripcion = $(this).attr('data-descripcion');
+        let uriImg = "{{ asset('/storage/sedes/{image}') }}";
+        uriImg = uriImg.replace('{image}', imagen);
+
+        $('#mcbody').html('<img src="" class="img-fluid mx-auto d-block" id="mostrarImagen" alt="imagen">');
+        $('#mcbody').find('#mostrarImagen').attr('src', `${uriImg}`);
+        $('#mcLabel').html(`${descripcion}`);
+    })
+
+    $('.change-state').on('click', function() {
+        let id = $(this).attr('data-id');
+        Swal.fire({
+            icon: 'info',
+            html: "Espere un momento porfavor ...",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            }
         });
-
-        $('.btn-modal-image').on('click', function() {
-            var imagen = $(this).attr('data-imagen');
-            var descripcion = $(this).attr('data-descripcion');
-            let uriImg = "{{ asset('/storage/sedes/{image}') }}";
-            uriImg = uriImg.replace('{image}', imagen);
-
-            $('#mcbody').html('<img src="" class="img-fluid mx-auto d-block" id="mostrarImagen" alt="imagen">');
-            $('#mcbody').find('#mostrarImagen').attr('src', `${uriImg}`);
-            $('#mcLabel').html(`${descripcion}`);
-        })
-
-        $('.change-state').on('click', function() {
-            let id = $(this).attr('data-id');
-            Swal.fire({
-                icon: 'info',
-                html: "Espere un momento porfavor ...",
-                timerProgressBar: true,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-            $.ajax({
-                type: "POST",
-                url: `/admin/sedes/change/state`,
-                data: {
-                    id: id
-                },
-                success: function(response) {
-                    location.reload();
-                }
-            });
+        $.ajax({
+            type: "POST",
+            url: `/admin/sedes/change/state`,
+            data: {
+                id: id
+            },
+            success: function(response) {
+                location.reload();
+            }
         });
+    });
 
-        $('.delete').on('click', function() {
-            let id = $(this).attr('data-id');
-            Swal.fire({
-                title: "Seguro de eliminar?",
-                text: "Vas a eliminar esta sede",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Si eliminar",
-                cancelButtonText: "No eliminar",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        icon: 'info',
-                        html: "Espere un momento porfavor ...",
-                        timerProgressBar: true,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-                    $.ajax({
-                        type: "POST",
-                        url: `{{route('sedes.destroy')}}`,
-                        data: {
-                            id
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            location.reload();
-                        }
-                    });
-                }
-            });
+    $('.delete').on('click', function() {
+        let id = $(this).attr('data-id');
+        Swal.fire({
+            title: "Seguro de eliminar?",
+            text: "Vas a eliminar esta sede",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si eliminar",
+            cancelButtonText: "No eliminar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    icon: 'info',
+                    html: "Espere un momento porfavor ...",
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: `{{route('sedes.destroy')}}`,
+                    data: {
+                        id
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        location.reload();
+                    }
+                });
+            }
         });
-    </script>
-    @endpush
+    });
+</script>
+@endpush

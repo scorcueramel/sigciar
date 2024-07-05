@@ -2,12 +2,6 @@
 @push('title', 'Noticias')
 @push('css')
     <style>
-        .estado {
-            margin-bottom: -40px;
-            margin-left: 15px;
-            z-index: 1000;
-        }
-
         .btn-estado {
             border-radius: 50px;
         }
@@ -24,7 +18,7 @@
                     class="fa-regular fa-newspaper me-1"></i>Nueva</a>
         </div>
     </div>
-    <div class="row mb-3">
+    <div class="row">
         <!-- Basic with Icons -->
         <div class="col-xxl">
             <div class="card mb-4">
@@ -37,6 +31,7 @@
                                     aria-label="Búscar por nombre de la nota" aria-describedby="buscador" name="buscar"
                                     value="{{ $buscar ?? '' }}">
                                 <button type="submit" class="btn btn-sm btn-primary" id="buscador">Búscar</button>
+                                <button type="button" class="btn btn-sm btn-warning" id="limpiar">Limpiar</button>
                             </div>
                         </div>
                     </form>
@@ -46,40 +41,32 @@
     </div>
 
     @if (count($noticias) > 0)
-        <div class="row mb-2">
-            <div class="col-md-12 mb-4">
+        <div class="row">
+            <div class="col-md-12">
                 {{ $noticias->appends(['buscar' => $buscar]) }}
             </div>
         </div>
-        <div class="row mb-2">
+        <div class="row">
             @foreach ($noticias as $noticia)
-                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 mb-5">
-                    <div class="card" style="width: 28rem;">
-                        @if ($noticia->estado == 'A')
-                            <span class="estado">
-                                <button class="btn btn-sm btn-primary change-state btn-estado"
-                                    data-id="{{ $noticia->noticia_id }}">ACTIVO</button>
-                            </span>
-                        @else
-                            <span class="estado">
-                                <button class="btn btn-sm btn-danger change-state btn-estado"
-                                    data-id="{{ $noticia->noticia_id }}">INACTIVO</button>
-                            </span>
-                        @endif
-                        <img src="{{ asset('/storage/noticias/' . $noticia->imagen_destacada) }}" class="card-img-top"
-                            alt="Imagen destacada" style="width: 28rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ Str::ucfirst(Str::limit($noticia->titulo, 80)) }}</h5>
-                            <p class="card-text">{!! $noticia->extracto !!}</p>
-                        </div>
-                        <div class="card-footer text-end">
-                            <button type="button" class="btn btn-sm btn-info btn-detail"
-                                data-id="{{ $noticia->noticia_id }}"><i class="fa-regular fa-eye"></i></button>
-                            <a href="{{ route('noticias.edit', $noticia->noticia_id) }}" class="btn btn-sm btn-success"><i
-                                    class="fa-regular fa-pencil"></i></a>
-                            <button type="button" class="btn btn-sm btn-danger delete" data-id="{{ $noticia->noticia_id }}"><i class="fa-regular fa-eraser"></i></button>
-                        </div>
-                    </div>
+                <div class="col-md-6 col-lg-4">
+                    @include('components.private.card',
+                            [
+                                'titulo'=>Str::title(Str::limit($noticia->titulo, 80)),
+                                'imagen'=>true,
+                                'imagenDestacada'=>asset('/storage/noticias/'.$noticia->imagen_destacada),
+                                'muestraExtracto'=>true,
+                                'extracto'=>$noticia->extracto,
+                                'botones'=>true,
+                                'botonDetalle'=>true,
+                                'detalleId'=>$noticia->noticia_id,
+                                'botonEditar'=>true,
+                                'ruta'=>route('noticias.edit', $noticia->noticia_id),
+                                'botonEliminar'=>true,
+                                'eliminarId'=>$noticia->noticia_id,
+                                'estado'=>true,
+                                'estadoActual'=>$noticia->estado,
+                                'estadoId'=>$noticia->noticia_id
+                            ])
                 </div>
             @endforeach
         </div>
@@ -178,6 +165,10 @@
                 }
             });
 
+        });
+
+        $("#limpiar").on('click',function(){
+            window.location.href="{{route('noticias.index')}}";
         });
     </script>
 @endpush

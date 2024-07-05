@@ -14,7 +14,7 @@
                         <div class="item-noticias position-relative">
                             <div class="contenedor-item">
                                 <figure class="imagen-item">
-                                    <a href="#">
+                                    <a href="{{ route('landing.news.details',$noticia->slug) }}">
                                         <img src="{{asset('/storage/noticias/'.$noticia->imagen_destacada)}}" class="w-100" />
                                     </a>
                                 </figure>

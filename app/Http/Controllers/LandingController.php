@@ -47,7 +47,9 @@ class LandingController extends Controller
                                         "noticias.estado as estado",
                                         "noticias.imagen_destacada as imagen_destacada",
                                         "noticias.slug as slug"
-                                    )->get();
+                                    )
+                                    ->where('noticias.estado','=','A')
+                                    ->get();
 
         return view("pages.public.landing.index", compact("sedes", "actividades","noticias"));
     }
@@ -130,7 +132,7 @@ class LandingController extends Controller
         $noticia = $noticiaObtenida[0];
         $catNoti = $noticia->categoria_id;
 
-        $noticiasCategoria = Noticia::where('categoria_id',$catNoti)->where('estado','A')->where('id','<>',$noticia->noticia_id)->select("imagen_destacada","titulo","slug")->take(6)->get();
+        $noticiasCategoria = Noticia::where('categoria_id',$catNoti)->where('estado','A')->where('id','<>',$noticia->noticia_id)->select("imagen_destacada","titulo","slug")->take(8)->get();
 
         return view("pages.public.landing.noticias.new-datail",compact("noticia","noticiasCategoria"));
     }

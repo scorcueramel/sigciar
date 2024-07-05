@@ -173,7 +173,7 @@
                                 <div data-i18n="Basic">Todas las Noticias</div>
                             </a>
                         </li>
-                        <li class="menu-item {{ $activePage == 'noticias.create' ? 'active' : '' }}"">
+                        <li class="menu-item {{ $activePage == 'noticias.create' ? 'active' : '' }}">
                             <a href="{{route('noticias.create')}}" class="menu-link">
                                 <div data-i18n="Basic">Nueva Noticia</div>
                             </a>
@@ -185,37 +185,37 @@
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Control</span>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ $activePage == 'usuarios.index' || $activePage == 'usuarios.create' ? 'active open' : '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="fa-regular fa-users" style="margin-right: 13px"></i>
                         <div data-i18n="Account Settings">Usuarios</div>
                     </a>
                     <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="" class="menu-link">
+                        <li class="menu-item {{ $activePage == 'usuarios.index' ? 'active' : '' }}">
+                            <a href="{{route('usuarios.index')}}" class="menu-link">
                                 <div data-i18n="Account">Todos los Usuarios</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="" class="menu-link">
+                        <li class="menu-item {{ $activePage == 'usuarios.create' ? 'active' : '' }}">
+                            <a href="{{ route('usuarios.create') }}" class="menu-link">
                                 <div data-i18n="Account">Nuevo Usuario</div>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ $activePage == 'roles.index' || $activePage == 'roles.create' ? 'active open' : '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="fa-regular fa-lock" style="margin-right: 13px"></i>
                         <div data-i18n="Authentications">Roles</div>
                     </a>
                     <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="auth-login-basic.html" class="menu-link">
+                        <li class="menu-item {{ $activePage == 'roles.index' ? 'active' : '' }}">
+                            <a href="{{route('roles.index')}}" class="menu-link">
                                 <div data-i18n="Basic">Todos los Roles</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="auth-register-basic.html" class="menu-link">
+                        <li class="menu-item {{ $activePage == 'roles.create' ? 'active' : '' }}">
+                            <a href="{{route('roles.create')}}" class="menu-link">
                                 <div data-i18n="Basic">Nuevo Rol</div>
                             </a>
                         </li>

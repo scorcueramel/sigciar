@@ -29,7 +29,7 @@ class PersonIsUser
             return redirect('/ciar/reserva')->with('warning', 'No puede acceder a esa sección por ser solo para personal autorizado de CIAR por lo tanto se encuentra restringida.
             Si eres miembro del STAFF de CIAR y no puedes acceder con tu usuario, te sugerimos contactar con el administrador para solucionar el inconveniente');
         }else{
-            return redirect('/login-staff')->with('warning','Debes iniciar sesión para ingresar al aparto que deseas.');
+            return redirect('/login-staff')->with('warning','Debes iniciar sesión para ingresar al apartado que deseas.');
         }
     }
 }
