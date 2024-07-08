@@ -44,6 +44,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row mb-3 d-flex justify-content-end">
+                        <div class="col-md-10">
+                            <div class="input-group input-group-merge">
+                                <span class="input-group-text" id="url">https://www.ciarsports.com/ciar/noticias/</span>
+                                <input type="text" class="form-control ps-3" id="slug" aria-describedby="url" disabled />
+                            </div>
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <label class="col-sm-2 form-label" for="extracto">Extracto</label>
                         <div class="col-sm-10">
@@ -167,7 +175,7 @@
         });
     });
 
-    $("#form").on('submit',function(){
+    $("#form").on('submit', function() {
         Swal.fire({
             icon: 'info',
             html: "Espere un momento porfavor ...",
@@ -176,6 +184,12 @@
                 Swal.showLoading();
             }
         });
+    });
+
+    $("#titulo").on('keyup', function() {
+        var str = $(this).val();
+        str = str.replace(/\s+/g, '-').toLowerCase();
+        $('#slug').val(str);
     });
 </script>
 @endpush
