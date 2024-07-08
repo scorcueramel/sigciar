@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('subtitulo',5);
             $table->string('estado',1);
             $table->string('imagen',50);
+            $table->string('medicion',100);
             $table->foreignId('tiposervicio_id')->constrained('tipo_servicios');
             $table->softDeletes();
             $table->timestamps();

@@ -16,6 +16,7 @@ class SubtipoServicio extends Model
         'subtitulo',
         'estado',
         'imagen',
+        'medicion',
         'tiposervicio_id',
     ];
 }
