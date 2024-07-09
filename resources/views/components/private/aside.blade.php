@@ -2,7 +2,7 @@
 
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
             <div class="app-brand demo">
-                <a href="{{route('home')}}" class="app-brand-link">
+                <a href="{{route('home.dashboard')}}" class="app-brand-link">
                     <img src="{{asset('assets/images/ciar-logo-azul.png')}}" alt="CIAR" class="img-fluid img-thumbnail">
                 </a>
 
@@ -16,7 +16,7 @@
             <ul class="menu-inner py-1">
                 <!-- Dashboard -->
                 <li class="menu-item {{ $activePage == 'home' ? 'active' : '' }}">
-                    <a href="{{route('home')}}" class="menu-link">
+                    <a href="{{route('home.dashboard')}}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-home-circle"></i>
                         <div data-i18n="Analytics">Dashboard</div>
                     </a>
@@ -203,7 +203,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-item {{ $activePage == 'roles.index' || $activePage == 'roles.create' ? 'active open' : '' }}">
+                <li class="menu-item {{ $activePage == 'roles.index' || $activePage == 'roles.edit' || $activePage == 'roles.create' ? 'active open' : '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="fa-regular fa-lock" style="margin-right: 13px"></i>
                         <div data-i18n="Authentications">Roles</div>

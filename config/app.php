@@ -203,6 +203,10 @@ return [
          *  Laravel Datatables
           */
         Yajra\DataTables\DataTablesServiceProvider::class,
+        /**
+         * Laravel Collective
+         */
+        Collective\Html\HtmlServiceProvider::class,
     ],
 
     /*

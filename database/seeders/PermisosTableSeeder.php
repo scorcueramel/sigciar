@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 
 class PermisosTableSeeder extends Seeder
 {
@@ -14,6 +15,67 @@ class PermisosTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $permisos = [
+            // dashboard
+            "ver.dashboard",
+            "detalles.dashboard",
+            "estado.dashboard",
+            "crear.dashboard",
+            "editar.dashboard",
+            "eliminar.dashboard",
+            "calendario.dashboard",
+            // sedes
+            "ver.sedes",
+            "detalles.sedes",
+            "estado.sedes",
+            "crear.sedes",
+            "editar.sedes",
+            "eliminar.sedes",
+            //lugares
+            "ver.lugares",
+            "detalles.lugares",
+            "estado.lugares",
+            "crear.lugares",
+            "editar.lugares",
+            "eliminar.lugares",
+            //actividades
+            "ver.tenis",
+            "detalles.tenis",
+            "estado.tenis",
+            "crear.tenis",
+            "eliminar.tenis", //ELIMINAR ACTIVIDAD
+            //inscripciones
+            "ver.inscripciones",
+            "detalle.inscripciones",
+            "editar.inscripciones",
+            "crear.inscripciones",
+            //categorías
+            "ver.categorias",
+            "detalles.categorias",
+            "estado.categorias",
+            "crear.categorias",
+            "editar.categorias",
+            "eliminar.categorias",
+            //noticias
+            "ver.noticias",
+            "crear.noticias",
+            "estado.noticias",
+            "detalles.noticias",
+            "editar.noticias",
+            "eliminar.noticias",
+            //usuarios
+            "ver.usuario",
+            "crear.usuarios",
+            //roles
+            "ver.roles",
+            "crear.roles",
+            "detalles.roles",
+            "editar.roles",
+            "eliminar.roles",
+        ];
+
+        foreach ($permisos as $permiso) {
+            Permission::create(['name' => $permiso]);
+        }
     }
 }

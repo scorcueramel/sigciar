@@ -22,7 +22,7 @@ class LoginStaffController extends Controller
         $remember = ($request->has('remember') ? true : false);
 
         if(Auth::attempt($credentials,$remember)){
-            return redirect()->route('home');
+            return redirect()->route('home.dashboard');
         }else{
             return redirect()->back()->withErrors($validate)->withInput();
         }

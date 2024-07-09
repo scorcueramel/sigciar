@@ -79,7 +79,7 @@ Route::group(['prefix' => 'ciar'], function () {
 
 // Rutas para el Administrador
 Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('home.dashboard');
     Route::get('/carga/actividades',[HomeController::class, 'activities'])->name('calendario.home');
 
     Route::group(['prefix'=> 'sedes'], function () {
@@ -147,8 +147,8 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/nueva', [NoticiasController::class, 'store'])->name('noticias.store');
         Route::post('/change/state', [NoticiasController::class, 'changeState'])->name('noticias.change.state');
         Route::get('/detalle/{id}/noticia', [NoticiasController::class, 'show'])->name('noticias.detalles');
-        Route::get('/editra/{id}/noticia', [NoticiasController::class, 'edit'])->name('noticias.edit');
-        Route::post('/editra/noticia', [NoticiasController::class, 'update'])->name('noticias.update');
+        Route::get('/editar/{id}/noticia', [NoticiasController::class, 'edit'])->name('noticias.edit');
+        Route::post('/editar/noticia', [NoticiasController::class, 'update'])->name('noticias.update');
         Route::post('/eliminar', [NoticiasController::class, 'destroy'])->name('noticias.destroy');
     });
 
@@ -160,5 +160,9 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
     Route::group(['prefix'=> 'roles'], function (){
         Route::get('/lista',[RolesController::class, 'index'])->name('roles.index');
         Route::get('/nuevo',[RolesController::class,'create'])->name('roles.create');
+        Route::post('/nuevo',[RolesController::class,'store'])->name('roles.store');
+        Route::get('/editar/{id}/rol',[RolesController::class,'edit'])->name('roles.edit');
+        Route::put('/editar/{id}/rol',[RolesController::class,'update'])->name('roles.update');
+        Route::post('/eliminar', [RolesController::class, 'destroy'])->name('roles.destroy');
     });
 });

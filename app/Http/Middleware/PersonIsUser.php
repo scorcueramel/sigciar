@@ -23,7 +23,7 @@ class PersonIsUser
 
             $person = $query[0]->abreviatura;
 
-            if (auth()->check() && $person != 'US')
+            if (auth()->check() && $person != 'US' && $person != 'MB' && $person != 'DN')
                 return $next($request);
 
             return redirect('/ciar/reserva')->with('warning', 'No puede acceder a esa sección por ser solo para personal autorizado de CIAR por lo tanto se encuentra restringida.
