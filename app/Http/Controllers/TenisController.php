@@ -151,7 +151,7 @@ class TenisController extends Controller
     // get categories by id activity
     public function categoryCharge(string $id)
     {
-        $subtiposervicio = SubtipoServicio::where('tiposervicios_id', $id)->orderBy('id', 'desc')->get();
+        $subtiposervicio = SubtipoServicio::where('tiposervicio_id', $id)->orderBy('id', 'desc')->get();
 
         if (count($subtiposervicio) == 0) {
             $subtiposervicio = "No existen categorías asocidas a la actividad seleccionada, favor comunicarse con el administrador del sistema";

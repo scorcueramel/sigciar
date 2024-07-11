@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\Auth\PersonaRegisterController;
+use App\Http\Controllers\Auth\MemberRegisterController;
 use App\Http\Controllers\NoticiasController;
 use App\Http\Controllers\TenisController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingController;
-use App\Http\Controllers\LoginMember;
+use App\Http\Controllers\LoginMemberController;
 use App\Http\Controllers\LoginStaffController;
 use App\Http\Controllers\LugaresController;
 use App\Http\Controllers\PerfilUsuarioController;
@@ -39,6 +40,13 @@ Route::get('/login-staff',function(){
 Route::post('/login-staff',[LoginStaffController::class, 'login'])->name('login.staff');
 Route::post('/logout-staff',[LoginStaffController::class, 'logout'])->name('logout.staff');
 
+// Login MEMBER
+Route::get('/login-member',function(){
+    return view('auth.login-members');
+})->name('login.member');
+Route::post('/login-member',[LoginMemberController::class, 'login'])->name('login.member');
+Route::post('/logout-member',[LoginMemberController::class, 'logout'])->name('logout.member');
+
 // Route::get('/ciar/servicio/{sede}/{lugar}', [ReservationController::class, 'test'])->name('reservas.obtener');
 
 Route::get('/',[LandingController::class,'index'])->name('landing.index');
@@ -63,6 +71,9 @@ Route::group(['prefix' => 'ciar'], function () {
     // Registro
     Route::get('/registro/cliente', [PersonaRegisterController::class, 'index'])->name('registro.cliente');
     Route::post('/registro/cliente', [PersonaRegisterController::class, 'store'])->name('registro.cliente');
+    // Registro member
+    Route::get('/registro/member', [MemberRegisterController::class, 'index'])->name('registro.member');
+    Route::post('/registro/member', [MemberRegisterController::class, 'store'])->name('registro.member');
 });
 
 Auth::routes();
@@ -155,6 +166,10 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
     Route::group(['prefix'=> 'usuarios'], function (){
         Route::get('/lista',[UsuarioController::class, 'index'])->name('usuarios.index');
         Route::get('/nuevo',[UsuarioController::class,'create'])->name('usuarios.create');
+        Route::post('/nuevo',[UsuarioController::class,'store'])->name('usuarios.store');
+        Route::get('/editar/{id}/usuario', [UsuarioController::class, 'edit'])->name('usuarios.edit');
+        Route::put('/editar/{id}/usuario', [UsuarioController::class, 'update'])->name('usuarios.update');
+        Route::delete('/eliminar/{id}',[UsuarioController::class,'destroy'])->name('usuarios.destroy');
     });
 
     Route::group(['prefix'=> 'roles'], function (){
@@ -163,6 +178,6 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/nuevo',[RolesController::class,'store'])->name('roles.store');
         Route::get('/editar/{id}/rol',[RolesController::class,'edit'])->name('roles.edit');
         Route::put('/editar/{id}/rol',[RolesController::class,'update'])->name('roles.update');
-        Route::post('/eliminar', [RolesController::class, 'destroy'])->name('roles.destroy');
+        Route::delete('/eliminar/{id}', [RolesController::class, 'destroy'])->name('roles.destroy');
     });
 });

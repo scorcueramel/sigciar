@@ -24,12 +24,13 @@
             <div class="card mb-4">
                 <div class="card-header">
                     <form action="{{ route('noticias.index') }}" method="GET"
-                        class="row d-flex align-items-center justify-content-end mt-3">
+                          class="row d-flex align-items-center justify-content-end mt-3">
                         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Búscar por nombre de la nota"
-                                    aria-label="Búscar por nombre de la nota" aria-describedby="buscador" name="buscar"
-                                    value="{{ $buscar ?? '' }}">
+                                       aria-label="Búscar por nombre de la nota" aria-describedby="buscador"
+                                       name="buscar"
+                                       value="{{ $buscar ?? '' }}">
                                 <button type="submit" class="btn btn-sm btn-primary" id="buscador">Búscar</button>
                                 <button type="button" class="btn btn-sm btn-warning" id="limpiar">Limpiar</button>
                             </div>
@@ -84,7 +85,7 @@
 ])
 @push('js')
     <script>
-        $('.change-state').on('click', function() {
+        $('.change-state').on('click', function () {
             let id = $(this).attr('data-id');
             console.log(id);
             Swal.fire({
@@ -101,13 +102,13 @@
                 data: {
                     id: id
                 },
-                success: function(response) {
+                success: function (response) {
                     location.reload();
                 }
             });
         });
 
-        $('.delete').on('click', function() {
+        $('.delete').on('click', function () {
             let id = $(this).attr('data-id');
             Swal.fire({
                 title: "Seguro de eliminar?",
@@ -137,7 +138,7 @@
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        success: function(response) {
+                        success: function (response) {
                             location.reload();
                         }
                     });
@@ -145,13 +146,13 @@
             });
         });
 
-        $('.btn-detail').on('click', function() {
+        $('.btn-detail').on('click', function () {
             var id = $(this).attr('data-id');
             console.log(id);
             $.ajax({
                 type: "GET",
                 url: `/admin/noticias/detalle/${id}/noticia`,
-                success: function(response) {
+                success: function (response) {
                     let data = response[0];
                     $("#modalcomponent").modal("show");
                     $("#mcbody").html("");
@@ -167,8 +168,8 @@
 
         });
 
-        $("#limpiar").on('click',function(){
-            window.location.href="{{route('noticias.index')}}";
+        $("#limpiar").on('click', function () {
+            window.location.href = "{{route('noticias.index')}}";
         });
     </script>
 @endpush

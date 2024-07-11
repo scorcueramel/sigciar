@@ -12,12 +12,12 @@ class RolesController extends Controller
 {
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::where('id','>',1)->get();
         $permisosroles = DB::select('select r.id as "rolid", p."name" as "namepermission" from role_has_permissions rhp
                                      left join permissions p on p.id = rhp.permission_id
                                      left join roles r on r.id = rhp.role_id
                                      order by p.name desc');
-        return view('pages.private.accesos.roles.index', compact('roles','permisosroles'));
+        return view('pages.private.accesos.roles.index', compact('roles', 'permisosroles'));
     }
 
     public function create()
@@ -37,14 +37,14 @@ class RolesController extends Controller
         $permissionsParse = [];
 
         foreach ($permissions as $p) {
-            $permissionsParse[]=intval($p);
+            $permissionsParse[] = intval($p);
         }
 
         $role->syncPermissions($permissionsParse);
 
         $msn = "Se creo el nuevo rol $nombrerol exitosamente";
 
-        return redirect()->route('roles.index')->with('success',$msn);
+        return redirect()->route('roles.index')->with('success', $msn);
     }
 
     // posible uso renderear los permisos por rol y oculatar su muestra general
@@ -75,24 +75,18 @@ class RolesController extends Controller
         $permissionsParse = [];
 
         foreach ($permissions as $p) {
-            $permissionsParse[]=intval($p);
+            $permissionsParse[] = intval($p);
         }
 
         $role->save();
-        $role->syncPermissions($permissionsParse)
-        ;
+        $role->syncPermissions($permissionsParse);
         $msn = "Se actualizo el rol $nombrerol exitosamente.";
-        return redirect()->route('roles.index')->with('success',$msn);
+        return redirect()->route('roles.index')->with('success', $msn);
     }
 
-    public function destroy(Request $request)
+    public function destroy(string $id)
     {
-        $rolAsignado = DB::select('select * from model_has_roles mhr
-                                where model_id = ?',[$request->id]);
-        if(count($rolAsignado) > 0){
-            return back()->with('error','El rol que deseas eliminar ya cuenta con usuarios asignados');
-        }
-        DB::table('roles')->where('id',$request->id)->delete();
+        DB::table('roles')->where('id', $id)->delete();
         return redirect()->route('roles.index');
     }
 }

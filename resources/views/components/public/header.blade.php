@@ -16,7 +16,7 @@
                 <li><a class="enlace btn-menu reservar" href="{{ route('reservation') }}" target="_blank"><img
                             src="{{ asset('assets/images/calendar.svg') }}" class="icon me-2 me-lg-1" />Reservar
                         cancha</a></li>
-                <li><a class="enlace btn-menu miembros ms-lg-3" href="{{ route('prfole.user') }}"><img
+                <li><a class="enlace btn-menu miembros ms-lg-3" href="{{ route('login.member') }}"><img
                             src="{{ asset('assets/images/miembro.svg') }}" class="icon me-2 me-lg-1" />Miembros</a></li>
             </ul>
             <label for="burger" class="burger ms-3 d-lg-none">

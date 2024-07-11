@@ -139,7 +139,7 @@
                                 </button>
                             </div>
                             <div class="col-sm-3">
-                                <a href="{{ route('login') }}" class="btn btn-danger">
+                                <a href="{{ route('landing.index') }}" class="btn btn-danger">
                                     {{ __('Volver') }}
                                 </a>
                             </div>

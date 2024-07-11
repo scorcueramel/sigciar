@@ -38,7 +38,7 @@ class PermisosTableSeeder extends Seeder
             "crear.lugares",
             "editar.lugares",
             "eliminar.lugares",
-            //actividades
+            //programas
             "ver.tenis",
             "detalles.tenis",
             "estado.tenis",
@@ -66,6 +66,9 @@ class PermisosTableSeeder extends Seeder
             //usuarios
             "ver.usuario",
             "crear.usuarios",
+            "detalles.usuarios",
+            "editar.usuarios",
+            "eliminar.usuarios",
             //roles
             "ver.roles",
             "crear.roles",

@@ -39,5 +39,7 @@ class UserSeederTable extends Seeder
             'ip_usuario' => '127.0.0.1',
             'usuario_id' => $user->id,
         ]);
+
+        $user->assignRole('ADMINISTRADOR');
     }
 }

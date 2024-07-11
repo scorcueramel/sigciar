@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class LoginStaffController extends Controller
+class LoginMemberController extends Controller
 {
     public function login(Request $request){
         $validate = $this->validate($request, [
@@ -21,7 +21,7 @@ class LoginStaffController extends Controller
         $remember = ($request->has('remember') ? true : false);
 
         if(Auth::attempt($credentials,$remember)){
-            return redirect()->route('home.dashboard');
+            return redirect()->route('prfole.user');
         }else{
             return redirect()->back()->withErrors($validate)->withInput();
         }
@@ -30,6 +30,6 @@ class LoginStaffController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login.staff');
+        return redirect()->route('landing.index');
     }
 }

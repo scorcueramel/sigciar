@@ -11,57 +11,63 @@
                     class="fa-solid fa-lock-keyhole me-1"></i>Nuevo</a>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-bordered table-striped">
-                <thead>
-                <th>ID</th>
-                <th>NOMBRE</th>
-                <th>PERMISOS</th>
-                <th>ACCIONES</th>
-                </thead>
-                <tbody>
-                @foreach($roles as $rol)
-                    <tr>
-                        <td>{{$rol->id}}</td>
-                        <td>{{$rol->name}}</td>
-                        <td>
-                            @foreach($permisosroles as $pr)
-                                @if($rol->id == $pr->rolid)
-                                    <span
-                                        class="badge rounded-pill bg-label-dark me-1 mb-1">{{Str::upper($pr->namepermission)}}</span>
-                                @endif
-                            @endforeach
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <button
-                                    type="button"
-                                    class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow btn-sm"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                >
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item d-flex align-items-center"
-                                           href="{{route('roles.edit',$rol->id)}}"><i class='bx bx-edit-alt me-1'></i>Editar</a>
-                                    </li>
-                                    <li>
-                                        <form action="{{route('roles.destroy')}}" method="POST" class="deleter" data-rolname="{{$rol->name}}">
-                                            @csrf
-                                            <input type="hidden" value="{{$rol->id}}" name="id">
-                                            <button type="button" class="dropdown-item d-flex align-items-center btn-delete"><i class='bx bx-trash-alt me-1'></i>Borrar
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+    <div class="card pt-2">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <th>NOMBRE</th>
+                        <th>PERMISOS</th>
+                        <th>ACCIONES</th>
+                        </thead>
+                        <tbody>
+                        @foreach($roles as $rol)
+                            <tr>
+                                <td>{{$rol->name}}</td>
+                                <td>
+                                    @foreach($permisosroles as $pr)
+                                        @if($rol->id == $pr->rolid)
+                                            <span
+                                                class="badge rounded-pill bg-label-dark me-1 mb-1">{{Str::upper($pr->namepermission)}}</span>
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow btn-sm"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                        >
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item d-flex align-items-center"
+                                                   href="{{route('roles.edit',$rol->id)}}"><i
+                                                        class='bx bx-edit-alt me-1'></i>Editar</a>
+                                            </li>
+                                            <li>
+                                                <form action="{{route('roles.destroy',$rol->id)}}" method="POST"
+                                                      class="deleter" data-rolname="{{$rol->name}}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                            class="dropdown-item d-flex align-items-center"><i
+                                                            class='bx bx-trash-alt me-1'></i>Borrar
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
@@ -71,7 +77,9 @@
         // $('#buscador').click(()=>{
         //     alert('The Watcher');
         // });
-        $(".btn-delete").on('click', function (){
+        $(".deleter").on('submit', function (e) {
+            e.preventDefault();
+            let rolname = $(this).attr('data-rolname');
             Swal.fire({
                 title: "Seguro de eliminar?",
                 html: `Vas a eliminar el rol<br/> <p class="mt-2"><strong>${rolname}</strong></p>`,
@@ -83,7 +91,15 @@
                 cancelButtonText: "No eliminar",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $(".deleter").trigger("submit");
+                    Swal.fire({
+                        icon: 'info',
+                        html: "Espere un momento porfavor ...",
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    this.submit();
                 }
             });
         })

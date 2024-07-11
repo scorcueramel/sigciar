@@ -44,7 +44,6 @@ class PerfilUsuarioController extends Controller
 
         $persona = Persona::find($request->idpersona);
 
-
         if ($persona->directorio != null) {
             $dirName = $persona->directorio;
         } else {
