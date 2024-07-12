@@ -105,7 +105,7 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Programas</span>
         </li>
-        <li class="menu-item {{$activePage == 'tenis.edit' || $activePage == 'tenis.index' ||$activePage == 'tenis.create' ? 'active open' : '' }}">
+        <li class="menu-item {{$activePage == 'tenis.edit' || $activePage == 'tenis.index' || $activePage == 'tenis.create' || $activePage == 'inscripciones.index' || $activePage == 'inscripciones.create' || $activePage == 'inscripciones.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);"
                class="menu-link menu-toggle {{ $activePage == 'tenis.create' ? 'active' : '' }}">
                 <i class="fa-solid fa-tennis-ball" style="margin-right: 13px;"></i>
@@ -137,63 +137,6 @@
         <li class="menu-item">
             <a href="javascript:void(0);"
                class="menu-link menu-toggle">
-                <i class="fa-regular fa-dumbbell" style="margin-right: 13px;"></i>
-                <div data-i18n="Account Settings">Gimnasio</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div data-i18n="Notifications">Todas los Registros</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div data-i18n="Account">Nueva Registro</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="menu-item">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle">
-                <i class="fa-regular fa-sensor" style="margin-right: 13px;"></i>
-                <div data-i18n="Account Settings">Sala Sense Arena</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div data-i18n="Notifications">Todas los Registros</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div data-i18n="Account">Nueva Registro</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="menu-item">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle">
-                <i class="fa-thin fa-person-sledding fa-rotate-by" style="--fa-rotate-angle: -28deg;margin-left: -3px ; margin-right: 9px; font-size: 21px; font-weight: 400"></i>
-                <div data-i18n="Account Settings">Yoga</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div data-i18n="Notifications">Todas los Registros</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div data-i18n="Account">Nueva Registro</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="menu-item">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle">
                 <i class="fa-regular fa-salad" style="margin-right: 13px"></i>
                 <div data-i18n="Account Settings">Nutrición</div>
             </a>
@@ -213,27 +156,8 @@
         <li class="menu-item">
             <a href="javascript:void(0);"
                class="menu-link menu-toggle">
-                <i class="fa-regular fa-ballot-check" style="margin-right: 13px"></i>
-                <div data-i18n="Account Settings">Foda Táctico</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div data-i18n="Notifications">Todas los Registros</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div data-i18n="Account">Nueva Registro</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="menu-item">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle">
-                <i class="fa-regular fa-racquet" style="margin-right: 13px"></i>
-                <div data-i18n="Account Settings">Game Set Match</div>
+                <i class="fa-regular fa-list-check" style="margin-right: 13px;"></i>
+                <div data-i18n="Account Settings">Otros Programas</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">

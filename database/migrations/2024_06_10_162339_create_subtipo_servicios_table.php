@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('subtipo_servicios', function (Blueprint $table) {
             $table->id();
             $table->string('titulo',100);
-            $table->string('subtitulo',5);
+            $table->string('subtitulo',100);
             $table->string('estado',1);
             $table->string('imagen',50);
             $table->string('medicion',100);
