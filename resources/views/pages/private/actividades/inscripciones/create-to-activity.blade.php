@@ -350,7 +350,7 @@
 
                 $.ajax({
                     method: 'POST',
-                    url: "/admin/actividades/inscribir/miembro",
+                    url: "{{route('inscribir.miembro')}}",
                     data: {
                         idplantilla,
                         idmiembro,

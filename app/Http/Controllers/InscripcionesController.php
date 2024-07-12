@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Persona;
+use App\Models\SubtipoServicio;
+use App\Models\TipoServicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -91,7 +93,8 @@ class InscripcionesController extends Controller
 
     public function create()
     {
-        $actividades = DB::select("select distinct
+        $actividades = TipoServicio::where('id', '<>', 1)->orderBy('descripcion', 'asc')->get();
+        /*$actividades = DB::select("select distinct
                                     servicios.id as servicios_id,
                                     subtipo_servicios.titulo,
                                     subtipo_servicios.subtitulo,
@@ -105,9 +108,21 @@ class InscripcionesController extends Controller
                                     left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
                                     left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
                                     where subtipo_servicios.titulo  is not null
-                                    and tipo_servicios.id = 3
-                                    and servicios.estado= 'A'");
+                                    and servicios.estado= 'A'");*/
         return view("pages.private.actividades.inscripciones.create", compact("actividades"));
+    }
+
+    // get categories by id activity
+    public function categoryCharge(string $id)
+    {
+        $subtiposervicio = SubtipoServicio::where('tiposervicio_id', $id)->orderBy('id', 'desc')->get();
+
+        if (count($subtiposervicio) == 0) {
+            $subtiposervicio = "No existen categorías asocidas a la actividad seleccionada, favor comunicarse con el administrador del sistema";
+            return response()->json($subtiposervicio);
+        } else {
+            return response()->json($subtiposervicio);
+        }
     }
 
     public function getDaysActivity(string $idactivity){

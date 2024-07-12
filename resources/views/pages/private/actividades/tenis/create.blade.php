@@ -85,31 +85,6 @@
                                                 </div>
                                             </div>
                                         @endrole
-
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label" for="actividad">Actividad</label>
-                                            <div class="col-sm-9">
-                                                <div class="input-group input-group-merge">
-                                                    <span id="actividad2" class="input-group-text"><i
-                                                            class="fa-regular fa-person-running-fast"></i></span>
-                                                    <select class="form-select" id="actividad" aria-label="actividad"
-                                                        name="actividad" aria-describedby="actividadFeedback" required>
-                                                        <option value="" selected disabled>SELECCIONAR UNA ACTIVIDAD
-                                                        </option>
-                                                        @foreach ($actividades as $actividad)
-                                                            <option value="{{ $actividad->id }}"
-                                                                {{ old($actividad->id) == $actividad->id ? 'selected' : '' }}>
-                                                                {{ $actividad->descripcion }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <span class="text-danger d-none actividadError" role="alert">
-                                                    <span class="msjActividadError"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label" for="categoria">Categoría</label>
                                             <div class="col-sm-9">
@@ -117,9 +92,14 @@
                                                     <span id="categoria2" class="input-group-text"><i
                                                             class="fa-light fa-list"></i></span>
                                                     <select class="form-select" id="categoria" aria-label="categoria"
-                                                        name="categoria" disabled required>
+                                                        name="categoria" required>
                                                         <option value="" selected disabled>SELECCIONA UNA CATEGORÍA
                                                         </option>
+                                                        @foreach($subtiposervicio as $sts)
+                                                            <option value="{{$sts->id}}">
+                                                                {{$sts->titulo}} - {{$sts->subtitulo}}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <span class="text-danger d-none categoriaError" role="alert">
@@ -442,41 +422,6 @@
             }
         });
 
-        // Obtener categorias basads en actividad
-        $("#actividad").on('change', function() {
-            let actividadId = $(this).val();
-            $.ajax({
-                type: "GET",
-                url: `/admin/actividades/obtener/${actividadId}/subcategorias`,
-                success: function(data) {
-                    let datatype = typeof(data);
-                    let defaultOptionCategory = $("#categoria");
-                    if (datatype === "string") {
-                        $("#modalcomponent").modal('show');
-                        $("#mcbody").html(data);
-                        $("#categoria").html("");
-                        defaultOptionCategory.append(
-                            "<option selected disabled>SELECCIONA UNA CATEGORÍA</option>");
-                        $("#categoria").attr("disabled", "disabled");
-                    } else {
-                        $("#categoria").removeAttr("disabled");
-                        $("#categoria").html("");
-                        defaultOptionCategory.append(
-                            "<option selected disabled>SELECCIONA UNA CATEGORÍA</option>");
-                        data.forEach((e) => {
-                            $("#categoria").append(`
-                                    <option value="${e.id}">${e.titulo}-${e.subtitulo}</option>
-                                `);
-                        });
-                    }
-                },
-                error: function(err) {
-                    $("#modalcomponent").modal('show');
-                    $("#mcbody").html(err.responseJSON.message);
-                }
-            });
-        });
-
         // Obtener sede basada en lugares
         $("#sede").on('change', function() {
             let sedeId = $(this).val();
@@ -598,8 +543,11 @@
 
         // Obtener costo por lugar
         $("#lugar").on('change', function() {
-            let idActividad = $('#actividad').val();
+            //let idActividad = $('#actividad').val();
+            let idActividad = 3;
             let idLugar = $(this).val();
+
+            console.log(idActividad);
             $.ajax({
                 type: "GET",
                 url: `/admin/actividades/obtener/consto/${idActividad}/${idLugar}/lugar`,
@@ -650,7 +598,8 @@
         $("#guardarycontinuar").on('click', function(e) {
             // e.preventDefault();
             let responsable = $("#respadmin").val();
-            let actividad = $("#actividad").val();
+            //let actividad = $("#actividad").val();
+            let actividad = 3;
             let categoria = $("#categoria").val();
             let turnoIsChecked = $("input[name=turno]:checked ");
             let turno = turnoIsChecked.val();

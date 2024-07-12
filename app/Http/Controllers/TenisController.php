@@ -142,23 +142,10 @@ class TenisController extends Controller
         // Obtener quien esta autenticado
         $responsable = Persona::where('usuario_id', Auth::user()->id)->get()[0];
         $responsables = Persona::where('tipocategoria_id', '<>', 1)->where('tipocategoria_id', '<>', 2)->get();
-        $actividades = TipoServicio::where('id', '<>', 1)->orderBy('descripcion', 'asc')->get();
         $sedes = Sede::where('estado', 'A')->get();
+        $subtiposervicio = SubtipoServicio::where('tiposervicio_id', 3)->orderBy('id', 'desc')->get();
 
-        return view("pages.private.actividades.tenis.create", compact("responsable", "responsables", "actividades", "sedes"));
-    }
-
-    // get categories by id activity
-    public function categoryCharge(string $id)
-    {
-        $subtiposervicio = SubtipoServicio::where('tiposervicio_id', $id)->orderBy('id', 'desc')->get();
-
-        if (count($subtiposervicio) == 0) {
-            $subtiposervicio = "No existen categorías asocidas a la actividad seleccionada, favor comunicarse con el administrador del sistema";
-            return response()->json($subtiposervicio);
-        } else {
-            return response()->json($subtiposervicio);
-        }
+        return view("pages.private.actividades.tenis.create", compact("responsable", "responsables", "sedes","subtiposervicio"));
     }
 
     // get category by idPlaces

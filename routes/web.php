@@ -118,8 +118,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/tablaactividades',[TenisController::class,'tableActivity'])->name('tabla.tenis');
         Route::post('/change/state', [TenisController::class, 'changeState'])->name('tenis.change.state');
         Route::post('/actividades/eliminar',[TenisController::class, 'destroyActivity'])->name('tenis.actividad.eliminar');
-        Route::get('nueva',[TenisController::class, 'create'])->name('tenis.create');
-        Route::get('/obtener/{id}/subcategorias', [TenisController::class, 'categoryCharge'])->name('obtener.subcategorias');
+        Route::get('/nueva/{id}',[TenisController::class, 'create'])->name('tenis.create');
         Route::get('/obtener/{id}/lugares', [TenisController::class, 'placesCharge'])->name('obtener.lugres');
         Route::get('/obtener/{document}/miembro', [TenisController::class, 'searchMember'])->name('buscar.miembro');
         Route::get('/obtener/consto/{idlugar}/{idactividad}/lugar',[TenisController::class,'coastPlaces'])->name('obtener.costo.luagr');
@@ -136,6 +135,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/tablaainscrpiciones',[InscripcionesController::class,'tableInscriptions'])->name('tabla.inscripciones');
         Route::get('/{id}/editar',[InscripcionesController::class,'edit'])->name('inscripciones.edit');
         Route::get('/nueva',[InscripcionesController::class,'create'])->name('inscripciones.create');
+        Route::get('/obtener/{id}/subcategorias', [InscripcionesController::class, 'categoryCharge'])->name('obtener.subcategorias');
         Route::get('/obtener/{id}/dias',[InscripcionesController::class, 'getDaysActivity'])->name('inscripciones.days.activity');
         Route::get('/obtener/{idServicio}/{dia}/horas',[InscripcionesController::class,'getHoursForDay'])->name('inscripciones.obtener.horarios');
         Route::post('/nueva',[InscripcionesController::class,'store'])->name('inscripciones.store');
