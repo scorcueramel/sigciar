@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('servicio_reserva', function (Blueprint $table) {
+        Schema::create('servicio_reservas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('servicioplantilla_id')->constrained('servicio_plantillas');
             $table->string('dia',20)->nullable(true);
@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('usuario_creador',50)->nullable(true);
             $table->string('usuario_editor',50)->nullable(true);
             $table->string('ip_usuario',20);
+            $table->foreignId('servicioinscripcion_id')->constrained('servicio_reservas');
             $table->softDeletes();
-
             $table->timestamps();
         });
     }
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('servicio_reserva');
+        Schema::dropIfExists('servicio_reservas');
     }
 };

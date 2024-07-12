@@ -114,22 +114,22 @@
             <ul class="menu-sub">
                 <li class="menu-item {{ $activePage == 'tenis.index' ? 'active' : '' }}">
                     <a href="{{route('tenis.index')}}" class="menu-link">
-                        <div data-i18n="Notifications">Todas las Actividades</div>
+                        <div data-i18n="Notifications">Programas Creados</div>
                     </a>
                 </li>
                 <li class="menu-item {{ $activePage == 'tenis.create' ? 'active' : '' }}">
                     <a href="{{ route('tenis.create') }}" class="menu-link">
-                        <div data-i18n="Account">Nueva Actividad</div>
+                        <div data-i18n="Account">Crear Programa Nuevo</div>
                     </a>
                 </li>
                 <li class="menu-item {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">
                     <a href="{{route('inscripciones.index')}}" class="menu-link">
-                        <div data-i18n="Notifications">Todos los Inscritos</div>
+                        <div data-i18n="Notifications">Inscritos al Programa</div>
                     </a>
                 </li>
                 <li class="menu-item {{ $activePage == 'inscripciones.create' ? 'active' : '' }}">
                     <a href="{{ route('inscripciones.create') }}" class="menu-link">
-                        <div data-i18n="Account">Nuevo Inscrito</div>
+                        <div data-i18n="Account">Inscribir al Programa</div>
                     </a>
                 </li>
             </ul>
