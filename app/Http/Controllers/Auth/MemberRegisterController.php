@@ -43,7 +43,7 @@ class MemberRegisterController extends Controller
             'fecharegistro' => Carbon::now()->toDateTimeString(),
             'tipodocumento_id' => $request->tipodocumento_id,
             'documento' => $request->documento,
-            'tipocategoria_id' => 1,
+            'tipocategoria_id' => 2,
             'apepaterno' => Str::upper($request->apepaterno),
             'apematerno' => Str::upper($request->apematerno),
             'nombres' => Str::upper($request->nombres),

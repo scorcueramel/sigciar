@@ -35,6 +35,8 @@
                             <th>ID</th>
                             <th>ESTADO</th>
                             <th>TIPO SERVICIO</th>
+                            <th>TÍTULO</th>
+                            <th>SUBTÍTULO</th>
                             <th>SEDE</th>
                             <th>DIRECCIÓN SEDE</th>
                             <th>LUGAR DESCRIPCIÓN</th>
@@ -45,8 +47,6 @@
                             <th>HORAS POR ACTIVIDAD</th>
                             <th>TURNO</th>
                             <th>RESPONSABLE</th>
-                            <th>TÍTULO</th>
-                            <th>SUBTÍTULO</th>
                             <th>ACCIONES</th>
                         </tr>
                         </thead>
@@ -83,6 +83,8 @@
                     {data: 'id'},
                     {data: 'estado'},
                     {data: 'tipo_servicio'},
+                    {data: 'titulo'},
+                    {data: 'subtitulo'},
                     {data: 'sede'},
                     {data: 'direccion_sede'},
                     {data: 'lugar_descripcion'},
@@ -93,8 +95,6 @@
                     {data: 'hora'},
                     {data: 'turno'},
                     {data: 'responsable'},
-                    {data: 'titulo'},
-                    {data: 'subtitulo'},
                     {data: 'acciones'}
                 ],
                 "language": {

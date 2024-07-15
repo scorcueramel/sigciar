@@ -91,9 +91,6 @@ class TenisController extends Controller
             ->addColumn('subtitulo', function ($row) {
                 return $row->subtitulo == "" ? "SIN SUBTITULO" : $row->subtitulo;
             })
-            ->addColumn('subtitulo', function ($row) {
-                return $row->subtitulo == "" ? "SIN SUBTITULO" : $row->subtitulo;
-            })
             ->addColumn('acciones', function ($row) {
                 return '<div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -283,16 +280,13 @@ class TenisController extends Controller
 
     public function storeInscripcion(Request $request)
     {
-
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
-        $usuarioActivo = $persona[0]->nombres;
+        $usuarioActivo = $persona[0]->nombres." ".$persona[0]->appaterno." ".$persona[0]->apematerno;
         $servicioId = $request->idplantilla;
         $fechasDefinias = $request->fechasDefinidas;
         $usuarioId = $request->idmiembro;
         $ip = $request->ip();
-        $miembro = Persona::findOrFail($usuarioId);
-        $inscrito = $miembro->nombres;
 
         $request->validate([
             'idplantilla',

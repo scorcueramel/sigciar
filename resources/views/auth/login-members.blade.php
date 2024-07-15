@@ -23,7 +23,7 @@
                                     </div>
                                 </div>
                             @endif
-                            <form action="{{ route('login') }}" method="post" autocomplete="off" id="login">
+                            <form action="{{ route('login.member') }}" method="post" autocomplete="off" id="login">
                                 @csrf
                                 <div class="form-group first">
                                     <label for="username">Correo</label>
