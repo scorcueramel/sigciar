@@ -58,49 +58,6 @@
             </ul>
         </li> -->
 
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Espacios</span>
-        </li>
-        <li class="menu-item {{ $activePage == 'sedes.index' || $activePage == 'sedes.create' || $activePage == 'sedes.edit' ? 'active open' : '' }}">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'sedes.index' ? 'active' : '' }}">
-                <i class="fa-regular fa-hotel" style="margin-right: 13px;"></i>
-                <div data-i18n="Account Settings">Sedes</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ $activePage == 'sedes.index' ? 'active' : '' }}">
-                    <a href="{{route('sedes.index')}}" class="menu-link">
-                        <div data-i18n="Account">Todas las Sedes</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ $activePage == 'sedes.create' ? 'active' : '' }}">
-                    <a href="{{route('sedes.create')}}" class="menu-link">
-                        <div data-i18n="Notifications">Nueva Sede</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="menu-item {{ $activePage == 'lugares.index' || $activePage == 'lugares.create' || $activePage == 'lugares.edit' ? 'active open' : '' }}">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'lugares.index' ? 'active' : '' }}">
-                <i class="fa-regular fa-court-sport" style="margin-right: 13px;"></i>
-                <div data-i18n="Account Settings">Lugares</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ $activePage == 'lugares.index' ? 'active' : '' }}">
-                    <a href="{{route('lugares.index')}}" class="menu-link">
-                        <div data-i18n="Account">Todas los Lugares</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ $activePage == 'lugares.create' ? 'active' : '' }}">
-                    <a href="{{ route('lugares.create') }}" class="menu-link">
-                        <div data-i18n="Notifications">Nueva Lugares</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-
         {{-- Sección de actividades --}}
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Programas</span>
@@ -270,6 +227,114 @@
                 </li>
             </ul>
         </li>
+
+
+        {{-- MANTENIMIENTO DE ESPACIOS --}}
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Espacios</span>
+        </li>
+        <li class="menu-item {{ $activePage == 'sedes.index' || $activePage == 'sedes.create' || $activePage == 'sedes.edit' ? 'active open' : '' }}">
+            <a href="javascript:void(0);"
+               class="menu-link menu-toggle {{ $activePage == 'sedes.index' ? 'active' : '' }}">
+                <i class="fa-regular fa-hotel" style="margin-right: 13px;"></i>
+                <div data-i18n="Account Settings">Sedes</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ $activePage == 'sedes.index' ? 'active' : '' }}">
+                    <a href="{{route('sedes.index')}}" class="menu-link">
+                        <div data-i18n="Account">Todas las Sedes</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ $activePage == 'sedes.create' ? 'active' : '' }}">
+                    <a href="{{route('sedes.create')}}" class="menu-link">
+                        <div data-i18n="Notifications">Nueva Sede</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item {{ $activePage == 'lugares.index' || $activePage == 'lugares.create' || $activePage == 'lugares.edit' ? 'active open' : '' }}">
+            <a href="javascript:void(0);"
+               class="menu-link menu-toggle {{ $activePage == 'lugares.index' ? 'active' : '' }}">
+                <i class="fa-regular fa-court-sport" style="margin-right: 13px;"></i>
+                <div data-i18n="Account Settings">Lugares</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ $activePage == 'lugares.index' ? 'active' : '' }}">
+                    <a href="{{route('lugares.index')}}" class="menu-link">
+                        <div data-i18n="Account">Todas los Lugares</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ $activePage == 'lugares.create' ? 'active' : '' }}">
+                    <a href="{{ route('lugares.create') }}" class="menu-link">
+                        <div data-i18n="Notifications">Nueva Lugares</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
+        {{-- MANTENIMIENTO DE TIPOS --}}
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Mantenimiento de Tipos</span>
+        </li>
+        <li class="menu-item {{ $activePage == 'sedes.index' || $activePage == 'sedes.create' || $activePage == 'sedes.edit' ? 'active open' : '' }}">
+            <a href="javascript:void(0);"
+               class="menu-link menu-toggle {{ $activePage == 'sedes.index' ? 'active' : '' }}">
+                <i class="fa-solid fa-box-open" style="margin-right: 13px;"></i>
+                <div data-i18n="Account Settings">Tipo de servicios</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ $activePage == 'sedes.index' ? 'active' : '' }}">
+                    <a href="{{route('sedes.index')}}" class="menu-link">
+                        <div data-i18n="Account">Todos los Tipos</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ $activePage == 'sedes.create' ? 'active' : '' }}">
+                    <a href="{{route('sedes.create')}}" class="menu-link">
+                        <div data-i18n="Notifications">Nuevo Tipo</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item {{ $activePage == 'lugares.index' || $activePage == 'lugares.create' || $activePage == 'lugares.edit' ? 'active open' : '' }}">
+            <a href="javascript:void(0);"
+               class="menu-link menu-toggle {{ $activePage == 'lugares.index' ? 'active' : '' }}">
+               <i class="fa-solid fa-box-open-full" style="margin-right: 13px;"></i>
+                <div data-i18n="Account Settings">Subtipo de Servicios</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ $activePage == 'lugares.index' ? 'active' : '' }}">
+                    <a href="{{route('lugares.index')}}" class="menu-link">
+                        <div data-i18n="Account">Todos los Subtipos</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ $activePage == 'lugares.create' ? 'active' : '' }}">
+                    <a href="{{ route('lugares.create') }}" class="menu-link">
+                        <div data-i18n="Notifications">Nuevo Subtipo</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item {{ $activePage == 'lugares.index' || $activePage == 'lugares.create' || $activePage == 'lugares.edit' ? 'active open' : '' }}">
+            <a href="javascript:void(0);"
+               class="menu-link menu-toggle {{ $activePage == 'lugares.index' ? 'active' : '' }}">
+                <i class="fa-regular fa-money-check-dollar-pen" style="margin-right: 13px;"></i>
+                <div data-i18n="Account Settings">Costo por Lugar</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ $activePage == 'lugares.index' ? 'active' : '' }}">
+                    <a href="{{route('lugares.index')}}" class="menu-link">
+                        <div data-i18n="Account">Todos los Costos</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ $activePage == 'lugares.create' ? 'active' : '' }}">
+                    <a href="{{ route('lugares.create') }}" class="menu-link">
+                        <div data-i18n="Notifications">Nuevo Lugar</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
     </ul>
 </aside>
 <!-- / Menu -->
