@@ -65,7 +65,7 @@
                                                 </div>
                                             </div>
                                         @endrole
-                                        @role('RESPONSABLE')
+                                        @if ($responsable->tipocategoria_id == 3)
                                             <div class="row mb-3">
                                                 <label class="col-sm-3 col-form-label" for="respnoadmin">Responsable</label>
                                                 <div class="col-sm-9">
@@ -83,7 +83,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endrole
+                                        @endif
                                         <!-- id tipo de servicio, categoria -->
                                         <input type="hidden" name="categoria" value="2" id="categoria">
                                         <!-- end -->
@@ -131,8 +131,7 @@
                                             <label class="col-sm-3 col-form-label" for="turno">Turno</label>
                                             <div class="col-sm-9">
                                                 <div class="input-group input-group-merge shadow-none">
-                                                    <div
-                                                        class="col-sm-12 d-flex justify-content-between contenedor-turnos">
+                                                    <div class="col-sm-12 d-flex justify-content-between contenedor-turnos">
                                                     </div>
                                                 </div>
                                                 <span class="text-danger d-none turnosError" role="alert">
@@ -230,7 +229,7 @@
                                             </div>
                                         </div>
                                     </div>
-{{--
+                                    {{--
                                     <div class="col-md">
                                         <!-- Basic Layout -->
                                         <div class="d-flex justify-content-center">
