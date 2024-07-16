@@ -40,6 +40,13 @@
                                 </span>
                             </td>
                             <td>{{$persona->email}}</td>
+                            @if($persona->tipocategoria_id == 2)
+                            <td>
+                            <span class="badge bg-label-warning">
+                                MIEMBRO
+                            </span>
+                            </td>
+                            @else
                             <td>
                                 @foreach($usuarios as $usuario)
                                     @if($usuario->id == $persona->usuario_id)
@@ -50,6 +57,7 @@
                                     @endif
                                 @endforeach
                             </td>
+                            @endif
                             <td>
                                 <div class="btn-group">
                                     <button

@@ -74,7 +74,7 @@ class NoticiasController extends Controller
         $noticia->estado = $request->estado;
         if ($imagen = $request->file('imagen')) {
             $imgRename = date('YmdHis') . "." . $imagen->getClientOriginalExtension();
-            $noticia['imagen_destacada'] = "$imgRename";
+            $noticia['imagen_destacada'] = (string) $imgRename;
             // Storage::putFileAs('', $imagen, $imgRename);
             $imagen->storeAs('/noticias/', $imgRename, $this->disk);
         } else {
@@ -138,7 +138,7 @@ class NoticiasController extends Controller
                     \File::delete(public_path('/storage/noticias/' . $noticia->imagen_destacada));
                 }
                 $imgRename = date('YmdHis') . "." . $imagen->getClientOriginalExtension();
-                $noticia['imagen_destacada'] = "$imgRename";
+                $noticia['imagen_destacada'] = (string) $imgRename;
                 $imagen->storeAs('/noticias/', $imgRename, $this->disk);
             }
         }

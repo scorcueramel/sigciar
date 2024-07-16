@@ -19,7 +19,7 @@
             <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Tenis Actividades /</span> Todas </h4>
         </div>
         <div class="col-md text-end">
-            <a href="{{ route('tenis.create') }}" class="btn btn-sm btn-info"><i class="fa-solid fa-tennis-ball me-1"></i>
+            <a href="{{ route('tenis.create',3) }}" class="btn btn-sm btn-info"><i class="fa-solid fa-tennis-ball me-1"></i>
                 Nueva</a>
         </div>
     </div>
@@ -35,6 +35,8 @@
                             <th>ID</th>
                             <th>ESTADO</th>
                             <th>TIPO SERVICIO</th>
+                            <th>TÍTULO</th>
+                            <th>SUBTÍTULO</th>
                             <th>SEDE</th>
                             <th>DIRECCIÓN SEDE</th>
                             <th>LUGAR DESCRIPCIÓN</th>
@@ -45,8 +47,6 @@
                             <th>HORAS POR ACTIVIDAD</th>
                             <th>TURNO</th>
                             <th>RESPONSABLE</th>
-                            <th>TÍTULO</th>
-                            <th>SUBTÍTULO</th>
                             <th>ACCIONES</th>
                         </tr>
                         </thead>
@@ -83,6 +83,8 @@
                     {data: 'id'},
                     {data: 'estado'},
                     {data: 'tipo_servicio'},
+                    {data: 'titulo'},
+                    {data: 'subtitulo'},
                     {data: 'sede'},
                     {data: 'direccion_sede'},
                     {data: 'lugar_descripcion'},
@@ -93,8 +95,6 @@
                     {data: 'hora'},
                     {data: 'turno'},
                     {data: 'responsable'},
-                    {data: 'titulo'},
-                    {data: 'subtitulo'},
                     {data: 'acciones'}
                 ],
                 "language": {
@@ -144,8 +144,8 @@
         function deleteActivity(id) {
             var id = id;
             Swal.fire({
-                title: "Eliminar Actividad?",
-                text: "Seguro de eliminar esta actividad",
+                title: "Eliminar Programa de Tenis?",
+                text: "Seguro de eliminar este programa de tenis",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -237,7 +237,7 @@
                                         Costo
                                     </td>
                                     <td>
-                                        ${data.lugar_costo_hora}
+                                        S/. ${data.lugar_costo_hora}
                                     </td>
                                 </tr>
                                 <tr>

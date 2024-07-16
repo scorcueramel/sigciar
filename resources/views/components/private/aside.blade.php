@@ -105,7 +105,7 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Programas</span>
         </li>
-        <li class="menu-item {{$activePage == 'tenis.edit' || $activePage == 'tenis.index' || $activePage == 'tenis.create' || $activePage == 'inscripciones.index' || $activePage == 'inscripciones.create' || $activePage == 'inscripciones.edit' ? 'active open' : '' }}">
+        <li class="menu-item {{$activePage == 'tenis.edit' || $activePage == 'tenis.index' || $activePage == 'tenis.create' ? 'active open' : '' }}">
             <a href="javascript:void(0);"
                class="menu-link menu-toggle {{ $activePage == 'tenis.create' ? 'active' : '' }}">
                 <i class="fa-solid fa-tennis-ball" style="margin-right: 13px;"></i>
@@ -114,41 +114,31 @@
             <ul class="menu-sub">
                 <li class="menu-item {{ $activePage == 'tenis.index' ? 'active' : '' }}">
                     <a href="{{route('tenis.index')}}" class="menu-link">
-                        <div data-i18n="Notifications">Todas las Actividades</div>
+                        <div data-i18n="Notifications">Programas Creados</div>
                     </a>
                 </li>
                 <li class="menu-item {{ $activePage == 'tenis.create' ? 'active' : '' }}">
-                    <a href="{{ route('tenis.create') }}" class="menu-link">
-                        <div data-i18n="Account">Nueva Actividad</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">
-                    <a href="{{route('inscripciones.index')}}" class="menu-link">
-                        <div data-i18n="Notifications">Todos los Inscritos</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ $activePage == 'inscripciones.create' ? 'active' : '' }}">
-                    <a href="{{ route('inscripciones.create') }}" class="menu-link">
-                        <div data-i18n="Account">Nuevo Inscrito</div>
+                    <a href="{{ route('tenis.create',3) }}" class="menu-link">
+                        <div data-i18n="Account">Nuevo Programa</div>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class="menu-item">
+        <li class="menu-item {{ $activePage == 'nutricion.index' || $activePage == 'nutricion.create' || $activePage == 'nutricion.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);"
-               class="menu-link menu-toggle">
+               class="menu-link menu-toggle {{ $activePage == 'nutricion.create' ? 'active' : '' }}">
                 <i class="fa-regular fa-salad" style="margin-right: 13px"></i>
                 <div data-i18n="Account Settings">Nutrición</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div data-i18n="Notifications">Todas los Registros</div>
+                <li class="menu-item {{ $activePage == 'nutricion.index' ? 'active' : '' }}">
+                    <a href="{{route('nutricion.index')}}" class="menu-link">
+                        <div data-i18n="Notifications">Programas creados</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div data-i18n="Account">Nueva Registro</div>
+                <li class="menu-item {{ $activePage == 'nutricion.create' ? 'active' : '' }}">
+                    <a href="{{route('nutricion.create')}}" class="menu-link">
+                        <div data-i18n="Account">Nuevo Programa</div>
                     </a>
                 </li>
             </ul>
@@ -162,12 +152,36 @@
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="#" class="menu-link">
-                        <div data-i18n="Notifications">Todas los Registros</div>
+                        <div data-i18n="Notifications">Programas creados</div>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="#" class="menu-link">
-                        <div data-i18n="Account">Nueva Registro</div>
+                        <div data-i18n="Account">Nuevo Programa</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {{-- Sección de inscripciones --}}
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Inscripciones</span>
+        </li>
+        <li class="menu-item {{ $activePage == 'inscripciones.index' || $activePage == 'inscripciones.create' || $activePage == 'inscripciones.edit' ? 'active open' : '' }}">
+            <a href="javascript:void(0);"
+               class="menu-link menu-toggle {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">
+                <i class="fa-regular fa-calendar-lines-pen" style="margin-right: 13px;"></i>
+                <div data-i18n="Account Settings">Inscripción de Miembros</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">
+                    <a href="{{route('inscripciones.index')}}" class="menu-link">
+                        <div data-i18n="Notifications">Miembros Inscritos</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ $activePage == 'inscripciones.create' ? 'active' : '' }}">
+                    <a href="{{ route('inscripciones.create') }}" class="menu-link">
+                        <div data-i18n="Account">Inscribir Nuevo</div>
                     </a>
                 </li>
             </ul>

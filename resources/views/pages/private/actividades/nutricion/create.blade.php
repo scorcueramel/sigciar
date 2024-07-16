@@ -1,4 +1,4 @@
-@extends('layouts.private.private', ['activePage' => 'tenis.create'])
+@extends('layouts.private.private', ['activePage' => 'nutricion.create'])
 @push('title', 'Nueva Actividad')
 @push('css')
     <style>
@@ -18,7 +18,7 @@
     </style>
 @endpush
 @section('content')
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Tenis /</span> Crear Nueva </h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Nutrición /</span> Crear Nueva </h4>
     <!-- Basic Layout & Basic with Icons -->
 
     <div class="row mb-3">
@@ -84,29 +84,9 @@
                                                 </div>
                                             </div>
                                         @endrole
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label" for="categoria">Categoría</label>
-                                            <div class="col-sm-9">
-                                                <div class="input-group input-group-merge">
-                                                    <span id="categoria2" class="input-group-text"><i
-                                                            class="fa-light fa-list"></i></span>
-                                                    <select class="form-select" id="categoria" aria-label="categoria"
-                                                        name="categoria" required>
-                                                        <option value="" selected disabled>SELECCIONA UNA CATEGORÍA
-                                                        </option>
-                                                        @foreach($subtiposervicio as $sts)
-                                                            <option value="{{$sts->id}}">
-                                                                {{$sts->titulo}} - {{$sts->subtitulo}}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <span class="text-danger d-none categoriaError" role="alert">
-                                                    <span class="msjCategoriaError"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-
+                                        <!-- id tipo de servicio, categoria -->
+                                        <input type="hidden" name="categoria" value="2" id="categoria">
+                                        <!-- end -->
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label" for="sede">Sede</label>
                                             <div class="col-sm-9">
@@ -217,7 +197,7 @@
                                                     <span id="horas2" class="input-group-text"><i
                                                             class="fa-regular fa-input-numeric"></i></span>
                                                     <input type="number" id="horas"
-                                                        class="form-control @error('descripcion') is-invalid @enderror"
+                                                        class="form-control @error('horas') is-invalid @enderror"
                                                         oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                                         name="horas" maxlength="3" required />
                                                 </div>
@@ -250,14 +230,14 @@
                                             </div>
                                         </div>
                                     </div>
-
+{{--
                                     <div class="col-md">
                                         <!-- Basic Layout -->
                                         <div class="d-flex justify-content-center">
                                             <img class="img-fluid" src="{{ asset('assets/images/default-img.gif') }}"
                                                 id="imagenSeleccionada" style="max-height: 510px; height: 510px;">
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                 </div>
                                 <input type="button" class="next btn btn-primary btn-sm" value="Siguiente" />
@@ -426,7 +406,7 @@
             let sedeId = $(this).val();
             $.ajax({
                 type: "GET",
-                url: `/admin/actividades/obtener/${sedeId}/lugares`,
+                url: `/admin/nutricion/obtener/${sedeId}/lugares`,
                 success: function(data) {
                     let datatype = typeof(data);
                     let defaultOptionCategory = $("#lugar");
@@ -543,13 +523,13 @@
         // Obtener costo por lugar
         $("#lugar").on('change', function() {
             //let idActividad = $('#actividad').val();
-            let idActividad = 3;
+            let idActividad = 2;
             let idLugar = $(this).val();
 
             console.log(idActividad);
             $.ajax({
                 type: "GET",
-                url: `/admin/actividades/obtener/consto/${idActividad}/${idLugar}/lugar`,
+                url: `/admin/nutricion/obtener/consto/${idActividad}/${idLugar}/lugar`,
                 success: function(response) {
                     if (response != null) {
                         $(".contenedor-turnos").html("");
@@ -569,36 +549,12 @@
             });
         });
 
-        // Obtener imagen de categoría
-        $("#categoria").on('change', function() {
-            let id = $(this).val();
-            Swal.fire({
-                icon: 'info',
-                html: "Espere un momento porfavor ...",
-                timerProgressBar: true,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-            $.ajax({
-                type: "GET",
-                url: `/admin/actividades/obtener/imagen/${id}/categoria`,
-                success: function(response) {
-                    Swal.close();
-                    if (response) {
-                        let imagen = response.imagen;
-                        $('#imagenSeleccionada').attr('src', "/assets/images/actividades/" + imagen);
-                    }
-                }
-            });
-        });
-
         // Registrar la nueva actividad
         $("#guardarycontinuar").on('click', function(e) {
             // e.preventDefault();
             let responsable = $("#respadmin").val();
             //let actividad = $("#actividad").val();
-            let actividad = 3;
+            let actividad = 2;
             let categoria = $("#categoria").val();
             let turnoIsChecked = $("input[name=turno]:checked ");
             let turno = turnoIsChecked.val();
@@ -745,7 +701,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "{{ route('nueva.actividad') }}",
+                url: "{{ route('nutricion.store') }}",
                 data: {
                     responsable,
                     actividad,

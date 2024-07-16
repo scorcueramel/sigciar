@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,6 +22,7 @@ class LoginMemberController extends Controller
         $remember = ($request->has('remember') ? true : false);
 
         if(Auth::attempt($credentials,$remember)){
+
             return redirect()->route('prfole.user');
         }else{
             return redirect()->back()->withErrors($validate)->withInput();

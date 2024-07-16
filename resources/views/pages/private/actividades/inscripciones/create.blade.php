@@ -24,16 +24,24 @@
                 <div class="container">
                     <form enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
                         <div class="row">
-                            <div class="col-sm-12 col-md-12 col-lg-7">
-                                <div class="row mb-3">
-                                    <div class="col-sm-12">
-                                        <label for="actividades">Actividades</label>
-                                        <select class="form-select" aria-label="Seleccionar actividad" id="actividad" name="actividad">
-                                            <option value="" selected disabled>SELECCIONAR</option>
-                                            @foreach ($actividades as $actividad)
-                                            <option value="{{$actividad->servicios_id}}">{{$actividad->titulo}} / {{$actividad->subtitulo}} / {{ $actividad->turno }} / PEN. {{$actividad->desde}}.00</option>
-                                            @endforeach
-                                        </select>
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <div class="row mb-5">
+                                    <div class="col-sm-12 table-responsive">
+                                        <table class="table border" id="table">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>TIPO SERVICIO</th>
+                                                    <th>TITULO</th>
+                                                    <th>SEDE</th>
+                                                    <th>TURNO</th>
+                                                    <th>INICIO</th>
+                                                    <th>FIN</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                                 <div class="row mb-3 d-flex align-items-center">
@@ -63,7 +71,7 @@
                                             <span id="miembro2" class="input-group-text">
                                                 <i class="fa-regular fa-user-vneck"></i>
                                             </span>
-                                            <input type="text" id="miembro" class="form-control ps-3 @error('descripcion') is-invalid @enderror" aria-describedby="miembro2" name="miembro" disabled required />
+                                            <input type="text" id="miembro" class="form-control ps-3 @error('miembro') is-invalid @enderror" aria-describedby="miembro2" name="miembro" disabled required />
                                         </div>
                                     </div>
                                     <span class="text-danger d-none miembroEncontrado" role="alert">
@@ -72,6 +80,7 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6 mb-3 d-flex justify-content-between">
+                                        <input type="hidden" id="idPrograma" value="">
                                         <label class="col-sm-2 col-form-label" for="diasInscripcion">Días</label>
                                         <div class="col-sm-8">
                                             <div class="input-group input-group-merge">
@@ -114,15 +123,15 @@
                                         </span>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-12 col-lg-5">
-                                <div class="card ">
-                                    <div class="table-responsive text-nowrap">
-                                        @include('components.private.table', [
-                                        'titleTable' => '',
-                                        'searchable' => false,
-                                        'paginate' => 0,
-                                        ])
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <div class="card ">
+                                        <div class="table-responsive text-nowrap">
+                                            @include('components.private.table', [
+                                            'titleTable' => '',
+                                            'searchable' => false,
+                                            'paginate' => 0,
+                                            ])
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -146,25 +155,57 @@
 ])
 @push('js')
 <script>
-    // arreglo de horarios
-    var totalHorarios = new Array();
-    var horasInscripcion = new Array();
+    $(document).ready(function() {
+        $('#table').DataTable({
+            paging: false,
+            info: false,
+            searching: false,
+            "order": [
+                [0, "DESC"]
+            ],
+            responsive: true,
+            autoWidth: false,
+            processing: true,
+            "ajax": "{{route('table.inscripcion.charge')}}",
+            "columns": [{
+                    data: 'acciones'
+                },
+                {
+                    data: 'tipo_servicio'
+                },
+                {
+                    data: 'titulo'
+                },
+                {
+                    data: 'sede'
+                },
+                {
+                    data: 'turno'
+                },
+                {
+                    data: 'inicio'
+                },
+                {
+                    data: 'fin'
+                }
+            ]
+        });
+    });
 
-    // Cargar actividades al select Actividades
-    $("#actividad").on('change', function() {
-        var id = $(this).val();
+    function actividadSeleccionada(id) {
+        $("#idPrograma").val(id);
         $.ajax({
             method: 'GET',
             url: `/admin/inscripciones/obtener/${id}/dias`,
             success: function(resp) {
                 let data = resp;
-                if(data.length > 0){
+                if (data.length > 0) {
                     $("#diasInscripcion").html("");
                     $("#diasInscripcion").append(`<option value="" selected disabled>DÍAS</option>`);
-                    data.forEach((e)=>{
+                    data.forEach((e) => {
                         $("#diasInscripcion").append(`
-                        <option value="${e.dia}">${e.dia}</option>
-                        `);
+                            <option value="${e.dia}">${e.dia}</option>
+                            `);
                     });
                 }
             },
@@ -172,7 +213,12 @@
                 console.log(err)
             }
         });
-    });
+    }
+
+
+    // arreglo de horarios
+    var totalHorarios = new Array();
+    var horasInscripcion = new Array();
 
     // Agregar cabecera a la tabla horarios
     const headerTable = $('#headertable');
@@ -185,41 +231,47 @@
                     <th>HORA</th>
                     <th>QUITAR</th>
                 </tr>
-            `);
+    `);
 
     // buscar al miembro o usuario registrado en sistema
     $("#buscarMiembro").on('click', function() {
         let documento = $("#documentomiembro").val();
-        $.ajax({
-            type: "GET",
-            url: `/admin/actividades/obtener/${documento}/miembro`,
-            success: function(data) {
-                let datatype = typeof(data);
-                if (datatype === "string") {
-                    $("#modalcomponent").modal('show');
-                    $("#mcbody").html(data);
-                    $("#miembro").val("");
-                } else {
-                    let nombres = `${data[0].nombres} ${data[0].apepaterno} ${data[0].apematerno}`;
-                    $("#idMiembro").val(data[0].id);
-                    $("#miembro").val(nombres.toString());
-                    $("#diasInscripcion").removeAttr("disabled");
-                    $("#ingreso").removeAttr("disabled");
+        if (documento == null || documento == '') {
+            $("#modalcomponent").modal('show');
+            $("#mcbody").html('Debes ingresar un número de documento para continuar con la inscripción al programa de tenis');
+        } else {
+            $.ajax({
+                type: "GET",
+                url: `/admin/actividades/obtener/${documento}/miembro`,
+                success: function(data) {
+                    let datatype = typeof(data);
+                    if (datatype === "string") {
+                        $("#modalcomponent").modal('show');
+                        $("#mcbody").html(data);
+                        $("#miembro").val("");
+                    } else {
+                        let nombres = `${data[0].nombres} ${data[0].apepaterno} ${data[0].apematerno}`;
+                        $("#idMiembro").val(data[0].id);
+                        $("#miembro").val(nombres.toString());
+                        $("#diasInscripcion").removeAttr("disabled");
+                        $("#ingreso").removeAttr("disabled");
 
-                    $('.miembroEncontrado').attr('d-none');
+                        $('.miembroEncontrado').attr('d-none');
+                    }
+                },
+                error: function(err) {
+                    $("#modalcomponent").modal('show');
+                    $("#mcbody").html(err.responseJSON.message);
                 }
-            },
-            error: function(err) {
-                $("#modalcomponent").modal('show');
-                $("#mcbody").html(err.responseJSON.message);
-            }
-        });
+            });
+        }
     });
 
     // quitaar el error de días y solicitar los horarios
     $("#diasInscripcion").on('change', function() {
-        let idServicio = $("#actividad").val();
+        let idServicio = $("#idPrograma").val();
         let diaBuscar = $(this).val();
+        console.log(idServicio, diaBuscar);
         $(".diasError").addClass("d-none");
         $.ajax({
             type: "GET",
@@ -241,7 +293,6 @@
                 console.log(err)
             }
         });
-
     });
 
     // Cargar horarios basados en días
@@ -296,46 +347,63 @@
 
     //
     $("#guardarRegistro").on("click", function() {
-        const idservicio = $("#actividad").val();
-        const idmiembro = $("#idMiembro").val();
-        let fechasDefinidas = [];
+        let documento = $("#documentomiembro").val();
+        if (documento == null || documento == '') {
+            $("#modalcomponent").modal('show');
+            $("#mcbody").html('Debes ingresar un número de documento para continuar con la inscripción al programa de tenis');
+        } else {
+            const idservicio = $("#idPrograma").val();
+            const idmiembro = $("#idMiembro").val();
+            let fechasDefinidas = [];
 
-        // Rellenar tabla de turnos y horarios
-        $("#tableComponent").find("tbody tr").each(function(idx, row) {
-            var JsonData = {};
-            JsonData.dias = $("td:eq(0)", row).text();
-            JsonData.horarios = $("td:eq(1)", row).text();
-            fechasDefinidas.push(JsonData);
-        });
+            // Rellenar tabla de turnos y horarios
+            $("#tableComponent").find("tbody tr").each(function(idx, row) {
+                var JsonData = {};
+                JsonData.dias = $("td:eq(0)", row).text();
+                JsonData.horarios = $("td:eq(1)", row).text();
+                fechasDefinidas.push(JsonData);
+            });
 
-        Swal.fire({
-            icon: 'info',
-            html: "Espere un momento porfavor ...",
-            timerProgressBar: true,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-
-        $.ajax({
-            method: 'POST',
-            url: "{{route('inscripciones.store')}}",
-            data: {
-                idservicio,
-                idmiembro,
-                fechasDefinidas
-            },
-            success: function(resp) {
-                let data = resp;
-
-                if (data.success == 'ok') {
-                    window.location.href = "{{ route('inscripciones.index') }}";
+            Swal.fire({
+                icon: 'info',
+                html: "Espere un momento porfavor ...",
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
                 }
-            },
-            error: function(err) {
-                console.log(err)
-            }
-        });
+            });
+
+            $.ajax({
+                method: 'POST',
+                url: "{{route('inscripciones.store')}}",
+                data: {
+                    idservicio,
+                    idmiembro,
+                    fechasDefinidas
+                },
+                success: function(resp) {
+                    let data = resp;
+                    if (data.success == 'ok') {
+                        Swal.fire({
+                            title: "Inscripción exitosa",
+                            position: "center",
+                            icon: "success",
+                            allowOutsideClick: false,
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: "Continuar",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "{{route('inscripciones.index')}}"
+                            }
+                        });
+                    }
+                },
+                error: function(err) {
+                    console.log(err)
+                }
+            });
+        }
     });
 
     // funcion remover de tabla horarios
