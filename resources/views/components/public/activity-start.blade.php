@@ -12,6 +12,9 @@
     <div class="container-fluid">
         <div class="row padding3 justify-content-center">
             <div class="swiper swActividades col-11 col-md-12" data-aos="fade-up" data-aos-duration="1000">
+                @if (count($activitystarts) > 0 )
+                <h1>hola</h1>
+                @else
                 <div class="swiper-wrapper">
                     <div class="swiper-slide col-11 col-md-3 py-4">
                         <div class="item-actividades-inicio position-relative">
@@ -134,6 +137,8 @@
                         </div>
                     </div>
                 </div>
+                @endif
+
                 <div class="swiper-button-prev arrow">
                     <svg>
                         <use href="{{asset('assets/images/icons.svg')}}#arrow-prev" />

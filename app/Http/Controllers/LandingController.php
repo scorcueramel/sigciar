@@ -50,8 +50,26 @@ class LandingController extends Controller
             )
             ->where('noticias.estado', '=', 'A')
             ->get();
+        $activitystarts = DB::select("select distinct
+            servicios.id as servicios_id,
+            servicios.created_at as created_at,
+            subtipo_servicios.medicion,
+            subtipo_servicios.titulo,
+            subtipo_servicios.subtitulo,
+            subtipo_servicios.imagen,
+            lugar_costos.costohora as desde
+            from servicios
+            left join public.tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
+            left join public.subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
+            left join public.sedes on servicios.sede_id = sedes.id
+            left join public.lugars on servicios.lugar_id = lugars.id
+            left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
+            left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
+            where subtipo_servicios.titulo  is not null
+            and tipo_servicios.id <> 3
+            and servicios.estado= 'A'");
 
-        return view("pages.public.landing.index", compact("sedes", "actividades", "noticias"));
+        return view("pages.public.landing.index", compact("sedes", "actividades", "noticias","activitystarts"));
     }
 
     //SECTION ACTIVITY
@@ -142,28 +160,6 @@ class LandingController extends Controller
     // END SECTION NEW
 
     // SECTION ACTIVITY-STARTS
-    public function activityStarts()
-    {
-        $activitystarts = DB::select("select distinct
-        servicios.id as servicios_id,
-        servicios.created_at as created_at,
-        subtipo_servicios.medicion,
-        subtipo_servicios.titulo,
-        subtipo_servicios.subtitulo,
-        subtipo_servicios.imagen,
-        lugar_costos.costohora as desde
-        from servicios
-        left join public.tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
-        left join public.subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
-        left join public.sedes on servicios.sede_id = sedes.id
-        left join public.lugars on servicios.lugar_id = lugars.id
-        left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
-        left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
-        where subtipo_servicios.titulo  is not null
-        and tipo_servicios.id = 2
-        and servicios.estado= 'A'");
 
-        return view("pages.public.landing.actividades.", compact("activitystarts"));
-    }
     // END SECTION ACTIVITY-STARTS
 }
