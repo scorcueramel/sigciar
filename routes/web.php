@@ -15,6 +15,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SedesController;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\InscripcionesController;
+use App\Http\Controllers\NutricionController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RolesController;
 
@@ -180,5 +181,18 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/editar/{id}/rol',[RolesController::class,'edit'])->name('roles.edit');
         Route::put('/editar/{id}/rol',[RolesController::class,'update'])->name('roles.update');
         Route::delete('/eliminar/{id}', [RolesController::class, 'destroy'])->name('roles.destroy');
+    });
+
+    Route::group(['prefix'=>'nutricion'],function (){
+        Route::get('/lista',[NutricionController::class,'index'])->name('nutricion.index');
+        Route::get('/tablanutricion',[NutricionController::class,'tableNutricion'])->name('tabla.nutricion');
+        Route::get('/nueva',[NutricionController::class,'create'])->name('nutricion.create');
+        Route::get('/obtener/{id}/lugares', [NutricionController::class, 'placesCharge'])->name('obtener.lugres');
+        Route::get('/obtener/consto/{idlugar}/{idactividad}/lugar',[NutricionController::class,'coastPlaces'])->name('obtener.costo.luagr');
+        Route::post('/nueva',[NutricionController::class,'store'])->name('nutricion.store');
+        Route::get('/nueva/inscripcion/{plantilla}/{horario}/redirigido',[TenisController::class, 'redirectAfterCreateActivity'])->name('redirigir.incripcion.actividad');
+        Route::post('/change/state', [NutricionController::class, 'changeState'])->name('tenis.change.state');
+        Route::get('/detalle/{id}/actividad',[NutricionController::class,'show'])->name('show.actividad');
+        Route::post('/eliminar',[NutricionController::class, 'destroy'])->name('nutricion.eliminar');
     });
 });

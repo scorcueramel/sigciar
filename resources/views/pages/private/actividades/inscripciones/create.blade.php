@@ -26,18 +26,17 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-12">
                                 <div class="row mb-5">
-                                    <div class="col-sm-12">
-                                        <table class="table" id="table">
+                                    <div class="col-sm-12 table-responsive">
+                                        <table class="table border" id="table">
                                             <thead>
                                                 <tr>
                                                     <th></th>
                                                     <th>TIPO SERVICIO</th>
+                                                    <th>TITULO</th>
                                                     <th>SEDE</th>
                                                     <th>TURNO</th>
                                                     <th>INICIO</th>
                                                     <th>FIN</th>
-                                                    <th>TITULO</th>
-                                                    <th>SUBTITULO</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -81,6 +80,7 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6 mb-3 d-flex justify-content-between">
+                                        <input type="hidden" id="idPrograma" value="">
                                         <label class="col-sm-2 col-form-label" for="diasInscripcion">Días</label>
                                         <div class="col-sm-8">
                                             <div class="input-group input-group-merge">
@@ -157,29 +157,24 @@
 <script>
     $(document).ready(function() {
         $('#table').DataTable({
-            paging: true,
-            info: true,
+            paging: false,
+            info: false,
+            searching: false,
             "order": [
                 [0, "DESC"]
             ],
             responsive: true,
             autoWidth: false,
             processing: true,
-            "columnDefs": [{
-                "targets": [6],
-                "orderable": false
-            }],
-            "pageLength": 10,
-            "aLengthMenu": [
-                [10, 15, 20, -1],
-                [10, 15, 20, "Todos"]
-            ],
             "ajax": "{{route('table.inscripcion.charge')}}",
             "columns": [{
                     data: 'acciones'
                 },
                 {
                     data: 'tipo_servicio'
+                },
+                {
+                    data: 'titulo'
                 },
                 {
                     data: 'sede'
@@ -192,44 +187,13 @@
                 },
                 {
                     data: 'fin'
-                },
-                {
-                    data: 'titulo'
-                },
-                {
-                    data: 'subtitulo'
                 }
-            ],
-            "language": {
-                "lengthMenu": "Mostrar " +
-                    `<select class="custom-select custom-select-sm form-control form-control-sm">
-                            <option value='10'>10</option>
-                            <option value='15'>15</option>
-                            <option value='20'>20</option>
-                            <option value='-1'>Todos</option>
-                        </select>` +
-                    " Registros Por Página",
-                "zeroRecords": "Sin Resultados",
-                "info": "Mostrando Página _PAGE_ de _PAGES_",
-                "infoEmpty": "Sin Resultados",
-                "infoFiltered": "(Filtro de _MAX_ Registros Totales)",
-                "search": "Búscar ",
-                "paginate": {
-                    "next": "›",
-                    "previous": "‹"
-                }
-            },
+            ]
         });
     });
 
-
-    // arreglo de horarios
-    var totalHorarios = new Array();
-    var horasInscripcion = new Array();
-
-    // Cargar actividades al select Actividades
-    $("#actividad").on('change', function() {
-        var id = $(this).val();
+    function actividadSeleccionada(id) {
+        $("#idPrograma").val(id);
         $.ajax({
             method: 'GET',
             url: `/admin/inscripciones/obtener/${id}/dias`,
@@ -240,8 +204,8 @@
                     $("#diasInscripcion").append(`<option value="" selected disabled>DÍAS</option>`);
                     data.forEach((e) => {
                         $("#diasInscripcion").append(`
-                        <option value="${e.dia}">${e.dia}</option>
-                        `);
+                            <option value="${e.dia}">${e.dia}</option>
+                            `);
                     });
                 }
             },
@@ -249,7 +213,12 @@
                 console.log(err)
             }
         });
-    });
+    }
+
+
+    // arreglo de horarios
+    var totalHorarios = new Array();
+    var horasInscripcion = new Array();
 
     // Agregar cabecera a la tabla horarios
     const headerTable = $('#headertable');
@@ -262,74 +231,7 @@
                     <th>HORA</th>
                     <th>QUITAR</th>
                 </tr>
-            `);
-
-    // Obtener categorias basads en actividad SE LE ENVÍA EL ID DEL PROGRAMA PARA OBTENER LA SUBCATEGORIAS
-    $("#actividad").on('change', function() {
-        let actividadId = $(this).val();
-        $.ajax({
-            type: "GET",
-            url: `/admin/inscripciones/obtener/${actividadId}/subcategorias`,
-            success: function(data) {
-                let datatype = typeof(data);
-                let defaultOptionCategory = $("#categoria");
-                if (datatype === "string") {
-                    $("#modalcomponent").modal('show');
-                    $("#mcbody").html(data);
-                    $("#categoria").html("");
-                    defaultOptionCategory.append(
-                        "<option selected disabled>SELECCIONA UNA CATEGORÍA</option>");
-                    $("#categoria").attr("disabled", "disabled");
-                } else {
-                    $("#categoria").removeAttr("disabled");
-                    $("#categoria").html("");
-                    defaultOptionCategory.append(
-                        "<option selected disabled>SELECCIONA UNA CATEGORÍA</option>");
-                    data.forEach((e) => {
-                        $("#categoria").append(`
-                                    <option value="${e.id}">${e.titulo}-${e.subtitulo}</option>
-                                `);
-                    });
-                }
-            },
-            error: function(err) {
-                $("#modalcomponent").modal('show');
-                $("#mcbody").html(err.responseJSON.message);
-            }
-        });
-    });
-    // SE LE ENVÍA EL ID DE LA SUB CATEGORIA PARA CONSULTAR LOS DIAS CON LAS QUE CUENTA ESE PROGRAMA
-    $("#categoria").on('change', function() {
-        let actividadId = $(this).val();
-        $.ajax({
-            type: "GET",
-            url: `/admin/inscripciones/obtener/${actividadId}/dias`,
-            success: function(data) {
-                console.log(data)
-                let diasOptions = $("#diasInscripcion");
-                if (data.length <= 0) {
-                    $("#diasInscripcion").html("");
-                    diasOptions.append(
-                        "<option selected disabled>DIAS</option>");
-                    $("#diasInscripcion").attr("disabled", "disabled");
-                } else {
-                    $("#diasInscripcion").removeAttr("disabled");
-                    $("#diasInscripcion").html("");
-                    diasOptions.append(
-                        "<option selected disabled>DIAS</option>");
-                    data.forEach((e) => {
-                        $("#diasInscripcion").append(`
-                                    <option value="${e.dia}">${e.dia}</option>
-                                `);
-                    });
-                }
-            },
-            error: function(err) {
-                $("#modalcomponent").modal('show');
-                $("#mcbody").html(err.responseJSON.message);
-            }
-        });
-    });
+    `);
 
     // buscar al miembro o usuario registrado en sistema
     $("#buscarMiembro").on('click', function() {
@@ -367,7 +269,7 @@
 
     // quitaar el error de días y solicitar los horarios
     $("#diasInscripcion").on('change', function() {
-        let idServicio = $("#categoria").val();
+        let idServicio = $("#idPrograma").val();
         let diaBuscar = $(this).val();
         console.log(idServicio, diaBuscar);
         $(".diasError").addClass("d-none");
@@ -391,7 +293,6 @@
                 console.log(err)
             }
         });
-
     });
 
     // Cargar horarios basados en días
@@ -451,7 +352,7 @@
             $("#modalcomponent").modal('show');
             $("#mcbody").html('Debes ingresar un número de documento para continuar con la inscripción al programa de tenis');
         } else {
-            const idservicio = $("#actividad").val();
+            const idservicio = $("#idPrograma").val();
             const idmiembro = $("#idMiembro").val();
             let fechasDefinidas = [];
 
@@ -482,10 +383,21 @@
                 },
                 success: function(resp) {
                     let data = resp;
-
-                    // if (data.success == 'ok') {
-                    //     window.location.href = "{{ route('inscripciones.index') }}";
-                    // }
+                    if (data.success == 'ok') {
+                        Swal.fire({
+                            title: "Inscripción exitosa",
+                            position: "center",
+                            icon: "success",
+                            allowOutsideClick: false,
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: "Continuar",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "{{route('inscripciones.index')}}"
+                            }
+                        });
+                    }
                 },
                 error: function(err) {
                     console.log(err)

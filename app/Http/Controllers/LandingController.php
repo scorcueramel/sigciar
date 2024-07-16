@@ -37,21 +37,21 @@ class LandingController extends Controller
                                     order by created_at
                                     limit 5");
         $noticias = Noticia::leftJoin('categoria_noticias', 'categoria_noticias.id', '=', 'noticias.categoria_id')
-                                    ->select(
-                                        "noticias.id as noticia_id",
-                                        "categoria_noticias.nombre as nombre",
-                                        "categoria_noticias.id as categoria_id",
-                                        "noticias.titulo as titulo",
-                                        "noticias.extracto as extracto",
-                                        "noticias.cuerpo as cuerpo",
-                                        "noticias.estado as estado",
-                                        "noticias.imagen_destacada as imagen_destacada",
-                                        "noticias.slug as slug"
-                                    )
-                                    ->where('noticias.estado','=','A')
-                                    ->get();
+            ->select(
+                "noticias.id as noticia_id",
+                "categoria_noticias.nombre as nombre",
+                "categoria_noticias.id as categoria_id",
+                "noticias.titulo as titulo",
+                "noticias.extracto as extracto",
+                "noticias.cuerpo as cuerpo",
+                "noticias.estado as estado",
+                "noticias.imagen_destacada as imagen_destacada",
+                "noticias.slug as slug"
+            )
+            ->where('noticias.estado', '=', 'A')
+            ->get();
 
-        return view("pages.public.landing.index", compact("sedes", "actividades","noticias"));
+        return view("pages.public.landing.index", compact("sedes", "actividades", "noticias"));
     }
 
     //SECTION ACTIVITY
@@ -85,10 +85,12 @@ class LandingController extends Controller
     }
     //END SECTION ACTIVITY
 
+    // SECTION PROMISES
     public function promises()
     {
         return view("pages.public.landing.promises");
     }
+    // END SECTION PROMISES
 
     // SECTION NEWS
     public function news(Request $request)
@@ -113,28 +115,55 @@ class LandingController extends Controller
         return view("pages.public.landing.news", compact("noticias", "buscar"));
     }
 
-    public function newsDetails(string $slug){
+    public function newsDetails(string $slug)
+    {
         $noticiaObtenida = Noticia::leftJoin('categoria_noticias', 'categoria_noticias.id', '=', 'noticias.categoria_id')
-        ->select(
-            "noticias.id as noticia_id",
-            "categoria_noticias.nombre as nombre",
-            "categoria_noticias.id as categoria_id",
-            "noticias.titulo as titulo",
-            "noticias.extracto as extracto",
-            "noticias.cuerpo as cuerpo",
-            "noticias.estado as estado",
-            "noticias.imagen_destacada as imagen_destacada",
-            "noticias.slug as slug"
-        )
-        ->where('noticias.slug','=',$slug)
-        ->get();
+            ->select(
+                "noticias.id as noticia_id",
+                "categoria_noticias.nombre as nombre",
+                "categoria_noticias.id as categoria_id",
+                "noticias.titulo as titulo",
+                "noticias.extracto as extracto",
+                "noticias.cuerpo as cuerpo",
+                "noticias.estado as estado",
+                "noticias.imagen_destacada as imagen_destacada",
+                "noticias.slug as slug"
+            )
+            ->where('noticias.slug', '=', $slug)
+            ->get();
 
         $noticia = $noticiaObtenida[0];
         $catNoti = $noticia->categoria_id;
 
-        $noticiasCategoria = Noticia::where('categoria_id',$catNoti)->where('estado','A')->where('id','<>',$noticia->noticia_id)->select("imagen_destacada","titulo","slug")->take(8)->get();
+        $noticiasCategoria = Noticia::where('categoria_id', $catNoti)->where('estado', 'A')->where('id', '<>', $noticia->noticia_id)->select("imagen_destacada", "titulo", "slug")->take(8)->get();
 
-        return view("pages.public.landing.noticias.new-datail",compact("noticia","noticiasCategoria"));
+        return view("pages.public.landing.noticias.new-datail", compact("noticia", "noticiasCategoria"));
     }
     // END SECTION NEW
+
+    // SECTION ACTIVITY-STARTS
+    public function activityStarts()
+    {
+        $activitystarts = DB::select("select distinct
+        servicios.id as servicios_id,
+        servicios.created_at as created_at,
+        subtipo_servicios.medicion,
+        subtipo_servicios.titulo,
+        subtipo_servicios.subtitulo,
+        subtipo_servicios.imagen,
+        lugar_costos.costohora as desde
+        from servicios
+        left join public.tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
+        left join public.subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
+        left join public.sedes on servicios.sede_id = sedes.id
+        left join public.lugars on servicios.lugar_id = lugars.id
+        left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
+        left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
+        where subtipo_servicios.titulo  is not null
+        and tipo_servicios.id = 2
+        and servicios.estado= 'A'");
+
+        return view("pages.public.landing.actividades.", compact("activitystarts"));
+    }
+    // END SECTION ACTIVITY-STARTS
 }

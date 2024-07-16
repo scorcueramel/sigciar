@@ -77,7 +77,7 @@
                     data: 'descripcion'
                 },
                 {
-                    data: 'horario'
+                    data: 'horario_inscripcion'
                 },
                 {
                     data: 'pago'

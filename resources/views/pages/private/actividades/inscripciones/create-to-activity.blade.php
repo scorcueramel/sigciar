@@ -1,5 +1,5 @@
-@extends('layouts.private.private', ['activePage' => 'tenis.create'])
-@push('title', 'Nueva Sede')
+@extends('layouts.private.private',['activePage'=>''])
+@push('title', 'Inscripción Miembro')
 @push('css')
     <style>
         #regiration_form fieldset:not(:first-of-type) {
@@ -14,7 +14,8 @@
     </style>
 @endpush
 @section('content')
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Tenis /</span> Crear Nueva </h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Incribe un miembro al programa creado <small class="text-danger me-2" style="font-size: 16px; font-weight:bold">(Este paso es
+    opcional)</small> </h4>
     <!-- Basic Layout & Basic with Icons -->
     <div class="row mb-3">
         <!-- Basic with Icons -->
@@ -38,10 +39,6 @@
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <h3> Paso 3: Inscripciones</h3>
-                                    </div>
-                                    <div class="col-sm">
-                                        <small class="text-danger" style="font-size: 15px">(Este paso es
-                                            opcional)</small>
                                     </div>
                                 </div>
                                 <div class="row">

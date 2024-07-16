@@ -7,59 +7,55 @@ use App\Models\Persona;
 use App\Models\Sede;
 use App\Models\Servicio;
 use App\Models\SubtipoServicio;
-use App\Models\TipoServicio;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use DateTime;
 use Illuminate\Support\Str;
 
-class TenisController extends Controller
+class NutricionController extends Controller
 {
-    // renderizar la vista
     public function index()
     {
-        return view("pages.private.actividades.tenis.index");
+        return view("pages.private.actividades.nutricion.index");
     }
 
-    public function tableActivity()
+    public function tableNutricion()
     {
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
-            $tableActivity = DB::select("select
-                                                s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
-                                                s2.descripcion as sede,s2.direccion as direccion_sede,
-                                                l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
-                                                s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
-                                                concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable,
-                                                ss.titulo as titulo,ss.subtitulo as subtitulo
-                                        from servicios s
-                                                left join tipo_servicios ts on s.tiposervicio_id = ts.id
-                                                left join sedes s2 on s.sede_id = s2.id
-                                                left join lugars l on s.lugar_id = l.id
-                                                left join personas p on s.responsable_id = p.id
-                                                left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
-                                        where s.deleted_at is null and s.tiposervicio_id = 3");
-        } else {
-            $tableActivity = DB::select("select
+            $tableNutrition = DB::select("select
                                             s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
                                             s2.descripcion as sede,s2.direccion as direccion_sede,
                                             l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
                                             s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
-                                            s.responsable_id as responsable_id, concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable,
-                                            ss.titulo as titulo,ss.subtitulo as subtitulo
+                                            concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable
                                         from servicios s
-                                                left join tipo_servicios ts on s.tiposervicio_id = ts.id
-                                                left join sedes s2 on s.sede_id = s2.id
-                                                left join lugars l on s.lugar_id = l.id
-                                                left join personas p on s.responsable_id = p.id
-                                                left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
-                                        where s.deleted_at is null and s.tiposervicio_id = 3 and responsable_id = ?", [$persona[0]->id]);
+                                            left join tipo_servicios ts on s.tiposervicio_id = ts.id
+                                            left join sedes s2 on s.sede_id = s2.id
+                                            left join lugars l on s.lugar_id = l.id
+                                            left join personas p on s.responsable_id = p.id
+                                            left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
+                                        where s.deleted_at is null and s.tiposervicio_id = 2");
+        } else {
+            $tableNutrition = DB::select("select
+                                            s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
+                                            s2.descripcion as sede,s2.direccion as direccion_sede,
+                                            l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
+                                            s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
+                                            concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable
+                                        from servicios s
+                                            left join tipo_servicios ts on s.tiposervicio_id = ts.id
+                                            left join sedes s2 on s.sede_id = s2.id
+                                            left join lugars l on s.lugar_id = l.id
+                                            left join personas p on s.responsable_id = p.id
+                                            left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
+                                        where s.deleted_at is null and s.tiposervicio_id = 2 and responsable_id = ?", [$persona[0]->id]);
         }
 
-        return datatables()->of($tableActivity)
+        return datatables()->of($tableNutrition)
             ->addColumn('turno', function ($row) {
                 if ($row->turno == "DIURNO") {
                     return 'DIURNO <i class="fa-solid fa-sun text-warning"></i>';
@@ -82,12 +78,6 @@ class TenisController extends Controller
             ->addColumn('hora', function ($row) {
                 return $row->hora == "" ? "SIN HORA" : $row->hora;
             })
-            ->addColumn('titulo', function ($row) {
-                return $row->titulo == "" ? "SIN TÍTULO" : $row->titulo;
-            })
-            ->addColumn('subtitulo', function ($row) {
-                return $row->subtitulo == "" ? "SIN SUBTITULO" : $row->subtitulo;
-            })
             ->addColumn('acciones', function ($row) {
                 return '<div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -95,7 +85,7 @@ class TenisController extends Controller
                             </button>
                             <div class="dropdown-menu">
                                 <button data-bs-toggle="modal" data-bs-target="#modalcomponent" onclick="showDetail(' . $row->id . ')" class="dropdown-item"><i class="bx bx-message-alt-detail me-1"></i> Detalle</button>
-                                <button class="dropdown-item delete" onclick="deleteActivity(' . $row->id . ')"><i class="bx bx-trash me-1"></i> Eliminar</button>
+                                <button class="dropdown-item delete" onclick="deleteNutricion(' . $row->id . ')"><i class="bx bx-trash me-1"></i> Eliminar</button>
                             </div>
                         </div>';
             })
@@ -108,11 +98,10 @@ class TenisController extends Controller
                     <button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" onclick="changeState(' . $row->id . ')"><span class="badge bg-label-danger me-1">BORRADOR</span></button>';
                 }
             })
-            ->rawColumns(['titulo', 'subtitulo', 'direccion_sede', 'sede_imagen', 'hora', 'inicio', 'estado', 'turno', 'acciones'])
+            ->rawColumns(['direccion_sede', 'sede_imagen', 'hora', 'inicio', 'estado', 'turno', 'acciones'])
             ->make(true);
     }
 
-    // cambiar los estados
     public function changeState(Request $request)
     {
         $servicio = Servicio::find($request->id);
@@ -130,19 +119,17 @@ class TenisController extends Controller
         }
     }
 
-    // render view create new activity
     public function create()
     {
         // Obtener quien esta autenticado
         $responsable = Persona::where('usuario_id', Auth::user()->id)->get()[0];
         $responsables = Persona::where('tipocategoria_id', '<>', 1)->where('tipocategoria_id', '<>', 2)->get();
         $sedes = Sede::where('estado', 'A')->get();
-        $subtiposervicio = SubtipoServicio::where('tiposervicio_id', 3)->orderBy('id', 'desc')->get();
+        $subtiposervicio = SubtipoServicio::where('tiposervicio_id', 4)->orderBy('id', 'desc')->get();
 
-        return view("pages.private.actividades.tenis.create", compact("responsable", "responsables", "sedes", "subtiposervicio"));
+        return view("pages.private.actividades.nutricion.create", compact("responsable", "responsables", "sedes", "subtiposervicio"));
     }
 
-    // get category by idPlaces
     public function placesCharge(string $id)
     {
         $lugares = Lugar::where('sede_id', $id)->get();
@@ -164,32 +151,7 @@ class TenisController extends Controller
         return response()->json($lugar_costo);
     }
 
-    // get member by document
-    public function searchMember(string $document)
-    {
-        if ($document != '' || $document != null) {
-            $findMember = Persona::where('documento', $document)->where('tipocategoria_id', '<>', 3)->where('tipocategoria_id', '<>', 4)->where('tipocategoria_id', '<>', 5)->get();
-            if (count($findMember) <= 0) {
-                $findMember = "Parece que el documento: $document no es de un miembro o no se encuentra registrado, favor de verificar que el documento ingresado sea correcto y corresponda a un miembro, luego volver a itentar";
-                return response()->json($findMember);
-            } else {
-                return response()->json($findMember);
-            }
-        } else {
-            $findMember = "Parece que no ingresaste ningun documento para realizar una búsqueda.";
-            return response()->json($findMember);
-        }
-    }
-
-    // render image for category
-    public function renderImageForCategory(string $id)
-    {
-        $imagen = SubtipoServicio::where('id', $id)->select("imagen")->get();
-        return response()->json($imagen[0]);
-    }
-
-    // store new activity
-    public function storeNewActivity(Request $request)
+    public function store(Request $request)
     {
         $responsable = $request->responsable;
         $actividad = $request->actividad;
@@ -238,8 +200,7 @@ class TenisController extends Controller
             return response()->json(['error' => $error]);
         }
 
-        $servicioTenisCrear = DB::select("SELECT servicio_tenis_crear(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-        [$fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad, $estado]);
+        $servicioTenisCrear = DB::select("SELECT servicio_tenis_crear(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [$fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad, $estado]);
 
         $idRespuesta = $servicioTenisCrear[0]->servicio_tenis_crear;
 
@@ -259,66 +220,14 @@ class TenisController extends Controller
         return response()->json(['idPlantilla' => $idPlantillaConvert, 'idRegistro' => $idRegistroConvert, 'respRegistro' => $respuesta]);
     }
 
-    // redirect after create activity
-    public function redirectAfterCreateActivity(string $plantilla, string $registro)
-    {
-        $plantillaId = $plantilla;
-        $registroId = $registro;
-
-        $diasPorActividad = DB::select("select dia FROM servicioinscripcion_listardias(?);", [$registroId]);
-        return view('pages.private.actividades.inscripciones.create-to-activity', compact('diasPorActividad', 'registro', 'plantillaId'));
-    }
-
-    // get hour for day
-    public function getHoursForDay(string $idRegister, string $day)
-    {
-        $hours = DB::select("select horarios FROM servicioinscripcion_listarhora(?,?)", [$idRegister, $day]);
-        return response()->json($hours);
-    }
-
-    public function storeInscripcion(Request $request)
-    {
-        $user = Auth::user();
-        $persona = Persona::where('usuario_id', $user->id)->get();
-        $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->appaterno . " " . $persona[0]->apematerno;
-        $servicioId = $request->idplantilla;
-        $fechasDefinias = $request->fechasDefinidas;
-        $usuarioId = $request->idmiembro;
-        $ip = $request->ip();
-
-        $request->validate([
-            'idplantilla',
-            'idmiembro',
-            'fechasDefinidas'
-        ]);
-
-        foreach ($fechasDefinias as $fd) {
-            $dia = $fd['dias'];
-            $hora = $fd['horarios'];
-            DB::select('SELECT servicio_inscripcion(?,?,?,?,?,?)', [$servicioId, $dia, $usuarioId, $hora, $usuarioActivo, $ip]);
-        }
-
-        return response()->json(['success' => 'ok']);
-    }
-
-    // destroy by activity
-    public function destroyActivity(Request $request)
-    {
-        $actividad = Servicio::find($request->id);
-        $actividad->delete();
-        return redirect()->back()->with('success', 'El programa de tenis fue eliminado');
-    }
-
-    // edti activity
     public function show(string $id)
     {
-        $detalleActividad = DB::select("select
+        $detalleNutricion = DB::select("select
                                             s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
                                             s2.descripcion as sede,s2.direccion as direccion_sede,
                                             l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
                                             s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
-                                            concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable,
-                                            ss.titulo as titulo,ss.subtitulo as subtitulo
+                                            concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable
                                          from servicios s
                                          left join tipo_servicios ts on s.tiposervicio_id = ts.id
                                          left join sedes s2 on s.sede_id = s2.id
@@ -328,6 +237,23 @@ class TenisController extends Controller
                                          where s.deleted_at is null
                                          and s.id = ?", [$id]);
 
-        return response()->json($detalleActividad);
+        return response()->json($detalleNutricion);
+    }
+
+    public function edit(string $id)
+    {
+        //
+    }
+
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    public function destroy(Request $request)
+    {
+        $actividad = Servicio::find($request->id);
+        $actividad->delete();
+        return redirect()->back()->with('success', 'El programa de nutrición fue eliminada');
     }
 }

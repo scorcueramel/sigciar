@@ -124,20 +124,20 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item">
+        <li class="menu-item {{ $activePage == 'nutricion.index' || $activePage == 'nutricion.create' || $activePage == 'nutricion.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);"
-               class="menu-link menu-toggle">
+               class="menu-link menu-toggle {{ $activePage == 'nutricion.create' ? 'active' : '' }}">
                 <i class="fa-regular fa-salad" style="margin-right: 13px"></i>
                 <div data-i18n="Account Settings">Nutrición</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
+                <li class="menu-item {{ $activePage == 'nutricion.index' ? 'active' : '' }}">
+                    <a href="{{route('nutricion.index')}}" class="menu-link">
                         <div data-i18n="Notifications">Programas creados</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
+                <li class="menu-item {{ $activePage == 'nutricion.create' ? 'active' : '' }}">
+                    <a href="{{route('nutricion.create')}}" class="menu-link">
                         <div data-i18n="Account">Nuevo Programa</div>
                     </a>
                 </li>

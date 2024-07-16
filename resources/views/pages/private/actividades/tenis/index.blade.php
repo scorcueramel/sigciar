@@ -144,8 +144,8 @@
         function deleteActivity(id) {
             var id = id;
             Swal.fire({
-                title: "Eliminar Actividad?",
-                text: "Seguro de eliminar esta actividad",
+                title: "Eliminar Programa de Tenis?",
+                text: "Seguro de eliminar este programa de tenis",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -237,7 +237,7 @@
                                         Costo
                                     </td>
                                     <td>
-                                        ${data.lugar_costo_hora}
+                                        S/. ${data.lugar_costo_hora}
                                     </td>
                                 </tr>
                                 <tr>
