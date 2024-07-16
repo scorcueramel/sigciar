@@ -12,8 +12,31 @@
     <div class="container-fluid">
         <div class="row padding3 justify-content-center">
             <div class="swiper swActividades col-11 col-md-12" data-aos="fade-up" data-aos-duration="1000">
-                @if (count($activitystarts) > 0 )
-                <h1>hola</h1>
+                @if (!is_null($activitystarts))
+                <div class="swiper-wrapper">
+                    @foreach ($activitystarts as $acts)
+                    <div class="swiper-slide col-11 col-md-3 py-4">
+                        <div class="item-actividades-inicio position-relative">
+                            <div class="contenedor-item">
+                                <figure class="imagen-item">
+                                    <a href="#">
+                                        <img src="{{asset('assets/images/actividades/nutricion.webp')}}" class="w-100" />
+                                    </a>
+                                </figure>
+
+                                <div class="overlay-item text-start">
+                                    <div class="info-item py-3 px-3">
+                                        <h3 class="titulo-item mb-0 altas">
+                                            <a href="#">{{$acts->titulo}}</a>
+                                        </h3>
+                                        <div class="edades"><a href="#" class="enlace"><img src="{{asset('assets/images/link.svg')}}" /></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
                 @else
                 <div class="swiper-wrapper">
                     <div class="swiper-slide col-11 col-md-3 py-4">

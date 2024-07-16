@@ -356,7 +356,7 @@
                     success: function (resp) {
                         let data = resp;
                         if (data.success == 'ok') {
-                            window.location.href = "{{ route('tenis.index') }}";
+                            window.location.href = "{{ route('inscripciones.index') }}";
                         }
                     },
                     error: function (err) {

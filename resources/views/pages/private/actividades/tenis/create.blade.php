@@ -65,10 +65,10 @@
                                                 </div>
                                             </div>
                                         @endrole
-                                        @role('RESPONSABLE')
-                                            <div class="row mb-3">
-                                                <label class="col-sm-3 col-form-label" for="respnoadmin">Responsable</label>
-                                                <div class="col-sm-9">
+                                        @if ($responsable->tipocategoria_id == 3)
+                                        <div class="row mb-3">
+                                            <label class="col-sm-3 col-form-label" for="respnoadmin">Responsable</label>
+                                            <div class="col-sm-9">
                                                     <div class="input-group input-group-merge">
                                                         <span id="respnoadmin2" class="input-group-text">
                                                             <i class="bx bx-buildings"></i>
@@ -83,7 +83,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endrole
+                                            @endif
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label" for="categoria">Categoría</label>
                                             <div class="col-sm-9">
