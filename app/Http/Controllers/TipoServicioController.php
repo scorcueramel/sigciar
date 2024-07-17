@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TipoServicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
 
 class TipoServicioController extends Controller
 {
@@ -36,12 +37,34 @@ class TipoServicioController extends Controller
 
     public function create()
     {
-        //
+        return view("pages.private.tipos.tipo-servicio.create");
     }
 
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            'descripcion' => ['required'], ['max:100'],
+            'abreviatura' => ['required'], ['max:3'],
+            'estado' => ['required'],
+        ], [
+            'descripcion.required' => 'El campo descripción es obligatorio',
+            'descripcion.max' => 'El campo descripción solo permite 100 caraxteres máximo',
+            'abreviatura.required' => 'El campo abreviatura es obligatorio',
+            'abreviatura.max' => 'El campo abreviatura solo permite 3 caraxteres máximo',
+            'estado.required' => 'El campo estado es obligatorio',
+        ]);
+
+        if ($validation->fails()) {
+            return redirect()->back()->withErrors($validation)->withInput();
+        }
+
+        $tiposervicio = TipoServicio::create([
+            'descripcion'=> $request->descripcion,
+            'abreviatura'=> $request->abreviatura,
+            'estado' => $request->estado
+        ]);
+
+        return redirect()->route('tipo.servicio.index')->with('success', "El tipo $tiposervicio->descripcion fue creado exitosamente! 👍");
     }
 
     public function show($id)
@@ -49,14 +72,37 @@ class TipoServicioController extends Controller
         //
     }
 
-    public function edit($id)
+    public function edit(string $id)
     {
-        //
+        $tiposervicio = TipoServicio::findOrFail( $id );
+        return view("pages.private.tipos.tipo-servicio.edit",compact("tiposervicio"));
     }
 
     public function update(Request $request, $id)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            'descripcion' => ['required'], ['max:100'],
+            'abreviatura' => ['required'], ['max:3'],
+            'estado' => ['required'],
+        ], [
+            'descripcion.required' => 'El campo descripción es obligatorio',
+            'descripcion.max' => 'El campo descripción solo permite 100 caraxteres máximo',
+            'abreviatura.required' => 'El campo abreviatura es obligatorio',
+            'abreviatura.max' => 'El campo abreviatura solo permite 3 caraxteres máximo',
+            'estado.required' => 'El campo estado es obligatorio',
+        ]);
+
+        if ($validation->fails()) {
+            return redirect()->back()->withErrors($validation)->withInput();
+        }
+
+        $tiposervicio = TipoServicio::findOrFail( $id );
+        $tiposervicio->descripcion = $request->descripcion;
+        $tiposervicio->abreviatura = $request->abreviatura;
+        $tiposervicio->estado = $request->estado;
+        $tiposervicio->save();
+
+        return redirect()->route('tipo.servicio.index')->with('success', "El tipo $tiposervicio->descripcion fue actualizado exitosamente! 👍");
     }
 
     public function destroy(Request $request)
