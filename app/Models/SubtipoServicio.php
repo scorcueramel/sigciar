@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SubtipoServicio extends Model
 {
-//    use HasFactory, SoftDeletes; descomentar al migrar, ya fue agregado a la migracion
-    use HasFactory;
-
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'titulo',
         'subtitulo',

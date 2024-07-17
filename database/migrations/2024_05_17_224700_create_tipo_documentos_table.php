@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('descripcion',100);
             $table->string('abreviatura',5);
             $table->string('estado',1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -277,20 +277,20 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Mantenimiento de Tipos</span>
         </li>
-        <li class="menu-item {{ $activePage == 'sedes.index' || $activePage == 'sedes.create' || $activePage == 'sedes.edit' ? 'active open' : '' }}">
+        <li class="menu-item {{ $activePage == 'tipo.servicio.index' || $activePage == 'tipo.servicio.create' || $activePage == 'tipo.servicio.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'sedes.index' ? 'active' : '' }}">
+               class="menu-link menu-toggle {{ $activePage == 'tipo.servicio.index' ? 'active' : '' }}">
                 <i class="fa-solid fa-box-open" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Tipo de servicios</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ $activePage == 'sedes.index' ? 'active' : '' }}">
-                    <a href="{{route('sedes.index')}}" class="menu-link">
+                <li class="menu-item {{ $activePage == 'tipo.servicio.index' ? 'active' : '' }}">
+                    <a href="{{route('tipo.servicio.index')}}" class="menu-link">
                         <div data-i18n="Account">Todos los Tipos</div>
                     </a>
                 </li>
-                <li class="menu-item {{ $activePage == 'sedes.create' ? 'active' : '' }}">
-                    <a href="{{route('sedes.create')}}" class="menu-link">
+                <li class="menu-item {{ $activePage == 'tipo.servicio.create' ? 'active' : '' }}">
+                    <a href="{{route('tipo.servicio.create')}}" class="menu-link">
                         <div data-i18n="Notifications">Nuevo Tipo</div>
                     </a>
                 </li>
