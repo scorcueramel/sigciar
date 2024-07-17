@@ -18,6 +18,7 @@ use App\Http\Controllers\InscripcionesController;
 use App\Http\Controllers\NutricionController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\TipoServicioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -194,5 +195,15 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/change/state', [NutricionController::class, 'changeState'])->name('tenis.change.state');
         Route::get('/detalle/{id}/actividad',[NutricionController::class,'show'])->name('show.actividad');
         Route::post('/eliminar',[NutricionController::class, 'destroy'])->name('nutricion.eliminar');
+    });
+
+    Route::group(['prefix'=> 'tipos-servicio'], function () {
+        Route::get('/lista', [TipoServicioController::class, 'index'])->name('tipo.servicio.index');
+        Route::post('/change/state', [TipoServicioController::class, 'changeState'])->name('tipo.servicio.change.state');
+        Route::get('/nueva', [TipoServicioController::class, 'create'])->name('tipo.servicio.create');
+        Route::post('/crear', [TipoServicioController::class, 'store'])->name('tipo.servicio.store');
+        Route::get('/editar/{id}', [TipoServicioController::class, 'edit'])->name('tipo.servicio.edit');
+        Route::post('/editar/{id}/guardar', [TipoServicioController::class, 'update'])->name('tipo.servicio.update');
+        Route::post('/eliminar', [TipoServicioController::class, 'destroy'])->name('tipo.servicio.destroy');
     });
 });
