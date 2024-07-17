@@ -6,6 +6,7 @@ use App\Models\TipoServicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class TipoServicioController extends Controller
 {
@@ -59,7 +60,7 @@ class TipoServicioController extends Controller
         }
 
         $tiposervicio = TipoServicio::create([
-            'descripcion'=> $request->descripcion,
+            'descripcion'=> Str::upper($request->descripcion),
             'abreviatura'=> $request->abreviatura,
             'estado' => $request->estado
         ]);
@@ -109,6 +110,6 @@ class TipoServicioController extends Controller
     {
         $tiposervicio = TipoServicio::findOrFail($request->id);
         $tiposervicio->delete();
-        return redirect()->back()->with('success', 'El tipo de servicio fue eleminado correctamente 👍');
+        return redirect()->route('tipo.servicio.index')->with('success', 'El tipo de servicio fue eleminado correctamente 👍');
     }
 }
