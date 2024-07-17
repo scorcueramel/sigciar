@@ -7,7 +7,7 @@
         <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Tipo Servicio /</span> Todas </h4>
     </div>
     <div class="col-md text-end">
-        <a href="#" class="btn btn-sm btn-info"><i class="fa-solid fa-box me-1"></i>Nuevo</a>
+        <a href="{{route('tipo.servicio.create')}}" class="btn btn-sm btn-info"><i class="fa-solid fa-box me-1"></i>Nuevo</a>
     </div>
 </div>
 @include('components.private.table', ['titleTable' => 'Lista de servicios registrados','searchable'=>false,'paginate'=>$sedesBody])
@@ -45,7 +45,7 @@
                                 <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
                             <div class="dropdown-menu">
-                                <a href="/admin/sedes/editar/${e.id}" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
+                                <a href="/admin/tipos-servicio/editar/${e.id}" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
                                 <button class="dropdown-item delete" data-id="${e.id}"><i class="bx bx-trash me-1"></i> Eliminar</button>
                             </div>
                         </div>
