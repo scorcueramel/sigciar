@@ -14,12 +14,17 @@ class SubtipoServicioController extends Controller
     protected $disk = "public";
     public function index()
     {
-        $headerTable = SubtipoServicio::select('id', 'titulo', 'subtitulo', 'estado', 'imagen', 'medicion', 'tiposervicio_id')->first()->toArray();
-        $keysSedes = [$keys, $values] = Arr::divide($headerTable)[0];
-        $endHeaders = count($keysSedes);
-        $sedesHeader = Arr::add($keysSedes, $endHeaders, 'Acciones');
-        $sedesBody = SubtipoServicio::leftJoin('tipo_servicios','tipo_servicios.id','=','subtipo_servicios.tiposervicio_id')->select('subtipo_servicios.*', 'tipo_servicios.descripcion as descripciontiposervicio')->orderBy('id', 'asc')->paginate(5);
-
+        $validcount = SubtipoServicio::all();
+        if(count($validcount)>0){
+            $headerTable = SubtipoServicio::select('id', 'titulo', 'subtitulo', 'estado', 'imagen', 'medicion', 'tiposervicio_id')->first()->toArray();
+            $keysSedes = [$keys, $values] = Arr::divide($headerTable)[0];
+            $endHeaders = count($keysSedes);
+            $sedesHeader = Arr::add($keysSedes, $endHeaders, 'Acciones');
+            $sedesBody = SubtipoServicio::leftJoin('tipo_servicios','tipo_servicios.id','=','subtipo_servicios.tiposervicio_id')->select('subtipo_servicios.*', 'tipo_servicios.descripcion as descripciontiposervicio')->orderBy('id', 'asc')->paginate(5);
+        }else{
+            $sedesHeader = [];
+            $sedesBody = null;
+        }
         return view("pages.private.tipos.subtipo-servicio.index", compact("sedesHeader", "sedesBody"));
     }
 

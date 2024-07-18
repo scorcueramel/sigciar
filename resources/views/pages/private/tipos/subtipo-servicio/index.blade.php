@@ -21,19 +21,20 @@
     let bodyTable = $('#bodytable');
     headerTable.append(`
                 <tr>
-                    <th>${headerSedes[0]}</th>
-                    <th>${headerSedes[1]}</th>
-                    <th>${headerSedes[2]}</th>
-                    <th>${headerSedes[3]}</th>
-                    <th>${headerSedes[4]}</th>
-                    <th>${headerSedes[5]}</th>
-                    <th>TIPO DE SERVICIO</th>
+                    <th>${headerSedes[0] ?? 'ID'}</th>
+                    <th>${headerSedes[1] ?? 'TITULO'}</th>
+                    <th>${headerSedes[2] ?? 'SUBTITULO'}</th>
+                    <th>${headerSedes[3] ?? 'ESTADO'}</th>
+                    <th>${headerSedes[4] ?? 'IMAGEN'}</th>
+                    <th>${headerSedes[5] ?? 'MEDICIÓN'}</th>
+                    <th>${headerSedes[6] ?? 'TIPO DE SERVICIO'}</th>
                     <th>Acciones</th>
                 </tr>
         `);
 
-    bodySedes.data.forEach((e) => {
-        bodyTable.append(`
+    if (bodySedes != null) {
+        bodySedes.data.forEach((e) => {
+            bodyTable.append(`
                 <tr>
                     <td>
                         <i class="bx bxs-circle text-primary me-3"></i>
@@ -60,9 +61,17 @@
                         </div>
                     </td>
                 </tr>
+            `);
+        });
+    } else {
+        bodyTable.append(`
+            <tr>
+                <td colspan="8" class="text-center">
+                    SIN DATOS
+                </td>
+            </tr>
         `);
-    });
-
+    }
     // cambiar la ruta de donde mostrara la imagen
     $('.btn-modal-image').on('click', function() {
         var imagen = $(this).attr('data-imagen');
