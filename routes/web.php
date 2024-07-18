@@ -18,6 +18,7 @@ use App\Http\Controllers\InscripcionesController;
 use App\Http\Controllers\NutricionController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\SubtipoServicioController;
 use App\Http\Controllers\TipoServicioController;
 
 /*
@@ -205,5 +206,15 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/editar/{id}', [TipoServicioController::class, 'edit'])->name('tipo.servicio.edit');
         Route::post('/editar/{id}/guardar', [TipoServicioController::class, 'update'])->name('tipo.servicio.update');
         Route::post('/eliminar', [TipoServicioController::class, 'destroy'])->name('tipo.servicio.destroy');
+    });
+
+    Route::group(['prefix'=> 'subtipos-servicio'], function () {
+        Route::get('/lista', [SubtipoServicioController::class, 'index'])->name('subtipos.servicio.index');
+        Route::post('/change/state', [SubtipoServicioController::class, 'changeState'])->name('subtipos.servicio.change.state');
+        Route::get('/nueva', [SubtipoServicioController::class, 'create'])->name('subtipos.servicio.create');
+        Route::post('/crear', [SubtipoServicioController::class, 'store'])->name('subtipos.servicio.store');
+        Route::get('/editar/{id}', [SubtipoServicioController::class, 'edit'])->name('subtipos.servicio.edit');
+        Route::post('/editar/{id}/guardar', [SubtipoServicioController::class, 'update'])->name('subtipos.servicio.update');
+        Route::post('/eliminar', [SubtipoServicioController::class, 'destroy'])->name('subtipos.servicio.destroy');
     });
 });

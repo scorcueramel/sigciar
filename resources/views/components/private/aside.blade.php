@@ -63,8 +63,7 @@
             <span class="menu-header-text">Programas</span>
         </li>
         <li class="menu-item {{$activePage == 'tenis.edit' || $activePage == 'tenis.index' || $activePage == 'tenis.create' ? 'active open' : '' }}">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'tenis.create' ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'tenis.create' ? 'active' : '' }}">
                 <i class="fa-solid fa-tennis-ball" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Programa de Tenis</div>
             </a>
@@ -82,8 +81,7 @@
             </ul>
         </li>
         <li class="menu-item {{ $activePage == 'nutricion.index' || $activePage == 'nutricion.create' || $activePage == 'nutricion.edit' ? 'active open' : '' }}">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'nutricion.create' ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'nutricion.create' ? 'active' : '' }}">
                 <i class="fa-regular fa-salad" style="margin-right: 13px"></i>
                 <div data-i18n="Account Settings">Nutrición</div>
             </a>
@@ -101,8 +99,7 @@
             </ul>
         </li>
         <li class="menu-item">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="fa-regular fa-list-check" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Otros Programas</div>
             </a>
@@ -125,8 +122,7 @@
             <span class="menu-header-text">Inscripciones</span>
         </li>
         <li class="menu-item {{ $activePage == 'inscripciones.index' || $activePage == 'inscripciones.create' || $activePage == 'inscripciones.edit' ? 'active open' : '' }}">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">
                 <i class="fa-regular fa-calendar-lines-pen" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Inscripción de Miembros</div>
             </a>
@@ -149,8 +145,7 @@
             <span class="menu-header-text">INFORMACIÓN</span>
         </li>
         <li class="menu-item {{ $activePage == 'categorias.index' || $activePage == 'categorias.edit' || $activePage == 'categorias.create' ? 'active open' : '' }}">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'categorias.create' ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'categorias.create' ? 'active' : '' }}">
                 <i class="fa-regular fa-layer-group" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Categorías</div>
             </a>
@@ -168,8 +163,7 @@
             </ul>
         </li>
         <li class="menu-item {{ $activePage == 'noticias.index' || $activePage == 'noticias.edit' ||  $activePage == 'noticias.create' ? 'active open' : '' }}">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'categorias.create' ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'categorias.create' ? 'active' : '' }}">
                 <i class="fa-solid fa-newspaper" style="margin-right: 13px"></i>
                 <div data-i18n="Authentications">Noticias</div>
             </a>
@@ -234,8 +228,7 @@
             <span class="menu-header-text">Espacios</span>
         </li>
         <li class="menu-item {{ $activePage == 'sedes.index' || $activePage == 'sedes.create' || $activePage == 'sedes.edit' ? 'active open' : '' }}">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'sedes.index' ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'sedes.index' ? 'active' : '' }}">
                 <i class="fa-regular fa-hotel" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Sedes</div>
             </a>
@@ -253,8 +246,7 @@
             </ul>
         </li>
         <li class="menu-item {{ $activePage == 'lugares.index' || $activePage == 'lugares.create' || $activePage == 'lugares.edit' ? 'active open' : '' }}">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'lugares.index' ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'lugares.index' ? 'active' : '' }}">
                 <i class="fa-regular fa-court-sport" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Lugares</div>
             </a>
@@ -278,8 +270,7 @@
             <span class="menu-header-text">Mantenimiento de Tipos</span>
         </li>
         <li class="menu-item {{ $activePage == 'tipo.servicio.index' || $activePage == 'tipo.servicio.create' || $activePage == 'tipo.servicio.edit' ? 'active open' : '' }}">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'tipo.servicio.index' ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'tipo.servicio.index' ? 'active' : '' }}">
                 <i class="fa-solid fa-box-open" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Tipo de servicios</div>
             </a>
@@ -296,39 +287,37 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item {{ $activePage == 'lugares.index' || $activePage == 'lugares.create' || $activePage == 'lugares.edit' ? 'active open' : '' }}">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'lugares.index' ? 'active' : '' }}">
-               <i class="fa-solid fa-box-open-full" style="margin-right: 13px;"></i>
+        <li class="menu-item {{ $activePage == 'subtipos.servicio.index' || $activePage == 'subtipos.servicio.create' || $activePage == 'subtipos.servicio.edit' ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'subtipos.servicio.index' ? 'active' : '' }}">
+                <i class="fa-solid fa-box-open-full" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Subtipo de Servicios</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ $activePage == 'lugares.index' ? 'active' : '' }}">
-                    <a href="{{route('lugares.index')}}" class="menu-link">
+                <li class="menu-item {{ $activePage == 'subtipos.servicio.index' ? 'active' : '' }}">
+                    <a href="{{route('subtipos.servicio.index')}}" class="menu-link">
                         <div data-i18n="Account">Todos los Subtipos</div>
                     </a>
                 </li>
-                <li class="menu-item {{ $activePage == 'lugares.create' ? 'active' : '' }}">
-                    <a href="{{ route('lugares.create') }}" class="menu-link">
+                <li class="menu-item {{ $activePage == 'subtipos.servicio.create' ? 'active' : '' }}">
+                    <a href="{{ route('subtipos.servicio.create') }}" class="menu-link">
                         <div data-i18n="Notifications">Nuevo Subtipo</div>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class="menu-item {{ $activePage == 'lugares.index' || $activePage == 'lugares.create' || $activePage == 'lugares.edit' ? 'active open' : '' }}">
-            <a href="javascript:void(0);"
-               class="menu-link menu-toggle {{ $activePage == 'lugares.index' ? 'active' : '' }}">
+        <li class="menu-item {{ $activePage == 'costos.lugares.index' || $activePage == 'costos.lugares.create' || $activePage == 'costos.lugares.edit' ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'costos.lugares.index' ? 'active' : '' }}">
                 <i class="fa-regular fa-money-check-dollar-pen" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Costo por Lugar</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ $activePage == 'lugares.index' ? 'active' : '' }}">
-                    <a href="{{route('lugares.index')}}" class="menu-link">
+                <li class="menu-item {{ $activePage == 'costos.lugares.index' ? 'active' : '' }}">
+                    <a href="{{route('costos.lugares.index')}}" class="menu-link">
                         <div data-i18n="Account">Todos los Costos</div>
                     </a>
                 </li>
-                <li class="menu-item {{ $activePage == 'lugares.create' ? 'active' : '' }}">
-                    <a href="{{ route('lugares.create') }}" class="menu-link">
+                <li class="menu-item {{ $activePage == 'costos.lugares.create' ? 'active' : '' }}">
+                    <a href="{{ route('costos.lugares.create') }}" class="menu-link">
                         <div data-i18n="Notifications">Nuevo Lugar</div>
                     </a>
                 </li>
