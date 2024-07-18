@@ -47,11 +47,11 @@
                         <div class="col-sm-10">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="estado" id="activo" value="A">
-                                <label class="form-check-label" for="activo">ACTIVO</label>
+                                <label class="form-check-label" for="activo">PUBLICADO</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="estado" id="inactivo" value="I" checked>
-                                <label class="form-check-label" for="inactivo">INACTIVO</label>
+                                <label class="form-check-label" for="inactivo">BORRADOR</label>
                             </div>
                             <div class="form-text">Inidica el estado inicial para la el tipo</div>
                             @error('estado')

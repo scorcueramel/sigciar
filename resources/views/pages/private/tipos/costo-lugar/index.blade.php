@@ -7,7 +7,7 @@
         <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Costo Lugar /</span> Todas </h4>
     </div>
     <div class="col-md text-end">
-        <a href="{{route('subtipos.servicio.create')}}" class="btn btn-sm btn-info"><i class="fa-solid fa-box-open-full me-1"></i>Nuevo</a>
+        <a href="{{ route('costos.lugares.create') }}" class="btn btn-sm btn-info"><i class="fa-regular fa-money-check-dollar-pen me-1"></i>Nuevo</a>
     </div>
 </div>
 @include('components.private.table', ['titleTable' => 'Lista de costo lugar registrados','searchable'=>false,'paginate'=>$sedesBody])
