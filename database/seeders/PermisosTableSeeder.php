@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PermisosTableSeeder extends Seeder
 {
@@ -90,7 +91,8 @@ class PermisosTableSeeder extends Seeder
         ];
 
         foreach ($permisos as $permiso) {
-            Permission::create(['name' => $permiso]);
-        };
+            $permission = Permission::create(['name' => $permiso]);
+            Role::where('id',1)->first()->givePermissionTo($permission->name);
+        }
     }
 }
