@@ -63,11 +63,11 @@
                                 <div class="col-sm-9">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="estado" id="activo" value="A" {{ $subtiposervicio->estado == 'A' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="activo">ACTIVO</label>
+                                        <label class="form-check-label" for="activo">PUBLICADO</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="estado" id="inactivo" value="I" {{ $subtiposervicio->estado == 'I' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="inactivo">INACTIVO</label>
+                                        <label class="form-check-label" for="inactivo">BORRADOR</label>
                                     </div>
                                     <div class="form-text">Inidica el estado inicial para la el tipo</div>
                                     @error('estado')
@@ -82,7 +82,7 @@
                                 <div class="col-sm-9">
                                     <div class="input-group input-group-merge">
                                         <span class="input-group-text">
-                                            <i class="fa-regular fa-calendar-range"></i>
+                                            <i class="fa-solid fa-square-check"></i>
                                         </span>
                                         <select class="form-select" id="tiposervicio" aria-label="tiposervicio" name="tiposervicio" required>
                                             <option value="" selected disabled>SELECCIONAR</option>
