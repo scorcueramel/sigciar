@@ -35,7 +35,7 @@
                                 <div class="col-sm-9">
                                     <div class="input-group input-group-merge">
                                         <span id="subtitulo2" class="input-group-text"><i class="bx bx-buildings"></i></span>
-                                        <input type="text" id="subtitulo" class="form-control @error('subtitulo') is-invalid @enderror" aria-label="Nombre para la subtitulo" aria-describedby="subtitulo2" name="subtitulo" value="{{old('subtitulo') ?? Str::title($subtiposervicio->titulo)}}" maxlength="100" autofocus required />
+                                        <input type="text" id="subtitulo" class="form-control @error('subtitulo') is-invalid @enderror" aria-label="Nombre para la subtitulo" aria-describedby="subtitulo2" name="subtitulo" value="{{old('subtitulo') ?? Str::title($subtiposervicio->titulo)}}" maxlength="100"/>
                                         @error('subtitulo')
                                         <span class="invalid-feedback d-block" role="alert">
                                             <strong>{{ $message }}</strong>
