@@ -87,7 +87,7 @@ class InscripcionesController extends Controller
                             </button>
                             <div class="dropdown-menu">
                                 <button data-bs-toggle="modal" data-bs-target="#modalcomponent" onclick="showDetail()" class="dropdown-item"><i class="bx bx-message-alt-detail me-1"></i> Detalle</button>
-                                <button class="dropdown-item delete" onclick="deleteActivity()"><i class="bx bx-trash me-1"></i> Eliminar</button>
+                                <button class="dropdown-item delete" onclick="deleteInscripcion('.$row->servicios_id.')"><i class="bx bx-trash me-1"></i> Eliminar</button>
                             </div>
                         </div>';
             })
@@ -150,9 +150,6 @@ class InscripcionesController extends Controller
                 }
                 if ($row->turno == "NOCTURNO") {
                     return 'NOCTURNO <i class="fa-solid fa-moon-stars text-primary"></i>';
-                }
-                if ($row->turno == "AMBOS") {
-                    return 'AMBOS <i class="fa-solid fa-sun text-warning me-2"></i> <i class="fa-solid fa-moon-stars text-primary"></i>';
                 }
             })
             ->addColumn('inicio', function ($row) {
