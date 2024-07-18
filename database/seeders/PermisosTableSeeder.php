@@ -38,12 +38,24 @@ class PermisosTableSeeder extends Seeder
             "crear.lugares",
             "editar.lugares",
             "eliminar.lugares",
-            //programas
+            //tenis
             "ver.tenis",
             "detalles.tenis",
             "estado.tenis",
             "crear.tenis",
             "eliminar.tenis", //ELIMINAR ACTIVIDAD
+            //nutricion
+            "ver.nutricion",
+            "detalles.nutricion",
+            "estado.nutricion",
+            "crear.nutricion",
+            "eliminar.nutricion", //ELIMINAR ACTIVIDAD
+            //otros programas
+            "ver.otrosprogramas",
+            "detalles.otrosprogramas",
+            "estado.otrosprogramas",
+            "crear.otrosprogramas",
+            "eliminar.otrosprogramas", //ELIMINAR ACTIVIDAD
             //inscripciones
             "ver.inscripciones",
             "detalle.inscripciones",
