@@ -16,7 +16,7 @@
                                 <div class="contenedor-item">
                                     <figure class="imagen-item">
                                         <a href="#">
-                                            <img src="{{asset('storage/subtipos/'.$actividad->imagen)}}" class="w-100" />
+                                            <img src="{{asset('/storage/subtipos/'.$actividad->imagen)}}" class="w-100" />
                                         </a>
                                     </figure>
 
