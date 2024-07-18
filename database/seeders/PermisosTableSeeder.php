@@ -91,6 +91,6 @@ class PermisosTableSeeder extends Seeder
 
         foreach ($permisos as $permiso) {
             Permission::create(['name' => $permiso]);
-        }
+        };
     }
 }
