@@ -222,6 +222,6 @@ class InscripcionesController extends Controller
 
     public function destroy($id)
     {
-        //
+
     }
 }
