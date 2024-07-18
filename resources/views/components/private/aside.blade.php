@@ -305,19 +305,19 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item {{ $activePage == 'costos.lugares.index' || $activePage == 'costos.lugares.create' || $activePage == 'costos.lugares.edit' ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'costos.lugares.index' ? 'active' : '' }}">
+        <li class="menu-item {{ $activePage == 'lugares.index' || $activePage == 'lugares.create' || $activePage == 'lugares.edit' ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'lugares.index' ? 'active' : '' }}">
                 <i class="fa-regular fa-money-check-dollar-pen" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Costo por Lugar</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ $activePage == 'costos.lugares.index' ? 'active' : '' }}">
-                    <a href="{{route('costos.lugares.index')}}" class="menu-link">
+                <li class="menu-item {{ $activePage == 'lugares.index' ? 'active' : '' }}">
+                    <a href="{{route('lugares.index')}}" class="menu-link">
                         <div data-i18n="Account">Todos los Costos</div>
                     </a>
                 </li>
-                <li class="menu-item {{ $activePage == 'costos.lugares.create' ? 'active' : '' }}">
-                    <a href="{{ route('costos.lugares.create') }}" class="menu-link">
+                <li class="menu-item {{ $activePage == 'lugares.create' ? 'active' : '' }}">
+                    <a href="{{ route('lugares.create') }}" class="menu-link">
                         <div data-i18n="Notifications">Nuevo Lugar</div>
                     </a>
                 </li>
