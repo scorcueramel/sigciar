@@ -9,7 +9,8 @@
 
     <title>@stack('title') | {{ config('app.name', 'Laravel') }}</title>
 
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}" type="image/png" sizes="192x192">
+    {{-- <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}" type="image/png" sizes="192x192"> --}}
+    <link rel="shortcut icon" href="{{asset('favicon.ico')}}" type="image/png" sizes="192x192">
 
     <meta property="og:locale" content="es_ES" />
     <meta property="og:type" content="website" />

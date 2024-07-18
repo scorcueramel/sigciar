@@ -15,6 +15,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SedesController;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\InscripcionesController;
+use App\Http\Controllers\LugarCostosController;
 use App\Http\Controllers\NutricionController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RolesController;
@@ -216,5 +217,15 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/editar/{id}', [SubtipoServicioController::class, 'edit'])->name('subtipos.servicio.edit');
         Route::post('/editar/{id}/guardar', [SubtipoServicioController::class, 'update'])->name('subtipos.servicio.update');
         Route::post('/eliminar', [SubtipoServicioController::class, 'destroy'])->name('subtipos.servicio.destroy');
+    });
+
+    Route::group(['prefix'=> 'costo-lugar'], function () {
+        Route::get('/lista', [LugarCostosController::class, 'index'])->name('costos.lugares.index');
+        Route::post('/change/state', [LugarCostosController::class, 'changeState'])->name('costos.lugares.change.state');
+        Route::get('/nueva', [LugarCostosController::class, 'create'])->name('costos.lugares.create');
+        Route::post('/crear', [LugarCostosController::class, 'store'])->name('costos.lugares.store');
+        Route::get('/editar/{id}', [LugarCostosController::class, 'edit'])->name('costos.lugares.edit');
+        Route::post('/editar/{id}/guardar', [LugarCostosController::class, 'update'])->name('costos.lugares.update');
+        Route::post('/eliminar', [LugarCostosController::class, 'destroy'])->name('costos.lugares.destroy');
     });
 });
