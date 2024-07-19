@@ -66,8 +66,7 @@
                 [10, 15, 20, "Todos"]
             ],
             "ajax": "{{route('tabla.inscripciones')}}",
-            "columns": [
-                {
+            "columns": [{
                     data: 'documento'
                 },
                 {
@@ -118,42 +117,42 @@
     });
 
     function deleteInscripcion(id) {
-            var id = id;
-            Swal.fire({
-                title: "Eliminar Programa?",
-                text: "Seguro de eliminar este programa",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Si eliminar",
-                cancelButtonText: "No eliminar",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        icon: 'info',
-                        html: "Espere un momento porfavor ...",
-                        timerProgressBar: true,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-                    $.ajax({
-                        type: "POST",
-                        url: `{{ route('nutricion.eliminar') }}`,
-                        data: {
-                            id
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function (response) {
-                            location.reload();
-                        }
-                    });
-                }
-            });
-        }
+        var id = id;
+        Swal.fire({
+            title: "Eliminar Programa?",
+            text: "Seguro de eliminar este programa",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si eliminar",
+            cancelButtonText: "No eliminar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    icon: 'info',
+                    html: "Espere un momento porfavor ...",
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: `{{ route('nutricion.eliminar') }}`,
+                    data: {
+                        id
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        location.reload();
+                    }
+                });
+            }
+        });
+    }
 
     $(".cancelButton").on('click', function() {
         $("#mcbody").html('');

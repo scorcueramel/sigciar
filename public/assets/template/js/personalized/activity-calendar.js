@@ -25,7 +25,7 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
     },
     events: `/admin/carga/actividades`,
     eventClick: function (){
-        alert('Clickeado');
+        //obtener la data de la actividad cliqueada
     }
 });
 calendar.render();
