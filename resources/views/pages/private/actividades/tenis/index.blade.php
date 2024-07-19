@@ -11,7 +11,7 @@
         font-weight: 700;
     }
 
-    #pills-tab{
+    #pills-tab {
         border: 1px solid gray;
         border-radius: 18px;
         padding: 10px
@@ -122,9 +122,7 @@
             }
         });
         calendar.render();
-    });
 
-    $('.vista-lista').on('click', function() {
         $('#table').DataTable({
             paging: true,
             info: true,
@@ -214,6 +212,10 @@
             },
         });
     });
+
+    // $('.vista-lista').on('click', function() {
+
+    // });
 
     function changeState(id) {
         var id = id;
