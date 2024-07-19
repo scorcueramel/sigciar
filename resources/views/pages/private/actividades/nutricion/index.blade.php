@@ -10,7 +10,8 @@
         font-size: 13px !important;
         font-weight: 700;
     }
-    #pills-tab{
+
+    #pills-tab {
         border: 1px solid gray;
         border-radius: 18px;
         padding: 10px
@@ -89,7 +90,7 @@
 @push('js')
 <script>
     $(document).ready(() => {
-// Obtener datos para mostrar en la vista  calendario
+        // Obtener datos para mostrar en la vista  calendario
         // Obtener la fecha actual para bloquear los días pasados.
         moment.locale('es'); //->colocar el idioma español.
 
@@ -120,9 +121,7 @@
             }
         });
         calendar.render();
-    });
 
-    $('.vista-lista').on('click', function() {
                 // Obtener datos para mostrar en la tabla (vista lista)
                 $('#table').DataTable({
             paging: true,
@@ -205,6 +204,10 @@
             },
         });
     });
+
+    // $('.vista-lista').on('click', function() {
+
+    // });
 
     function changeState(id) {
         var id = id;
