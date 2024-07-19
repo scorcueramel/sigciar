@@ -21,20 +21,19 @@
     let bodyTable = $('#bodytable');
     headerTable.append(`
                 <tr>
-                    <th>${headerSedes[0]}</th>
-                    <th>${headerSedes[1]}</th>
-                    <th>${headerSedes[2]}</th>
-                    <th>${headerSedes[3]}</th>
-                    <th>${headerSedes[4]}</th>
-                    <th>${headerSedes[5]}</th>
-                    <th>${headerSedes[6] == 'lugars_id' ? 'LUGAR' : ''}</th>
-                    <th>${headerSedes[7] == 'tiposervicios_id' ? 'TIPO SERVICIO':''}</th>
-                    <th>${headerSedes[8]}</th>
+                    <th>${headerSedes[0] ?? 'ID'}</th>
+                    <th>${headerSedes[1] ?? 'DESCRIPCIÓN'}</th>
+                    <th>${headerSedes[2] ?? 'ABREVIATURA'}</th>
+                    <th>${headerSedes[3] ?? 'COSTO HORA'}</th>
+                    <th>${headerSedes[4] ?? 'ESTADO'}</th>
+                    <th>${headerSedes[5] ?? 'TIPO'}</th>
+                    <th>${headerSedes[6] == 'lugars_id' ? 'LUGAR' : 'LUGAR'}</th>
+                    <th>${headerSedes[7] == 'tiposervicios_id' ? 'TIPO SERVICIO':'TIPO SERVICIO'}</th>
                 </tr>
         `);
-
-    bodySedes.data.forEach((e) => {
-        bodyTable.append(`
+    if (bodySedes != null) {
+        bodySedes.data.forEach((e) => {
+            bodyTable.append(`
                 <tr>
                     <td>
                         <i class="bx bxs-circle text-primary me-3"></i>
@@ -63,7 +62,16 @@
                     </td>
                 </tr>
         `);
-    });
+        });
+    } else {
+        bodyTable.append(`
+            <tr>
+                <td colspan="8" class="text-center">
+                    SIN DATOS
+                </td>
+            </tr>
+        `);
+    }
 
     $('.change-state').on('click', function() {
         let id = $(this).attr('data-id');
