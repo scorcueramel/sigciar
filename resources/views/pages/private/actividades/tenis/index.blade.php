@@ -10,6 +10,12 @@
         font-size: 13px !important;
         font-weight: 700;
     }
+
+    #pills-tab{
+        border: 1px solid gray;
+        border-radius: 18px;
+        padding: 10px
+    }
 </style>
 @endpush
 @section('content')
@@ -24,21 +30,21 @@
     </div>
 </div>
 
-<div class="row p-3">
+<div class="row">
     <div class="card pt-2">
         <div class="card-body">
             <div class="row">
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Vista de lista</button>
+                        <button class="nav-link vista-lista" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Vista de lista</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link vista-calendario" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Vista de calendario</button>
+                        <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Vista de calendario</button>
                     </li>
 
                 </ul>
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                    <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
                         <div class="text-nowrap table-responsive p-3">
                             <table class="table table-striped table-borderless table-hover nowrap" id="table" style="width:100%">
                                 <thead>
@@ -66,7 +72,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                    <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
                         <div id='tenis'></div>
                     </div>
                 </div>
@@ -85,6 +91,40 @@
 @push('js')
 <script>
     $(document).ready(() => {
+        // Obtener datos para mostrar en la vista  calendario
+        // Obtener la fecha actual para bloquear los días pasados.
+        moment.locale('es'); //->colocar el idioma español.
+
+        var calendarEl = document.getElementById('tenis');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            themeSystem: 'bootstrap5',
+            allDaySlot: false,
+            contentHeight: 20,
+            dayMaxEvents: 1,
+            editable: true,
+            eventOverlap: true,
+            eventShortHeight: 'short',
+            height: 500,
+            initialView: 'dayGridMonth',
+            locale: 'es-PE',
+            selectable: true,
+            timeZone: 'UTC',
+            unselectAuto: true,
+            headerToolbar: {
+                left: 'today prevYear,prev,next,nextYear',
+                center: 'title',
+                right: 'dayGridMonth',
+            },
+            events: "{{route('calendario.tenis')}}",
+            eventClick: function() {
+
+            }
+        });
+        calendar.render();
+    });
+
+    $('.vista-lista').on('click', function() {
         $('#table').DataTable({
             paging: true,
             info: true,
@@ -173,40 +213,6 @@
                 }
             },
         });
-    });
-
-    $('.vista-calendario').on('click', function() {
-        // Obtener datos para mostrar en la vista  calendario
-        // Obtener la fecha actual para bloquear los días pasados.
-        moment.locale('es'); //->colocar el idioma español.
-
-        var calendarEl = document.getElementById('tenis');
-
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            themeSystem: 'bootstrap5',
-            allDaySlot: false,
-            contentHeight: 20,
-            dayMaxEvents: 1,
-            editable: true,
-            eventOverlap: true,
-            eventShortHeight: 'short',
-            height: 500,
-            initialView: 'dayGridMonth',
-            locale: 'es-PE',
-            selectable: true,
-            timeZone: 'UTC',
-            unselectAuto: true,
-            headerToolbar: {
-                left: 'today prevYear,prev,next,nextYear',
-                center: 'title',
-                right: 'dayGridMonth',
-            },
-            events: "{{route('calendario.tenis')}}",
-            eventClick: function() {
-
-            }
-        });
-        calendar.render();
     });
 
     function changeState(id) {
