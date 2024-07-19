@@ -16,15 +16,21 @@ class LugarCostosController extends Controller
 {
     public function index()
     {
-        $headerTable = LugarCosto::select('id', 'descripcion', 'abreviatura', 'costohora', 'estado', 'tipo', 'lugars_id', 'tiposervicios_id')->first()->toArray();
-        $keysSedes = [$keys, $values] = Arr::divide($headerTable)[0];
-        $endHeaders = count($keysSedes);
-        $sedesHeader = Arr::add($keysSedes, $endHeaders, 'Acciones');
-        $sedesBody = LugarCosto::leftJoin('lugars', 'lugars.id', '=', 'lugar_costos.lugars_id')
+        $data = LugarCosto::where('estado','A')->get();
+        if(count($data) > 0){
+            $headerTable = LugarCosto::select('id', 'descripcion', 'abreviatura', 'costohora', 'estado', 'tipo', 'lugars_id', 'tiposervicios_id')->first()->toArray();
+            $keysSedes = [$keys, $values] = Arr::divide($headerTable)[0];
+            $endHeaders = count($keysSedes);
+            $sedesHeader = Arr::add($keysSedes, $endHeaders, 'Acciones');
+            $sedesBody = LugarCosto::leftJoin('lugars', 'lugars.id', '=', 'lugar_costos.lugars_id')
             ->leftJoin('tipo_servicios', 'tipo_servicios.id', '=', 'lugar_costos.tiposervicios_id')
             ->select('lugar_costos.id', 'lugar_costos.descripcion', 'lugar_costos.abreviatura', 'lugar_costos.costohora', 'lugar_costos.estado', 'lugar_costos.tipo', 'lugars.descripcion as lugar', 'tipo_servicios.descripcion as tiposervicio')
             ->orderBy('id', 'asc')
             ->paginate(10);
+        }else{
+            $sedesHeader = [];
+            $sedesBody = null;
+        }
 
         return view("pages.private.tipos.costo-lugar.index", compact("sedesHeader", "sedesBody"));
     }
