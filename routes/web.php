@@ -121,6 +121,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/lista',[TenisController::class,'index'])->name('tenis.index');
         Route::get('/tablaactividades',[TenisController::class,'tableActivity'])->name('tabla.tenis');
         Route::post('/change/state', [TenisController::class, 'changeState'])->name('tenis.change.state');
+        Route::get('/calendariotenis',[TenisController::class,'calendarioTenis'])->name('calendario.tenis');
         Route::post('/actividades/eliminar',[TenisController::class, 'destroyActivity'])->name('tenis.actividad.eliminar');
         Route::get('/nueva/{id}',[TenisController::class, 'create'])->name('tenis.create');
         Route::get('/obtener/{id}/lugares', [TenisController::class, 'placesCharge'])->name('obtener.lugres');

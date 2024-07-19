@@ -112,6 +112,37 @@ class TenisController extends Controller
             ->make(true);
     }
 
+    public function calendarioTenis()
+    {
+        $user = Auth::user();
+        $persona = Persona::where('usuario_id', $user->id)->get();
+        if ($user->hasRole('ADMINISTRADOR')) {
+            $nutricion = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
+                                    from
+                                        public.servicio_plantillas sp
+                                        left join public.servicios s on sp.servicio_id = s.id
+                                        left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
+                                        left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                        left join public.lugars l on s.lugar_id = l.id
+                                    where
+                                        s.deleted_at is null
+                                        and s.tiposervicio_id = 3");
+        } else {
+            $nutricion = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
+                                    from
+                                        public.servicio_plantillas sp
+                                        left join public.servicios s on sp.servicio_id = s.id
+                                        left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
+                                        left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                        left join public.lugars l on s.lugar_id = l.id
+                                    where
+                                        s.deleted_at is null
+                                        and s.tiposervicio_id = 3 and responsable_id = ?;", [$persona[0]->id]);
+        }
+
+        return response()->json($nutricion);
+    }
+
     // cambiar los estados
     public function changeState(Request $request)
     {
