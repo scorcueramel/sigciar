@@ -32,7 +32,7 @@
                         <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Vista de lista</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Vista de calendario</button>
+                        <button class="nav-link vista-calendario" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Vista de calendario</button>
                     </li>
 
                 </ul>
@@ -66,18 +66,13 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-                        <div class="row p-3">
-                            <div class="card p-2">
-                                <div class="card-body">
-                                    <div id='nutrition'></div>
-                                </div>
-                            </div>
-                        </div>
+                        <div id='nutrition'></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
 @include('components.private.modal', [
@@ -171,8 +166,9 @@
                 }
             },
         });
+    });
 
-
+    $('.vista-calendario').on('click', function() {
         // Obtener datos para mostrar en la vista  calendario
         // Obtener la fecha actual para bloquear los días pasados.
         moment.locale('es'); //->colocar el idioma español.

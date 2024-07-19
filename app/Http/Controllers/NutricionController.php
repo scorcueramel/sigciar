@@ -107,26 +107,30 @@ class NutricionController extends Controller
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
-            $activities = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
-                                        from
-                                            public.servicio_plantillas sp
+            $nutricion = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio::date as start, sp.fin::date as end
+                                    from
+                                        public.servicio_plantillas sp
                                         left join public.servicios s on sp.servicio_id = s.id
                                         left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
                                         left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
                                         left join public.lugars l on s.lugar_id = l.id
-                                        where s.deleted_at is null and s.tiposervicio_id = 2");
+                                    where
+                                        s.deleted_at is null
+                                        and s.tiposervicio_id = 2");
         } else {
-            $activities = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
-                                        from
-                                            public.servicio_plantillas sp
+            $nutricion = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio::date as start, sp.fin::date as end
+                                    from
+                                        public.servicio_plantillas sp
                                         left join public.servicios s on sp.servicio_id = s.id
                                         left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
                                         left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
                                         left join public.lugars l on s.lugar_id = l.id
-                                        where s.deleted_at is null and s.tiposervicio_id = 2 and responsable_id = ?;", [$persona[0]->id]);
+                                    where
+                                        s.deleted_at is null
+                                        and s.tiposervicio_id = 2 and responsable_id = ?;", [$persona[0]->id]);
         }
 
-        return response()->json($activities);
+        return response()->json($nutricion);
     }
 
     public function changeState(Request $request)
