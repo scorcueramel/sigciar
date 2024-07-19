@@ -98,6 +98,8 @@
     <script src="{{ asset('assets/template/js/datatables/dataTables.js') }}"></script>
     <script src="{{ asset('assets/template/js/datatables/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('assets/template/js/datatables/dataTables.responsive.js') }}"></script>
+    {{-- Personalized JS --}}
+    {{-- <script src="{{ asset('assets/js/personalized/nutrition.js') }}" type="module"></script> --}}
 
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
