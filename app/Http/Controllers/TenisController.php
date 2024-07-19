@@ -23,6 +23,10 @@ class TenisController extends Controller
         return view("pages.private.actividades.tenis.index");
     }
 
+    public function renderCalendar(){
+        return view("pages.private.actividades.tenis.calendar");
+    }
+
     public function tableActivity()
     {
         $user = Auth::user();
@@ -117,7 +121,7 @@ class TenisController extends Controller
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
-            $nutricion = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
+            $tenis = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
                                     from
                                         public.servicio_plantillas sp
                                         left join public.servicios s on sp.servicio_id = s.id
@@ -128,7 +132,7 @@ class TenisController extends Controller
                                         s.deleted_at is null
                                         and s.tiposervicio_id = 3");
         } else {
-            $nutricion = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
+            $tenis = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
                                     from
                                         public.servicio_plantillas sp
                                         left join public.servicios s on sp.servicio_id = s.id
@@ -140,7 +144,7 @@ class TenisController extends Controller
                                         and s.tiposervicio_id = 3 and responsable_id = ?;", [$persona[0]->id]);
         }
 
-        return response()->json($nutricion);
+        return response()->json($tenis);
     }
 
     // cambiar los estados

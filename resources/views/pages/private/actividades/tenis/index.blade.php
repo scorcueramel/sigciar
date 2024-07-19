@@ -33,96 +33,49 @@
 <div class="row">
     <div class="card pt-2">
         <div class="card-body">
+            <div class="row pb-3">
+                <div class="col-md-auto">
+                    <a role="button" href="#" class="btn btn-primary">Modo lista</a>
+                </div>
+                <div class="col-md-auto d-flex align-items-center">
+                    <a role="button" href="{{route('tenis.render.calender')}}" class="text-decoration-none text-secondary">Modo calendario</a>
+                </div>
+            </div>
             <div class="row">
-                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link vista-lista" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Vista de lista</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Vista de calendario</button>
-                    </li>
-
-                </ul>
-                <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-                        <div class="text-nowrap table-responsive p-3">
-                            <table class="table table-striped table-borderless table-hover nowrap" id="table" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>ESTADO</th>
-                                        <th>TIPO SERVICIO</th>
-                                        <th>TÍTULO</th>
-                                        <th>SUBTÍTULO</th>
-                                        <th>SEDE</th>
-                                        <th>DIRECCIÓN SEDE</th>
-                                        <th>LUGAR DESCRIPCIÓN</th>
-                                        <th>COSTO HORA</th>
-                                        <th>CAPACIDAD</th>
-                                        <th>INICIO</th>
-                                        <th>FIN</th>
-                                        <th>HORAS POR ACTIVIDAD</th>
-                                        <th>TURNO</th>
-                                        <th>RESPONSABLE</th>
-                                        <th>ACCIONES</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table-border-bottom-0">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-                        <div id='tenis'></div>
-                    </div>
+                <div class="text-nowrap table-responsive p-3">
+                    <table class="table table-striped table-borderless table-hover nowrap" id="table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>ESTADO</th>
+                                <th>TIPO SERVICIO</th>
+                                <th>TÍTULO</th>
+                                <th>SUBTÍTULO</th>
+                                <th>SEDE</th>
+                                <th>DIRECCIÓN SEDE</th>
+                                <th>LUGAR DESCRIPCIÓN</th>
+                                <th>COSTO HORA</th>
+                                <th>CAPACIDAD</th>
+                                <th>INICIO</th>
+                                <th>FIN</th>
+                                <th>HORAS POR ACTIVIDAD</th>
+                                <th>TURNO</th>
+                                <th>RESPONSABLE</th>
+                                <th>ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
-@include('components.private.modal', [
-'tamanio'=>'modal-sm',
-'withTitle' => true,
-'withButtons' => true,
-'cancelbutton' => true,
-'mcTextCancelButton' => 'Cerrar',
-])
 @push('js')
 <script>
     $(document).ready(() => {
-        // Obtener datos para mostrar en la vista  calendario
-        // Obtener la fecha actual para bloquear los días pasados.
-        moment.locale('es'); //->colocar el idioma español.
-
-        var calendarEl = document.getElementById('tenis');
-
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            themeSystem: 'bootstrap5',
-            allDaySlot: false,
-            contentHeight: 20,
-            dayMaxEvents: 1,
-            editable: true,
-            eventOverlap: true,
-            eventShortHeight: 'short',
-            height: 500,
-            initialView: 'dayGridMonth',
-            locale: 'es-PE',
-            selectable: true,
-            timeZone: 'UTC',
-            unselectAuto: true,
-            headerToolbar: {
-                left: 'today prevYear,prev,next,nextYear',
-                center: 'title',
-                right: 'dayGridMonth',
-            },
-            events: "{{route('calendario.tenis')}}",
-            eventClick: function() {
-
-            }
-        });
-        calendar.render();
-
         $('#table').DataTable({
             paging: true,
             info: true,
@@ -212,10 +165,6 @@
             },
         });
     });
-
-    // $('.vista-lista').on('click', function() {
-
-    // });
 
     function changeState(id) {
         var id = id;
