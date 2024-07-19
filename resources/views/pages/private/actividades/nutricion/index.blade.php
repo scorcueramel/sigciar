@@ -73,7 +73,6 @@
         </div>
     </div>
 </div>
-</div>
 @endsection
 @include('components.private.modal', [
 'tamanio'=>'modal-sm',
