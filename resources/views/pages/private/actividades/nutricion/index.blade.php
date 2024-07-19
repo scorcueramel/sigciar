@@ -23,35 +23,58 @@
             Nueva</a>
     </div>
 </div>
-
 <div class="row p-3">
     <div class="card pt-2">
         <div class="card-body">
-            <div class="text-nowrap table-responsive p-3">
-                <table class="table table-striped table-borderless table-hover nowrap" id="table" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>ESTADO</th>
-                            <th>TIPO SERVICIO</th>
-                            <!-- <th>TÍTULO</th> -->
-                            <!-- <th>SUBTÍTULO</th> -->
-                            <th>SEDE</th>
-                            <th>DIRECCIÓN SEDE</th>
-                            <!-- <th>LUGAR DESCRIPCIÓN</th> -->
-                            <th>COSTO HORA</th>
-                            <th>INICIO</th>
-                            <th>FIN</th>
-                            <th>TURNO</th>
-                            <th>CAPACIDAD</th>
-                            <th>HORAS POR TURNO</th>
-                            <th>RESPONSABLE</th>
-                            <th>ACCIONES</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
-                    </tbody>
-                </table>
+            <div class="row">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Vista de lista</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Vista de calendario</button>
+                    </li>
+
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                        <div class="text-nowrap table-responsive p-3">
+                            <table class="table table-striped table-borderless table-hover nowrap" id="table" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>ESTADO</th>
+                                        <th>TIPO SERVICIO</th>
+                                        <!-- <th>TÍTULO</th> -->
+                                        <!-- <th>SUBTÍTULO</th> -->
+                                        <th>SEDE</th>
+                                        <th>DIRECCIÓN SEDE</th>
+                                        <!-- <th>LUGAR DESCRIPCIÓN</th> -->
+                                        <th>COSTO HORA</th>
+                                        <th>INICIO</th>
+                                        <th>FIN</th>
+                                        <th>TURNO</th>
+                                        <th>CAPACIDAD</th>
+                                        <th>HORAS POR TURNO</th>
+                                        <th>RESPONSABLE</th>
+                                        <th>ACCIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                        <div class="row p-3">
+                            <div class="card p-2">
+                                <div class="card-body">
+                                    <div id='nutrition'></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -67,6 +90,7 @@
 @push('js')
 <script>
     $(document).ready(() => {
+        // Obtener datos para mostrar en la tabla (vista lista)
         $('#table').DataTable({
             paging: true,
             info: true,
@@ -147,6 +171,39 @@
                 }
             },
         });
+
+
+        // Obtener datos para mostrar en la vista  calendario
+        // Obtener la fecha actual para bloquear los días pasados.
+        moment.locale('es'); //->colocar el idioma español.
+
+        var calendarEl = document.getElementById('nutrition');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            themeSystem: 'bootstrap5',
+            allDaySlot: false,
+            contentHeight: 20,
+            dayMaxEvents: 1,
+            editable: true,
+            eventOverlap: true,
+            eventShortHeight: 'short',
+            height: 500,
+            initialView: 'dayGridMonth',
+            locale: 'es-PE',
+            selectable: true,
+            timeZone: 'UTC',
+            unselectAuto: true,
+            headerToolbar: {
+                left: 'today prevYear,prev,next,nextYear',
+                center: 'title',
+                right: 'dayGridMonth',
+            },
+            events: "{{route('calendario.nutricion')}}",
+            eventClick: function() {
+
+            }
+        });
+        calendar.render();
     });
 
     function changeState(id) {
@@ -274,42 +331,42 @@
     }
 
     function deleteNutricion(id) {
-            var id = id;
-            Swal.fire({
-                title: "Eliminar Programa de Nutrición?",
-                text: "Seguro de eliminar este programa",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Si eliminar",
-                cancelButtonText: "No eliminar",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        icon: 'info',
-                        html: "Espere un momento porfavor ...",
-                        timerProgressBar: true,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-                    $.ajax({
-                        type: "POST",
-                        url: `{{ route('nutricion.eliminar') }}`,
-                        data: {
-                            id
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function (response) {
-                            location.reload();
-                        }
-                    });
-                }
-            });
-        }
+        var id = id;
+        Swal.fire({
+            title: "Eliminar Programa de Nutrición?",
+            text: "Seguro de eliminar este programa",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si eliminar",
+            cancelButtonText: "No eliminar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    icon: 'info',
+                    html: "Espere un momento porfavor ...",
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: `{{ route('nutricion.eliminar') }}`,
+                    data: {
+                        id
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        location.reload();
+                    }
+                });
+            }
+        });
+    }
 
     $(".cancelButton").on('click', function() {
         $("#mcbody").html('');
