@@ -23,6 +23,7 @@
                         <table class="table table-striped table-borderless table-hover nowrap" id="table" style="width:100%">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>DOCUMENTO</th>
                                     <th>NOMBRES DEL MIEMBRO</th>
                                     <th>TIPO DE SERVICIO</th>
@@ -66,7 +67,11 @@
                 [10, 15, 20, "Todos"]
             ],
             "ajax": "{{route('tabla.inscripciones')}}",
-            "columns": [{
+            "columns": [
+                {
+                    data:'servicios_id'
+                },
+                {
                     data: 'documento'
                 },
                 {

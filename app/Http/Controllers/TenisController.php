@@ -33,7 +33,7 @@ class TenisController extends Controller
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
             $tableActivity = DB::select("select
-                                                s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
+                                                s.id,ts.descripcion as tipo_servicio ,s.estado as estado ,
                                                 s2.descripcion as sede,s2.direccion as direccion_sede,
                                                 l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
                                                 s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
@@ -48,7 +48,7 @@ class TenisController extends Controller
                                         where s.deleted_at is null and s.tiposervicio_id = 3");
         } else {
             $tableActivity = DB::select("select
-                                            s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
+                                            s.id,ts.descripcion as tipo_servicio ,s.estado as estado ,
                                             s2.descripcion as sede,s2.direccion as direccion_sede,
                                             l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
                                             s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
@@ -98,8 +98,12 @@ class TenisController extends Controller
                                 <i class="fa-duotone fa-gear"></i>
                             </button>
                             <div class="dropdown-menu">
-                                <button data-bs-toggle="modal" data-bs-target="#modalcomponent" onclick="showDetail(' . $row->id . ')" class="dropdown-item"><i class="bx bx-message-alt-detail me-1"></i> Detalle</button>
-                                <button class="dropdown-item delete" onclick="deleteActivity(' . $row->id . ')"><i class="bx bx-trash me-1"></i> Eliminar</button>
+                                <button data-bs-toggle="modal" data-bs-target="#modalcomponent" onclick="showDetail(' . $row->id . ')" class="dropdown-item">
+                                    <i class="bx bx-message-alt-detail me-1"></i> Detalle
+                                </button>
+                                <button class="dropdown-item delete" onclick="deleteActivity(' . $row->id . ')">
+                                    <i class="bx bx-trash me-1"></i> Eliminar
+                                </button>
                             </div>
                         </div>';
             })
@@ -121,7 +125,7 @@ class TenisController extends Controller
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
-            $tenis = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
+            $tenis = DB::select("select s.id as servicio_id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
                                     from
                                         public.servicio_plantillas sp
                                         left join public.servicios s on sp.servicio_id = s.id
@@ -132,7 +136,7 @@ class TenisController extends Controller
                                         s.deleted_at is null
                                         and s.tiposervicio_id = 3");
         } else {
-            $tenis = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
+            $tenis = DB::select("select s.id as servicio_id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
                                     from
                                         public.servicio_plantillas sp
                                         left join public.servicios s on sp.servicio_id = s.id

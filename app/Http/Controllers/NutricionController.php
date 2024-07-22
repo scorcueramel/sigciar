@@ -189,13 +189,13 @@ class NutricionController extends Controller
         $categoria = $request->categoria;
         $sede = $request->sede;
         $lugar = $request->lugar;
-        $fechaInicio = $request->fechaInicio . " 00:00:00";
-        $termino = $request->termino . " 00:00:00";
+        $fechaInicio = "{$request->fechaInicio} 00:00:00";
+        $termino = "{$request->termino} 00:00:00";
         $cupos = $request->cupos;
         $horasActividad = $request->horasActividad;
         $turno = $request->turno;
         $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
-        $nombre_usuario = $usuario[0]->nombres . " " . $usuario[0]->apepaterno . " " . $usuario[0]->apematerno;
+        $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
         $ip = $request->ip();
         $created_at = new DateTime();
         $creacion = $created_at->format('Y-m-d H:i:s');
@@ -259,14 +259,14 @@ class NutricionController extends Controller
                                             l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
                                             s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
                                             concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable
-                                         from servicios s
-                                         left join tipo_servicios ts on s.tiposervicio_id = ts.id
-                                         left join sedes s2 on s.sede_id = s2.id
-                                         left join lugars l on s.lugar_id = l.id
-                                         left join personas p on s.responsable_id = p.id
-                                         left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
-                                         where s.deleted_at is null
-                                         and s.id = ?", [$id]);
+                                        from servicios s
+                                        left join tipo_servicios ts on s.tiposervicio_id = ts.id
+                                        left join sedes s2 on s.sede_id = s2.id
+                                        left join lugars l on s.lugar_id = l.id
+                                        left join personas p on s.responsable_id = p.id
+                                        left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
+                                        where s.deleted_at is null
+                                        and s.id = ?", [$id]);
 
         return response()->json($detalleNutricion);
     }

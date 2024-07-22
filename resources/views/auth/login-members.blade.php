@@ -5,7 +5,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <img src="{{asset('assets/auth/images/members.svg')}}" alt="Image" class="img-fluid">
+                    <img src="{{asset('assets/auth/images/ciar-login.webp')}}" alt="Image" class="img-fluid">
                 </div>
                 <div class="col-md-6 contents">
                     <div class="row justify-content-center">
@@ -56,7 +56,7 @@
                                 </span>
                                 </div>
 
-                                <input type="submit" value="Log In" class="btn btn-block btn-primary">
+                                <input type="submit" value="Ingresar" class="btn btn-block btn-primary">
 
                                 <div class="text-white">
                                     <span class="d-block text-left my-4 text-muted">&mdash; or &mdash;</span>
