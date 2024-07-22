@@ -60,8 +60,6 @@
                 </li>
             </ul>
         </li> -->
-
-
         {{-- Sección de actividades --}}
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Programas</span>
