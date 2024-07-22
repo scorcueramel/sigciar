@@ -14,8 +14,8 @@
 @include('components.public.navbar')
 <div class="container-fluid">
     <input type="hidden" id="loginCheck" value="{{ Auth::check() }}">
-    <div class="row bg-secondary py-4">
-        <div class="col-md-12">
+    <div class="row d-flex justify-content-center bg-secondary py-4">
+        <div class="col-md-6">
             <div class="row mb-5">
                 <div class="col-md-12 text-center">
                     <h1 class="title_rse text-white">Reserva de Espacios</h1>
@@ -53,7 +53,7 @@
         </div>
         @endif
         <div class="col-md-10 options">
-            <div class="row pb-4 align-items-center">
+            <div class="row align-items-center">
                 <div class="col-md-6">
                     <label for="sede" class="descripcion">
                         <i class="fa-regular fa-circle-right"></i>

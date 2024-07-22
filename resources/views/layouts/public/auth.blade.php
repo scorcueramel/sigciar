@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{asset('assets/auth/css/owl.carousel.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/auth/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/auth/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/auth/css/style-login.css')}}">
 </head>
 
 <body>

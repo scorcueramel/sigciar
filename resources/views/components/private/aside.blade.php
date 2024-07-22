@@ -15,6 +15,7 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
+        @can('ver.dashboard')
         <!-- Dashboard -->
         <li class="menu-item {{ $activePage == 'home' ? 'active' : '' }}">
             <a href="{{route('home.dashboard')}}" class="menu-link">
@@ -22,6 +23,7 @@
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
+        @endcan
 
         <!-- Layouts -->
         <!-- <li class="menu-item">
@@ -59,10 +61,12 @@
             </ul>
         </li> -->
 
+
         {{-- Sección de actividades --}}
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Programas</span>
         </li>
+        @can('ver.tenis')
         <li class="menu-item {{$activePage == 'tenis.edit' || $activePage == 'tenis.index' || $activePage == 'tenis.create' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'tenis.create' ? 'active' : '' }}">
                 <i class="fa-solid fa-tennis-ball" style="margin-right: 13px;"></i>
@@ -74,13 +78,16 @@
                         <div data-i18n="Notifications">Programas Creados</div>
                     </a>
                 </li>
+                @can('crear.tenis')
                 <li class="menu-item {{ $activePage == 'tenis.create' ? 'active' : '' }}">
                     <a href="{{ route('tenis.create',3) }}" class="menu-link">
                         <div data-i18n="Account">Nuevo Programa</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
         <li class="menu-item {{ $activePage == 'nutricion.index' || $activePage == 'nutricion.create' || $activePage == 'nutricion.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'nutricion.create' ? 'active' : '' }}">
                 <i class="fa-regular fa-salad" style="margin-right: 13px"></i>
@@ -125,7 +132,7 @@
         <li class="menu-item {{ $activePage == 'inscripciones.index' || $activePage == 'inscripciones.create' || $activePage == 'inscripciones.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">
                 <i class="fa-regular fa-calendar-lines-pen" style="margin-right: 13px;"></i>
-                <div data-i18n="Account Settings">Inscripción de Miembros</div>
+                <div data-i18n="Account Settings">Miembros</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">

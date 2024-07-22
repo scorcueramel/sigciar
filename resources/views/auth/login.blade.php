@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <img src="{{asset('assets/auth/images/undraw_remotely_2j6y.svg')}}" alt="Image" class="img-fluid">
+                <img src="{{asset('assets/auth/images/ciar-login.webp')}}" alt="Image" class="img-fluid">
             </div>
             <div class="col-md-6 contents">
                 <div class="row justify-content-center">

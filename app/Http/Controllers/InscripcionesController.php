@@ -22,48 +22,60 @@ class InscripcionesController extends Controller
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
-            $inscripciones = DB::select("SELECT distinct
-                                                    s.id as servicios_id,
-                                                    ts.descripcion || ' - ' || sts.titulo || ' - ' ||sts.subtitulo as descripcion,
-                                                    per.documento,
-                                                    per.apepaterno || ' ' || per.apematerno || ' ' || nombres as apeynom,
-                                                    ver_horarios(cast (s.id as integer)) as horario,
-                                                    ver_horarios_ins(cast (s.id as integer),cast (coalesce(ins.persona_id,0) as integer)) as horario_inscripcion,
-                                                    lc.costohora as pago,
-                                                    ins.estado as estado_inscripcion,
-                                                    pag.estadopago as estado_pago,
-                                                    pag.fechapago
-                                                    from servicios s
-                                                    left join public.tipo_servicios ts  on s.tiposervicio_id = ts.id
-                                                    left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                                    left join public.sedes sed on s.sede_id = sed.id
-                                                    left join public.lugars l on s.lugar_id = l.id
-                                                    left join public.lugar_costos lc on lc.lugars_id = l.id  and lc.descripcion = s.turno
-                                                    left join public.servicio_plantillas  sp on s.id = sp.servicio_id
-                                                    left join public.servicio_inscripcions ins on s.id = ins.servicio_id
-                                                    left join public.servicio_reservas sr on ins.id = sr.servicioinscripcion_id
-                                                    left join public.personas per on ins.persona_id = per.id
-                                                    left join public.servicio_pagos pag on ins.id = pag.servicioinscripcion_id");
+            $inscripciones = DB::select("SELECT distinct s.id as servicios_id,
+                                            ts.descripcion || ' - ' || sts.titulo || ' - ' || sts.subtitulo as descripcion,
+                                            per.documento,
+                                            per.apepaterno || ' ' || per.apematerno || ' ' || nombres as apeynom,
+                                            ver_horarios (cast(s.id as integer)) as horario,
+                                            ver_horarios_ins (
+                                                cast(s.id as integer),
+                                                cast(
+                                                    coalesce(ins.persona_id, 0) as integer
+                                                )
+                                            ) as horario_inscripcion,
+                                            lc.costohora as pago,
+                                            ins.estado as estado_inscripcion,
+                                            pag.estadopago as estado_pago,
+                                            pag.fechapago
+                                            from
+                                                servicios s
+                                                left join public.tipo_servicios ts on s.tiposervicio_id = ts.id
+                                                left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                                left join public.sedes sed on s.sede_id = sed.id
+                                                left join public.lugars l on s.lugar_id = l.id
+                                                left join public.lugar_costos lc on lc.lugars_id = l.id
+                                                and lc.descripcion = s.turno
+                                                left join public.servicio_plantillas sp on s.id = sp.servicio_id
+                                                join public.servicio_inscripcions ins on s.id = ins.servicio_id
+                                                left join public.servicio_reservas sr on ins.id = sr.servicioinscripcion_id
+                                                left join public.personas per on ins.persona_id = per.id
+                                                left join public.servicio_pagos pag on ins.id = pag.servicioinscripcion_id");
         } else {
-                $inscripciones = DB::select("SELECT distinct
-                                                    s.id as servicios_id,
-                                                    ts.descripcion || ' - ' || sts.titulo || ' - ' ||sts.subtitulo as descripcion,
-                                                    per.documento,
-                                                    per.apepaterno || ' ' || per.apematerno || ' ' || nombres as apeynom,
-                                                    ver_horarios(cast (s.id as integer)) as horario,
-                                                    ver_horarios_ins(cast (s.id as integer),cast (coalesce(ins.persona_id,0) as integer)) as horario_inscripcion,
-                                                    lc.costohora as pago,
-                                                    ins.estado as estado_inscripcion,
-                                                    pag.estadopago as estado_pago,
-                                                    pag.fechapago
-                                                    from servicios s
-                                                    left join public.tipo_servicios ts  on s.tiposervicio_id = ts.id
+                $inscripciones = DB::select("SELECT distinct s.id as servicios_id,
+                                                ts.descripcion || ' - ' || sts.titulo || ' - ' || sts.subtitulo as descripcion,
+                                                per.documento,
+                                                per.apepaterno || ' ' || per.apematerno || ' ' || nombres as apeynom,
+                                                ver_horarios (cast(s.id as integer)) as horario,
+                                                ver_horarios_ins (
+                                                    cast(s.id as integer),
+                                                    cast(
+                                                        coalesce(ins.persona_id, 0) as integer
+                                                    )
+                                                ) as horario_inscripcion,
+                                                lc.costohora as pago,
+                                                ins.estado as estado_inscripcion,
+                                                pag.estadopago as estado_pago,
+                                                pag.fechapago
+                                                from
+                                                    servicios s
+                                                    left join public.tipo_servicios ts on s.tiposervicio_id = ts.id
                                                     left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
                                                     left join public.sedes sed on s.sede_id = sed.id
                                                     left join public.lugars l on s.lugar_id = l.id
-                                                    left join public.lugar_costos lc on lc.lugars_id = l.id  and lc.descripcion = s.turno
-                                                    left join public.servicio_plantillas  sp on s.id = sp.servicio_id
-                                                    left join public.servicio_inscripcions ins on s.id = ins.servicio_id
+                                                    left join public.lugar_costos lc on lc.lugars_id = l.id
+                                                    and lc.descripcion = s.turno
+                                                    left join public.servicio_plantillas sp on s.id = sp.servicio_id
+                                                    join public.servicio_inscripcions ins on s.id = ins.servicio_id
                                                     left join public.servicio_reservas sr on ins.id = sr.servicioinscripcion_id
                                                     left join public.personas per on ins.persona_id = per.id
                                                     left join public.servicio_pagos pag on ins.id = pag.servicioinscripcion_id
@@ -222,6 +234,6 @@ class InscripcionesController extends Controller
 
     public function destroy($id)
     {
-
+        //
     }
 }
