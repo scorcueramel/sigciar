@@ -118,35 +118,27 @@ class InscripcionesController extends Controller
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
-            $actividades = DB::select("select
-                                            s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
-                                            s2.descripcion as sede,s2.direccion as direccion_sede,
-                                            l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
-                                            s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
-                                            concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable,
-                                            ss.titulo as titulo,ss.subtitulo as subtitulo
-                                        from servicios s
-                                            left join tipo_servicios ts on s.tiposervicio_id = ts.id
-                                            left join sedes s2 on s.sede_id = s2.id
-                                            left join lugars l on s.lugar_id = l.id
-                                            left join personas p on s.responsable_id = p.id
-                                            left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
-                                        where s.deleted_at is null and s.estado = 'A'");
+            $actividades = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo,'') || ' - ' || coalesce(l.descripcion,'') as title,
+                                        sr.inicio as start,
+                                        sr.fin as end
+                                        from servicio_reservas sr
+                                        left join public.servicio_plantillas sp  on sr.servicioplantilla_id = sp.id
+                                        left join public.servicios s on sp.servicio_id = s.id
+                                        left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
+                                        left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                        left join public.lugars l on s.lugar_id= l.id
+                                        where s.estado = 'A' and s.tiposervicio_id=2 and s.subtiposervicio_id=4");
         } else {
-            $actividades = DB::select("select
-                                            s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
-                                            s2.descripcion as sede,s2.direccion as direccion_sede,
-                                            l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
-                                            s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
-                                            s.responsable_id as responsable_id, concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable,
-                                            ss.id as sub_tiposervicio_id, ss.titulo as titulo, ss.subtitulo as subtitulo
-                                        from servicios s
-                                            left join tipo_servicios ts on s.tiposervicio_id = ts.id
-                                            left join sedes s2 on s.sede_id = s2.id
-                                            left join lugars l on s.lugar_id = l.id
-                                            left join personas p on s.responsable_id = p.id
-                                            left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
-                                        where s.deleted_at is null and responsable_id = ? and s.estado = 'A'", [$persona[0]->id]);
+            $actividades = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo,'') || ' - ' || coalesce(l.descripcion,'') as title,
+                                        sr.inicio as start,
+                                        sr.fin as end
+                                        from servicio_reservas sr
+                                        left join public.servicio_plantillas sp  on sr.servicioplantilla_id = sp.id
+                                        left join public.servicios s on sp.servicio_id = s.id
+                                        left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
+                                        left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                        left join public.lugars l on s.lugar_id= l.id
+                                        where s.estado = 'A' and s.tiposervicio_id=2 and s.subtiposervicio_id=4 and s.responsable_id = ?", [$persona[0]->id]);
         }
         return datatables()->of($actividades)
             ->addColumn('acciones', function ($row) {

@@ -125,27 +125,27 @@ class TenisController extends Controller
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
-            $tenis = DB::select("select s.id as servicio_id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
-                                    from
-                                        public.servicio_plantillas sp
-                                        left join public.servicios s on sp.servicio_id = s.id
-                                        left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
-                                        left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                        left join public.lugars l on s.lugar_id = l.id
-                                    where
-                                        s.deleted_at is null
-                                        and s.tiposervicio_id = 3");
+            $tenis = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo,'') || ' - ' || coalesce(l.descripcion,'') as title,
+                                    sr.inicio as start,
+                                    sr.fin as end
+                                    from servicio_reservas sr
+                                    left join public.servicio_plantillas sp  on sr.servicioplantilla_id = sp.id
+                                    left join public.servicios s on sp.servicio_id = s.id
+                                    left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
+                                    left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                    left join public.lugars l on s.lugar_id= l.id
+                                    where s.estado = 'A' and s.tiposervicio_id=2 and s.subtiposervicio_id=4");
         } else {
-            $tenis = DB::select("select s.id as servicio_id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sp.inicio as start, sp.fin as end
-                                    from
-                                        public.servicio_plantillas sp
-                                        left join public.servicios s on sp.servicio_id = s.id
-                                        left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
-                                        left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                        left join public.lugars l on s.lugar_id = l.id
-                                    where
-                                        s.deleted_at is null
-                                        and s.tiposervicio_id = 3 and responsable_id = ?;", [$persona[0]->id]);
+            $tenis = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo,'') || ' - ' || coalesce(l.descripcion,'') as title,
+                                    sr.inicio as start,
+                                    sr.fin as end
+                                    from servicio_reservas sr
+                                    left join public.servicio_plantillas sp  on sr.servicioplantilla_id = sp.id
+                                    left join public.servicios s on sp.servicio_id = s.id
+                                    left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
+                                    left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                    left join public.lugars l on s.lugar_id= l.id
+                                    where s.estado = 'A' and s.tiposervicio_id=2 and s.subtiposervicio_id=4 and s.responsable_id= ?;", [$persona[0]->id]);
         }
 
         return response()->json($tenis);

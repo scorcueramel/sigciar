@@ -85,7 +85,7 @@
                                             </div>
                                         @endif
                                         <!-- id tipo de servicio, categoria -->
-                                        <input type="hidden" name="categoria" value="2" id="categoria">
+                                        <input type="hidden" name="categoria" value="4" id="categoria">
                                         <!-- end -->
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label" for="sede">Sede</label>

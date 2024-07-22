@@ -45,10 +45,10 @@
                             </div>
 
                             <div class="d-flex mb-5 align-items-center">
-                                <label class="control control--checkbox mb-0"><span class="caption">{{ __('Recordar') }}</span>
-                                    <input type="checkbox" checked="checked" name="remember" id="remember" {{old('remember') ? 'checked' : ''}} />
-                                    <div class="control__indicator"></div>
-                                </label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" checked="checked" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="remember">{{ __('Recordar') }}</label>
+                                </div>
                                 <span class="ml-auto">
                                     @if (Route::has('password.request'))
                                     <a href="{{ route('password.request') }}" class="forgot-pass">{{ __('Forgot Your Password?') }}</a>

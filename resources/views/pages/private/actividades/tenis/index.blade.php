@@ -25,8 +25,10 @@
         <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Tenis Actividades /</span> Todas </h4>
     </div>
     <div class="col-md text-end">
+        @can('crear.tenis')
         <a href="{{ route('tenis.create',3) }}" class="btn btn-sm btn-info"><i class="fa-solid fa-tennis-ball me-1"></i>
             Nueva</a>
+        @endcan
     </div>
 </div>
 
