@@ -231,9 +231,9 @@ class NutricionController extends Controller
             return response()->json(['error' => $error]);
         }
 
-        $servicioTenisCrear = DB::select("SELECT servicio_tenis_crear(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [$fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad, $estado]);
+        $servicioTenisCrear = DB::select("SELECT servicio_programa_horario(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [$fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad, $estado]);
 
-        $idRespuesta = $servicioTenisCrear[0]->servicio_tenis_crear;
+        $idRespuesta = $servicioTenisCrear[0]->servicio_programa_horario;
 
         $idPlantillaConvert = Str::of($idRespuesta)->after(',')->before(')');
         $idRegistroConvert = Str::of($idRespuesta)->before(',')->after('(');

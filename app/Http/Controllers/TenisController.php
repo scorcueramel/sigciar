@@ -134,7 +134,7 @@ class TenisController extends Controller
                                     left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
                                     left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
                                     left join public.lugars l on s.lugar_id= l.id
-                                    where s.estado = 'A' and s.tiposervicio_id=2 and s.subtiposervicio_id=4");
+                                    where s.estado = 'A' and s.tiposervicio_id=3");
         } else {
             $tenis = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo,'') || ' - ' || coalesce(l.descripcion,'') as title,
                                     sr.inicio as start,
@@ -145,7 +145,7 @@ class TenisController extends Controller
                                     left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
                                     left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
                                     left join public.lugars l on s.lugar_id= l.id
-                                    where s.estado = 'A' and s.tiposervicio_id=2 and s.subtiposervicio_id=4 and s.responsable_id= ?;", [$persona[0]->id]);
+                                    where s.estado = 'A' and s.tiposervicio_id=3 and s.subtiposervicio_id=4 and s.responsable_id= ?;", [$persona[0]->id]);
         }
 
         return response()->json($tenis);
