@@ -12,7 +12,7 @@
     <div class="container-fluid">
         <div class="row padding3 justify-content-center">
             <div class="swiper swActividades col-11 col-md-12" data-aos="fade-up" data-aos-duration="1000">
-                @if (!is_null($activitystarts))
+                @if (!empty($activitystarts))
                 <div class="swiper-wrapper">
                     @foreach ($activitystarts as $acts)
                     <div class="swiper-slide col-11 col-md-3 py-4">
