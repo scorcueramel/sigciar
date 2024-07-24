@@ -43,16 +43,18 @@
 </div>
 @endsection
 @include('components.private.modal', [
-    'tamanio'=>'modal-sm',
-    'withTitle' => true,
-    'title' => '',
-    'withButtons' => true,
-    'cancelbutton' => true,
-    'mcTextCancelButton' => 'Cerrar',
+'tamanio'=>'modal-sm',
+'withTitle' => true,
+'title' => '',
+'withButtons' => true,
+'cancelbutton' => true,
+'mcTextCancelButton' => 'Cerrar',
 ])
 @push('js')
 <script>
     $(document).ready(() => {
+        var diasdisponibles = new Array();
+
         // Obtener datos para mostrar en la vista  calendario
         // Obtener la fecha actual para bloquear los días pasados.
         moment.locale('es'); //->colocar el idioma español.
@@ -80,14 +82,36 @@
             },
             events: "{{route('calendario.tenis')}}",
             eventClick: function(info) {
-                console.log(info);
                 var modal = $("#modalcomponent");
                 var modaltitle = $("#mcLabel").html(`
                     <h5>${info.event.title}</h5>
                 `);
                 var modalbody = $("#mcbody");
                 modalbody.html(`
-                    <p>${info.event.extendedProps.dia}</p>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <td>Programa</td>
+                            <td>${info.event.title}</td>
+                            </tr>
+                            <tr>
+                            <td>Sede</td>
+                            <td>${info.event.extendedProps.sede}</td>
+                            </tr>
+                            <tr>
+                            <td>Turno</td>
+                            <td>${info.event.extendedProps.turno}</td>
+                            </tr>
+                            <tr>
+                            <td>Horas</td>
+                            <td>${info.event.extendedProps.horas} hrs.</td>
+                            </tr>
+                            <tr>
+                            <td>Miembro</td>
+                            <td>${info.event.extendedProps.nombres}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 `);
                 modal.modal('show');
             }

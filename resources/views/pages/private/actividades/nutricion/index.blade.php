@@ -26,6 +26,14 @@
 <div class="row p-3">
     <div class="card pt-2">
         <div class="card-body">
+            <div class="row pb-3">
+                <div class="col-md-auto">
+                    <a role="button" href="#" class="btn btn-primary">Modo lista</a>
+                </div>
+                <div class="col-md-auto d-flex align-items-center">
+                    <a role="button" href="{{route('nutricion.render.calender')}}" class="text-decoration-none text-secondary">Modo calendario</a>
+                </div>
+            </div>
             <div class="row">
                 <div class="text-nowrap table-responsive p-3">
                     <table class="table table-striped table-borderless table-hover nowrap" id="table" style="width:100%">

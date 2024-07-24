@@ -128,7 +128,7 @@ class TenisController extends Controller
         if ($user->hasRole('ADMINISTRADOR')) {
             $tenis = DB::select("select
                                     s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sr.inicio as start, sr.fin as end,
-                                    sr.dia
+                                    sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as nombres
                                     from
                                         servicio_reservas sr
                                         left join public.servicio_plantillas sp on sr.servicioplantilla_id = sp.id
@@ -136,13 +136,16 @@ class TenisController extends Controller
                                         left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
                                         left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
                                         left join public.lugars l on s.lugar_id = l.id
+                                        left join public.sedes se on se.id = s.sede_id
+                                        left join public.servicio_inscripcions si on si.servicio_id = s.id
+                                        left join public.personas pe on pe.id = si.persona_id
                                     where
                                         s.estado = 'A'
                                         and s.tiposervicio_id = 3");
         } else {
             $tenis = DB::select("select
                                     s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sr.inicio as start, sr.fin as end,
-                                    sr.dia
+                                    sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as nombres
                                     from
                                         servicio_reservas sr
                                         left join public.servicio_plantillas sp on sr.servicioplantilla_id = sp.id
@@ -150,6 +153,9 @@ class TenisController extends Controller
                                         left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
                                         left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
                                         left join public.lugars l on s.lugar_id = l.id
+                                        left join public.sedes se on se.id = s.sede_id
+                                        left join public.servicio_inscripcions si on si.servicio_id = s.id
+                                        left join public.personas pe on pe.id = si.persona_id
                                     where
                                         s.estado = 'A'
                                         and s.tiposervicio_id = 3 and s.responsable_id= ?;", [$persona[0]->id]);

@@ -31,7 +31,7 @@ class HomeController extends Controller
     public function activities()
     {
 
-        $activities = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo,'') || ' - ' || coalesce(l.descripcion,'') as title,
+        $activities = DB::select("select distinct s.id, ts.descripcion || ' - ' || coalesce(sts.titulo,'') || ' - ' || coalesce(l.descripcion,'') as title,
                                         sp.inicio as start,
                                         sp.fin as end
                                     from public.servicio_plantillas sp
