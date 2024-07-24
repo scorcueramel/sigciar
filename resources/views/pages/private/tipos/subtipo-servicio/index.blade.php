@@ -40,7 +40,7 @@
                         <i class="bx bxs-circle text-primary me-3"></i>
                     </td>
                     <td>${e.titulo}</td>
-                    <td>${e.subtitulo}</td>
+                    <td>${e.subtitulo ?? 'SIN SUBTITULO'}</td>
                     <td>
                     ${e.estado == "A" ? '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-success me-1">PUBLICADO</span></button>' : '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-danger me-1">BORRADOR</span></button>'}
                     </td>
