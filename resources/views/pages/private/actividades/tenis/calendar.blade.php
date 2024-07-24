@@ -27,7 +27,7 @@
 <div class="row">
     <div class="card pt-2">
         <div class="card-body">
-        <div class="row pb-3">
+            <div class="row pb-3">
                 <div class="col-md-auto d-flex align-items-center">
                     <a role="button" href="{{route('tenis.index')}}" class="text-decoration-none text-secondary">Modo lista</a>
                 </div>
@@ -42,6 +42,13 @@
     </div>
 </div>
 @endsection
+@include('components.private.modal', [
+    'withTitle' => true,
+    'title' => 'Verificar los datos...',
+    'withButtons' => true,
+    'cancelbutton' => true,
+    'mcTextCancelButton' => 'Cerrar',
+])
 @push('js')
 <script>
     $(document).ready(() => {
@@ -56,7 +63,7 @@
             allDaySlot: false,
             contentHeight: 20,
             dayMaxEvents: 1,
-            editable: true,
+            editable: false,
             eventOverlap: true,
             eventShortHeight: 'short',
             height: 500,
@@ -71,8 +78,14 @@
                 right: 'dayGridMonth',
             },
             events: "{{route('calendario.tenis')}}",
-            eventClick: function() {
+            eventClick: function(info) {
+                alert('Event: ' + info.event.title);
+                alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+                alert('View: ' + info.view.type);
+                // change the border color just for fun
+                info.el.style.borderColor = 'red';
 
+                $('#modalcomponent').modal();
             }
         });
         calendar.render();
