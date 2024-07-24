@@ -727,7 +727,7 @@
 
                     if (response.respRegistro === "exito") {
                         window.location.href =
-                            `/admin/actividades/nueva/inscripcion/${response.idPlantilla}/${response.idRegistro}/redirigido`;
+                            `/admin/nutricion/lista`;
                     } else {
                         messagesInfo('Lo sentimos', 'warning',
                             'Parece que algo sucedio, comunicate con el administrador',
