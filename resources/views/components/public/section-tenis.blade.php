@@ -8,7 +8,7 @@
         </div>
         <div class="row padding3 justify-content-center">
             <div class="swiper swTenis col-11 col-md-11" data-aos="fade-up" data-aos-duration="1000">
-                @if(!is_null($actividades))
+                @if(!empty($actividades))
                     <div class="swiper-wrapper">
                     @foreach($actividades as $actividad)
                         <div class="swiper-slide col-12 col-md-4 py-4">
