@@ -53,7 +53,6 @@ class SubtipoServicioController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'titulo' => ['required'], ['max:100'],
-            'subtitulo' => ['required'], ['max:100'],
             'medicion' => ['required'], ['max:20'],
             'estado' => ['required'],
             'tiposervicio' => ['required'],
