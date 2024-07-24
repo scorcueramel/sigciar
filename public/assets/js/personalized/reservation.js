@@ -112,14 +112,14 @@ function chargeCalendar(sede, lugar) {
             start: fechaActual,
             end: fechaLimite
         },
-        businessHours: [ //Horas de inactividad de las canchas
-            {
-                startTime: '10:00',
-                endTime: '19:00',
-                daysOfWeek: [1], //Días activos de lunes a sábado
-                //daysOfWeek: [1, 2, 3, 4, 5, 6], //Días activos de lunes a sábado
-            }
-        ],
+        // businessHours: [ //Horas de inactividad de las canchas
+        //     {
+        //         startTime: '10:00',
+        //         endTime: '19:00',
+        //         daysOfWeek: [1], //Días activos de lunes a sábado
+        //         //daysOfWeek: [1, 2, 3, 4, 5, 6], //Días activos de lunes a sábado
+        //     }
+        // ],
         events: `/ciar/servicios/${sede}/${lugar}`,
         select: function (infoSelect) {
             var fecha = infoSelect.startStr;

@@ -33,6 +33,7 @@
                                                     <th></th>
                                                     <th>TIPO SERVICIO</th>
                                                     <th>TITULO</th>
+                                                    <th>SUBTITULO</th>
                                                     <th>SEDE</th>
                                                     <th>TURNO</th>
                                                     <th>INICIO</th>
@@ -175,6 +176,9 @@
                 },
                 {
                     data: 'titulo'
+                },
+                {
+                    data: 'subtitulo'
                 },
                 {
                     data: 'sede'

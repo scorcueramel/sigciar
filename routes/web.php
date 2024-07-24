@@ -190,8 +190,10 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
 
     Route::group(['prefix'=>'nutricion'],function (){
         Route::get('/lista',[NutricionController::class,'index'])->name('nutricion.index');
+        Route::get('/calendar',[NutricionController::class,'renderCalendar'])->name('nutricion.render.calender');
         Route::get('/tablanutricion',[NutricionController::class,'tableNutricion'])->name('tabla.nutricion');
         Route::get('/calendarionutricion',[NutricionController::class,'calendarioNutricion'])->name('calendario.nutricion');
+        Route::get('/calendario/disponibilidad',[NutricionController::class,'disponibilidadDias'])->name('calendario.disponibilidad.nutricion');
         Route::get('/nueva',[NutricionController::class,'create'])->name('nutricion.create');
         Route::get('/obtener/{id}/lugares', [NutricionController::class, 'placesCharge'])->name('obtener.lugres');
         Route::get('/obtener/consto/{idlugar}/{idactividad}/lugar',[NutricionController::class,'coastPlaces'])->name('obtener.costo.luagr');

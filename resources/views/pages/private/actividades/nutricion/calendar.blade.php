@@ -26,6 +26,14 @@
 <div class="row p-3">
     <div class="card pt-2">
         <div class="card-body">
+            <div class="row pb-3">
+                <div class="col-md-auto d-flex align-items-center">
+                    <a role="button" href="{{route('nutricion.index')}}" class="text-decoration-none text-secondary">Modo lista</a>
+                </div>
+                <div class="col-md-auto">
+                    <a role="button" href="#" class="btn btn-primary">Modo calendario</a>
+                </div>
+            </div>
             <div class="row">
                 <div id='nutrition'></div>
             </div>
@@ -33,6 +41,7 @@
     </div>
 </div>
 @endsection
+@push('js')
 <script>
     $(document).ready(() => {
         // Obtener datos para mostrar en la vista  calendario
@@ -61,6 +70,23 @@
                 right: 'dayGridMonth',
             },
             events: "{{route('calendario.nutricion')}}",
+            businessHours: [ //Horas de inactividad de las canchas
+                $.ajax({
+                    type: "GET",
+                    url: "{{route('calendario.disponibilidad.nutricion')}}",
+                    data: "data",
+                    dataType: "dataType",
+                    success: function(response) {
+                        response.forEach((e) => {
+                            return {
+                                'startTime': `${e.starttime}`,
+                                'endTime': `${e.endtime}`,
+                                'daysOfWeek': [`${e.daysofweek}`],
+                            }
+                        })
+                    }
+                })
+            ],
             eventClick: function() {
 
             }

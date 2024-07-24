@@ -21,6 +21,11 @@ class NutricionController extends Controller
         return view("pages.private.actividades.nutricion.index");
     }
 
+    public function renderCalendar()
+    {
+        return view("pages.private.actividades.nutricion.calendar");
+    }
+
     public function tableNutricion()
     {
         $user = Auth::user();
@@ -131,6 +136,50 @@ class NutricionController extends Controller
         }
 
         return response()->json($nutricion);
+    }
+
+    public function disponibilidadDias()
+    {
+        $user = Auth::user();
+        $persona = Persona::where('usuario_id', $user->id)->get();
+        if ($user->hasRole('ADMINISTRADOR')) {
+            $dispobilidad = DB::select("SELECT
+                                            sd.inicio as startTime,
+                                            sd.fin as endTime,
+                                            (case when substring(sd.dia,1,2) = 'DO' then 0
+                                                when substring(sd.dia,1,2) = 'LU' then 1
+                                                when substring(sd.dia,1,2) = 'MA' then 2
+                                                when substring(sd.dia,1,2) = 'MI' then 3
+                                                when substring(sd.dia,1,2) = 'JU' then 4
+                                                when substring(sd.dia,1,2) = 'VI' then 5 else 6 end) as daysOfWeek
+                                        FROM public.servicio_disponibles sd
+                                            left join public.servicio_plantillas sp on sd.servicioplantilla_id = sp.id
+                                            left join public.servicios s on sp.servicio_id = s.id
+                                        WHERE s.tiposervicio_id = 2 and s.estado= 'A';");
+        } else {
+            $dispobilidad = DB::select("SELECT
+                                            sd.inicio as startTime,
+                                            sd.fin as endTime,
+                                            (
+                                                case
+                                                    when substring(sd.dia, 1, 2) = 'DO' then 0
+                                                    when substring(sd.dia, 1, 2) = 'LU' then 1
+                                                    when substring(sd.dia, 1, 2) = 'MA' then 2
+                                                    when substring(sd.dia, 1, 2) = 'MI' then 3
+                                                    when substring(sd.dia, 1, 2) = 'JU' then 4
+                                                    when substring(sd.dia, 1, 2) = 'VI' then 5
+                                                    else 6
+                                                end
+                                            ) as daysOfWeek
+                                        FROM public.servicio_disponibles sd
+                                            left join public.servicio_plantillas sp on sd.servicioplantilla_id = sp.id
+                                            left join public.servicios s on sp.servicio_id = s.id
+                                        WHERE
+                                            tiposervicio_id = 2
+                                            and s.estado = 'A'
+                                            and s.responsable_id = ?;", [$persona[0]->id]);
+        }
+        return response()->json($dispobilidad);
     }
 
     public function changeState(Request $request)
