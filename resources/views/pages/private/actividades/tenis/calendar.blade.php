@@ -43,8 +43,9 @@
 </div>
 @endsection
 @include('components.private.modal', [
+    'tamanio'=>'modal-sm',
     'withTitle' => true,
-    'title' => 'Verificar los datos...',
+    'title' => '',
     'withButtons' => true,
     'cancelbutton' => true,
     'mcTextCancelButton' => 'Cerrar',
@@ -79,13 +80,16 @@
             },
             events: "{{route('calendario.tenis')}}",
             eventClick: function(info) {
-                alert('Event: ' + info.event.title);
-                alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-                alert('View: ' + info.view.type);
-                // change the border color just for fun
-                info.el.style.borderColor = 'red';
-
-                $('#modalcomponent').modal();
+                console.log(info);
+                var modal = $("#modalcomponent");
+                var modaltitle = $("#mcLabel").html(`
+                    <h5>${info.event.title}</h5>
+                `);
+                var modalbody = $("#mcbody");
+                modalbody.html(`
+                    <p>${info.event.extendedProps.dia}</p>
+                `);
+                modal.modal('show');
             }
         });
         calendar.render();

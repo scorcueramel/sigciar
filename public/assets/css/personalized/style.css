@@ -99,8 +99,14 @@ tr {
     background: #1e2647 !important;
     border: none!important
 }
+.card-header > h5{
+    color: #fff;
+}
 .card-body{
     padding: 2.5em 1.5em 1.5em 1.5em !important
+}
+.card-body > form > .row > label{
+    color: #fff;
 }
 nav.bg-body-tertiary{
     background: #262f59 !important;

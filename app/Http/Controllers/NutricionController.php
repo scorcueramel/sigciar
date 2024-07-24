@@ -231,9 +231,9 @@ class NutricionController extends Controller
             return response()->json(['error' => $error]);
         }
 
-        $servicioTenisCrear = DB::select("SELECT servicio_programa_horario(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [$fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad, $estado]);
+        $servicioTenisCrear = DB::select("SELECT servicio_tenis_crear(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [$fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad, $estado]);
 
-        $idRespuesta = $servicioTenisCrear[0]->servicio_programa_horario;
+        $idRespuesta = $servicioTenisCrear[0]->servicio_tenis_crear;
 
         $idPlantillaConvert = Str::of($idRespuesta)->after(',')->before(')');
         $idRegistroConvert = Str::of($idRespuesta)->before(',')->after('(');
@@ -242,10 +242,11 @@ class NutricionController extends Controller
             $dia = $fecha["dias"];
             $hInicio = Str::of($fecha["horarios"])->before(' ');
             $hFin = Str::of($fecha["horarios"])->after('- ');
-            $servicioTenisHoras = DB::select("SELECT servicio_tenis_horario(?,?,?,?,?,?,?);", [$idPlantillaConvert, $dia, $hInicio, $hFin, $nombre_usuario, $ip, $creacion]);
+            $servicioTenisHoras = DB::select("SELECT servicio_programa_horario(?,?,?,?,?,?,?);", [$idPlantillaConvert, $dia, $hInicio, $hFin, $nombre_usuario, $ip, $creacion]);
         }
 
-        $respuestaHorarios = $servicioTenisHoras[0]->servicio_tenis_horario;
+        $respuestaHorarios = $servicioTenisHoras[0]->servicio_programa_horario;
+
         $respuesta = Str::of($respuestaHorarios)->after(',')->before(')');
 
         return response()->json(['idPlantilla' => $idPlantillaConvert, 'idRegistro' => $idRegistroConvert, 'respRegistro' => $respuesta]);

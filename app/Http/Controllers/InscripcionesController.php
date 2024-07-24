@@ -188,7 +188,7 @@ class InscripcionesController extends Controller
     {
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
-        $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->appaterno . " " . $persona[0]->apematerno;
+        $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->apepaterno . " " . $persona[0]->apematerno;
         $servicioId = $request->idservicio;
         $fechasDefinias = $request->fechasDefinidas;
         $usuarioId = $request->idmiembro;
