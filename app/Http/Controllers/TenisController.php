@@ -131,14 +131,14 @@ class TenisController extends Controller
                                     sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as nombres
                                     from
                                         servicio_reservas sr
-                                        left join public.servicio_plantillas sp on sr.servicioplantilla_id = sp.id
-                                        left join public.servicios s on sp.servicio_id = s.id
-                                        left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
-                                        left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                        left join public.lugars l on s.lugar_id = l.id
-                                        left join public.sedes se on se.id = s.sede_id
-                                        left join public.servicio_inscripcions si on si.servicio_id = s.id
-                                        left join public.personas pe on pe.id = si.persona_id
+                                        left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
+                                        left join servicios s on sp.servicio_id = s.id
+                                        left join tipo_servicios ts on ts.id = s.tiposervicio_id
+                                        left join subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                        left join lugars l on s.lugar_id = l.id
+                                        left join sedes se on se.id = s.sede_id
+                                        left join servicio_inscripcions si on si.servicio_id = s.id
+                                        left join personas pe on pe.id = si.persona_id
                                     where
                                         s.estado = 'A'
                                         and s.tiposervicio_id = 3");
@@ -148,14 +148,14 @@ class TenisController extends Controller
                                     sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as nombres
                                     from
                                         servicio_reservas sr
-                                        left join public.servicio_plantillas sp on sr.servicioplantilla_id = sp.id
-                                        left join public.servicios s on sp.servicio_id = s.id
-                                        left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
-                                        left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                        left join public.lugars l on s.lugar_id = l.id
-                                        left join public.sedes se on se.id = s.sede_id
-                                        left join public.servicio_inscripcions si on si.servicio_id = s.id
-                                        left join public.personas pe on pe.id = si.persona_id
+                                        left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
+                                        left join servicios s on sp.servicio_id = s.id
+                                        left join tipo_servicios ts on ts.id = s.tiposervicio_id
+                                        left join subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                        left join lugars l on s.lugar_id = l.id
+                                        left join sedes se on se.id = s.sede_id
+                                        left join servicio_inscripcions si on si.servicio_id = s.id
+                                        left join personas pe on pe.id = si.persona_id
                                     where
                                         s.estado = 'A'
                                         and s.tiposervicio_id = 3 and s.responsable_id= ?;", [$persona[0]->id]);
@@ -209,9 +209,9 @@ class TenisController extends Controller
 
     public function coastPlaces(string $idActividad, string $idLugar)
     {
-        // $lugar_costo = DB::select("select id,descripcion,costohora as costo,tipo from 	public.lugar_costos
+        // $lugar_costo = DB::select("select id,descripcion,costohora as costo,tipo from 	lugar_costos
         //                         where tiposervicios_id=? and lugars_id = ?", [$idActividad, $idLugar]);
-        $lugar_costo = DB::select("SELECT id,descripcion,costohora AS costo,tipo FROM 	public.lugar_costos
+        $lugar_costo = DB::select("SELECT id,descripcion,costohora AS costo,tipo FROM 	lugar_costos
                                    WHERE tiposervicios_id=? AND lugars_id = ?", [$idActividad, $idLugar]);
         return response()->json($lugar_costo);
     }
@@ -371,16 +371,15 @@ class TenisController extends Controller
                                             s2.descripcion as sede,s2.direccion as direccion_sede,
                                             l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
                                             s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
-                                            concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable,
-                                            ss.titulo as titulo,ss.subtitulo as subtitulo
-                                         from servicios s
-                                         left join tipo_servicios ts on s.tiposervicio_id = ts.id
-                                         left join sedes s2 on s.sede_id = s2.id
-                                         left join lugars l on s.lugar_id = l.id
-                                         left join personas p on s.responsable_id = p.id
-                                         left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
-                                         where s.deleted_at is null
-                                         and s.id = ?", [$id]);
+                                            concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable
+                                        from servicios s
+                                        left join tipo_servicios ts on s.tiposervicio_id = ts.id
+                                        left join sedes s2 on s.sede_id = s2.id
+                                        left join lugars l on s.lugar_id = l.id
+                                        left join personas p on s.responsable_id = p.id
+                                        left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
+                                        where s.deleted_at is null
+                                        and s.id = ?", [$id]);
 
         return response()->json($detalleActividad);
     }

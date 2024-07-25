@@ -59,7 +59,7 @@
                             <input type="submit" value="Ingresar" class="btn btn-block btn-primary">
 
                             <div class="text-white">
-                                <span class="d-block text-left my-4 text-muted">&mdash; or &mdash;</span>
+                                <span class="d-block text-center my-4 text-muted">&mdash; ó &mdash;</span>
                                 <a href="{{route('registro.member')}}" class="btn btn-block btn-primary pt-3 text-decoration-none text-light">
                                     Registrate
                                 </a>

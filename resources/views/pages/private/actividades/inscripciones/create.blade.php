@@ -33,7 +33,6 @@
                                                     <th></th>
                                                     <th>TIPO SERVICIO</th>
                                                     <th>TITULO</th>
-                                                    <th>SUBTITULO</th>
                                                     <th>SEDE</th>
                                                     <th>TURNO</th>
                                                     <th>INICIO</th>
@@ -41,6 +40,21 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach ($actividades as $actividad)
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input actividad" type="radio" name="actividadid" id="{{$actividad->id}}" data-id="{{$actividad->id}}">
+                                                        </div>
+                                                    </td>
+                                                    <td>{{$actividad->tipo_servicio}}</td>
+                                                    <td>{{$actividad->titulo}}</td>
+                                                    <td>{{$actividad->sede}}</td>
+                                                    <td>{{$actividad->turno}}</td>
+                                                    <td>{{date("d/m/Y", strtotime($actividad->inicio))}}</td>
+                                                    <td>{{date("d/m/Y", strtotime($actividad->fin))}}</td>
+                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -156,47 +170,8 @@
 ])
 @push('js')
 <script>
-    $(document).ready(function() {
-        $('#table').DataTable({
-            paging: false,
-            info: false,
-            searching: false,
-            "order": [
-                [0, "DESC"]
-            ],
-            responsive: true,
-            autoWidth: false,
-            processing: true,
-            "ajax": "{{route('table.inscripcion.charge')}}",
-            "columns": [{
-                    data: 'acciones'
-                },
-                {
-                    data: 'tipo_servicio'
-                },
-                {
-                    data: 'titulo'
-                },
-                {
-                    data: 'subtitulo'
-                },
-                {
-                    data: 'sede'
-                },
-                {
-                    data: 'turno'
-                },
-                {
-                    data: 'inicio'
-                },
-                {
-                    data: 'fin'
-                }
-            ]
-        });
-    });
-
-    function actividadSeleccionada(id) {
+    $(".actividad").on('click',function(){
+        var id = $(this).attr('data-id');
         $("#idPrograma").val(id);
         $.ajax({
             method: 'GET',
@@ -217,8 +192,7 @@
                 console.log(err)
             }
         });
-    }
-
+    });
 
     // arreglo de horarios
     var totalHorarios = new Array();

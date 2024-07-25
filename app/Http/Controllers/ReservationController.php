@@ -26,7 +26,7 @@ class ReservationController extends Controller
         }
         $sede = Sede::where('estado', 'A')->select('id', 'descripcion', 'abreviatura', 'estado')->get();
         $lugares = null;
-        return view('pages.public.reservation.index', compact('sede', 'lugares', 'personalInfo', 'authenticate'));
+        return view('pages.reservation.index', compact('sede', 'lugares', 'personalInfo', 'authenticate'));
     }
 
     public function getPlaces($id)
@@ -119,8 +119,8 @@ class ReservationController extends Controller
         $reservations = DB::select("select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
                                           s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
                                           from servicio_reservas sr
-                                          left join public.servicio_plantillas sp on sr.servicioplantilla_id = sp.id
-                                          left join public.servicios s on sp.servicio_id = s.id
+                                          left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
+                                          left join servicios s on sp.servicio_id = s.id
                                           WHERE s.sede_id = ? AND s.lugar_id = ? AND sr.estado= 'CA'", [$sede, $lugar]);
 
         return response()->json($reservations);

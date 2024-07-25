@@ -115,23 +115,23 @@ class NutricionController extends Controller
             $nutricion = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo,'') || ' - ' || coalesce(l.descripcion,'') as title,
                                     sr.inicio as start,
                                     sr.fin as end
-                                    from public.servicio_reservas sr
-                                    left join public.servicio_plantillas sp  on sr.servicioplantilla_id = sp.id
-                                    left join public.servicios s on sp.servicio_id = s.id
-                                    left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
-                                    left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                    left join public.lugars l on s.lugar_id= l.id
+                                    from servicio_reservas sr
+                                    left join servicio_plantillas sp  on sr.servicioplantilla_id = sp.id
+                                    left join servicios s on sp.servicio_id = s.id
+                                    left join tipo_servicios ts on ts.id = s.tiposervicio_id
+                                    left join subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                    left join lugars l on s.lugar_id= l.id
                                     where s.estado = 'A' and s.tiposervicio_id=2;");
         } else {
             $nutricion = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo,'') || ' - ' || coalesce(l.descripcion,'') as title,
                                     sr.inicio as start,
                                     sr.fin as end
-                                    from public.servicio_reservas sr
-                                    left join public.servicio_plantillas sp  on sr.servicioplantilla_id = sp.id
-                                    left join public.servicios s on sp.servicio_id = s.id
-                                    left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
-                                    left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                    left join public.lugars l on s.lugar_id= l.id
+                                    from servicio_reservas sr
+                                    left join servicio_plantillas sp  on sr.servicioplantilla_id = sp.id
+                                    left join servicios s on sp.servicio_id = s.id
+                                    left join tipo_servicios ts on ts.id = s.tiposervicio_id
+                                    left join subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                    left join lugars l on s.lugar_id= l.id
                                     where s.estado = 'A' and s.tiposervicio_id = 2 and s.responsable_id = ?;", [$persona[0]->id]);
         }
 
@@ -152,9 +152,9 @@ class NutricionController extends Controller
                                                 when substring(sd.dia,1,2) = 'MI' then 3
                                                 when substring(sd.dia,1,2) = 'JU' then 4
                                                 when substring(sd.dia,1,2) = 'VI' then 5 else 6 end) as daysOfWeek
-                                        FROM public.servicio_disponibles sd
-                                            left join public.servicio_plantillas sp on sd.servicioplantilla_id = sp.id
-                                            left join public.servicios s on sp.servicio_id = s.id
+                                        FROM servicio_disponibles sd
+                                            left join servicio_plantillas sp on sd.servicioplantilla_id = sp.id
+                                            left join servicios s on sp.servicio_id = s.id
                                         WHERE s.tiposervicio_id = 2 and s.estado= 'A';");
         } else {
             $dispobilidad = DB::select("SELECT
@@ -171,9 +171,9 @@ class NutricionController extends Controller
                                                     else 6
                                                 end
                                             ) as daysOfWeek
-                                        FROM public.servicio_disponibles sd
-                                            left join public.servicio_plantillas sp on sd.servicioplantilla_id = sp.id
-                                            left join public.servicios s on sp.servicio_id = s.id
+                                        FROM servicio_disponibles sd
+                                            left join servicio_plantillas sp on sd.servicioplantilla_id = sp.id
+                                            left join servicios s on sp.servicio_id = s.id
                                         WHERE
                                             tiposervicio_id = 2
                                             and s.estado = 'A'
@@ -224,9 +224,9 @@ class NutricionController extends Controller
 
     public function coastPlaces(string $idActividad, string $idLugar)
     {
-        // $lugar_costo = DB::select("select id,descripcion,costohora as costo,tipo from 	public.lugar_costos
+        // $lugar_costo = DB::select("select id,descripcion,costohora as costo,tipo from 	lugar_costos
         //                         where tiposervicios_id=? and lugars_id = ?", [$idActividad, $idLugar]);
-        $lugar_costo = DB::select("SELECT id,descripcion,costohora AS costo,tipo FROM 	public.lugar_costos
+        $lugar_costo = DB::select("SELECT id,descripcion,costohora AS costo,tipo FROM 	lugar_costos
                                    WHERE tiposervicios_id=? AND lugars_id = ?", [$idActividad, $idLugar]);
         return response()->json($lugar_costo);
     }

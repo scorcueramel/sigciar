@@ -34,11 +34,11 @@ class HomeController extends Controller
         $activities = DB::select("select distinct s.id, ts.descripcion || ' - ' || coalesce(sts.titulo,'') || ' - ' || coalesce(l.descripcion,'') as title,
                                         sp.inicio as start,
                                         sp.fin as end
-                                    from public.servicio_plantillas sp
-                                    left join public.servicios s on sp.servicio_id = s.id
-                                    left join public.tipo_servicios ts on ts.id = s.tiposervicio_id
-                                    left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                    left join public.lugars l on s.lugar_id= l.id");
+                                    from servicio_plantillas sp
+                                    left join servicios s on sp.servicio_id = s.id
+                                    left join tipo_servicios ts on ts.id = s.tiposervicio_id
+                                    left join subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                    left join lugars l on s.lugar_id= l.id");
 
         return response()->json($activities);
     }
