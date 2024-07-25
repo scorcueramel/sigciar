@@ -44,6 +44,19 @@
 @push('js')
 <script>
     $(document).ready(() => {
+        var atencion = new Array();
+
+        $.ajax({
+            type: "GET",
+            url: "{{route('calendario.disponibilidad.nutricion')}}",
+            success: function(response) {
+                response.forEach(e => {
+                    console.log(e);
+                    atencion.push(e);
+                });
+            }
+        })
+
         // Obtener datos para mostrar en la vista  calendario
         // Obtener la fecha actual para bloquear los días pasados.
         moment.locale('es'); //->colocar el idioma español.
@@ -71,21 +84,13 @@
             },
             events: "{{route('calendario.nutricion')}}",
             businessHours: [ //Horas de inactividad de las canchas
-                $.ajax({
-                    type: "GET",
-                    url: "{{route('calendario.disponibilidad.nutricion')}}",
-                    data: "data",
-                    dataType: "dataType",
-                    success: function(response) {
-                        response.forEach((e) => {
-                            return {
-                                'startTime': `${e.starttime}`,
-                                'endTime': `${e.endtime}`,
-                                'daysOfWeek': [`${e.daysofweek}`],
-                            }
-                        })
-                    }
-                })
+                // atencion.forEach(e => {
+                //     {
+                //         startTime = e.starttime,
+                //         endTime = e.endtime,
+                //         daysOfWeek = [e.daysofweek]
+                //     }
+                // })
             ],
             eventClick: function() {
 
