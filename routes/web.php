@@ -141,7 +141,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/tablaainscrpiciones',[InscripcionesController::class,'tableInscriptions'])->name('tabla.inscripciones');
         Route::get('/{id}/editar',[InscripcionesController::class,'edit'])->name('inscripciones.edit');
         Route::get('/nueva',[InscripcionesController::class,'create'])->name('inscripciones.create');
-        Route::get('/cargar/inscripciones/crear',[InscripcionesController::class, 'chargePrograms'])->name('table.inscripcion.charge');
+        // Route::get('/cargar/inscripciones/crear',[InscripcionesController::class, 'chargePrograms'])->name('inscripcion.charge');
         Route::get('/obtener/{id}/subcategorias', [InscripcionesController::class, 'categoryCharge'])->name('obtener.subcategorias');
         Route::get('/obtener/{id}/dias',[InscripcionesController::class, 'getDaysActivity'])->name('inscripciones.days.activity');
         Route::get('/obtener/{idServicio}/{dia}/horas',[InscripcionesController::class,'getHoursForDay'])->name('inscripciones.obtener.horarios');

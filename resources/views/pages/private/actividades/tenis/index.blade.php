@@ -75,6 +75,13 @@
     </div>
 </div>
 @endsection
+@include('components.private.modal', [
+'tamanio'=>'modal-sm',
+'withTitle' => true,
+'withButtons' => true,
+'cancelbutton' => true,
+'mcTextCancelButton' => 'Cerrar',
+])
 @push('js')
 <script>
     $(document).ready(() => {
@@ -234,9 +241,9 @@
             url: `/admin/actividades/detalle/${id}/actividad`,
             success: function(resp) {
                 let data = resp[0];
+                console.log(data);
                 $("#mcLabel").html(`
-                        ${data.titulo} <br>
-                        <span style="font-size: 14px; font-weight: normal">${data.subtitulo}</span>
+                        ${data.tipo_servicio} <br>
                     `)
                 $("#mcbody").html(`
                         <table class="table table-bordered">

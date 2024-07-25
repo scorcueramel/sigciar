@@ -111,7 +111,6 @@
                 {
                     data: 'direccion_sede'
                 },
-
                 {
                     data: 'lugar_costo_hora'
                 },

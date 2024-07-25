@@ -47,16 +47,16 @@ class PerfilUsuarioController extends Controller
 					                    pag.estadopago as estado_pago,
 					                    pag.fechapago
 					                    from servicios s
-					                    left join public.tipo_servicios ts  on s.tiposervicio_id = ts.id
-					                    left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-					                    left join public.sedes sed on s.sede_id = sed.id
-					                    left join public.lugars l on s.lugar_id = l.id
-					                    left join public.lugar_costos lc on lc.lugars_id = l.id  and lc.descripcion = s.turno
-					                    left join public.servicio_plantillas  sp on s.id = sp.servicio_id
-					                    left join public.servicio_inscripcions ins on s.id = ins.servicio_id
-					                    left join public.servicio_reservas sr on ins.id = sr.servicioinscripcion_id
-					                    left join public.personas per on ins.persona_id = per.id
-					                    left join public.servicio_pagos pag on ins.id = pag.servicioinscripcion_id
+					                    left join tipo_servicios ts  on s.tiposervicio_id = ts.id
+					                    left join subtipo_servicios sts on s.subtiposervicio_id = sts.id
+					                    left join sedes sed on s.sede_id = sed.id
+					                    left join lugars l on s.lugar_id = l.id
+					                    left join lugar_costos lc on lc.lugars_id = l.id  and lc.descripcion = s.turno
+					                    left join servicio_plantillas  sp on s.id = sp.servicio_id
+					                    left join servicio_inscripcions ins on s.id = ins.servicio_id
+					                    left join servicio_reservas sr on ins.id = sr.servicioinscripcion_id
+					                    left join personas per on ins.persona_id = per.id
+					                    left join servicio_pagos pag on ins.id = pag.servicioinscripcion_id
                                     where ins.persona_id = ? ", [$datosPersona["persona_id"]]);
 
         return view("pages.public.users.userprofile.index", compact("datosPersona", 'tipoDocumentos', 'programas'));

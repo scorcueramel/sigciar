@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Persona;
-use App\Models\SubtipoServicio;
-use App\Models\TipoServicio;
+use Illuminate\Console\View\Components\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,17 +37,17 @@ class InscripcionesController extends Controller
                                             pag.fechapago
                                             from
                                                 servicios s
-                                                left join public.tipo_servicios ts on s.tiposervicio_id = ts.id
-                                                left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                                left join public.sedes sed on s.sede_id = sed.id
-                                                left join public.lugars l on s.lugar_id = l.id
-                                                left join public.lugar_costos lc on lc.lugars_id = l.id
+                                                left join tipo_servicios ts on s.tiposervicio_id = ts.id
+                                                left join subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                                left join sedes sed on s.sede_id = sed.id
+                                                left join lugars l on s.lugar_id = l.id
+                                                left join lugar_costos lc on lc.lugars_id = l.id
                                                 and lc.descripcion = s.turno
-                                                left join public.servicio_plantillas sp on s.id = sp.servicio_id
-                                                join public.servicio_inscripcions ins on s.id = ins.servicio_id
-                                                left join public.servicio_reservas sr on ins.id = sr.servicioinscripcion_id
-                                                left join public.personas per on ins.persona_id = per.id
-                                                left join public.servicio_pagos pag on ins.id = pag.servicioinscripcion_id");
+                                                left join servicio_plantillas sp on s.id = sp.servicio_id
+                                                join servicio_inscripcions ins on s.id = ins.servicio_id
+                                                left join servicio_reservas sr on ins.id = sr.servicioinscripcion_id
+                                                left join personas per on ins.persona_id = per.id
+                                                left join servicio_pagos pag on ins.id = pag.servicioinscripcion_id");
         } else {
             $inscripciones = DB::select("SELECT distinct s.id as servicios_id,
                                                 ts.descripcion || ' - ' || sts.titulo || ' - ' || sts.subtitulo as descripcion,
@@ -67,17 +66,17 @@ class InscripcionesController extends Controller
                                                 pag.fechapago
                                                 from
                                                     servicios s
-                                                    left join public.tipo_servicios ts on s.tiposervicio_id = ts.id
-                                                    left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                                    left join public.sedes sed on s.sede_id = sed.id
-                                                    left join public.lugars l on s.lugar_id = l.id
-                                                    left join public.lugar_costos lc on lc.lugars_id = l.id
+                                                    left join tipo_servicios ts on s.tiposervicio_id = ts.id
+                                                    left join subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                                    left join sedes sed on s.sede_id = sed.id
+                                                    left join lugars l on s.lugar_id = l.id
+                                                    left join lugar_costos lc on lc.lugars_id = l.id
                                                     and lc.descripcion = s.turno
-                                                    left join public.servicio_plantillas sp on s.id = sp.servicio_id
-                                                    join public.servicio_inscripcions ins on s.id = ins.servicio_id
-                                                    left join public.servicio_reservas sr on ins.id = sr.servicioinscripcion_id
-                                                    left join public.personas per on ins.persona_id = per.id
-                                                    left join public.servicio_pagos pag on ins.id = pag.servicioinscripcion_id
+                                                    left join servicio_plantillas sp on s.id = sp.servicio_id
+                                                    join servicio_inscripcions ins on s.id = ins.servicio_id
+                                                    left join servicio_reservas sr on ins.id = sr.servicioinscripcion_id
+                                                    left join personas per on ins.persona_id = per.id
+                                                    left join servicio_pagos pag on ins.id = pag.servicioinscripcion_id
                                                 where s.responsable_id = ?", [$persona[0]->id]);
         }
 
@@ -109,29 +108,24 @@ class InscripcionesController extends Controller
     public function create()
     {
         // $actividades = TipoServicio::where('id', '<>', 1)->orderBy('descripcion', 'asc')->get();
-        return view("pages.private.actividades.inscripciones.create");
-    }
-
-    public function chargePrograms()
-    {
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
             $actividades = DB::select("select
-                                        servicios.id,
+                                        servicios.id ,
                                         tipo_servicios.descripcion as tipo_servicio,
-                                        subtipo_servicios.titulo,
+                                        subtipo_servicios.titulo as titulo,
                                         lugars.descripcion as sede,
                                         lugar_costos.descripcion as turno,
-                                        servicio_plantillas.inicio,
-                                        servicio_plantillas.fin
+                                        servicio_plantillas.inicio as inicio,
+                                        servicio_plantillas.fin as fin
                                         from servicios
-                                        left join public.tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
-                                        left join public.subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
-                                        left join public.sedes on servicios.sede_id = sedes.id
-                                        left join public.lugars on servicios.lugar_id = lugars.id
-                                        left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
-                                        left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
+                                        left join tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
+                                        left join subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
+                                        left join sedes on servicios.sede_id = sedes.id
+                                        left join lugars on servicios.lugar_id = lugars.id
+                                        left join lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
+                                        left join servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
                                         where subtipo_servicios.titulo  is not null
                                         and tipo_servicios.id = 3
                                         and servicios.estado= 'A'");
@@ -139,52 +133,71 @@ class InscripcionesController extends Controller
             $actividades = DB::select("select
                                         servicios.id,
                                         tipo_servicios.descripcion as tipo_servicio,
-                                        subtipo_servicios.titulo,
+                                        subtipo_servicios.titulo as titulo,
                                         lugars.descripcion as sede,
                                         lugar_costos.descripcion as turno,
-                                        servicio_plantillas.inicio,
-                                        servicio_plantillas.fin
+                                        servicio_plantillas.inicio as inicio,
+                                        servicio_plantillas.fin as fin
                                         from servicios
-                                        left join public.tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
-                                        left join public.subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
-                                        left join public.sedes on servicios.sede_id = sedes.id
-                                        left join public.lugars on servicios.lugar_id = lugars.id
-                                        left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
-                                        left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
+                                        left join tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
+                                        left join subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
+                                        left join sedes on servicios.sede_id = sedes.id
+                                        left join lugars on servicios.lugar_id = lugars.id
+                                        left join lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
+                                        left join servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
                                         where subtipo_servicios.titulo  is not null
                                         and tipo_servicios.id = 3
                                         and servicios.estado= 'A' and s.responsable_id = ?", [$persona[0]->id]);
         }
-        return datatables()->of($actividades)
-            ->addColumn('acciones', function ($row) {
-                return '<div class="form-check">
-                            <input class="form-check-input selectactivity" type="radio" name="actividadRadio" id="' . $row->id . '" onclick="actividadSeleccionada(' . $row->id . ')">
-                            <label class="form-check-label" for="' . $row->id . '">
-                            </label>
-                        </div>';
-            })
-            ->addColumn('turno', function ($row) {
-                if ($row->turno == "DIURNO") {
-                    return 'DIURNO <i class="fa-solid fa-sun text-warning"></i>';
-                }
-                if ($row->turno == "NOCTURNO") {
-                    return 'NOCTURNO <i class="fa-solid fa-moon-stars text-primary"></i>';
-                }
-            })
-            ->addColumn('inicio', function ($row) {
-                $inicio = \DateTime::createFromFormat('Y-m-d H:i:s', $row->inicio);
-                return $inicio->format('d/m/Y');
-            })
-            ->addColumn('fin', function ($row) {
-                $fin = \DateTime::createFromFormat('Y-m-d H:i:s', $row->fin);
-                return $fin->format('d/m/Y');
-            })
-            ->addColumn('titulo', function ($row) {
-                return $row->titulo == "" ? "SIN DATOS" : $row->titulo . ' - ' . $row->subtitulo;
-            })
-            ->rawColumns(['acciones', 'titulo', 'inicio', 'turno'])
-            ->make(true);
+        return view("pages.private.actividades.inscripciones.create", compact("actividades"));
     }
+
+    // public function chargePrograms()
+    // {
+    //     $user = Auth::user();
+    //     $persona = Persona::where('usuario_id', $user->id)->get();
+    //     if ($user->hasRole('ADMINISTRADOR')) {
+    //         $actividades = DB::select("select
+    //                                     servicios.id ,
+    //                                     tipo_servicios.descripcion as tipo_servicio,
+    //                                     subtipo_servicios.titulo as titulo,
+    //                                     lugars.descripcion as sede,
+    //                                     lugar_costos.descripcion as turno,
+    //                                     servicio_plantillas.inicio as inicio,
+    //                                     servicio_plantillas.fin as fin
+    //                                     from servicios
+    //                                     left join tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
+    //                                     left join subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
+    //                                     left join sedes on servicios.sede_id = sedes.id
+    //                                     left join lugars on servicios.lugar_id = lugars.id
+    //                                     left join lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
+    //                                     left join servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
+    //                                     where subtipo_servicios.titulo  is not null
+    //                                     and tipo_servicios.id = 3
+    //                                     and servicios.estado= 'A'");
+    //     } else {
+    //         $actividades = DB::select("select
+    //                                     servicios.id,
+    //                                     tipo_servicios.descripcion as tipo_servicio,
+    //                                     subtipo_servicios.titulo as titulo,
+    //                                     lugars.descripcion as sede,
+    //                                     lugar_costos.descripcion as turno,
+    //                                     servicio_plantillas.inicio as inicio,
+    //                                     servicio_plantillas.fin as fin
+    //                                     from servicios
+    //                                     left join tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
+    //                                     left join subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
+    //                                     left join sedes on servicios.sede_id = sedes.id
+    //                                     left join lugars on servicios.lugar_id = lugars.id
+    //                                     left join lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
+    //                                     left join servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
+    //                                     where subtipo_servicios.titulo  is not null
+    //                                     and tipo_servicios.id = 3
+    //                                     and servicios.estado= 'A' and s.responsable_id = ?", [$persona[0]->id]);
+    //     }
+
+    //     return response()->json($actividades);
+    // }
 
     //get days by activities, IN THIS FUNCTION GETTER THE SUBCATEGORIA, PREPARETE QUERY FOR DAYS IS REGISTERED ON THIS CATEGORY
     public function getDaysActivity(string $idactivity)
