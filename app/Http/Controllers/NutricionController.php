@@ -23,7 +23,46 @@ class NutricionController extends Controller
 
     public function renderCalendar()
     {
-        return view("pages.private.actividades.nutricion.calendar");
+        $user = Auth::user();
+        $persona = Persona::where('usuario_id', $user->id)->get();
+        if ($user->hasRole('ADMINISTRADOR')) {
+            $disponibilidad = DB::select("SELECT
+                                            sd.inicio as startTime,
+                                            sd.fin as endTime,
+                                            (case when substring(sd.dia,1,2) = 'DO' then 0
+                                                when substring(sd.dia,1,2) = 'LU' then 1
+                                                when substring(sd.dia,1,2) = 'MA' then 2
+                                                when substring(sd.dia,1,2) = 'MI' then 3
+                                                when substring(sd.dia,1,2) = 'JU' then 4
+                                                when substring(sd.dia,1,2) = 'VI' then 5 else 6 end) as daysOfWeek
+                                        FROM servicio_disponibles sd
+                                            left join servicio_plantillas sp on sd.servicioplantilla_id = sp.id
+                                            left join servicios s on sp.servicio_id = s.id
+                                        WHERE s.tiposervicio_id = 2 and s.estado= 'A';");
+        } else {
+            $disponibilidad = DB::select("SELECT
+                                            sd.inicio as startTime,
+                                            sd.fin as endTime,
+                                            (
+                                                case
+                                                    when substring(sd.dia, 1, 2) = 'DO' then 0
+                                                    when substring(sd.dia, 1, 2) = 'LU' then 1
+                                                    when substring(sd.dia, 1, 2) = 'MA' then 2
+                                                    when substring(sd.dia, 1, 2) = 'MI' then 3
+                                                    when substring(sd.dia, 1, 2) = 'JU' then 4
+                                                    when substring(sd.dia, 1, 2) = 'VI' then 5
+                                                    else 6
+                                                end
+                                            ) as daysOfWeek
+                                        FROM servicio_disponibles sd
+                                            left join servicio_plantillas sp on sd.servicioplantilla_id = sp.id
+                                            left join servicios s on sp.servicio_id = s.id
+                                        WHERE
+                                            tiposervicio_id = 2
+                                            and s.estado = 'A'
+                                            and s.responsable_id = ?;", [$persona[0]->id]);
+        }
+        return view("pages.private.actividades.nutricion.calendar", compact("disponibilidad"));
     }
 
     public function tableNutricion()
