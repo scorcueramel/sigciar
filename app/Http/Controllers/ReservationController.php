@@ -26,7 +26,7 @@ class ReservationController extends Controller
         }
         $sede = Sede::where('estado', 'A')->select('id', 'descripcion', 'abreviatura', 'estado')->get();
         $lugares = null;
-        return view('pages.reservation.index', compact('sede', 'lugares', 'personalInfo', 'authenticate'));
+        return view('pages.public.reservation.index', compact('sede', 'lugares', 'personalInfo', 'authenticate'));
     }
 
     public function getPlaces($id)

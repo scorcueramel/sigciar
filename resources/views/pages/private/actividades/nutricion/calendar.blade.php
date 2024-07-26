@@ -44,32 +44,18 @@
 @push('js')
 <script>
     $(document).ready(() => {
-        var atencion = new Array();
+        var disponibilidad = @json($disponibilidad);
+        console.log(disponibilidad);
 
-        $.ajax({
-            type: "GET",
-            url: "{{route('calendario.disponibilidad.nutricion')}}",
-            success: function(response) {
-                response.forEach(e => {
-                    console.log(e);
-                    atencion.push(e);
-                });
-            }
-        })
-
-        // Obtener datos para mostrar en la vista  calendario
-        // Obtener la fecha actual para bloquear los días pasados.
-        moment.locale('es'); //->colocar el idioma español.
-
+        moment.locale('es');
         var calendarEl = document.getElementById('nutrition');
-
         var calendar = new FullCalendar.Calendar(calendarEl, {
             themeSystem: 'bootstrap5',
             allDaySlot: false,
             contentHeight: 20,
             dayMaxEvents: 1,
             editable: true,
-            eventOverlap: true,
+            eventOverlap: false,
             eventShortHeight: 'short',
             height: 500,
             initialView: 'dayGridMonth',
@@ -83,18 +69,9 @@
                 right: 'dayGridMonth',
             },
             events: "{{route('calendario.nutricion')}}",
-            businessHours: [ //Horas de inactividad de las canchas
-                // atencion.forEach(e => {
-                //     {
-                //         startTime = e.starttime,
-                //         endTime = e.endtime,
-                //         daysOfWeek = [e.daysofweek]
-                //     }
-                // })
+            businessHours: [
             ],
-            eventClick: function() {
-
-            }
+            eventClick: function() {}
         });
         calendar.render();
     });
