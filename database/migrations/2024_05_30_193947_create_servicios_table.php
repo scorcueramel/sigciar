@@ -29,6 +29,7 @@ return new class extends Migration
             $table->integer('horas');
             $table->string('turno')->nullable(false);
             $table->integer('subtiposervicio_id');
+            $table->float('total',8,2);
             $table->softDeletes();
             $table->timestamps();
         });

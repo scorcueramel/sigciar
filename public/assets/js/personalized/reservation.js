@@ -227,7 +227,13 @@ function payPlace() {
     var sede = $('#sede').val();
     var lugar = $('#lugar').val();
     var precio = $('#percioModal').val();
-    var conluz = $('#conluz').val();
+    var conluz = "";
+
+    if($('#conluz').is(':checked')){
+        conluz = 'ON';
+    }else{
+        conluz = 'OFF'
+    }
 
     const datos =
     {

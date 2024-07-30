@@ -24,5 +24,6 @@ class Servicio extends Model
         'horas',
         'turno',
         'subtiposervicio_id',
+        'total',
     ];
 }
