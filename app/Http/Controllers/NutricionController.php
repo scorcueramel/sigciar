@@ -27,8 +27,8 @@ class NutricionController extends Controller
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
             $disponibilidad = DB::select("SELECT
-                                            sd.inicio as startTime,
-                                            sd.fin as endTime,
+                                            sd.inicio::time as startTime,
+                                            sd.fin::time as endTime,
                                             (case when substring(sd.dia,1,2) = 'DO' then 0
                                                 when substring(sd.dia,1,2) = 'LU' then 1
                                                 when substring(sd.dia,1,2) = 'MA' then 2
@@ -41,8 +41,8 @@ class NutricionController extends Controller
                                         WHERE s.tiposervicio_id = 2 and s.estado= 'A';");
         } else {
             $disponibilidad = DB::select("SELECT
-                                            sd.inicio as startTime,
-                                            sd.fin as endTime,
+                                            sd.inicio::time as startTime,
+                                            sd.fin::time as endTime,
                                             (
                                                 case
                                                     when substring(sd.dia, 1, 2) = 'DO' then 0
@@ -62,6 +62,7 @@ class NutricionController extends Controller
                                             and s.estado = 'A'
                                             and s.responsable_id = ?;", [$persona[0]->id]);
         }
+
         return view("pages.private.actividades.nutricion.calendar", compact("disponibilidad"));
     }
 

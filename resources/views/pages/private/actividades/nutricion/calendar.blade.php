@@ -44,8 +44,17 @@
 @push('js')
 <script>
     $(document).ready(() => {
-        var disponibilidad = @json($disponibilidad);
-        console.log(disponibilidad);
+
+        var dp = @json($disponibilidad);
+        var dispo = new Array();
+
+        dp.forEach(e => {
+            dispo.push({
+                'startTime': e.starttime,
+                'endTime': e.endtime,
+                'daysOfWeek': [e.daysofweek]
+            })
+        });
 
         moment.locale('es');
         var calendarEl = document.getElementById('nutrition');
@@ -58,20 +67,21 @@
             eventOverlap: false,
             eventShortHeight: 'short',
             height: 500,
-            initialView: 'dayGridMonth',
             locale: 'es-PE',
-            selectable: true,
             timeZone: 'UTC',
             unselectAuto: true,
+            selectable: true,
             headerToolbar: {
                 left: 'today prevYear,prev,next,nextYear',
                 center: 'title',
-                right: 'dayGridMonth',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay',
             },
             events: "{{route('calendario.nutricion')}}",
-            businessHours: [
-            ],
-            eventClick: function() {}
+            businessHours: dispo,
+            selectConstraint: "businessHours",
+            select: function(info) {
+                console.log(info);
+            }
         });
         calendar.render();
     });
