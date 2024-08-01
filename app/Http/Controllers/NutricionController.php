@@ -374,6 +374,8 @@ class NutricionController extends Controller
     public function destroy(Request $request)
     {
         $actividad = Servicio::find($request->id);
+        $actividad->estado = 'A';
+        $actividad->save();
         $actividad->delete();
         return redirect()->back()->with('success', 'El programa de nutrición fue eliminada');
     }
