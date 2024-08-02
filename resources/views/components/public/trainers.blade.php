@@ -12,6 +12,29 @@
     <div class="container-fluid">
         <div class="row padding3 justify-content-center">
             <div class="swiper swEntrenadores col-11 col-md-12" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="1000">
+                @if (!empty($entrenadores))
+                <div class="swiper-wrapper">
+                    @foreach ($entrenadores as $entrenador)
+                    <div class="swiper-slide col-12 col-md-3 py-4">
+                        <div class="item-entrenadores position-relative">
+                            <div class="contenedor-item">
+                                <figure class="imagen-item">
+                                    <img src="{{asset('storage/avatars/'.$entrenador->directorio.'/'.$entrenador->imagen)}}" class="w-100" />
+                                </figure>
+
+                                <div class="overlay-item text-center">
+                                    <div class="info-item py-3 px-3">
+                                        <h3 class="titulo-item mb-0 altas">
+                                            {{ $entrenador->nombres }}
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                @else
                 <div class="swiper-wrapper">
                     <div class="swiper-slide col-12 col-md-3 py-4">
                         <div class="item-entrenadores position-relative">
@@ -82,11 +105,12 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 <div class="swiper-button-prev arrow"><svg>
                         <use href="{{asset('assets/images/icons.svg')}}#arrow-prev" />
                     </svg></div>
-                    <div class="swiper-button-next arrow"><svg>
-                    <use href="{{asset('assets/images/icons.svg')}}#arrow-next" />
+                <div class="swiper-button-next arrow"><svg>
+                        <use href="{{asset('assets/images/icons.svg')}}#arrow-next" />
                     </svg></div>
             </div>
         </div>

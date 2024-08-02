@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Noticia;
 use App\Models\Sede;
 use App\Models\Servicio;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
@@ -66,7 +67,18 @@ class LandingController extends Controller
                                         and tipo_servicios.id <> 3
                                         and servicios.estado= 'A'");
 
-        return view("pages.public.landing.index", compact("sedes", "actividades", "noticias","activitystarts"));
+        $entrenadores = DB::select("select
+                                    concat(p.nombres,' ',p.apepaterno,' ',p.apematerno) as nombres,
+                                    p.directorio ,p.imagen
+                                    from model_has_roles mhr
+                                    left join users u
+                                    on u.id = mhr.model_id
+                                    left join personas p
+                                    on p.usuario_id = u.id
+                                    where mhr.role_id = 2");
+
+
+        return view("pages.public.landing.index", compact("sedes", "actividades", "noticias", "activitystarts","entrenadores"));
     }
 
     //SECTION ACTIVITY
