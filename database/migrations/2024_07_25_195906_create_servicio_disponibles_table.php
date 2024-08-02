@@ -15,6 +15,16 @@ return new class extends Migration
     {
         Schema::create('servicio_disponibles', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('servicioplantilla_id')->constrained('servicio_plantillas');
+            $table->string('dia',20)->nullable(true);
+            $table->dateTime('inicio');
+            $table->dateTime('fin');
+            $table->string('estado',5);
+            $table->string('usuario_creador',50)->nullable(true);
+            $table->string('usuario_editor',50)->nullable(true);
+            $table->string('ip_usuario',20);
+            $table->foreignId('servicioinscripcion_id')->constrained('servicio_inscripcions');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

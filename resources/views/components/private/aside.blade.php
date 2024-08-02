@@ -189,7 +189,43 @@
 
         {{-- Sección de Usuarios --}}
         <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Control</span>
+            <span class="menu-header-text">Personal y Roles</span>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="fa-solid fa-racquet"style="margin-right: 13px"></i>
+                <div data-i18n="Account Settings">Entrenadores</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Account">Todos los Entrenadores</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Account">Nuevo Entrenador</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="fa-solid fa-hands-holding-child" style="margin-right: 13px"></i>
+                <div data-i18n="Account Settings">Promesas</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Account">Todos las Promesas</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Account">Nueva Promesa</div>
+                    </a>
+                </li>
+            </ul>
         </li>
         <li class="menu-item {{ $activePage == 'usuarios.index' || $activePage == 'usuarios.edit' || $activePage == 'usuarios.create' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
