@@ -64,7 +64,7 @@ class UsuarioController extends Controller
             'movil.max' => 'Solo se permite 15 caracteres como máximo para el campo movil',
             'password.required'=>'No debes deja la contraseña en blanco',
             'password.same' => 'Las contraseñas ingresadas no coinciden',
-            'roles'=>'Debes seleccionar como minimo un rol para el usuario '. $request->nombres ." ".$request->apepaterno ." ".$request->apematerno,
+            'roles'=> "Debes seleccionar como minimo un rol para el usuario {$request->nombres} {$request->apepaterno} {$request->apematerno}",
         ]);
 
         $user = new User();
@@ -88,20 +88,16 @@ class UsuarioController extends Controller
         $persona->ip_usuario = $request->ip();
         $persona->usuario_id = $usuarioid;
 
-        if ($persona->directorio != null || $persona->directorio != '') {
-            $dirName = $persona->directorio;
-        } else {
-            $dirName = Str::random(20);
-        }
+        $dirName = ($persona->directorio != null || $persona->directorio != '') ? $persona->directorio : Str::random(20);
 
         if ($imagen = $request->file('imagen')) {
-            if (\File::exists(public_path('/storage/avatars/' . $dirName . '/' . $persona->imagen))) {
-                \File::delete(public_path('/storage/avatars/' . $dirName . '/' . $persona->imagen));
+            if (\File::exists(public_path("/storage/avatars/$dirName/{$persona->imagen}"))) {
+                \File::delete(public_path("/storage/avatars/$dirName/{$persona->imagen}"));
             }
             $imgRename = date('YmdHis') . "." . $imagen->getClientOriginalExtension();
-            $persona['imagen'] = "$imgRename";
+            $persona['imagen'] = (string) $imgRename;
             // $imagen->storeAs('/sedes/', $imgRename, $this->disk);
-            $imagen->storeAs('/avatars/' . $dirName . '/', $imgRename, $this->disk);
+            $imagen->storeAs("/avatars/$dirName/", $imgRename, $this->disk);
         }
 
         $persona->directorio = $dirName;
@@ -186,19 +182,15 @@ class UsuarioController extends Controller
         $persona->ip_usuario = $request->ip();
         $persona->usuario_id = $usuarioid;
 
-        if ($persona->directorio != null || $persona->directorio != '') {
-            $dirName = $persona->directorio;
-        } else {
-            $dirName = Str::random(20);
-        }
+        $dirName = ($persona->directorio != null || $persona->directorio != '') ? $persona->directorio : Str::random(20);
 
-        if ($imagen = $request->imagen != null) {
-            if (\File::exists(public_path('/storage/avatars/' . $dirName . '/' . $persona->imagen))) {
-                \File::delete(public_path('/storage/avatars/' . $dirName . '/' . $persona->imagen));
+        if ($request->imagen != null) {
+            if (\File::exists(public_path("/storage/avatars/$dirName/{$persona->imagen}"))) {
+                \File::delete(public_path("/storage/avatars/$dirName/{$persona->imagen}"));
             }
-            $imgRename = date('YmdHis') . "." . $imagen->getClientOriginalExtension();
+            $imgRename = date('YmdHis') . "." . $request->imagen->getClientOriginalExtension();
             $persona['imagen'] = "$imgRename";
-            $imagen->storeAs('/avatars/' . $dirName . '/', $imgRename, $this->disk);
+            $request->imagen->storeAs("/avatars/$dirName/", $imgRename, $this->disk);
         }
 
         $persona->directorio = $dirName;
