@@ -18,7 +18,8 @@ class LugarCostosController extends Controller
     {
         $this->middleware('permission:ver.costo.lugar|crear.costo.lugar|editar.costo.lugar|eliminar.costo.lugar', ['only' => ['index']]);
         $this->middleware('permission:crear.costo.lugar', ['only' => ['create', 'store']]);
-        $this->middleware('permission:editar.costo.lugar', ['only' => ['edit', 'update', 'changeState']]);
+        $this->middleware('permission:editar.costo.lugar', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:estado.costo.lugar', ['only' => ['changeState']]);
         $this->middleware('permission:eliminar.costo.lugar', ['only' => ['destroy']]);
     }
     public function index()

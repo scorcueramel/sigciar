@@ -14,7 +14,8 @@ class TipoServicioController extends Controller
     {
         $this->middleware('permission:ver.tipos.servicios|crear.tipos.servicios|editar.tipos.servicios|eliminar.tipos.servicios', ['only' => ['index']]);
         $this->middleware('permission:crear.tipos.servicios', ['only' => ['create', 'store']]);
-        $this->middleware('permission:editar.tipos.servicios', ['only' => ['edit', 'update', 'changeState']]);
+        $this->middleware('permission:editar.tipos.servicios', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:estado.tipos.servicios', ['only' => ['changeState']]);
         $this->middleware('permission:eliminar.tipos.servicios', ['only' => ['destroy']]);
     }
 
