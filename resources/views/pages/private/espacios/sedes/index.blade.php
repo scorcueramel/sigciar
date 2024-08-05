@@ -7,11 +7,14 @@
         <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Sedes /</span> Todas </h4>
     </div>
     <div class="col-md text-end">
+        @can('crear.sedes')
         <a href="{{route('sedes.create')}}" class="btn btn-sm btn-info"><i class="fa-regular fa-hotel me-1"></i>Nuevo</a>
+        @endcan
     </div>
 </div>
-
+@can('ver.sedes')
 @include('components.private.table', ['titleTable' => 'Lista General de las Sedes','searchable'=>false,'paginate'=>$sedesBody])
+@endcan
 
 @endsection
 @include('components.private.modal',['withTitle'=>true,'withButtons'=>false])
@@ -32,8 +35,12 @@
                     <th>${headerSedes[2]}</th>
                     <th>${headerSedes[3]}</th>
                     <th class="text-center">${headerSedes[4]}</th>
+                    @can('estado.sedes')
                     <th>${headerSedes[5]}</th>
+                    @endcan
+                    @if (auth()->user()->can('editar.sedes') || auth()->user()->can('eliminar.sedes'))
                     <th>${headerSedes[6]}</th>
+                    @endif
                 </tr>
         `);
 
@@ -47,20 +54,24 @@
                     <td>${e.abreviatura}</td>
                     <td>${e.direccion ?? 'sin dirección'}</td>
                     <td class="text-center">${e.imagen == null ? 'sin imagen' : '<button type="button" class="bg-transparent text-primary border-0 btn-modal-image" data-bs-toggle="modal" data-bs-target="#modalcomponent" data-imagen="'+e.imagen+'" data-descripcion="'+e.descripcion+'"><i class="fa-solid fa-panorama"></i></button>' }</td>
+                    @can('estado.sedes')
                     <td>
-                        ${e.estado == "A" ? '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-success me-1">PUBLICADO</span></button>' : '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-danger me-1">BORRADOR</span></button>'}
+                    ${e.estado == "A" ? '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-success me-1">PUBLICADO</span></button>' : '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-danger me-1">BORRADOR</span></button>'}
                     </td>
+                    @endcan
+                    @if (auth()->user()->can('editar.sedes') || auth()->user()->can('eliminar.sedes'))
                     <td>
                         <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                        <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
                             <div class="dropdown-menu">
-                                <a href="/admin/sedes/editar/${e.id}" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
-                                <button class="dropdown-item delete" data-id="${e.id}"><i class="bx bx-trash me-1"></i> Eliminar</button>
+                            <a href="/admin/sedes/editar/${e.id}" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
+                            <button class="dropdown-item delete" data-id="${e.id}"><i class="bx bx-trash me-1"></i> Eliminar</button>
                             </div>
                         </div>
                     </td>
+                    @endif
                 </tr>
         `);
     });

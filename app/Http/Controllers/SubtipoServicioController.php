@@ -15,7 +15,8 @@ class SubtipoServicioController extends Controller
     {
         $this->middleware('permission:ver.subtipo.servicios|crear.subtipo.servicios|editar.subtipo.servicios|eliminar.subtipo.servicios', ['only' => ['index']]);
         $this->middleware('permission:crear.subtipo.servicios', ['only' => ['create', 'store']]);
-        $this->middleware('permission:editar.subtipo.servicios', ['only' => ['edit', 'update', 'changeState']]);
+        $this->middleware('permission:editar.subtipo.servicios', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:estado.subtipo.servicios', ['only' => ['changeState']]);
         $this->middleware('permission:eliminar.subtipo.servicios', ['only' => ['destroy']]);
     }
     protected $disk = "public";

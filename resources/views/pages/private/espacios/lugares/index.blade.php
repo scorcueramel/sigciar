@@ -4,10 +4,12 @@
 @include('components.private.messages-session')
 <div class="row d-flex align-items-center">
     <div class="col-md">
-    <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Lugares /</span> Todos </h4>
+        <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Lugares /</span> Todos </h4>
     </div>
     <div class="col-md text-end">
+        @can('ver.lugares')
         <a href="{{route('lugares.create')}}" class="btn btn-sm btn-info"><i class="fa-regular fa-court-sport me-1"></i>Nuevo</a>
+        @endcan
     </div>
 </div>
 
@@ -16,11 +18,13 @@
         <strong>Recuerda!</strong> Antes de agregar un nuevo lugar recuerda crear primero la sede, ello para asignar el lugar a la correspondiente sede
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+    @can('ver.costo.lugares')
     @include('components.private.table', [
     'titleTable' => 'Lista de lugares',
     'searchable'=>false,
     'paginate' => $lugaresBody,
     ])
+    @endcan
 </div>
 
 @endsection
@@ -44,7 +48,10 @@
                     <th>${headerLugares[4]}</th>
                     <th>${headerLugares[5]}</th>
                     <th class="text-center">SEDE</th>
+                    @if (auth()->user()->can('editar.lugares') || auth()->user()->can('eliminar.lugares'))
                     <th>${headerLugares[7]}</th>
+                    @endif
+
                 </tr>
     `);
     bodyLugares.data.forEach((e) => {
@@ -56,22 +63,30 @@
                     <td>${e.descripcion}</td>
                     <td>${e.abreviatura}</td>
                     <td>s/. ${e.costohora}.00</td>
+                    @can('estado.lugares')
                     <td>
-                        ${e.estado == "A" ? '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-success me-1">PUBLICADO</span></button>' : '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-danger me-1">BORRADOR</span></button>'}
+                    ${e.estado == "A" ? '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-success me-1">PUBLICADO</span></button>' : '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-danger me-1">BORRADOR</span></button>'}
                     </td>
+                    @endcan
                     <td>${e.tipo == "V" ? 'VARIABLE' : 'FIJO'}</td>
                     <td class="text-center"><a href="{{ route('sedes.index') }}" data-toggle="tooltip" title="Ir a sedes"><span class="badge bg-label-primary me-1">${e.sede}</span></a></td>
+                    @can(auth()->user()->can('editar.lugares') || auth()->user()->can('eliminar.lugares'))
                     <td>
                         <div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                <i class="bx bx-dots-vertical-rounded"></i>
+                            <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
-                            <div class="dropdown-menu">
-                                <a href="/admin/lugares/editar/${e.id}" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
-                                <button class="dropdown-item delete" data-id="${e.id}"><i class="bx bx-trash me-1"></i> Eliminar</button>
-                            </div>
+                                <div class="dropdown-menu">
+                                    @can('editar.lugar')
+                                    <a href="/admin/lugares/editar/${e.id}" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
+                                    @endcan
+                                    @can('eliminar.lugares')
+                                    <button class="dropdown-item delete" data-id="${e.id}"><i class="bx bx-trash me-1"></i> Eliminar</button>
+                                    @endcan
+                                </div>
                         </div>
                     </td>
+                    @endcan
                 </tr>
                 `);
     });

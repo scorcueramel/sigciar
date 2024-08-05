@@ -13,6 +13,15 @@ use Illuminate\Support\Str;
 
 class LugaresController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('permission:ver.lugares|crear.lugares|editar.lugares|eliminar.lugares', ['only' => ['index']]);
+        $this->middleware('permission:crear.lugares', ['only' => ['create', 'store']]);
+        $this->middleware('permission:editar.lugares', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:estado.lugares', ['only' => ['changeState']]);
+        $this->middleware('permission:eliminar.lugares', ['only' => ['destroy']]);
+    }
     protected function getUserLoginData(){
         $userData = Persona::where('usuario_id',Auth::user()->id)->first();
         $nombres = $userData->nombres." ".$userData->apepaterno." ".$userData->apematerno;

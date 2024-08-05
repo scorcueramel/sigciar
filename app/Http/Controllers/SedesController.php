@@ -12,6 +12,13 @@ use Illuminate\Validation\Rules\File;
 
 class SedesController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:ver.sedes|crear.sedes|editar.sedes|eliminar.sedes', ['only' => ['index']]);
+        $this->middleware('permission:crear.sedes', ['only' => ['create', 'store']]);
+        $this->middleware('permission:editar.sedes', ['only' => ['edit', 'update', 'changeState']]);
+        $this->middleware('permission:eliminar.sedes', ['only' => ['destroy']]);
+    }
     protected $disk = 'public';
     public function index()
     {
