@@ -97,6 +97,51 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-3">
                         <div class="card text-white mb-3 tarjeta">
+                            <div class="card-header tarjeta__cabecera">{{Str::upper('Tipo de Servicios')}}</div>
+                            <div class="card-body tarjeta__cuerpo">
+                                @foreach ($permisos as $permiso)
+                                @if (Str::contains($permiso->name,'.tipos.servicios'))
+                                <div class="form-check form-switch">
+                                    <input class="name form-check-input checkpermiso" type="checkbox" role="switch" id="{{$permiso->name}}" name="permission[]" value="{{$permiso->id}}" {{ in_array($permiso->id, $rolePermission) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="{{$permiso->name}}">{{ strtoupper(str_replace('.tipos.servicios', '', $permiso->name)) }}</label>
+                                </div>
+                                @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3">
+                        <div class="card text-white mb-3 tarjeta">
+                            <div class="card-header tarjeta__cabecera">{{Str::upper('Subtipo de Servicios')}}</div>
+                            <div class="card-body tarjeta__cuerpo">
+                                @foreach ($permisos as $permiso)
+                                @if (Str::contains($permiso->name,'.subtipo.servicios'))
+                                <div class="form-check form-switch">
+                                    <input class="name form-check-input checkpermiso" type="checkbox" role="switch" id="{{$permiso->name}}" name="permission[]" value="{{$permiso->id}}" {{ in_array($permiso->id, $rolePermission) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="{{$permiso->name}}">{{ strtoupper(str_replace('.subtipo.servicios', '', $permiso->name)) }}</label>
+                                </div>
+                                @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3">
+                        <div class="card text-white mb-3 tarjeta">
+                            <div class="card-header tarjeta__cabecera">{{Str::upper('Costo de Lugar')}}</div>
+                            <div class="card-body tarjeta__cuerpo">
+                                @foreach ($permisos as $permiso)
+                                @if (Str::contains($permiso->name,'.costo.lugar'))
+                                <div class="form-check form-switch">
+                                    <input class="name form-check-input checkpermiso" type="checkbox" role="switch" id="{{$permiso->name}}" name="permission[]" value="{{$permiso->id}}" {{ in_array($permiso->id, $rolePermission) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="{{$permiso->name}}">{{ strtoupper(str_replace('.costo.lugar', '', $permiso->name)) }}</label>
+                                </div>
+                                @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3">
+                        <div class="card text-white mb-3 tarjeta">
                             <div class="card-header tarjeta__cabecera">{{Str::upper('Tenis')}}</div>
                             <div class="card-body tarjeta__cuerpo">
                                 @foreach ($permisos as $permiso)
@@ -194,6 +239,21 @@
                                 <div class="form-check form-switch">
                                     <input class="name form-check-input checkpermiso" type="checkbox" role="switch" id="{{$permiso->name}}" name="permission[]" value="{{$permiso->id}}" {{ in_array($permiso->id, $rolePermission) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="{{$permiso->name}}">{{ strtoupper(str_replace('.usuario', '', $permiso->name)) }}</label>
+                                </div>
+                                @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3">
+                        <div class="card text-white mb-3 tarjeta">
+                            <div class="card-header tarjeta__cabecera">{{Str::upper('Promesas')}}</div>
+                            <div class="card-body tarjeta__cuerpo">
+                                @foreach ($permisos as $permiso)
+                                @if (Str::contains($permiso->name,'.promesas'))
+                                <div class="form-check form-switch">
+                                    <input class="name form-check-input checkpermiso" type="checkbox" role="switch" id="{{$permiso->name}}" name="permission[]" value="{{$permiso->id}}" {{ in_array($permiso->id, $rolePermission) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="{{$permiso->name}}">{{ strtoupper(str_replace('.promesas', '', $permiso->name)) }}</label>
                                 </div>
                                 @endif
                                 @endforeach

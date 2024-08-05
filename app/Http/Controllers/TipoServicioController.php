@@ -10,6 +10,14 @@ use Illuminate\Support\Str;
 
 class TipoServicioController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:ver.tipos.servicios|crear.tipos.servicios|editar.tipos.servicios|eliminar.tipos.servicios', ['only' => ['index']]);
+        $this->middleware('permission:crear.tipos.servicios', ['only' => ['create', 'store']]);
+        $this->middleware('permission:editar.tipos.servicios', ['only' => ['edit', 'update', 'changeState']]);
+        $this->middleware('permission:eliminar.tipos.servicios', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         $headerTable = TipoServicio::select('id', 'descripcion', 'abreviatura', 'estado')->first()->toArray();
@@ -60,8 +68,8 @@ class TipoServicioController extends Controller
         }
 
         $tiposervicio = TipoServicio::create([
-            'descripcion'=> Str::upper($request->descripcion),
-            'abreviatura'=> $request->abreviatura,
+            'descripcion' => Str::upper($request->descripcion),
+            'abreviatura' => $request->abreviatura,
             'estado' => $request->estado
         ]);
 
@@ -75,8 +83,8 @@ class TipoServicioController extends Controller
 
     public function edit(string $id)
     {
-        $tiposervicio = TipoServicio::findOrFail( $id );
-        return view("pages.private.tipos.tipo-servicio.edit",compact("tiposervicio"));
+        $tiposervicio = TipoServicio::findOrFail($id);
+        return view("pages.private.tipos.tipo-servicio.edit", compact("tiposervicio"));
     }
 
     public function update(Request $request, $id)
@@ -97,7 +105,7 @@ class TipoServicioController extends Controller
             return redirect()->back()->withErrors($validation)->withInput();
         }
 
-        $tiposervicio = TipoServicio::findOrFail( $id );
+        $tiposervicio = TipoServicio::findOrFail($id);
         $tiposervicio->descripcion = $request->descripcion;
         $tiposervicio->abreviatura = $request->abreviatura;
         $tiposervicio->estado = $request->estado;

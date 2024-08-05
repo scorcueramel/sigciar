@@ -82,12 +82,37 @@ class PermisosTableSeeder extends Seeder
             "detalles.usuarios",
             "editar.usuarios",
             "eliminar.usuarios",
+            // promesas
+            "ver.promesas",
+            "crear.promesas",
+            "estado.promesas",
+            "detalles.promesas",
+            "editar.promesas",
+            "eliminar.promesas",
             //roles
             "ver.roles",
             "crear.roles",
             "detalles.roles",
             "editar.roles",
             "eliminar.roles",
+            //tipo de servicios
+            "ver.tipos.servicios",
+            "crear.tipos.servicios",
+            "estado.tipos.servicios",
+            "editar.tipos.servicios",
+            "eliminar.tipos.servicios",
+            // subtipo de servicio
+            "ver.subtipo.servicios",
+            "estado.subtipo.servicios",
+            "crear.subtipo.servicios",
+            "editar.subtipo.servicios",
+            "eliminar.subtipo.servicios",
+            // costo de lugar
+            "ver.costo.lugar",
+            "crear.costo.lugar",
+            "estado.costo.lugar",
+            "editar.costo.lugar",
+            "eliminar.costo.lugar",
         ];
 
         foreach ($permisos as $permiso) {

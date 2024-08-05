@@ -14,6 +14,13 @@ use Illuminate\Support\Str;
 
 class LugarCostosController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:ver.costo.lugar|crear.costo.lugar|editar.costo.lugar|eliminar.costo.lugar', ['only' => ['index']]);
+        $this->middleware('permission:crear.costo.lugar', ['only' => ['create', 'store']]);
+        $this->middleware('permission:editar.costo.lugar', ['only' => ['edit', 'update', 'changeState']]);
+        $this->middleware('permission:eliminar.costo.lugar', ['only' => ['destroy']]);
+    }
     public function index()
     {
         $data = LugarCosto::where('estado','A')->get();

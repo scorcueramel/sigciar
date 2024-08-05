@@ -61,9 +61,11 @@
             </ul>
         </li> -->
         {{-- Sección de actividades --}}
+        @if (auth()->user()->can('ver.tenis') || auth()->user()->can('ver.nutricion') || auth()->user()->can('ver.otrosprogramas'))
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Programas</span>
         </li>
+        @endif
         @can('ver.tenis')
         <li class="menu-item {{$activePage == 'tenis.edit' || $activePage == 'tenis.index' || $activePage == 'tenis.create' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'tenis.create' ? 'active' : '' }}">
@@ -86,6 +88,7 @@
             </ul>
         </li>
         @endcan
+        @can('ver.nutricion')
         <li class="menu-item {{ $activePage == 'nutricion.index' || $activePage == 'nutricion.create' || $activePage == 'nutricion.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'nutricion.create' ? 'active' : '' }}">
                 <i class="fa-regular fa-salad" style="margin-right: 13px"></i>
@@ -97,13 +100,17 @@
                         <div data-i18n="Notifications">Programas creados</div>
                     </a>
                 </li>
+                @can('crear.nutricion')
                 <li class="menu-item {{ $activePage == 'nutricion.create' ? 'active' : '' }}">
                     <a href="{{route('nutricion.create')}}" class="menu-link">
                         <div data-i18n="Account">Nuevo Programa</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
+        @can('ver.otrosprogramas')
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="fa-regular fa-list-check" style="margin-right: 13px;"></i>
@@ -115,18 +122,23 @@
                         <div data-i18n="Notifications">Programas creados</div>
                     </a>
                 </li>
+                @can('crear.nutricion')
                 <li class="menu-item">
                     <a href="#" class="menu-link">
                         <div data-i18n="Account">Nuevo Programa</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
-
+        @endcan
         {{-- Sección de inscripciones --}}
+        @if (auth()->user()->can('ver.inscripciones'))
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Inscripciones</span>
         </li>
+        @endif
+        @can('ver.inscripciones')
         <li class="menu-item {{ $activePage == 'inscripciones.index' || $activePage == 'inscripciones.create' || $activePage == 'inscripciones.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">
                 <i class="fa-regular fa-calendar-lines-pen" style="margin-right: 13px;"></i>
@@ -138,18 +150,24 @@
                         <div data-i18n="Notifications">Miembros Inscritos</div>
                     </a>
                 </li>
+                @can('crear.inscripciones')
                 <li class="menu-item {{ $activePage == 'inscripciones.create' ? 'active' : '' }}">
                     <a href="{{ route('inscripciones.create') }}" class="menu-link">
                         <div data-i18n="Account">Inscribir Nuevo</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
 
         {{-- Sección de Noticias --}}
+        @if (auth()->user()->can('ver.categorias') || auth()->user()->can('ver.noticias'))
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">INFORMACIÓN</span>
         </li>
+        @endif
+        @can('ver.categorias')
         <li class="menu-item {{ $activePage == 'categorias.index' || $activePage == 'categorias.edit' || $activePage == 'categorias.create' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'categorias.create' ? 'active' : '' }}">
                 <i class="fa-regular fa-layer-group" style="margin-right: 13px;"></i>
@@ -161,13 +179,17 @@
                         <div data-i18n="Account">Todas las Categorías</div>
                     </a>
                 </li>
+                @can('crear.categorias')
                 <li class="menu-item {{ $activePage == 'categorias.create' ? 'active' : '' }}">
                     <a href="{{ route('categorias.create') }}" class="menu-link">
                         <div data-i18n="Account">Nueva Categoría</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
+        @can('ver.noticias')
         <li class="menu-item {{ $activePage == 'noticias.index' || $activePage == 'noticias.edit' ||  $activePage == 'noticias.create' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'categorias.create' ? 'active' : '' }}">
                 <i class="fa-solid fa-newspaper" style="margin-right: 13px"></i>
@@ -179,18 +201,24 @@
                         <div data-i18n="Basic">Todas las Noticias</div>
                     </a>
                 </li>
+                @can('crear.noticias')
                 <li class="menu-item {{ $activePage == 'noticias.create' ? 'active' : '' }}">
                     <a href="{{route('noticias.create')}}" class="menu-link">
                         <div data-i18n="Basic">Nueva Noticia</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
 
         {{-- Sección de Usuarios --}}
+        @if (auth()->user()->can('ver.usuario') || auth()->user()->can('ver.roles') || auth()->user()->can('ver.promesas'))
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Personal y Roles</span>
         </li>
+        @endif
+        @can('ver.promesas')
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="fa-solid fa-hands-holding-child" style="margin-right: 13px"></i>
@@ -202,13 +230,17 @@
                         <div data-i18n="Account">Todos las Promesas</div>
                     </a>
                 </li>
+                @can('crear.promesas')
                 <li class="menu-item">
                     <a href="#" class="menu-link">
                         <div data-i18n="Account">Nueva Promesa</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
+        @can('ver.usuario')
         <li class="menu-item {{ $activePage == 'usuarios.index' || $activePage == 'usuarios.edit' || $activePage == 'usuarios.create' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="fa-regular fa-users" style="margin-right: 13px"></i>
@@ -220,13 +252,17 @@
                         <div data-i18n="Account">Todos los Usuarios</div>
                     </a>
                 </li>
+                @can('crear.usuarios')
                 <li class="menu-item {{ $activePage == 'usuarios.create' ? 'active' : '' }}">
                     <a href="{{ route('usuarios.create') }}" class="menu-link">
                         <div data-i18n="Account">Nuevo Usuario</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
+        @can('ver.roles')
         <li class="menu-item {{ $activePage == 'roles.index' || $activePage == 'roles.edit' || $activePage == 'roles.create' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="fa-regular fa-lock" style="margin-right: 13px"></i>
@@ -238,19 +274,25 @@
                         <div data-i18n="Basic">Todos los Roles</div>
                     </a>
                 </li>
+                @can('crear.roles')
                 <li class="menu-item {{ $activePage == 'roles.create' ? 'active' : '' }}">
                     <a href="{{route('roles.create')}}" class="menu-link">
                         <div data-i18n="Basic">Nuevo Rol</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
 
 
         {{-- MANTENIMIENTO DE ESPACIOS --}}
+        @if (auth()->user()->can('ver.sedes') || auth()->user()->can('ver.lugares'))
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Espacios</span>
         </li>
+        @endif
+        @can('ver.sedes')
         <li class="menu-item {{ $activePage == 'sedes.index' || $activePage == 'sedes.create' || $activePage == 'sedes.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'sedes.index' ? 'active' : '' }}">
                 <i class="fa-regular fa-hotel" style="margin-right: 13px;"></i>
@@ -262,13 +304,17 @@
                         <div data-i18n="Account">Todas las Sedes</div>
                     </a>
                 </li>
+                @can('crear.lugares')
                 <li class="menu-item {{ $activePage == 'sedes.create' ? 'active' : '' }}">
                     <a href="{{route('sedes.create')}}" class="menu-link">
                         <div data-i18n="Notifications">Nueva Sede</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
+        @can('ver.lugares')
         <li class="menu-item {{ $activePage == 'lugares.index' || $activePage == 'lugares.create' || $activePage == 'lugares.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'lugares.index' ? 'active' : '' }}">
                 <i class="fa-regular fa-court-sport" style="margin-right: 13px;"></i>
@@ -280,19 +326,25 @@
                         <div data-i18n="Account">Todas los Lugares</div>
                     </a>
                 </li>
+                @can('crear.lugares')
                 <li class="menu-item {{ $activePage == 'lugares.create' ? 'active' : '' }}">
                     <a href="{{ route('lugares.create') }}" class="menu-link">
                         <div data-i18n="Notifications">Nueva Lugares</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
 
 
         {{-- MANTENIMIENTO DE TIPOS --}}
+        @if (auth()->user()->can('ver.tipos.servicios') || auth()->user()->can('ver.tipos.subservicios') || auth()->user()->can('ver.costo.lugar'))
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Mantenimiento de Tipos</span>
         </li>
+        @endif
+        @can('ver.tipos.servicios')
         <li class="menu-item {{ $activePage == 'tipo.servicio.index' || $activePage == 'tipo.servicio.create' || $activePage == 'tipo.servicio.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'tipo.servicio.index' ? 'active' : '' }}">
                 <i class="fa-solid fa-box-open" style="margin-right: 13px;"></i>
@@ -304,13 +356,17 @@
                         <div data-i18n="Account">Todos los Tipos</div>
                     </a>
                 </li>
+                @can('crear.tipos.servicios')
                 <li class="menu-item {{ $activePage == 'tipo.servicio.create' ? 'active' : '' }}">
                     <a href="{{route('tipo.servicio.create')}}" class="menu-link">
                         <div data-i18n="Notifications">Nuevo Tipo</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
+        @can('ver.subtipo.servicios')
         <li class="menu-item {{ $activePage == 'subtipos.servicio.index' || $activePage == 'subtipos.servicio.create' || $activePage == 'subtipos.servicio.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'subtipos.servicio.index' ? 'active' : '' }}">
                 <i class="fa-solid fa-box-open-full" style="margin-right: 13px;"></i>
@@ -322,13 +378,17 @@
                         <div data-i18n="Account">Todos los Subtipos</div>
                     </a>
                 </li>
+                @can('crear.subtipo.servicios')
                 <li class="menu-item {{ $activePage == 'subtipos.servicio.create' ? 'active' : '' }}">
                     <a href="{{ route('subtipos.servicio.create') }}" class="menu-link">
                         <div data-i18n="Notifications">Nuevo Subtipo</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
+        @can('ver.costo.lugar')
         <li class="menu-item {{ $activePage == 'costos.lugares.index' || $activePage == 'costos.lugares.create' || $activePage == 'costos.lugares.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'costos.lugares.index' ? 'active' : '' }}">
                 <i class="fa-regular fa-money-check-dollar-pen" style="margin-right: 13px;"></i>
@@ -340,13 +400,16 @@
                         <div data-i18n="Account">Todos Lugar Costos</div>
                     </a>
                 </li>
+                @can('crear.costo.lugar')
                 <li class="menu-item {{ $activePage == 'costos.lugares.create' ? 'active' : '' }}">
                     <a href="{{ route('costos.lugares.create') }}" class="menu-link">
                         <div data-i18n="Notifications">Nuevo Lugar Costos</div>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
 
     </ul>
 </aside>
