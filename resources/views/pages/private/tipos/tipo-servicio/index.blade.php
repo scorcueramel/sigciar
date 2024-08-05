@@ -7,10 +7,14 @@
         <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Tipo Servicio /</span> Todas </h4>
     </div>
     <div class="col-md text-end">
+        @can('crear.tipos.servicios')
         <a href="{{route('tipo.servicio.create')}}" class="btn btn-sm btn-info"><i class="fa-solid fa-box me-1"></i>Nuevo</a>
+        @endcan
     </div>
 </div>
+@can('ver.tipos.servicios')
 @include('components.private.table', ['titleTable' => 'Lista de servicios registrados','searchable'=>false,'paginate'=>$sedesBody])
+@endcan
 @endsection
 @push('js')
 <script>
@@ -23,8 +27,12 @@
                     <th>${headerSedes[0]}</th>
                     <th>${headerSedes[1]}</th>
                     <th>${headerSedes[2]}</th>
+                    @can('estado.tipos.servicios')
                     <th>${headerSedes[3]}</th>
+                    @endcan
+                    @if(auth()->user()->can('editar.tipos.servicios') || auth()->user()->can('eliminar.tipos.servicios'))
                     <th>Acciones</th>
+                    @endif
                 </tr>
         `);
 
@@ -36,20 +44,28 @@
                     </td>
                     <td>${e.descripcion}</td>
                     <td>${e.abreviatura}</td>
+                    @can('estado.tipos.servicios')
                     <td>
-                        ${e.estado == "A" ? '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-success me-1">PUBLICADO</span></button>' : '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-danger me-1">BORRADOR</span></button>'}
+                    ${e.estado == "A" ? '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-success me-1">PUBLICADO</span></button>' : '<button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" data-id="'+e.id+'"><span class="badge bg-label-danger me-1">BORRADOR</span></button>'}
                     </td>
+                    @endcan
+                    @if(auth()->user()->can('editar.tipos.servicios') || auth()->user()->can('eliminar.tipos.servicios'))
                     <td>
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="/admin/tipos-servicio/editar/${e.id}" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
-                                <button class="dropdown-item delete" data-id="${e.id}"><i class="bx bx-trash me-1"></i> Eliminar</button>
-                            </div>
+                    <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                        <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            @can('editar.tipos.servicios')
+                            <a href="/admin/tipos-servicio/editar/${e.id}" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
+                            @endcan
+                            @can('eliminar.tipos.servicios')
+                            <button class="dropdown-item delete" data-id="${e.id}"><i class="bx bx-trash me-1"></i> Eliminar</button>
+                            @endcan
                         </div>
+                    </div>
                     </td>
+                    @endif
                 </tr>
         `);
     });
