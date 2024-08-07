@@ -27,14 +27,12 @@ class PermisosTableSeeder extends Seeder
             "calendario.dashboard",
             // sedes
             "ver.sedes",
-            "detalles.sedes",
             "estado.sedes",
             "crear.sedes",
             "editar.sedes",
             "eliminar.sedes",
             //lugares
             "ver.lugares",
-            "detalles.lugares",
             "estado.lugares",
             "crear.lugares",
             "editar.lugares",
