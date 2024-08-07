@@ -18,7 +18,7 @@
         <strong>Recuerda!</strong> Antes de agregar un nuevo lugar recuerda crear primero la sede, ello para asignar el lugar a la correspondiente sede
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    @can('ver.costo.lugares')
+    @can('ver.lugares')
     @include('components.private.table', [
     'titleTable' => 'Lista de lugares',
     'searchable'=>false,
