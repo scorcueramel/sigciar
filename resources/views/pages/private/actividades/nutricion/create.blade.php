@@ -167,7 +167,7 @@
                                                 </span>
                                             </div>
                                         </div>
-
+{{--
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label" for="cupos">Cupos</label>
                                             <div class="col-sm-9">
@@ -205,7 +205,7 @@
                                                 </span>
                                             </div>
                                         </div>
-
+--}}
                                         <div class="row mb-3">
                                             <label class="col-sm-3 form-label" for="publicado">Publicado</label>
                                             <div class="col-sm-9">
@@ -561,10 +561,10 @@
             let lugar = $("#lugar").val();
             let fechaInicio = $("#fechaInicio").val();
             let termino = $("#termino").val();
-            let cupos = $("#cupos").val();
+            let cupos = 1;
             let publicadoIsChecked = $("input[name=publicado]:checked ");
             let publicado = publicadoIsChecked.val();
-            let horasActividad = $("#horas").val();
+            let horasActividad = 1;
             let fechasDefinidas = [];
             let data = {};
 

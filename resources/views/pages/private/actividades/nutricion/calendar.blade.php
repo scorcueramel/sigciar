@@ -72,7 +72,7 @@
             unselectAuto: true,
             selectable: true,
             headerToolbar: {
-                left: 'today prevYear,prev,next,nextYear',
+                left: 'today prev,next',
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay',
             },
@@ -80,7 +80,7 @@
             businessHours: dispo,
             selectConstraint: "businessHours",
             select: function(info) {
-                console.log(info);
+                alert(info);
             }
         });
         calendar.render();
