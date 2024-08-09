@@ -6,8 +6,13 @@
     <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
         <div class="card">
             <div class="row row-bordered g-0">
-                <div class="pt-4 px-3">
+                <div class="pt-4 px-4">
                     <h5 class="text-nowrap mb-2">Calendario Genelares de Actividades</h5>
+                    <div class="row mx-1">
+                        <div class="alert alert-primary" role="alert">
+                            selecciona una o varias opciones para buscar inscripciones existentes
+                        </div>
+                    </div>
                     <div class="row mt-5">
                         <div class="col-sm-12 col-md-2">
                             <label for="">Sede</label>

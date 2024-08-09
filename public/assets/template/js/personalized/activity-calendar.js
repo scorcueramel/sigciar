@@ -1,28 +1,3 @@
-$("#sedes").on('change', function() {
-    var id = $("#sedes").val();
-    $.ajax({
-        type: "GET",
-        url: `/admin/obtener/lugar/${id}/calendario-general`,
-        success: function(response) {
-            if (response.length > 0) {
-                $("#lugares").removeAttr('disabled');
-                $("#lugares").html('');
-                $("#lugares").append('<option value="" disabled selected>Selecciona un lugar</option>');
-                response.forEach((e) => {
-                    $("#lugares").append(`
-                        <option value="${e.id}">${e.descripcion}</option>
-                    `);
-                });
-            } else {
-                $("#lugares").attr('disabled', 'disabled');
-                $("#lugares").html('');
-                $("#lugares").append('<option value="" disabled selected>Selecciona un lugar</option>');
-            }
-        }
-    });
-});
-
-
 var checkLogin = $('#loginCheck').val();
 // Obtener la fecha actual para bloquear los días pasados.
 moment.locale('es'); //->colocar el idioma español.
@@ -48,9 +23,10 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
         center: '',
         right: 'today prev,next'
     },
-    events: "/admin/obtener/eventos/",
-    eventClick: function() {
+    events: `/admin/carga/actividades`,
+    eventClick: function (){
         //obtener la data de la actividad cliqueada
     }
 });
 calendar.render();
+
