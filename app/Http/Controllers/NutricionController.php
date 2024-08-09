@@ -66,6 +66,17 @@ class NutricionController extends Controller
         return view("pages.private.actividades.nutricion.calendar", compact("disponibilidad"));
     }
 
+    public function getReservations(){
+        $inscritos = DB::select("select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
+        s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
+        from servicio_reservas sr
+        left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
+        left join servicios s on sp.servicio_id = s.id
+        WHERE s.tiposervicio_id=2 --AND sr.estado= 'CA");
+
+        return response()->json($inscritos);
+    }
+
     public function obtenerprecio()
     {
         $costohora = DB::select("SELECT
@@ -358,14 +369,11 @@ class NutricionController extends Controller
 
     public function inscriptionToProgram(Request $request)
     {
-
-        dd($request->all());
-
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->apepaterno . " " . $persona[0]->apematerno;
-        $servicioId = $request->idservicio;
-        $fechasDefinias = $request->fechasDefinidas;
+        $servicioId = 2;
+        $fechasDefinias = $request->fecha;
         $usuarioId = $request->id_miembro;
         $ip = $request->ip();
 

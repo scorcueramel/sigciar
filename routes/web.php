@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\PersonaRegisterController;
 use App\Http\Controllers\Auth\MemberRegisterController;
+use App\Http\Controllers\CalendarioGeneral;
 use App\Http\Controllers\NoticiasController;
 use App\Http\Controllers\TenisController;
 use Illuminate\Support\Facades\Route;
@@ -96,6 +97,10 @@ Route::group(['prefix' => 'ciar'], function () {
 Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
     Route::get('/dashboard', [HomeController::class, 'index'])->name('home.dashboard');
     Route::get('/carga/actividades',[HomeController::class, 'activities'])->name('calendario.home');
+    Route::get('/calendario/general',[CalendarioGeneral::class,'index'])->name('calendario.general');
+    Route::get('/obtener/lugar/{id}/calendario-general',[CalendarioGeneral::class,'chargePlaces'])->name('lugar.calendario.general');
+    Route::get('/obtener/eventos',[CalendarioGeneral::class,'chargeEvents'])->name('calendario.general.eventos');
+
 
     Route::group(['prefix'=> 'sedes'], function () {
         Route::get('/lista', [SedesController::class, 'index'])->name('sedes.index');
@@ -205,6 +210,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/eliminar',[NutricionController::class, 'destroy'])->name('nutricion.eliminar');
         Route::get('/obtener/precio',[NutricionController::class, 'obtenerprecio'])->name('nutricion.obtenerprecio');
         Route::post('/inscripcion/programa',[NutricionController::class, 'inscriptionToProgram'])->name('nutricion.inscripcion');
+        Route::get('/inscritos',[NutricionController::class, 'getReservations'])->name('nutricion.inscritos');
     });
 
     Route::group(['prefix'=> 'tipos-servicio'], function () {

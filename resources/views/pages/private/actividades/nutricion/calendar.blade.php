@@ -86,6 +86,7 @@
             events: "{{route('calendario.nutricion')}}",
             businessHours: dispo,
             selectConstraint: "businessHours",
+            events: `/admin/nutricion/inscritos`,
             select: function(info) {
                 var fecha = info.startStr;
                 var start = info.startStr;
