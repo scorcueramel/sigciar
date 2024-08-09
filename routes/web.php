@@ -192,6 +192,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/lista',[NutricionController::class,'index'])->name('nutricion.index');
         Route::get('/calendar',[NutricionController::class,'renderCalendar'])->name('nutricion.render.calender');
         Route::get('/tablanutricion',[NutricionController::class,'tableNutricion'])->name('tabla.nutricion');
+        Route::get('/obtener/{document}/miembro', [NutricionController::class, 'searchMember'])->name('buscar.miembro');
         Route::get('/calendarionutricion',[NutricionController::class,'calendarioNutricion'])->name('calendario.nutricion');
         Route::get('/calendario/disponibilidad',[NutricionController::class,'disponibilidadDias'])->name('calendario.disponibilidad.nutricion');
         Route::get('/nueva',[NutricionController::class,'create'])->name('nutricion.create');
@@ -202,6 +203,8 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/change/state', [NutricionController::class, 'changeState'])->name('tenis.change.state');
         Route::get('/detalle/{id}/actividad',[NutricionController::class,'show'])->name('show.actividad');
         Route::post('/eliminar',[NutricionController::class, 'destroy'])->name('nutricion.eliminar');
+        Route::get('/obtener/precio',[NutricionController::class, 'obtenerprecio'])->name('nutricion.obtenerprecio');
+        Route::post('/inscripcion/programa',[NutricionController::class, 'inscriptionToProgram'])->name('nutricion.inscripcion');
     });
 
     Route::group(['prefix'=> 'tipos-servicio'], function () {

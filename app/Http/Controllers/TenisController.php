@@ -220,7 +220,7 @@ class TenisController extends Controller
     public function searchMember(string $document)
     {
         if ($document != '' || $document != null) {
-            $findMember = Persona::where('documento', $document)->where('tipocategoria_id', '<>', 3)->where('tipocategoria_id', '<>', 4)->where('tipocategoria_id', '<>', 5)->get();
+            $findMember = Persona::where('documento', $document)->where('tipocategoria_id', '=', 2)->get();
             if (count($findMember) <= 0) {
                 $findMember = "Parece que el documento: $document no es de un miembro o no se encuentra registrado, favor de verificar que el documento ingresado sea correcto y corresponda a un miembro, luego volver a itentar";
                 return response()->json($findMember);

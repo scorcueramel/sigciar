@@ -41,6 +41,12 @@
     </div>
 </div>
 @endsection
+@include('components.private.modal', [
+'withTitle' => true,
+'withButtons' => true,
+'cancelbutton' => true,
+'mcTextCancelButton' => 'Cerrar',
+])
 @push('js')
 <script>
     $(document).ready(() => {
@@ -69,6 +75,7 @@
             height: 500,
             locale: 'es-PE',
             timeZone: 'UTC',
+            slotDuration: '01:00',
             unselectAuto: true,
             selectable: true,
             headerToolbar: {
@@ -80,10 +87,214 @@
             businessHours: dispo,
             selectConstraint: "businessHours",
             select: function(info) {
-                alert(info);
+                var fecha = info.startStr;
+                var start = info.startStr;
+                var end = info.endStr;
+                var valHora = validaHoraActual(start);
+                if (valHora) {
+                    $("#modalcomponent").modal('show');
+                    $("#mcLabel").text(`
+                        Fecha pasada!
+                    `);
+                    $("#mcbody").html(`
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>No puedes seleccionar una fecha pasada, porfavor selecciona fecha!</p>
+                            </div>
+                        </div>
+                    `);
+                    $('.cancelButton').on('click', function() {
+                        $("#mcLabel").text(``);
+                        $("#mcbody").text(``);
+                    });
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "{{route('nutricion.obtenerprecio')}}",
+                        success: function(response) {
+                            $("#precio_cita").val(`S/.${response[0].lugar_costo_hora}.00`);
+                            if (response[0].tipo == 'V') {
+                                $("#precio_cita").removeAttr('readonly');
+                            }
+                        }
+                    });
+                    $("#modalcomponent").modal('show');
+                    $("#mcLabel").text(`
+                        Registro de Cita
+                    `);
+                    $("#mcbody").html(`
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-3">
+                                <div class="mb-3">
+                                    <input type="hidden" value="${fecha}" id="fecha">
+                                    <label for="fecha" class="form-label">Fecha Seleccionada</label>
+                                    <input type="text" class="form-control" value="${formatearFecha(fecha)}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-3">
+                                <div class="mb-3">
+                                    <label for="hora_inicio" class="form-label">Hora de Inicio</label>
+                                    <input type="text" class="form-control" id="hora_inicio" value="${formatearHora(start)}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-3">
+                                <div class="mb-3">
+                                    <label for="hora_fin" class="form-label">Hora de Termino</label>
+                                    <input type="text" class="form-control" id="hora_fin" value="${formatearHora(end)}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-3">
+                                <div class="mb-3">
+                                    <label for="hora_fin" class="form-label">Precio Cita</label>
+                                    <input type="text" class="form-control" id="precio_cita" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4">
+                                <label for="buscar-miembro" class="form-label">Búscar Miembro</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Búscar Miembro" aria-label="Búsacar Miembro" aria-describedby="datos-miembro" id="documento-miembro">
+                                    <button class="btn btn-outline-primary" type="button" onclick="javascript:buscarMiembro(document.getElementById('documento-miembro').value)">Búscar</button>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-8">
+                                <label for="datos-miembro" class="form-label">Nombre de Miembro</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="mimebro-encontrado">Datos</span>
+                                    <input type="hidden" id="id_miembro">
+                                    <input type="text" class="form-control" id="miembro-encontrado" placeholder="Datos del Miembro" aria-label="mimebro-encontrado" aria-describedby="mimebro-encontrado" readonly>
+                                    <button class="btn btn-outline-primary" type="button" id="inscribirMiembro" onclick="javascript:inscribirMiembro()" disabled>Inscribir</button>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                    $('.cancelButton').on('click', function() {
+                        $("#mcLabel").text(``);
+                        $("#mcbody").text(``);
+                    });
+                }
             }
         });
         calendar.render();
     });
+
+    function inscribirMiembro() {
+        var fecha = $("#fecha").val();
+        var hora_inicio = $("#hora_inicio").val();
+        var hora_fin = $("#hora_fin").val();
+        var precio_cita = $("#precio_cita").val();
+        var id_miembro = $("#id_miembro").val();
+
+        var data = {
+            fecha,
+            hora_inicio,
+            hora_fin,
+            precio_cita,
+            id_miembro,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "{{route('nutricion.inscripcion')}}",
+            data: data,
+            dataType: "JSON",
+            success: function(response) {
+                console.log(response);
+            }
+        });
+    }
+
+    // Formtear Fecha Para Mostrar
+    function formatearFecha(fecha) {
+        var fecha = fecha;
+        var fecha_date = fecha.split('T');
+        fecha_date = fecha_date[0];
+        var fecha_format = fecha_date.split('-');
+        var fecha_salida = fecha_format[2] + '/' + fecha_format[1] + '/' + fecha_format[0]
+        return fecha_salida;
+    }
+    // Formtear Hora Para Mostrar
+    function formatearHora(hora) {
+        var fecha = hora;
+        var fecha_date = fecha.split('T');
+        var fecha_time = fecha_date[1].split(':');
+        fecha_date = fecha_date[0];
+        var horaSalida = fecha_time[0] + ':' + fecha_time[1];
+        return horaSalida;
+    }
+
+    // Formtear Fecha y Hora Inicial Para Almacenar
+    function formatearFechaInicial(fechaHoraInicial) {
+        var fecha = fechaHoraInicial;
+        var fecha_date = fecha.split('T');
+        var fecha_time = fecha_date[1].split(':');
+        fecha_date = fecha_date[0];
+        var fecha_format = fecha_date.split('-');
+        var fecha_salida = fecha_format[2] + '/' + fecha_format[1] + '/' + fecha_format[0]
+        var fechaHoraInicialFormat = fecha_salida + ' ' + fecha_time[0] + ':' + fecha_time[1];
+        return fechaHoraInicialFormat;
+    }
+
+    // Validar hora actual
+    function validaHoraActual(hora) {
+        let start = hora;
+        let fechaHoraActual = new Date();
+        let horaActual = fechaHoraActual.getHours();
+        let horaSelecc = formatearFechaInicial(start);
+        let horaSplit = horaSelecc.split(" ");
+        let horaSeleccionada = horaSplit[1].slice(0, 2);
+        let fechaActual = fechaHoraActual.getDate();
+        let fechaSeleccionada = horaSplit[0].slice(0, 2);
+
+
+        if (fechaSeleccionada == fechaActual) {
+            if (horaSeleccionada > horaActual) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        if (fechaSeleccionada > fechaActual) {
+            return false;
+        }
+
+        if (fechaSeleccionada < fechaActual) {
+            return true;
+        }
+    }
+
+    function buscarMiembro(documento) {
+        $.ajax({
+            type: "GET",
+            url: `/admin/nutricion/obtener/${documento}/miembro`,
+            success: function(response) {
+                console.log(response);
+                if (typeof(response) == 'string') {
+                    $("#modalcomponent").modal('show');
+                    $("#mcLabel").text(`
+                        Miembro no encontrado!
+                    `);
+                    $("#mcbody").html(`
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>${response}.</p>
+                                <p>De lo contrario puedes intentar registrnado al usuario dando click en el enlace a continuación <a href="{{route('registro.member')}}" target="_blank">Registrar</a></p>
+                            </div>
+                        </div>
+                    `);
+                    $('.cancelButton').on('click', function() {
+                        $("#mcLabel").text(``);
+                        $("#mcbody").text(``);
+                    });
+                } else {
+                    $("#id_miembro").val(`${response[0].id}`)
+                    $("#miembro-encontrado").val(`${response[0].nombres} ${response[0].apepaterno} ${response[0].apematerno}`)
+                    $("#inscribirMiembro").removeAttr("disabled");
+                }
+            }
+        });
+    }
 </script>
 @endpush
