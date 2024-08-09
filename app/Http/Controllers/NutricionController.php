@@ -66,6 +66,32 @@ class NutricionController extends Controller
         return view("pages.private.actividades.nutricion.calendar", compact("disponibilidad"));
     }
 
+    public function getReservations(){
+        $inscritos = DB::select("select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
+        s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
+        from servicio_reservas sr
+        left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
+        left join servicios s on sp.servicio_id = s.id
+        WHERE s.tiposervicio_id=2 --AND sr.estado= 'CA");
+
+        return response()->json($inscritos);
+    }
+
+    public function obtenerprecio()
+    {
+        $costohora = DB::select("SELECT
+                                    l.costohora AS lugar_costo_hora,
+                                    l.tipo AS tipo
+                                FROM servicios s
+                                    left join tipo_servicios ts ON s.tiposervicio_id = ts.id
+                                    left join sedes s2 ON s.sede_id = s2.id
+                                    left join lugars l ON s.lugar_id = l.id
+                                    left join personas p ON s.responsable_id = p.id
+                                    left join subtipo_servicios ss ON s.subtiposervicio_id = ss.id
+                                WHERE s.deleted_at IS NULL AND s.tiposervicio_id = 2");
+        return response()->json($costohora);
+    }
+
     public function tableNutricion()
     {
         $user = Auth::user();
@@ -341,6 +367,31 @@ class NutricionController extends Controller
         return response()->json(['idPlantilla' => $idPlantillaConvert, 'idRegistro' => $idRegistroConvert, 'respRegistro' => $respuesta]);
     }
 
+    public function inscriptionToProgram(Request $request)
+    {
+        $user = Auth::user();
+        $persona = Persona::where('usuario_id', $user->id)->get();
+        $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->apepaterno . " " . $persona[0]->apematerno;
+        $servicioId = 2;
+        $fechasDefinias = $request->fecha;
+        $usuarioId = $request->id_miembro;
+        $ip = $request->ip();
+
+        $request->validate([
+            'idplantilla',
+            'idmiembro',
+            'fechasDefinidas'
+        ]);
+
+        foreach ($fechasDefinias as $fd) {
+            $dia = $fd['dias'];
+            $hora = $fd['horarios'];
+            DB::select('SELECT servicio_inscripcion(?,?,?,?,?,?)', [$servicioId, $dia, $usuarioId, $hora, $usuarioActivo, $ip]);
+        }
+
+        return response()->json(['success' => 'ok']);
+    }
+
     public function show(string $id)
     {
         $detalleNutricion = DB::select("select
@@ -359,6 +410,23 @@ class NutricionController extends Controller
                                         and s.id = ?", [$id]);
 
         return response()->json($detalleNutricion);
+    }
+
+    // get member by document
+    public function searchMember(string $document)
+    {
+        if ($document != '' || $document != null) {
+            $findMember = Persona::where('documento', $document)->where('tipocategoria_id', '=', 2)->get();
+            if (count($findMember) <= 0) {
+                $findMember = "Parece que el documento: $document no es de un miembro o no se encuentra registrado, favor de verificar que el documento ingresado sea correcto y corresponda a un miembro, luego volver a itentar";
+                return response()->json($findMember);
+            } else {
+                return response()->json($findMember);
+            }
+        } else {
+            $findMember = "Parece que no ingresaste ningun documento para realizar una búsqueda.";
+            return response()->json($findMember);
+        }
     }
 
     public function edit(string $id)

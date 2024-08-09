@@ -218,22 +218,6 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        Horas x Actividad
-                                    </td>
-                                    <td>
-                                        ${data.hora} hrs.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Cupos
-                                    </td>
-                                    <td>
-                                        ${data.capacidad}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
                                         Costo
                                     </td>
                                     <td>

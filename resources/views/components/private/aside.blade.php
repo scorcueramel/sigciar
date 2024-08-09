@@ -23,6 +23,12 @@
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
+        <li class="menu-item {{ $activePage == 'calendario.general' ? 'active' : '' }}">
+            <a href="{{route('calendario.general')}}" class="menu-link">
+                <i class="fa-solid fa-calendar" style="margin-left: 2px;margin-right: 15px;"></i>
+                <div data-i18n="Analytics">Calendario General</div>
+            </a>
+        </li>
         @endcan
 
         <!-- Layouts -->
@@ -142,7 +148,7 @@
         <li class="menu-item {{ $activePage == 'inscripciones.index' || $activePage == 'inscripciones.create' || $activePage == 'inscripciones.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">
                 <i class="fa-regular fa-calendar-lines-pen" style="margin-right: 13px;"></i>
-                <div data-i18n="Account Settings">Miembros</div>
+                <div data-i18n="Account Settings">Inscritos</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">

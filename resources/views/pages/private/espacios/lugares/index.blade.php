@@ -7,7 +7,7 @@
         <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Lugares /</span> Todos </h4>
     </div>
     <div class="col-md text-end">
-        @can('ver.lugares')
+        @can('crear.lugares')
         <a href="{{route('lugares.create')}}" class="btn btn-sm btn-info"><i class="fa-regular fa-court-sport me-1"></i>Nuevo</a>
         @endcan
     </div>
@@ -51,7 +51,6 @@
                     @if (auth()->user()->can('editar.lugares') || auth()->user()->can('eliminar.lugares'))
                     <th>${headerLugares[7]}</th>
                     @endif
-
                 </tr>
     `);
     bodyLugares.data.forEach((e) => {
@@ -70,14 +69,14 @@
                     @endcan
                     <td>${e.tipo == "V" ? 'VARIABLE' : 'FIJO'}</td>
                     <td class="text-center"><a href="{{ route('sedes.index') }}" data-toggle="tooltip" title="Ir a sedes"><span class="badge bg-label-primary me-1">${e.sede}</span></a></td>
-                    @can(auth()->user()->can('editar.lugares') || auth()->user()->can('eliminar.lugares'))
+                    @if(auth()->user()->can('editar.lugares') || auth()->user()->can('eliminar.lugares'))
                     <td>
                         <div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                             <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
                                 <div class="dropdown-menu">
-                                    @can('editar.lugar')
+                                    @can('editar.lugares')
                                     <a href="/admin/lugares/editar/${e.id}" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Editar</a>
                                     @endcan
                                     @can('eliminar.lugares')
@@ -86,7 +85,7 @@
                                 </div>
                         </div>
                     </td>
-                    @endcan
+                    @endif
                 </tr>
                 `);
     });
