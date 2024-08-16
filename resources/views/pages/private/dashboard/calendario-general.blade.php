@@ -1,18 +1,13 @@
 @extends('layouts.private.private', ['activePage' => 'calendario.general'])
-@push('title', 'Panel de Administración')
+@push('title', 'Calendario General')
 @section('content')
 <div class="row">
     @can('calendario.dashboard')
     <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
         <div class="card">
             <div class="row row-bordered g-0">
-                <div class="pt-4 px-4">
+                <div class="pt-4 px-3">
                     <h5 class="text-nowrap mb-2">Calendario Genelares de Actividades</h5>
-                    <div class="row mx-1">
-                        <div class="alert alert-primary" role="alert">
-                            selecciona una o varias opciones para buscar inscripciones existentes
-                        </div>
-                    </div>
                     <div class="row mt-5">
                         <div class="col-sm-12 col-md-2">
                             <label for="">Sede</label>
@@ -56,5 +51,62 @@
 </div>
 @endsection
 @push('js')
-<script src="{{asset('assets/template/js/personalized/activity-calendar.js')}}"></script>
+
+<script>
+    $("#sedes").on('change', function() {
+        var id = $("#sedes").val();
+        $.ajax({
+            type: "GET",
+            url: `/admin/obtener/lugar/${id}/calendario-general`,
+            success: function(response) {
+                if (response.length > 0) {
+                    $("#lugares").removeAttr('disabled');
+                    $("#lugares").html('');
+                    $("#lugares").append('<option value="" disabled selected>Selecciona un lugar</option>');
+                    response.forEach((e) => {
+                        $("#lugares").append(`
+                            <option value="${e.id}">${e.descripcion}</option>
+                        `);
+                    });
+                } else {
+                    $("#lugares").attr('disabled', 'disabled');
+                    $("#lugares").html('');
+                    $("#lugares").append('<option value="" disabled selected>Selecciona un lugar</option>');
+                }
+            }
+        });
+    });
+
+    var checkLogin = $('#loginCheck').val();
+    // Obtener la fecha actual para bloquear los días pasados.
+    moment.locale('es'); //->colocar el idioma español.
+
+    var calendarEl = document.getElementById('calendario');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        themeSystem: 'bootstrap5',
+        allDaySlot: false,
+        contentHeight: 20,
+        dayMaxEvents: 1,
+        editable: true,
+        eventOverlap: true,
+        eventShortHeight: 'short',
+        height: 500,
+        initialView: 'dayGridMonth',
+        locale: 'es-PE',
+        selectable: true,
+        timeZone: 'UTC',
+        unselectAuto: true,
+        headerToolbar: {
+            left: 'title',
+            center: '',
+            right: 'today prev,next'
+        },
+        events: `/admin/obtener/eventos`,
+        eventClick: function() {
+            //obtener la data de la actividad cliqueada
+        }
+    });
+    calendar.render();
+</script>
 @endpush

@@ -25,6 +25,19 @@ class NutricionController extends Controller
     {
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
+        $progrmasNutricion = DB::select("select
+                                            s.id ,ts.descripcion as tipo_servicio ,
+                                            s2.descripcion as sede,
+                                            l.descripcion as lugar_descripcion
+                                            from servicios s
+                                            left join tipo_servicios ts on s.tiposervicio_id = ts.id
+                                            left join sedes s2 on s.sede_id = s2.id
+                                            left join lugars l on s.lugar_id = l.id
+                                            left join personas p on s.responsable_id = p.id
+                                            left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
+                                            where s.deleted_at is null and s.tiposervicio_id = 2");
+
+
         if ($user->hasRole('ADMINISTRADOR')) {
             $disponibilidad = DB::select("SELECT
                                             sd.inicio::time as startTime,
@@ -63,10 +76,67 @@ class NutricionController extends Controller
                                             and s.responsable_id = ?;", [$persona[0]->id]);
         }
 
-        return view("pages.private.actividades.nutricion.calendar", compact("disponibilidad"));
+        return view("pages.private.actividades.nutricion.calendar", compact("disponibilidad","progrmasNutricion"));
     }
 
-    public function getReservations(){
+    public function programForDays(string $idprograma)
+    {
+        $user = Auth::user();
+        $persona = Persona::where('usuario_id', $user->id)->get();
+        $progrmasNutricion = DB::select("select
+                                            s.id ,ts.descripcion as tipo_servicio ,
+                                            s2.descripcion as sede,
+                                            l.descripcion as lugar_descripcion
+                                            from servicios s
+                                            left join tipo_servicios ts on s.tiposervicio_id = ts.id
+                                            left join sedes s2 on s.sede_id = s2.id
+                                            left join lugars l on s.lugar_id = l.id
+                                            left join personas p on s.responsable_id = p.id
+                                            left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
+                                            where s.deleted_at is null and s.tiposervicio_id = 2");
+
+
+        if ($user->hasRole('ADMINISTRADOR')) {
+            $disponibilidad = DB::select("SELECT DISTINCT
+                                            sd.inicio as startTime,
+                                            sd.fin as endTime,
+                                            (case when substring(sd.dia,1,2) = 'DO' then 0
+                                            when substring(sd.dia,1,2) = 'LU' then 1
+                                            when substring(sd.dia,1,2) = 'MA' then 2
+                                            when substring(sd.dia,1,2) = 'MI' then 3
+                                            when substring(sd.dia,1,2) = 'JU' then 4
+                                            when substring(sd.dia,1,2) = 'VI' then 5 else 6 end) as daysOfWeek
+                                            FROM public.servicio_disponibles sd
+                                            left join public.servicio_plantillas sp on sd.servicioplantilla_id = sp.id
+                                            left join public.servicios s on sp.servicio_id = s.id
+                                            left join public.tipo_servicios ts on s.tiposervicio_id = ts.id
+                                            left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                            WHERE s.id = ? and s.estado= 'A';",[$idprograma]);
+        } else {
+            $disponibilidad = DB::select("SELECT DISTINCT
+                                            sd.inicio as startTime,
+                                            sd.fin as endTime,
+                                            (case when substring(sd.dia,1,2) = 'DO' then 0
+                                            when substring(sd.dia,1,2) = 'LU' then 1
+                                            when substring(sd.dia,1,2) = 'MA' then 2
+                                            when substring(sd.dia,1,2) = 'MI' then 3
+                                            when substring(sd.dia,1,2) = 'JU' then 4
+                                            when substring(sd.dia,1,2) = 'VI' then 5 else 6 end) as daysOfWeek
+                                            FROM public.servicio_disponibles sd
+                                            left join public.servicio_plantillas sp on sd.servicioplantilla_id = sp.id
+                                            left join public.servicios s on sp.servicio_id = s.id
+                                            left join public.tipo_servicios ts on s.tiposervicio_id = ts.id
+                                            left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                            WHERE s.id = ? and s.estado= 'A'", [$persona[0]->id]);
+        }
+
+        // return view("pages.private.actividades.nutricion.calendar", compact("disponibilidad", "progrmasNutricion"));
+        return response()->json($disponibilidad);
+    }
+
+
+    public function getReservations()
+    {
         $inscritos = DB::select("select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
         s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
         from servicio_reservas sr
@@ -173,36 +243,39 @@ class NutricionController extends Controller
             ->make(true);
     }
 
-    public function calendarioNutricion()
+    // store new member to program nutrition
+    public function inscriptionToProgram(Request $request)
     {
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
-        if ($user->hasRole('ADMINISTRADOR')) {
-            $nutricion = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo,'') || ' - ' || coalesce(l.descripcion,'') as title,
-                                    sr.inicio as start,
-                                    sr.fin as end
-                                    from servicio_reservas sr
-                                    left join servicio_plantillas sp  on sr.servicioplantilla_id = sp.id
-                                    left join servicios s on sp.servicio_id = s.id
-                                    left join tipo_servicios ts on ts.id = s.tiposervicio_id
-                                    left join subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                    left join lugars l on s.lugar_id= l.id
-                                    where s.estado = 'A' and s.tiposervicio_id=2;");
-        } else {
-            $nutricion = DB::select("select s.id, ts.descripcion || ' - ' || coalesce(sts.titulo,'') || ' - ' || coalesce(l.descripcion,'') as title,
-                                    sr.inicio as start,
-                                    sr.fin as end
-                                    from servicio_reservas sr
-                                    left join servicio_plantillas sp  on sr.servicioplantilla_id = sp.id
-                                    left join servicios s on sp.servicio_id = s.id
-                                    left join tipo_servicios ts on ts.id = s.tiposervicio_id
-                                    left join subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                    left join lugars l on s.lugar_id= l.id
-                                    where s.estado = 'A' and s.tiposervicio_id = 2 and s.responsable_id = ?;", [$persona[0]->id]);
-        }
+        $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->apepaterno . " " . $persona[0]->apematerno;
+        $servicioId = 2;
+        $fechaDefinida = $request->fecha;
+        $horainicio = $request->hora_inicio;
+        $horafin = $request->hora_fin;
+        $preciocita = Str::before(Str::after($request->precio_cita, '.'), '.');
+        $usuarioId = $request->id_miembro;
+        $ip = $request->ip();
 
-        return response()->json($nutricion);
+        // $validation = Validator::make($request->all(), [
+        //     'fechasDefinias' => 'required',
+        //     'horainicio' => 'required',
+        //     'horafin' => 'required',
+        //     'preciocita' => 'required',
+        //     'usuarioId' => 'required',
+        // ]);
+
+        // if ($validation->fails()) {
+        //     return redirect()->back()->withErrors($validation)->withInput();
+        // }
+
+        dd([$servicioId, $usuarioId, $fechaDefinida, $horainicio, $horafin, $usuarioActivo, $ip, $preciocita]);
+
+        DB::select("SELECT servicio_inscripcionunico(?,?,?,?,?,?,?,?)", [$servicioId, $usuarioId, $fechaDefinida, $horainicio, $horafin, $usuarioActivo, $ip, $preciocita]);
+
+        return response()->json(['success' => 'Mimebro inscrito correctamente a su cita']);
     }
+
 
     public function disponibilidadDias()
     {
@@ -297,6 +370,7 @@ class NutricionController extends Controller
         return response()->json($lugar_costo);
     }
 
+    // store new program nutrition
     public function store(Request $request)
     {
         $responsable = $request->responsable;
@@ -365,31 +439,6 @@ class NutricionController extends Controller
         $respuesta = Str::of($respuestaHorarios)->after(',')->before(')');
 
         return response()->json(['idPlantilla' => $idPlantillaConvert, 'idRegistro' => $idRegistroConvert, 'respRegistro' => $respuesta]);
-    }
-
-    public function inscriptionToProgram(Request $request)
-    {
-        $user = Auth::user();
-        $persona = Persona::where('usuario_id', $user->id)->get();
-        $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->apepaterno . " " . $persona[0]->apematerno;
-        $servicioId = 2;
-        $fechasDefinias = $request->fecha;
-        $usuarioId = $request->id_miembro;
-        $ip = $request->ip();
-
-        $request->validate([
-            'idplantilla',
-            'idmiembro',
-            'fechasDefinidas'
-        ]);
-
-        foreach ($fechasDefinias as $fd) {
-            $dia = $fd['dias'];
-            $hora = $fd['horarios'];
-            DB::select('SELECT servicio_inscripcion(?,?,?,?,?,?)', [$servicioId, $dia, $usuarioId, $hora, $usuarioActivo, $ip]);
-        }
-
-        return response()->json(['success' => 'ok']);
     }
 
     public function show(string $id)
