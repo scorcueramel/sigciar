@@ -31,7 +31,7 @@
                     <a role="button" href="#" class="btn btn-primary">Modo lista</a>
                 </div>
                 <div class="col-md-auto d-flex align-items-center">
-                    <a role="button" href="{{route('nutricion.render.calender')}}" class="text-decoration-none text-secondary">Modo calendario</a>
+                    <a role="button" href="{{route('nutricion.render.calender')}}" class="text-decoration-none text-secondary">Inscribir Miembro</a>
                 </div>
             </div>
             <div class="row">
@@ -41,18 +41,18 @@
                             <tr>
                                 <th>ID</th>
                                 <th>ESTADO</th>
-                                <th>TIPO SERVICIO</th>
+                                <!-- <th>TIPO SERVICIO</th> -->
                                 <!-- <th>TÍTULO</th> -->
                                 <!-- <th>SUBTÍTULO</th> -->
                                 <th>SEDE</th>
-                                <th>DIRECCIÓN SEDE</th>
+                                <!-- <th>DIRECCIÓN SEDE</th> -->
                                 <!-- <th>LUGAR DESCRIPCIÓN</th> -->
                                 <th>COSTO HORA</th>
                                 <th>INICIO</th>
                                 <th>FIN</th>
-                                <th>TURNO</th>
-                                <th>CAPACIDAD</th>
-                                <th>HORAS POR TURNO</th>
+                                <!-- <th>TURNO</th> -->
+                                <!-- <th>CAPACIDAD</th> -->
+                                <!-- <th>HORAS POR TURNO</th> -->
                                 <th>RESPONSABLE</th>
                                 <th>ACCIONES</th>
                             </tr>
@@ -67,7 +67,6 @@
 </div>
 @endsection
 @include('components.private.modal', [
-'tamanio'=>'modal-sm',
 'withTitle' => true,
 'withButtons' => true,
 'cancelbutton' => true,
@@ -102,15 +101,15 @@
                 {
                     data: 'estado'
                 },
-                {
-                    data: 'tipo_servicio'
-                },
+                // {
+                //     data: 'tipo_servicio'
+                // },
                 {
                     data: 'sede'
                 },
-                {
-                    data: 'direccion_sede'
-                },
+                // {
+                //     data: 'direccion_sede'
+                // },
                 {
                     data: 'lugar_costo_hora'
                 },
@@ -120,15 +119,15 @@
                 {
                     data: 'fin'
                 },
-                {
-                    data: 'turno'
-                },
-                {
-                    data: 'capacidad'
-                },
-                {
-                    data: 'hora'
-                },
+                // {
+                //     data: 'turno'
+                // },
+                // {
+                //     data: 'capacidad'
+                // },
+                // {
+                //     data: 'hora'
+                // },
                 {
                     data: 'responsable'
                 },
@@ -302,6 +301,16 @@
                 });
             }
         });
+    }
+
+    function inscribirPrograma(id) {
+        $("#modalcomponent").modal('show');
+        $("#mcLabel").html(`${id}`);
+        $("#mcbody").html(`
+            <div class="row">
+                <div id='nutrition'></div>
+            </div>
+        `);
     }
 
     $(".cancelButton").on('click', function() {

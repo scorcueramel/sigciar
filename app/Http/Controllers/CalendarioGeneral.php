@@ -22,7 +22,7 @@ class CalendarioGeneral extends Controller
     }
 
     public function chargeEvents(){
-        $eventos = DB::select("tiposervicio_id, sede_id, lugar_id, start, ends as end, nombre from calendario_listar(0,0,0)");
+        $eventos = DB::select("SELECT tiposervicio_id, sede_id, lugar_id, start, ends as end, nombre FROM calendario_listar(0,0,0)");
         dd($eventos);
         return response()->json($eventos);
     }
