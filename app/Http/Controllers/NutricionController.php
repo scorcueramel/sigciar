@@ -37,46 +37,7 @@ class NutricionController extends Controller
                                             left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
                                             where s.deleted_at is null and s.tiposervicio_id = 2");
 
-
-        if ($user->hasRole('ADMINISTRADOR')) {
-            $disponibilidad = DB::select("SELECT
-                                            sd.inicio::time as startTime,
-                                            sd.fin::time as endTime,
-                                            (case when substring(sd.dia,1,2) = 'DO' then 0
-                                                when substring(sd.dia,1,2) = 'LU' then 1
-                                                when substring(sd.dia,1,2) = 'MA' then 2
-                                                when substring(sd.dia,1,2) = 'MI' then 3
-                                                when substring(sd.dia,1,2) = 'JU' then 4
-                                                when substring(sd.dia,1,2) = 'VI' then 5 else 6 end) as daysOfWeek
-                                        FROM servicio_disponibles sd
-                                            left join servicio_plantillas sp on sd.servicioplantilla_id = sp.id
-                                            left join servicios s on sp.servicio_id = s.id
-                                        WHERE s.tiposervicio_id = 2 and s.estado= 'A';");
-        } else {
-            $disponibilidad = DB::select("SELECT
-                                            sd.inicio::time as startTime,
-                                            sd.fin::time as endTime,
-                                            (
-                                                case
-                                                    when substring(sd.dia, 1, 2) = 'DO' then 0
-                                                    when substring(sd.dia, 1, 2) = 'LU' then 1
-                                                    when substring(sd.dia, 1, 2) = 'MA' then 2
-                                                    when substring(sd.dia, 1, 2) = 'MI' then 3
-                                                    when substring(sd.dia, 1, 2) = 'JU' then 4
-                                                    when substring(sd.dia, 1, 2) = 'VI' then 5
-                                                    else 6
-                                                end
-                                            ) as daysOfWeek
-                                        FROM servicio_disponibles sd
-                                            left join servicio_plantillas sp on sd.servicioplantilla_id = sp.id
-                                            left join servicios s on sp.servicio_id = s.id
-                                        WHERE
-                                            tiposervicio_id = 2
-                                            and s.estado = 'A'
-                                            and s.responsable_id = ?;", [$persona[0]->id]);
-        }
-
-        return view("pages.private.actividades.nutricion.calendar", compact("disponibilidad","progrmasNutricion"));
+        return view("pages.private.actividades.nutricion.calendar", compact("progrmasNutricion"));
     }
 
     public function programForDays(string $idprograma)
@@ -133,7 +94,6 @@ class NutricionController extends Controller
         // return view("pages.private.actividades.nutricion.calendar", compact("disponibilidad", "progrmasNutricion"));
         return response()->json($disponibilidad);
     }
-
 
     public function getReservations()
     {
@@ -249,7 +209,7 @@ class NutricionController extends Controller
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->apepaterno . " " . $persona[0]->apematerno;
-        $servicioId = 2;
+        $servicioId = $request->idservicio;
         $fechaDefinida = $request->fecha;
         $horainicio = $request->hora_inicio;
         $horafin = $request->hora_fin;
