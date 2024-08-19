@@ -80,11 +80,13 @@
 
                 dp.forEach(e => {
                     dispo.push({
-                        'startTime': e.starttime,
-                        'endTime': e.endtime,
+                        'startTime': e.starttime.split(" ")[1],
+                        'endTime': e.endtime.split(" ")[1],
                         'daysOfWeek': [e.daysofweek]
                     })
                 });
+
+                console.log(dispo);
 
                 moment.locale('es');
                 var calendarEl = document.getElementById('nutrition');
