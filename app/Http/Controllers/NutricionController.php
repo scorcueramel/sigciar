@@ -229,7 +229,7 @@ class NutricionController extends Controller
         //     return redirect()->back()->withErrors($validation)->withInput();
         // }
 
-        dd([$servicioId, $usuarioId, $fechaDefinida, $horainicio, $horafin, $usuarioActivo, $ip, $preciocita]);
+        // dd([$servicioId, $usuarioId, $fechaDefinida, $horainicio, $horafin, $usuarioActivo, $ip, $preciocita]);
 
         DB::select("SELECT servicio_inscripcionunico(?,?,?,?,?,?,?,?)", [$servicioId, $usuarioId, $fechaDefinida, $horainicio, $horafin, $usuarioActivo, $ip, $preciocita]);
 
