@@ -211,7 +211,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/eliminar',[NutricionController::class, 'destroy'])->name('nutricion.eliminar');
         Route::get('/obtener/precio',[NutricionController::class, 'obtenerprecio'])->name('nutricion.obtenerprecio');
         Route::post('/inscripcion/programa',[NutricionController::class, 'inscriptionToProgram'])->name('nutricion.inscripcion');
-        Route::get('/inscritos',[NutricionController::class, 'getReservations'])->name('nutricion.inscritos');
+        Route::get('/inscritos/{idservicio}',[NutricionController::class, 'getReservations'])->name('nutricion.inscritos');
     });
 
     Route::group(['prefix'=> 'tipos-servicio'], function () {

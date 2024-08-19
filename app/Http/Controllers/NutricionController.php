@@ -72,7 +72,7 @@ class NutricionController extends Controller
                                             left join public.servicios s on sp.servicio_id = s.id
                                             left join public.tipo_servicios ts on s.tiposervicio_id = ts.id
                                             left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                            WHERE s.id = ? and s.estado= 'A';",[$idprograma]);
+                                            WHERE s.id = ? and s.estado= 'A';", [$idprograma]);
         } else {
             $disponibilidad = DB::select("SELECT DISTINCT
                                             sd.inicio as startTime,
@@ -95,16 +95,42 @@ class NutricionController extends Controller
         return response()->json($disponibilidad);
     }
 
-    public function getReservations()
+    public function getReservations(string $idservicio)
     {
-        $inscritos = DB::select("select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
-        s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
-        from servicio_reservas sr
-        left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
-        left join servicios s on sp.servicio_id = s.id
-        WHERE s.tiposervicio_id=2 --AND sr.estado= 'CA");
+        $reservas = array();
+        $inscritos = DB::select("SELECT pe.apepaterno || ' ' || pe.apematerno || ' ' || pe.nombres AS title,
+                                        --sr.estado AS estado_pago,
+                                        s.id as id, s.tiposervicio_id, s.sede_id, s.lugar_id,
+                                        s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
+                                FROM servicio_reservas sr
+                                LEFT JOIN servicio_plantillas sp ON sr.servicioplantilla_id = sp.id
+                                LEFT JOIN servicios s ON sp.servicio_id = s.id
+                                LEFT JOIN servicio_inscripcions si ON s.id = si.servicio_id
+                                LEFT JOIN personas pe ON si.persona_id = pe.id
+                                WHERE s.id = ? --AND sr.estado= 'CA", [$idservicio]);
 
-        return response()->json($inscritos);
+        foreach($inscritos as $inscrito){
+            $fecha = Str::before($inscrito->start," ");
+            $inicio = Str::after($inscrito->start," ");
+            $fin = Str::after($inscrito->end," ");
+
+            $sede = Sede::where('id',$inscrito->sede_id)->get()[0];
+
+            $reservas[] = [
+                'id'=>$inscrito->id,
+                'title'=> $inscrito->title,
+                'start'=> $inscrito->start,
+                'end'=> $inscrito->end,
+                'extendedProps' => [
+                    'sede'=> $sede->descripcion,
+                    'lugar'=>'CONSULTORIO',
+                    'fecha' => $fecha,
+                    'inicio' => $inicio,
+                    'fin' => $fin,
+                ],
+            ];
+        }
+        return response()->json($reservas);
     }
 
     public function obtenerprecio()
@@ -217,23 +243,9 @@ class NutricionController extends Controller
         $usuarioId = $request->id_miembro;
         $ip = $request->ip();
 
-        // $validation = Validator::make($request->all(), [
-        //     'fechasDefinias' => 'required',
-        //     'horainicio' => 'required',
-        //     'horafin' => 'required',
-        //     'preciocita' => 'required',
-        //     'usuarioId' => 'required',
-        // ]);
-
-        // if ($validation->fails()) {
-        //     return redirect()->back()->withErrors($validation)->withInput();
-        // }
-
-        // dd([$servicioId, $usuarioId, $fechaDefinida, $horainicio, $horafin, $usuarioActivo, $ip, $preciocita]);
-
         DB::select("SELECT servicio_inscripcionunico(?,?,?,?,?,?,?,?)", [$servicioId, $usuarioId, $fechaDefinida, $horainicio, $horafin, $usuarioActivo, $ip, $preciocita]);
 
-        return response()->json(['success' => 'Mimebro inscrito correctamente a su cita']);
+        return back()->with(['success' => 'La cita se registro exitosamente, selecciona el programa para ver los detalles.']);
     }
 
 
