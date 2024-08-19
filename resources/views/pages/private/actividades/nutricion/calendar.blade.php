@@ -86,8 +86,6 @@
                     })
                 });
 
-                console.log(dispo);
-
                 moment.locale('es');
                 var calendarEl = document.getElementById('nutrition');
                 var calendar = new FullCalendar.Calendar(calendarEl, {
