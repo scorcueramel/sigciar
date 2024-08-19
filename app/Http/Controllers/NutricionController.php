@@ -153,33 +153,35 @@ class NutricionController extends Controller
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
-            $tableNutrition = DB::select("select
-                                            s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
-                                            s2.descripcion as sede,s2.direccion as direccion_sede,
-                                            l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
-                                            s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
-                                            concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable
-                                        from servicios s
-                                            left join tipo_servicios ts on s.tiposervicio_id = ts.id
-                                            left join sedes s2 on s.sede_id = s2.id
-                                            left join lugars l on s.lugar_id = l.id
-                                            left join personas p on s.responsable_id = p.id
-                                            left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
-                                        where s.deleted_at is null and s.tiposervicio_id = 2");
+            $tableNutrition = DB::select("SELECT
+                                            s.id ,ts.descripcion AS tipo_servicio ,s.estado AS estado ,
+                                            s2.descripcion AS sede,s2.direccion AS direccion_sede,
+                                            l.descripcion AS lugar_descripcion,l.costohora AS lugar_costo_hora,
+                                            s.capacidad AS capacidad,s.inicio AS inicio,s.fin AS fin,s.horas AS hora,s.turno AS turno,
+                                            concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) AS responsable,
+                                            ver_horarios (cast(s.id AS INTEGER)) AS horario
+                                            FROM servicios s
+                                            LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
+                                            LEFT JOIN sedes s2 ON s.sede_id = s2.id
+                                            LEFT JOIN lugars l ON s.lugar_id = l.id
+                                            LEFT JOIN personas p ON s.responsable_id = p.id
+                                            LEFT JOIN subtipo_servicios ss ON s.subtiposervicio_id = ss.id
+                                            WHERE s.deleted_at IS NULL AND s.tiposervicio_id = 2");
         } else {
-            $tableNutrition = DB::select("select
-                                            s.id ,ts.descripcion as tipo_servicio ,s.estado as estado ,
-                                            s2.descripcion as sede,s2.direccion as direccion_sede,
-                                            l.descripcion as lugar_descripcion,l.costohora as lugar_costo_hora,
-                                            s.capacidad as capacidad,s.inicio as inicio,s.fin as fin,s.horas as hora,s.turno as turno,
-                                            concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) as responsable
-                                        from servicios s
-                                            left join tipo_servicios ts on s.tiposervicio_id = ts.id
-                                            left join sedes s2 on s.sede_id = s2.id
-                                            left join lugars l on s.lugar_id = l.id
-                                            left join personas p on s.responsable_id = p.id
-                                            left join subtipo_servicios ss on s.subtiposervicio_id = ss.id
-                                        where s.deleted_at is null and s.tiposervicio_id = 2 and responsable_id = ?", [$persona[0]->id]);
+            $tableNutrition = DB::select("SELECT
+                                            s.id ,ts.descripcion AS tipo_servicio ,s.estado AS estado ,
+                                            s2.descripcion AS sede,s2.direccion AS direccion_sede,
+                                            l.descripcion AS lugar_descripcion,l.costohora AS lugar_costo_hora,
+                                            s.capacidad AS capacidad,s.inicio AS inicio,s.fin AS fin,s.horas AS hora,s.turno AS turno,
+                                            concat(p.nombres ,' ' ,p.apepaterno ,' ' ,p.apematerno) AS responsable,
+                                            ver_horarios (cast(s.id AS INTEGER)) AS horario
+                                            FROM servicios s
+                                            LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
+                                            LEFT JOIN sedes s2 ON s.sede_id = s2.id
+                                            LEFT JOIN lugars l ON s.lugar_id = l.id
+                                            LEFT JOIN personas p ON s.responsable_id = p.id
+                                            LEFT JOIN subtipo_servicios ss ON s.subtiposervicio_id = ss.id
+                                            WHERE s.deleted_at IS NULL AND s.tiposervicio_id = 2 AND responsable_id = ?", [$persona[0]->id]);
         }
 
         return datatables()->of($tableNutrition)

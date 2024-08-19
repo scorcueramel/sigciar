@@ -52,7 +52,7 @@
                                 <th>FIN</th>
                                 <!-- <th>TURNO</th> -->
                                 <!-- <th>CAPACIDAD</th> -->
-                                <!-- <th>HORAS POR TURNO</th> -->
+                                <th>HORARIO</th>
                                 <th>RESPONSABLE</th>
                                 <th>ACCIONES</th>
                             </tr>
@@ -125,9 +125,9 @@
                 // {
                 //     data: 'capacidad'
                 // },
-                // {
-                //     data: 'hora'
-                // },
+                {
+                    data: 'horario'
+                },
                 {
                     data: 'responsable'
                 },
