@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
@@ -37,7 +38,7 @@ class UsuarioController extends Controller
     {
         $datosUsuario = Persona::where('usuario_id', Auth::user()->id)->get();
         $usuarioActual = $datosUsuario[0]->nombres . " " . $datosUsuario[0]->apepaterno . " " . $datosUsuario[0]->apematerno;
-        $this->validate($request, [
+        $validation = Validator::make($request->all(), [
             'tipodocumento' => 'required',
             'numerodocumento' => 'required',
             'nombres' => 'required',
@@ -66,6 +67,10 @@ class UsuarioController extends Controller
             'password.same' => 'Las contraseñas ingresadas no coinciden',
             'roles'=> "Debes seleccionar como minimo un rol para el usuario {$request->nombres} {$request->apepaterno} {$request->apematerno}",
         ]);
+
+        if($validation->fails()){
+            return redirect()->back()->withErrors($validation)->withInput();
+        }
 
         $user = new User();
         $user->email = $request->email;

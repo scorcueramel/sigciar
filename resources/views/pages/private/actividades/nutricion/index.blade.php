@@ -28,10 +28,10 @@
         <div class="card-body">
             <div class="row pb-3">
                 <div class="col-md-auto">
-                    <a role="button" href="#" class="btn btn-primary">Modo lista</a>
+                    <a role="button" href="#" class="btn btn-primary">Programas</a>
                 </div>
                 <div class="col-md-auto d-flex align-items-center">
-                    <a role="button" href="{{route('nutricion.render.calender')}}" class="text-decoration-none text-secondary">Inscribir Miembro</a>
+                    <a role="button" href="{{route('nutricion.render.calender')}}" class="text-decoration-none text-secondary">Citas</a>
                 </div>
             </div>
             <div class="row">

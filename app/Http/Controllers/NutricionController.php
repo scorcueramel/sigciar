@@ -98,16 +98,17 @@ class NutricionController extends Controller
     public function getReservations(string $idservicio)
     {
         $reservas = array();
-        $inscritos = DB::select("SELECT pe.apepaterno || ' ' || pe.apematerno || ' ' || pe.nombres AS title,
-                                        --sr.estado AS estado_pago,
-                                        s.id as id, s.tiposervicio_id, s.sede_id, s.lugar_id,
-                                        s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
-                                FROM servicio_reservas sr
-                                LEFT JOIN servicio_plantillas sp ON sr.servicioplantilla_id = sp.id
-                                LEFT JOIN servicios s ON sp.servicio_id = s.id
-                                LEFT JOIN servicio_inscripcions si ON s.id = si.servicio_id
-                                LEFT JOIN personas pe ON si.persona_id = pe.id
-                                WHERE s.id = ? --AND sr.estado= 'CA", [$idservicio]);
+        $inscritos = DB::select("select pe.apepaterno || ' ' || pe.apematerno || ' ' || pe.nombres as title,
+                                    s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
+                                    s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
+                                from servicio_reservas sr
+                                left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
+                                left join servicios s on sp.servicio_id = s.id
+                                left join servicio_inscripcions si on  sr.servicioinscripcion_id = si.id
+                                left join personas pe on si.persona_id = pe.id
+                                WHERE s.id=? --AND sr.estado= 'CA", [$idservicio]);
+
+
 
         foreach($inscritos as $inscrito){
             $fecha = Str::before($inscrito->start," ");

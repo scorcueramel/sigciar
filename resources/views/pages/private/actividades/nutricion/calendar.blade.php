@@ -10,13 +10,17 @@
         font-size: 13px !important;
         font-weight: 700;
     }
+
+    .fc-timegrid-slot-lane {
+        height: 60px !important;
+    }
 </style>
 @endpush
 @section('content')
 @include('components.private.messages-session')
 <div class="row d-flex align-items-center">
     <div class="col-md">
-        <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Nutricion /</span> Todas </h4>
+        <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Generar Nueva /</span> Cita </h4>
     </div>
     <div class="col-md text-end">
         <a href="{{route('nutricion.create')}}" class="btn btn-sm btn-info"><i class="fa-regular fa-salad me-1"></i>
@@ -28,10 +32,10 @@
         <div class="card-body">
             <div class="row pb-3">
                 <div class="col-md-auto d-flex align-items-center">
-                    <a role="button" href="{{route('nutricion.index')}}" class="text-decoration-none text-secondary">Modo lista</a>
+                    <a role="button" href="{{route('nutricion.index')}}" class="text-decoration-none text-secondary">Programas</a>
                 </div>
                 <div class="col-md-auto">
-                    <a role="button" href="#" class="btn btn-primary">Inscribir Miembro</a>
+                    <a role="button" href="#" class="btn btn-primary">Citas</a>
                 </div>
             </div>
             <div class="row">
@@ -91,17 +95,35 @@
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     themeSystem: 'bootstrap5',
                     allDaySlot: false,
-                    contentHeight: 20,
-                    dayMaxEvents: 1,
+                    // contentHeight: 20,
+                    dayMaxEvents: 3,
                     editable: false,
                     eventOverlap: false,
-                    eventShortHeight: 'short',
-                    height: 500,
+                    height: 900,
                     locale: 'es-PE',
                     timeZone: 'UTC',
                     slotDuration: '01:00',
                     unselectAuto: true,
                     selectable: true,
+                    eventBackgroundColor: '#ff6347',
+                    eventBorderColor: '#ff6347',
+                    headerToolbar: {
+                        left: 'prev,next',
+                        center: 'title',
+                        right: 'today' // user can switch between the two
+                    },
+                    slotLabelFormat: { //se visualizara de esta manera 01:00 AM en la columna de horas
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                        meridiem: 'short'
+                    },
+                    eventTimeFormat: { //y este código se visualizara de la misma manera pero en el titulo del evento creado en fullcalendar
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                        meridiem: 'short'
+                    },
                     headerToolbar: {
                         left: 'today prev,next',
                         center: 'title',
@@ -149,6 +171,7 @@
                         var start = info.startStr;
                         var end = info.endStr;
                         var valHora = validaHoraActual(start);
+
                         if (valHora) {
                             $("#modalcomponent").modal('show');
                             $("#mcLabel").text(`
@@ -285,8 +308,14 @@
         let fechaActual = fechaHoraActual.getDate();
         let fechaSeleccionada = horaSplit[0].slice(0, 2);
 
+        let hoy = fechaHoraActual.getDate()+'/'+((fechaHoraActual.getMonth() + 1) < 10  ? "0"+(fechaHoraActual.getMonth() + 1) : (fechaHoraActual.getMonth() + 1) );
+        let seleccionada = horaSelecc.split(" ")[0].slice(0,5);
 
-        if (fechaSeleccionada == fechaActual) {
+        // console.log("21/08" == seleccionada);
+        console.log("Hoy :" + hoy);
+        console.log("seleccionado :" + seleccionada);
+
+        if (seleccionada == hoy) {
             if (horaSeleccionada > horaActual) {
                 return false;
             } else {
@@ -294,11 +323,11 @@
             }
         }
 
-        if (fechaSeleccionada > fechaActual) {
+        if (seleccionada > hoy) {
             return false;
         }
 
-        if (fechaSeleccionada < fechaActual) {
+        if (seleccionada < hoy) {
             return true;
         }
     }
