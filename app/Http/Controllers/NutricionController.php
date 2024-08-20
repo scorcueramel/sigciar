@@ -97,7 +97,7 @@ class NutricionController extends Controller
 
     public function getReservations(string $idservicio)
     {
-        $reservas = array();
+        $reservas = [];
         $inscritos = DB::select("select pe.apepaterno || ' ' || pe.apematerno || ' ' || pe.nombres as title,
                                     s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
                                     s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
@@ -251,7 +251,6 @@ class NutricionController extends Controller
         return back()->with(['success' => 'La cita se registro exitosamente, selecciona el programa para ver los detalles.']);
     }
 
-
     public function disponibilidadDias()
     {
         $user = Auth::user();
@@ -319,9 +318,11 @@ class NutricionController extends Controller
         $responsable = Persona::where('usuario_id', Auth::user()->id)->get()[0];
         $responsables = Persona::where('tipocategoria_id', '<>', 1)->where('tipocategoria_id', '<>', 2)->get();
         $sedes = Sede::where('estado', 'A')->get();
-        $subtiposervicio = SubtipoServicio::where('tiposervicio_id', 4)->orderBy('id', 'desc')->get();
+        $subtiposervicios = SubtipoServicio::where('estado','A')->get();
 
-        return view("pages.private.actividades.nutricion.create", compact("responsable", "responsables", "sedes", "subtiposervicio"));
+
+
+        return view("pages.private.actividades.nutricion.create", compact("responsable", "responsables", "sedes", "subtiposervicios"));
     }
 
     public function placesCharge(string $id)
@@ -394,6 +395,24 @@ class NutricionController extends Controller
             $error = $validation->errors();
             return response()->json(['error' => $error]);
         }
+
+        // CREATE OR REPLACE FUNCTION public.servicio_tenis_crear(
+        //     p_desde timestamp without time zone,
+        //     p_hasta timestamp without time zone,
+        //     p_responsable_id integer,
+        //     p_tiposervicio_id integer,
+        //     p_sede_id integer,
+        //     p_lugar_id integer,
+        //     p_capacidad integer,
+        //     p_periodicidad_id integer,
+        //     p_usuario_creador character varying,
+        //     p_ip_usuario character varying,
+        //     p_created_at timestamp without time zone,
+        //     p_turno character varying,
+        //     p_categoria integer,
+        //     p_horas integer,
+        //     p_estado character varying)
+
 
         $servicioTenisCrear = DB::select("SELECT servicio_tenis_crear(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [$fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad, $estado]);
 
