@@ -45,7 +45,7 @@
                                 <!-- <th>TÍTULO</th> -->
                                 <!-- <th>SUBTÍTULO</th> -->
                                 <th>SEDE</th>
-                                <!-- <th>DIRECCIÓN SEDE</th> -->
+                                <th>CATEGORÍA</th>
                                 <!-- <th>LUGAR DESCRIPCIÓN</th> -->
                                 <th>COSTO HORA</th>
                                 <th>INICIO</th>
@@ -107,9 +107,9 @@
                 {
                     data: 'sede'
                 },
-                // {
-                //     data: 'direccion_sede'
-                // },
+                {
+                    data: 'categoria'
+                },
                 {
                     data: 'lugar_costo_hora'
                 },

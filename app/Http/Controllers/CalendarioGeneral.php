@@ -27,9 +27,40 @@ class CalendarioGeneral extends Controller
 
     public function chargeEvents(Request $request)
     {
+        $sedeView = $request->sede;
+        $lugarView = $request->lugar;
+        $tiposervicioView = $request->tiposervicio;
 
+        if ($sedeView == null && $lugarView == null && $tiposervicioView == null) {
+            $reservas = $this->getCitas(0,0,0);
+            return response()->json($reservas);
+        }
+
+        if($sedeView == null && $lugarView == null && $tiposervicioView != null){
+            $reservas = $this->getCitas($tiposervicioView,0,0);
+            return response()->json($reservas);
+        }
+
+        if($sedeView != null && $lugarView == null && $tiposervicioView == null){
+            $reservas = $this->getCitas(0,$sedeView,0);
+            return response()->json($reservas);
+        }
+
+        if($sedeView == null && $lugarView != null && $tiposervicioView == null){
+            $reservas = $this->getCitas(0,0,$lugarView);
+            return response()->json($reservas);
+        }
+
+        if($sedeView != null && $lugarView != null && $tiposervicioView != null){
+            $reservas = $this->getCitas($tiposervicioView,$sedeView,$lugarView);
+            return response()->json($reservas);
+        }
+    }
+
+    protected function getCitas($sede, $lugar, $tiposervicio)
+    {
         $reservas = [];
-        $inscritos = DB::select("SELECT tiposervicio_id, sede_id, lugar_id, start, ends as end, nombre FROM calendario_listar(0,0,0)");
+        $inscritos = DB::select("SELECT tiposervicio_id, sede_id, lugar_id, start, ends as end, nombre, movil, email, categoria FROM calendario_listar(?,?,?)", [$sede, $lugar, $tiposervicio]);
 
         foreach ($inscritos as $inscrito) {
             $fecha = Str::before($inscrito->start, " ");
@@ -37,6 +68,7 @@ class CalendarioGeneral extends Controller
             $fin = Str::after($inscrito->end, " ");
 
             $sede = Sede::where('id', $inscrito->sede_id)->get()[0];
+            $lugar = Lugar::where('id', $inscrito->lugar_id)->get()[0];
 
             $reservas[] = [
                 'title' => $inscrito->nombre,
@@ -45,15 +77,17 @@ class CalendarioGeneral extends Controller
                 'color' =>  'red',
                 'extendedProps' => [
                     'sede' => $sede->descripcion,
-                    'lugar' => 'CONSULTORIO',
+                    'lugar' => $lugar->descripcion,
+                    'categoria' => $inscrito->categoria,
                     'fecha' => $fecha,
                     'inicio' => $inicio,
                     'fin' => $fin,
+                    'correo' => $inscrito->email,
+                    'movil' => $inscrito->movil,
                 ],
             ];
         }
 
-        // dd($reservas);
-        return response()->json($reservas);
+        return $reservas;
     }
 }
