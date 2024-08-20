@@ -1,5 +1,12 @@
 @extends('layouts.private.private', ['activePage' => 'calendario.general'])
 @push('title', 'Calendario General')
+@push('css')
+<style>
+    .fc-timegrid-slot-lane {
+        height: 60px !important;
+    }
+</style>
+@endpush
 @section('content')
 <div class="row">
     @can('calendario.dashboard')
@@ -50,8 +57,15 @@
     @endcan
 </div>
 @endsection
+<!-- moda details reservation -->
+@include('components.private.modal-deta-celndar', [
+'tamanio'=>'modal-sm',
+'withTitle' => true,
+'withButtons' => true,
+'cancelbutton' => true,
+'mcTextCancelButton' => 'Cerrar',
+])
 @push('js')
-
 <script>
     $("#sedes").on('change', function() {
         var id = $("#sedes").val();
@@ -115,40 +129,40 @@
             right: 'dayGridMonth,timeGridWeek,timeGridDay',
         },
         events: `/admin/obtener/eventos`,
-        // eventClick: function(info) {
-        //     $("#modaldetacalendar").modal("show");
-        //     $("#mdetalabel").html(`DETALLE DE LA CITA`);
-        //     $("#modaldetabody").html(`
-        //                     <table class="table table-bordered">
-        //                         <tbody>
-        //                             <tr>
-        //                                 <td>NOMBRES</td>
-        //                                 <td>${info.event.title}</td>
-        //                             </tr>
-        //                             <tr>
-        //                                 <td>SEDE</td>
-        //                                 <td>${info.event.extendedProps.sede}</td>
-        //                             </tr>
-        //                             <tr>
-        //                                 <td>LUGAR</td>
-        //                                 <td>${info.event.extendedProps.lugar}</td>
-        //                             </tr>
-        //                             <tr>
-        //                                 <td>FECHA</td>
-        //                                 <td>${info.event.extendedProps.fecha}</td>
-        //                             </tr>
-        //                             <tr>
-        //                                 <td>HORA INICIO</td>
-        //                                 <td>${info.event.extendedProps.inicio}</td>
-        //                             </tr>
-        //                             <tr>
-        //                                 <td>HORA FIN</td>
-        //                                 <td>${info.event.extendedProps.fin}</td>
-        //                             </tr>
-        //                         </tbody>
-        //                     </table>
-        //                 `);
-        // },
+        eventClick: function(info) {
+            $("#modaldetacalendar").modal("show");
+            $("#mdetalabel").html(`DETALLE DE LA CITA`);
+            $("#modaldetabody").html(`
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>NOMBRES</td>
+                                        <td>${info.event.title}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SEDE</td>
+                                        <td>${info.event.extendedProps.sede}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LUGAR</td>
+                                        <td>${info.event.extendedProps.lugar}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>FECHA</td>
+                                        <td>${info.event.extendedProps.fecha}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>HORA INICIO</td>
+                                        <td>${info.event.extendedProps.inicio}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>HORA FIN</td>
+                                        <td>${info.event.extendedProps.fin}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        `);
+        },
     });
     calendar.render();
 </script>
