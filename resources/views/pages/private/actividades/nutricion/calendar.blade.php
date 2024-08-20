@@ -44,7 +44,7 @@
                     <select class="form-select" id="cargaprogramas" required>
                         <option selected disabled value="">Seleccina un Programa</option>
                         @foreach ($progrmasNutricion as $programa)
-                        <option value="{{$programa->id}}">{{$programa->tipo_servicio}} / {{$programa->sede}} / {{$programa->lugar_descripcion}}</option>
+                        <option value="{{$programa->id}}">{{$programa->categoria}} / {{$programa->sede}} / {{$programa->lugar_descripcion}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -141,6 +141,18 @@
                                     <tr>
                                         <td>NOMBRES</td>
                                         <td>${info.event.title}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>MOVIL</td>
+                                        <td>${info.event.extendedProps.movil}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CORREO</td>
+                                        <td>${info.event.extendedProps.correo}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CATEGORÍA</td>
+                                        <td>${info.event.extendedProps.categoria}</td>
                                     </tr>
                                     <tr>
                                         <td>SEDE</td>
