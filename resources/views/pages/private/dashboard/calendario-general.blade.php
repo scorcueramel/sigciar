@@ -77,35 +77,78 @@
         });
     });
 
-    var checkLogin = $('#loginCheck').val();
-    // Obtener la fecha actual para bloquear los días pasados.
-    moment.locale('es'); //->colocar el idioma español.
-
+    moment.locale('es');
     var calendarEl = document.getElementById('calendario');
-
     var calendar = new FullCalendar.Calendar(calendarEl, {
         themeSystem: 'bootstrap5',
         allDaySlot: false,
-        contentHeight: 20,
-        dayMaxEvents: 1,
-        editable: true,
-        eventOverlap: true,
-        eventShortHeight: 'short',
-        height: 500,
-        initialView: 'dayGridMonth',
+        // contentHeight: 20,
+        dayMaxEvents: 3,
+        editable: false,
+        eventOverlap: false,
+        height: 900,
         locale: 'es-PE',
-        selectable: true,
         timeZone: 'UTC',
+        slotDuration: '01:00',
         unselectAuto: true,
+        selectable: true,
         headerToolbar: {
-            left: 'title',
-            center: '',
-            right: 'today prev,next'
+            left: 'prev,next',
+            center: 'title',
+            right: 'today' // user can switch between the two
+        },
+        slotLabelFormat: { //se visualizara de esta manera 01:00 AM en la columna de horas
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+            meridiem: 'short'
+        },
+        eventTimeFormat: { //y este código se visualizara de la misma manera pero en el titulo del evento creado en fullcalendar
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+            meridiem: 'short'
+        },
+        headerToolbar: {
+            left: 'today prev,next',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay',
         },
         events: `/admin/obtener/eventos`,
-        eventClick: function() {
-            //obtener la data de la actividad cliqueada
-        }
+        // eventClick: function(info) {
+        //     $("#modaldetacalendar").modal("show");
+        //     $("#mdetalabel").html(`DETALLE DE LA CITA`);
+        //     $("#modaldetabody").html(`
+        //                     <table class="table table-bordered">
+        //                         <tbody>
+        //                             <tr>
+        //                                 <td>NOMBRES</td>
+        //                                 <td>${info.event.title}</td>
+        //                             </tr>
+        //                             <tr>
+        //                                 <td>SEDE</td>
+        //                                 <td>${info.event.extendedProps.sede}</td>
+        //                             </tr>
+        //                             <tr>
+        //                                 <td>LUGAR</td>
+        //                                 <td>${info.event.extendedProps.lugar}</td>
+        //                             </tr>
+        //                             <tr>
+        //                                 <td>FECHA</td>
+        //                                 <td>${info.event.extendedProps.fecha}</td>
+        //                             </tr>
+        //                             <tr>
+        //                                 <td>HORA INICIO</td>
+        //                                 <td>${info.event.extendedProps.inicio}</td>
+        //                             </tr>
+        //                             <tr>
+        //                                 <td>HORA FIN</td>
+        //                                 <td>${info.event.extendedProps.fin}</td>
+        //                             </tr>
+        //                         </tbody>
+        //                     </table>
+        //                 `);
+        // },
     });
     calendar.render();
 </script>
