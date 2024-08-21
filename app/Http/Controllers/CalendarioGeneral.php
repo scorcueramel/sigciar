@@ -81,6 +81,7 @@ class CalendarioGeneral extends Controller
                 'start' =>  $inscrito->start,
                 'end' => $inscrito->end,
                 'backgroundColor' =>  $colores[$inscrito->categoria_id],
+                'borderColor' =>  $colores[$inscrito->categoria_id],
                 'extendedProps' => [
                     'sede' => $sede->descripcion,
                     'lugar' => $lugar->descripcion,
