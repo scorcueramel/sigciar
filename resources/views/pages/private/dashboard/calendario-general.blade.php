@@ -44,6 +44,7 @@
                         </div>
                         <div class="col-sm-12 col-md-3">
                             <button class="btn btn-primary mt-4" type="button" id="btnBuscar">Búscar</button>
+                            <button class="btn btn-danger mt-4" type="button" id="btnLimpiar">Limpiar</button>
                         </div>
                     </div>
                 </div>
@@ -150,7 +151,7 @@
                                             <td>CORREO</td>
                                             <td>${info.event.extendedProps.correo}</td>
                                         </tr>
-                                        <tr>
+                                        <tr style="background:${info.event.extendedProps.color};color:#fff">
                                             <td>CATEGORÍA</td>
                                             <td>${info.event.extendedProps.categoria}</td>
                                         </tr>
@@ -187,10 +188,6 @@
         var sede = $("#sedes").val() == "" || $("#sedes").val() == null ? 0 : $("#sedes").val();
         var lugar = $("#lugares").val() == "" || $("#lugares").val() == null ? 0 : $("#lugares").val();
         var tiposervicio = $("#tiposervicios").val() == "" || $("#tiposervicios").val() == null ? 0 : $("#tiposervicios").val();
-
-        console.log("sede: " + sede);
-        console.log("lugar: " + lugar);
-        console.log("tiposervicio: " + tiposervicio);
 
         calendarRender(tiposervicio, sede, lugar);
     });
@@ -254,7 +251,7 @@
                                             <td>CORREO</td>
                                             <td>${info.event.extendedProps.correo}</td>
                                         </tr>
-                                        <tr>
+                                        <tr style="background:${info.event.extendedProps.color}; color:#fff">
                                             <td>CATEGORÍA</td>
                                             <td>${info.event.extendedProps.categoria}</td>
                                         </tr>
