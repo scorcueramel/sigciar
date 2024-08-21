@@ -31,21 +31,44 @@ class CalendarioGeneral extends Controller
         return response()->json($reservas);
     }
 
-    public function chargeEventsQuery($tiposervicioView,$sedeView,$lugarView)
+    public function chargeEventsQuery($tiposervicioView, $sedeView, $lugarView)
     {
         $sedeView == 0 || $sedeView == null ? 0 : $sedeView;
         $lugarView == 0 || $lugarView == null ? 0 : $lugarView;
-        $tiposervicioView  == 0 || $tiposervicioView == null ? 0 : $tiposervicioView ;
-        $reservas = $this->getCitas($tiposervicioView, $sedeView , $lugarView);
+        $tiposervicioView  == 0 || $tiposervicioView == null ? 0 : $tiposervicioView;
+        $reservas = $this->getCitas($tiposervicioView, $sedeView, $lugarView);
         return response()->json($reservas);
     }
 
     protected function getCitas($tiposervicio, $sede, $lugar)
     {
         $reservas = [];
-        $inscritos = DB::select("SELECT tiposervicio_id, sede_id, lugar_id, start, ends as end, nombre, movil, email, categoria FROM calendario_listar(?,?,?)", [$tiposervicio, $sede, $lugar]);
+        $colores = [
+            1=>'#1A5319',
+            2=>'#FABC3F',
+            3=>'#E85C0D',
+            4=>'#C7253E',
+            5=>'#821131',
+            6=>'#0D7C66',
+            7=>'#41B3A2',
+            8=>'#BDE8CA',
+            9=>'#3A1078',
+            10=>'#4E31AA',
+            11=>'#800000',
+            12=>'#5B99C2',
+            13=>'#1A4870',
+            14=>'#674188',
+            15=>'#4158A6',
+            16=>'#7C00FE',
+            17=>'#C63C51',
+            18=>'#FF8225',
+            19=>'#F6FB7A',
+            20=>'#399918',
+            21=>'#3FA2F6',
+        ];
+        $inscritos = DB::select("SELECT tiposervicio_id, sede_id, lugar_id, start, ends as end, nombre, movil, email, categoria_id, categoria FROM calendario_listar(?,?,?)", [$tiposervicio, $sede, $lugar]);
 
-        foreach ($inscritos as $inscrito) {
+        foreach ($inscritos as $key => $inscrito) {
             $fecha = Str::before($inscrito->start, " ");
             $inicio = Str::after($inscrito->start, " ");
             $fin = Str::after($inscrito->end, " ");
@@ -57,10 +80,12 @@ class CalendarioGeneral extends Controller
                 'title' => $inscrito->nombre,
                 'start' =>  $inscrito->start,
                 'end' => $inscrito->end,
-                'color' =>  'red',
+                'backgroundColor' =>  $colores[$inscrito->categoria_id],
+                'borderColor' =>  $colores[$inscrito->categoria_id],
                 'extendedProps' => [
                     'sede' => $sede->descripcion,
                     'lugar' => $lugar->descripcion,
+                    'categoria_id' => $inscrito->categoria_id,
                     'categoria' => $inscrito->categoria,
                     'fecha' => $fecha,
                     'inicio' => $inicio,
@@ -70,7 +95,6 @@ class CalendarioGeneral extends Controller
                 ],
             ];
         }
-
         return $reservas;
     }
 }

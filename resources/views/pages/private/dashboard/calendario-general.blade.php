@@ -29,7 +29,7 @@
                         <div class="col-sm-12 col-md-3">
                             <label for="">Lugar</label>
                             <select class="form-select" aria-label="Lugares" name="lugar" id="lugares" disabled>
-                                <option value="" selected>SELECCIONAR LUGAR</option>
+                                <option value="" selected>SELECCIONA UN LUGAR</option>
                             </select>
                         </div>
                         <div class="col-sm-12 col-md-3">
@@ -92,6 +92,7 @@
                 }
             });
         });
+
         moment.locale('es');
         var calendarEl = document.getElementById('calendario');
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -102,6 +103,7 @@
             editable: false,
             eventOverlap: false,
             height: 900,
+            initialView: 'timeGridWeek',
             locale: 'es-PE',
             timeZone: 'UTC',
             slotDuration: '01:00',
@@ -205,6 +207,7 @@
             editable: false,
             eventOverlap: false,
             height: 900,
+            initialView: 'timeGridWeek',
             locale: 'es-PE',
             timeZone: 'UTC',
             slotDuration: '01:00',
