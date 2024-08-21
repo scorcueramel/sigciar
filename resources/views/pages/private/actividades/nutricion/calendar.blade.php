@@ -56,16 +56,9 @@
     </div>
 </div>
 @endsection
-<!-- moda details reservation -->
-@include('components.private.modal-deta-celndar', [
-'tamanio'=>'modal-sm',
-'withTitle' => true,
-'withButtons' => true,
-'cancelbutton' => true,
-'mcTextCancelButton' => 'Cerrar',
-])
 <!-- modal reservation -->
 @include('components.private.modal', [
+'tamanio'=>'modal-md',
 'withTitle' => true,
 'withButtons' => true,
 'cancelbutton' => true,
@@ -133,9 +126,9 @@
                     selectConstraint: "businessHours",
                     events: `/admin/nutricion/inscritos/${id}`,
                     eventClick: function(info) {
-                        $("#modaldetacalendar").modal("show");
-                        $("#mdetalabel").html(`DETALLE DE LA CITA`);
-                        $("#modaldetabody").html(`
+                        $("#modalcomponent").modal("show");
+                        $("#mcLabel").html(`DETALLE DE LA CITA`);
+                        $("#mcbody").html(`
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
@@ -213,33 +206,33 @@
                             });
                             $("#modalcomponent").modal('show');
                             $("#mcLabel").text(`
-                                Registro de Cita
+                                RESERVA DE CITA
                             `);
                             $("#mcbody").html(`
                                 <form method="POST" action="{{route('nutricion.inscripcion')}}" id="inscribirmiembro">
                                 @csrf
                                     <input type="hidden" id="idservicio" name="idservicio" value="${id}"/>
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
                                             <div class="mb-3">
                                                 <input type="hidden" name="fecha" value="${fecha}" id="fecha">
                                                 <label for="fecha" class="form-label">Fecha Seleccionada</label>
                                                 <input type="text" class="form-control" value="${formatearFecha(fecha)}" readonly>
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
                                             <div class="mb-3">
                                                 <label for="hora_inicio" class="form-label">Hora de Inicio</label>
                                                 <input type="text" class="form-control" id="hora_inicio" name="hora_inicio" value="${formatearHora(start)}" readonly>
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
                                             <div class="mb-3">
                                                 <label for="hora_fin" class="form-label">Hora de Termino</label>
                                                 <input type="text" class="form-control" name="hora_fin" id="hora_fin" value="${formatearHora(end)}" readonly>
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
                                             <div class="mb-3">
                                                 <label for="hora_fin" class="form-label">Precio Cita</label>
                                                 <input type="text" name="precio_cita" class="form-control" id="precio_cita" readonly>
@@ -247,14 +240,14 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-12 col-lg-4">
+                                        <div class="col-sm-12 col-md-12 col-lg-12">
                                             <label for="buscar-miembro" class="form-label">Búscar Miembro</label>
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" placeholder="Búscar Miembro" aria-label="Búsacar Miembro" aria-describedby="datos-miembro" id="documento-miembro">
                                                 <button class="btn btn-outline-primary" type="button" onclick="javascript:buscarMiembro(document.getElementById('documento-miembro').value)">Búscar</button>
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-md-12 col-lg-8">
+                                        <div class="col-sm-12 col-md-12 col-lg-12">
                                             <label for="datos-miembro" class="form-label">Nombre de Miembro</label>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="mimebro-encontrado">Datos</span>

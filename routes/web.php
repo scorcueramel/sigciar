@@ -99,6 +99,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
     Route::get('/carga/actividades',[HomeController::class, 'activities'])->name('calendario.home');
     Route::get('/calendario/general',[CalendarioGeneral::class,'index'])->name('calendario.general');
     Route::get('/obtener/lugar/{id}/calendario-general',[CalendarioGeneral::class,'chargePlaces'])->name('lugar.calendario.general');
+    Route::get('/obtener/{tiposervicio}/{sede}/{lugar}/eventos',[CalendarioGeneral::class,'chargeEventsQuery'])->name('calendario.general.consulta.eventos');
     Route::get('/obtener/eventos',[CalendarioGeneral::class,'chargeEvents'])->name('calendario.general.eventos');
 
 
