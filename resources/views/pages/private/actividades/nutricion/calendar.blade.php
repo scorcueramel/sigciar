@@ -271,6 +271,18 @@
         });
     });
 
+    function validarFechaMenorActual(date) {
+        var x = new Date();
+        var fecha = date.split("/");
+        x.setFullYear(fecha[2], fecha[1] - 1, fecha[0]);
+        var today = new Date();
+
+        if (x >= today)
+            return false;
+        else
+            return true;
+    }
+
     // Formtear Fecha Para Mostrar
     function formatearFecha(fecha) {
         var fecha = fecha;
@@ -313,12 +325,8 @@
         let fechaActual = fechaHoraActual.getDate();
         let fechaSeleccionada = horaSplit[0].slice(0, 2);
 
-        let hoy = fechaHoraActual.getDate()+'/'+((fechaHoraActual.getMonth() + 1) < 10  ? "0"+(fechaHoraActual.getMonth() + 1) : (fechaHoraActual.getMonth() + 1) );
-        let seleccionada = horaSelecc.split(" ")[0].slice(0,5);
-
-        // console.log("21/08" == seleccionada);
-        console.log("Hoy :" + hoy);
-        console.log("seleccionado :" + seleccionada);
+        let hoy = fechaHoraActual.getDate() + '/' + ((fechaHoraActual.getMonth() + 1) < 10 ? "0" + (fechaHoraActual.getMonth() + 1) : (fechaHoraActual.getMonth() + 1));
+        let seleccionada = horaSelecc.split(" ")[0].slice(0, 5);
 
         if (seleccionada == hoy) {
             if (horaSeleccionada > horaActual) {

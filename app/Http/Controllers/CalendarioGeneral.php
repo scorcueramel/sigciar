@@ -48,11 +48,11 @@ class CalendarioGeneral extends Controller
             2=>'#FABC3F',
             3=>'#E85C0D',
             4=>'#C7253E',
-            5=>'#821131',
-            6=>'#0D7C66',
+            5=>'#0D7C66',
+            6=>'#3A1078',
             7=>'#41B3A2',
             8=>'#BDE8CA',
-            9=>'#3A1078',
+            9=>'#821131',
             10=>'#4E31AA',
             11=>'#800000',
             12=>'#5B99C2',
@@ -92,6 +92,7 @@ class CalendarioGeneral extends Controller
                     'fin' => $fin,
                     'correo' => $inscrito->email,
                     'movil' => $inscrito->movil,
+                    'color' =>  $colores[$inscrito->categoria_id]
                 ],
             ];
         }
