@@ -183,7 +183,6 @@
         calendar.render();
     });
 
-
     $("#btnBuscar").on('click', function() {
         var sede = $("#sedes").val() == "" || $("#sedes").val() == null ? 0 : $("#sedes").val();
         var lugar = $("#lugares").val() == "" || $("#lugares").val() == null ? 0 : $("#lugares").val();
@@ -192,6 +191,7 @@
         calendarRender(tiposervicio, sede, lugar);
     });
 
+    $('#btnLimpiar').on("click", function(){});
 
     function calendarRender(tiposervicio, sede, lugar) {
         moment.locale('es');

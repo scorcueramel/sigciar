@@ -33,7 +33,7 @@
                     @endcan
                     <th>${headerSedes[4] ?? 'IMAGEN'}</th>
                     <th>${headerSedes[5] ?? 'MEDICIÓN'}</th>
-                    <th>${headerSedes[6] ?? 'TIPO DE SERVICIO'}</th>
+                    <th>TIPO DE SERVICIO</th>
                     @if (auth()->user()->can('editar.subtipo.servicios') || auth()->user()->can('eliminar.subtipo.servicios'))
                     <th>Acciones</th>
                     @endif

@@ -127,8 +127,8 @@ class TenisController extends Controller
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
             $tenis = DB::select("select
-                                    s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sr.inicio as start, sr.fin as end,
-                                    sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as nombres
+                                    s.id, sts.titulo as programa, l.descripcion as cancha, sr.inicio as start, sr.fin as end,
+                                    sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as title
                                     from
                                         servicio_reservas sr
                                         left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
@@ -144,8 +144,8 @@ class TenisController extends Controller
                                         and s.tiposervicio_id = 3");
         } else {
             $tenis = DB::select("select
-                                    s.id, ts.descripcion || ' - ' || coalesce(sts.titulo, '') || ' - ' || coalesce(l.descripcion, '') as title, sr.inicio as start, sr.fin as end,
-                                    sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as nombres
+                                    s.id, sts.titulo as programa, l.descripcion as cancha, sr.inicio as start, sr.fin as end,
+                                    sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as title
                                     from
                                         servicio_reservas sr
                                         left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
@@ -248,13 +248,13 @@ class TenisController extends Controller
         $categoria = $request->categoria;
         $sede = $request->sede;
         $lugar = $request->lugar;
-        $fechaInicio = $request->fechaInicio . " 00:00:00";
-        $termino = $request->termino . " 00:00:00";
+        $fechaInicio = "{$request->fechaInicio} 00:00:00";
+        $termino = "{$request->termino} 00:00:00";
         $cupos = $request->cupos;
         $horasActividad = $request->horasActividad;
         $turno = $request->turno;
         $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
-        $nombre_usuario = $usuario[0]->nombres . " " . $usuario[0]->apepaterno . " " . $usuario[0]->apematerno;
+        $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
         $ip = $request->ip();
         $created_at = new DateTime();
         $creacion = $created_at->format('Y-m-d H:i:s');
@@ -334,7 +334,7 @@ class TenisController extends Controller
     {
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
-        $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->appaterno . " " . $persona[0]->apematerno;
+        $usuarioActivo = "{$persona[0]->nombres} {$persona[0]->apepaterno} {$persona[0]->apematerno}";
         $servicioId = $request->idplantilla;
         $fechasDefinias = $request->fechasDefinidas;
         $usuarioId = $request->idmiembro;

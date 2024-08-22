@@ -29,10 +29,10 @@
         <div class="card-body">
             <div class="row pb-3">
                 <div class="col-md-auto d-flex align-items-center">
-                    <a role="button" href="{{route('tenis.index')}}" class="text-decoration-none text-secondary">Modo lista</a>
+                    <a role="button" href="{{route('tenis.index')}}" class="text-decoration-none text-secondary">Programa</a>
                 </div>
                 <div class="col-md-auto">
-                    <a role="button" href="#" class="btn btn-primary">Modo calendario</a>
+                    <a role="button" href="#" class="btn btn-primary">Inscritos</a>
                 </div>
             </div>
             <div class="row">
@@ -70,45 +70,67 @@
             eventOverlap: true,
             eventShortHeight: 'short',
             height: 500,
-            initialView: 'dayGridMonth',
+            initialView: 'timeGridWeek',
             locale: 'es-PE',
             selectable: true,
             timeZone: 'UTC',
             unselectAuto: true,
             headerToolbar: {
-                left: 'today prevYear,prev,next,nextYear',
+                left: 'today prev,next',
                 center: 'title',
-                right: 'dayGridMonth',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay',
             },
             events: "{{route('calendario.tenis')}}",
             eventClick: function(info) {
                 var modal = $("#modalcomponent");
                 var modaltitle = $("#mcLabel").html(`
-                    <h5>${info.event.title}</h5>
+                    <h5>DETALLE DE INSCRITO</h5>
                 `);
                 var modalbody = $("#mcbody");
                 modalbody.html(`
                     <table class="table">
                         <thead>
                             <tr>
-                            <td>Programa</td>
-                            <td>${info.event.title}</td>
+                                <td>Programa</td>
+                                <td>${info.event.extendedProps.programa}</td>
                             </tr>
                             <tr>
-                            <td>Sede</td>
-                            <td>${info.event.extendedProps.sede}</td>
+                                <td>Cancha</td>
+                                <td>${info.event.extendedProps.cancha}</td>
                             </tr>
                             <tr>
-                            <td>Turno</td>
-                            <td>${info.event.extendedProps.turno}</td>
+                                <td>Sede</td>
+                                <td>${info.event.extendedProps.sede}</td>
                             </tr>
                             <tr>
-                            <td>Horas</td>
-                            <td>${info.event.extendedProps.horas} hrs.</td>
+                                <td>Turno</td>
+                                <td>${info.event.extendedProps.turno}</td>
                             </tr>
                             <tr>
-                            <td>Miembro</td>
-                            <td>${info.event.extendedProps.nombres}</td>
+                                <td>Horas</td>
+                                <td>${info.event.extendedProps.horas} hrs.</td>
+                            </tr>
+                            <tr>
+                                <td>Miembro</td>
+                                <td>${info.event.title}</td>
+                            </tr>
+                            <tr>
+                                <td>Envira Nota</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" id="mostrar" onclick="javascript:mostrarCampoNotas();">Nueva Nota</button>
+                                    <button class="btn btn-sm btn-danger" id="ocultar" onclick="javascript:ocutarCampoNotas();" hidden>No Enviar</button>
+                                </td>
+                            </tr>
+                            <tr class="notas d-none">
+                                <td colspan="2">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Escribe la nota a enviar" id="nota-miembro" style="height: 100px"></textarea>
+                                        <label for="notas-miembro">Nota</label>
+                                    </div>
+                                    <div class="mt-2">
+                                        <button class="btn btn-sm btn-success w-100" type="button" onclick="javascript:enviarNota();">Enviar</button>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -118,5 +140,31 @@
         });
         calendar.render();
     });
+
+    function enviarNota(){
+        let enviar = confirm("¿Seguro de enviar el mensaje?");
+
+        if(enviar){
+            let nota = $("#nota-miembro").val();
+            alert(nota);
+        }
+        // else{
+        //     $("#nota-miembro").val("");
+        // }
+
+    }
+
+    function mostrarCampoNotas() {
+        $(".notas").removeClass('d-none');
+        $("#ocultar").removeAttr('hidden');
+        $("#mostrar").addClass('d-none', 'd-none');
+    }
+
+    function ocutarCampoNotas() {
+        $("#nota-miembro").val("");
+        $(".notas").addClass('d-none', 'd-none');
+        $("#ocultar").attr('hidden', 'hidden');
+        $("#mostrar").removeClass('d-none');
+    }
 </script>
 @endpush
