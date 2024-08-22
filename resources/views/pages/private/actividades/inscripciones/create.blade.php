@@ -44,15 +44,15 @@
                                                 <tr>
                                                     <td>
                                                         <div class="form-check">
-                                                            <input class="form-check-input actividad" type="radio" name="actividadid" id="{{$actividad->id}}" data-id="{{$actividad->id}}">
+                                                            <input class="form-check-input actividad" type="radio" name="actividadid" id="servid{{$actividad->id}}" data-id="{{$actividad->id}}">
                                                         </div>
                                                     </td>
-                                                    <td>{{$actividad->tipo_servicio}}</td>
-                                                    <td>{{$actividad->titulo}}</td>
-                                                    <td>{{$actividad->sede}}</td>
-                                                    <td>{{$actividad->turno}}</td>
-                                                    <td>{{date("d/m/Y", strtotime($actividad->inicio))}}</td>
-                                                    <td>{{date("d/m/Y", strtotime($actividad->fin))}}</td>
+                                                    <td><label for="servid{{$actividad->id}}">{{$actividad->tipo_servicio}}</label></td>
+                                                    <td><label for="servid{{$actividad->id}}">{{$actividad->titulo}}</label></td>
+                                                    <td><label for="servid{{$actividad->id}}">{{$actividad->sede}}</label></td>
+                                                    <td><label for="servid{{$actividad->id}}">{{$actividad->turno}}</label></td>
+                                                    <td><label for="servid{{$actividad->id}}">{{date("d/m/Y", strtotime($actividad->inicio))}}</label></td>
+                                                    <td><label for="servid{{$actividad->id}}">{{date("d/m/Y", strtotime($actividad->fin))}}</label></td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>

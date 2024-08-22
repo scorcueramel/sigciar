@@ -73,8 +73,8 @@
         </li>
         @endif
         @can('ver.tenis')
-        <li class="menu-item {{$activePage == 'tenis.edit' || $activePage == 'tenis.index' || $activePage == 'tenis.create' ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'tenis.create' ? 'active' : '' }}">
+        <li class="menu-item {{$activePage == 'tenis.edit' || $activePage == 'tenis.index' || $activePage == 'tenis.create' || $activePage == 'inscripciones.create' ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'tenis.create' || $activePage == 'inscripciones.create' ? 'active' : '' }}">
                 <i class="fa-solid fa-tennis-ball" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Programa de Tenis</div>
             </a>
@@ -88,6 +88,13 @@
                 <li class="menu-item {{ $activePage == 'tenis.create' ? 'active' : '' }}">
                     <a href="{{ route('tenis.create',3) }}" class="menu-link">
                         <div data-i18n="Account">Nuevo Programa</div>
+                    </a>
+                </li>
+                @endcan
+                @can('crear.inscripciones')
+                <li class="menu-item {{ $activePage == 'inscripciones.create' ? 'active' : '' }}">
+                    <a href="{{ route('inscripciones.create') }}" class="menu-link">
+                        <div data-i18n="Account">Inscribir Miembro</div>
                     </a>
                 </li>
                 @endcan
@@ -145,24 +152,17 @@
         </li>
         @endif
         @can('ver.inscripciones')
-        <li class="menu-item {{ $activePage == 'inscripciones.index' || $activePage == 'inscripciones.create' || $activePage == 'inscripciones.edit' ? 'active open' : '' }}">
+        <li class="menu-item {{ $activePage == 'inscripciones.index' || $activePage == 'inscripciones.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">
                 <i class="fa-regular fa-calendar-lines-pen" style="margin-right: 13px;"></i>
-                <div data-i18n="Account Settings">Inscritos</div>
+                <div data-i18n="Account Settings">Miembros Inscritos</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item {{ $activePage == 'inscripciones.index' ? 'active' : '' }}">
                     <a href="{{route('inscripciones.index')}}" class="menu-link">
-                        <div data-i18n="Notifications">Miembros Inscritos</div>
+                        <div data-i18n="Notifications">Lista de Inscritos</div>
                     </a>
                 </li>
-                @can('crear.inscripciones')
-                <li class="menu-item {{ $activePage == 'inscripciones.create' ? 'active' : '' }}">
-                    <a href="{{ route('inscripciones.create') }}" class="menu-link">
-                        <div data-i18n="Account">Inscribir Nuevo</div>
-                    </a>
-                </li>
-                @endcan
             </ul>
         </li>
         @endcan

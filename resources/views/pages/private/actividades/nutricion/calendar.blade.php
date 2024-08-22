@@ -271,17 +271,17 @@
         });
     });
 
-    function validarFechaMenorActual(date) {
-        var x = new Date();
-        var fecha = date.split("/");
-        x.setFullYear(fecha[2], fecha[1] - 1, fecha[0]);
-        var today = new Date();
+    // function validarFechaMenorActual(date) {
+    //     var x = new Date();
+    //     var fecha = date.split("/");
+    //     x.setFullYear(fecha[2], fecha[1] - 1, fecha[0]);
+    //     var today = new Date();
 
-        if (x >= today)
-            return false;
-        else
-            return true;
-    }
+    //     if (x >= today)
+    //         return false;
+    //     else
+    //         return true;
+    // }
 
     // Formtear Fecha Para Mostrar
     function formatearFecha(fecha) {
@@ -292,6 +292,7 @@
         var fecha_salida = fecha_format[2] + '/' + fecha_format[1] + '/' + fecha_format[0]
         return fecha_salida;
     }
+
     // Formtear Hora Para Mostrar
     function formatearHora(hora) {
         var fecha = hora;

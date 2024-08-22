@@ -35,28 +35,29 @@ class PerfilUsuarioController extends Controller
 
         $tipoDocumentos = TipoDocumento::where('estado', 'A')->get();
 
-        $programas = DB::select("SELECT distinct
-					                    s.id as servicios_id,
-					                    ts.descripcion || ' - ' || sts.titulo || ' - ' ||sts.subtitulo as descripcion,
+        $programas = DB::select("SELECT DISTINCT
+					                    s.id AS servicios_id,
+                                        s.tiposervicio_id,
+					                    ts.descripcion || ' - ' || sts.titulo || ' - ' ||sts.subtitulo AS descripcion,
 					                    per.documento,
-					                    per.apepaterno || ' ' || per.apematerno || ' ' || nombres as apeynom,
-					                    ver_horarios(cast (s.id as integer)) as horario,
-					                    ver_horarios_ins(cast (s.id as integer),cast (ins.persona_id as integer)) as horario_inscripcion,
-					                    lc.costohora as pago,
-					                    ins.estado as estado_inscripcion,
-					                    pag.estadopago as estado_pago,
+					                    per.apepaterno || ' ' || per.apematerno || ' ' || nombres AS apeynom,
+					                    ver_horarios(cast (s.id AS INTEGER)) AS horario,
+					                    ver_horarios_ins(cast (s.id AS INTEGER),cast (ins.persona_id AS INTEGER)) AS horario_inscripcion,
+					                    lc.costohora AS pago,
+					                    ins.estado AS estado_inscripcion,
+					                    pag.estadopago AS estado_pago,
 					                    pag.fechapago
-					                    from servicios s
-					                    left join tipo_servicios ts  on s.tiposervicio_id = ts.id
-					                    left join subtipo_servicios sts on s.subtiposervicio_id = sts.id
-					                    left join sedes sed on s.sede_id = sed.id
-					                    left join lugars l on s.lugar_id = l.id
-					                    left join lugar_costos lc on lc.lugars_id = l.id  and lc.descripcion = s.turno
-					                    left join servicio_plantillas  sp on s.id = sp.servicio_id
-					                    left join servicio_inscripcions ins on s.id = ins.servicio_id
-					                    left join servicio_reservas sr on ins.id = sr.servicioinscripcion_id
-					                    left join personas per on ins.persona_id = per.id
-					                    left join servicio_pagos pag on ins.id = pag.servicioinscripcion_id
+					                    FROM servicios s
+					                    LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
+					                    LEFT JOIN subtipo_servicios sts ON s.subtiposervicio_id = sts.id
+					                    LEFT JOIN sedes sed ON s.sede_id = sed.id
+					                    LEFT JOIN lugars l ON s.lugar_id = l.id
+					                    LEFT JOIN lugar_costos lc ON lc.lugars_id = l.id AND lc.descripcion = s.turno
+					                    LEFT JOIN servicio_plantillas  sp ON s.id = sp.servicio_id
+					                    LEFT JOIN servicio_inscripcions ins ON s.id = ins.servicio_id
+					                    LEFT JOIN servicio_reservas sr ON ins.id = sr.servicioinscripcion_id
+					                    LEFT JOIN personas per ON ins.persona_id = per.id
+					                    LEFT JOIN servicio_pagos pag ON ins.id = pag.servicioinscripcion_id
                                     where ins.persona_id = ? ", [$datosPersona["persona_id"]]);
 
         return view("pages.public.users.userprofile.index", compact("datosPersona", 'tipoDocumentos', 'programas'));

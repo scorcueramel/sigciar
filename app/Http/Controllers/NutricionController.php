@@ -99,7 +99,7 @@ class NutricionController extends Controller
                                 left join servicio_inscripcions si on sr.servicioinscripcion_id = si.id
                                 left join personas pe on si.persona_id = pe.id
                                 left join users us on pe.usuario_id = us.id
-                                WHERE s.id = ? --AND sr.estado= 'CA", [$idservicio]);
+                                WHERE s.id = ? --AND sr.estado= 'CA'", [$idservicio]);
 
         foreach ($inscritos as $inscrito) {
             $fecha = Str::before($inscrito->start, " ");
