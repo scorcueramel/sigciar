@@ -12,7 +12,7 @@
                             Recuerda revisar tus actividades programdas
                         </p>
 
-                        <a href="javascript:;" class="btn btn-sm btn-outline-primary">Ir actividades</a>
+                        <a href="{{route('calendario.general.eventos')}}" class="btn btn-sm btn-outline-primary">Ir actividades</a>
                     </div>
                 </div>
                 <div class="col-sm-5 text-center text-sm-left">
