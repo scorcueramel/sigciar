@@ -102,7 +102,6 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
     Route::get('/obtener/{tiposervicio}/{sede}/{lugar}/eventos',[CalendarioGeneral::class,'chargeEventsQuery'])->name('calendario.general.consulta.eventos');
     Route::get('/obtener/eventos',[CalendarioGeneral::class,'chargeEvents'])->name('calendario.general.eventos');
 
-
     Route::group(['prefix'=> 'sedes'], function () {
         Route::get('/lista', [SedesController::class, 'index'])->name('sedes.index');
         Route::post('/change/state', [SedesController::class, 'changeState'])->name('sedes.change.state');
@@ -140,6 +139,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/obtener/{idRegistro}/{dia}/horas',[TenisController::class,'getHoursForDay'])->name('obtener.horarios.inscripciones');
         Route::get('/detalle/{id}/actividad',[TenisController::class,'show'])->name('show.actividad');
         Route::post('/inscribir/miembro', [TenisController::class,'storeInscripcion'])->name('inscribir.miembro');
+        Route::post('/enviar/notas',[TenisController::class,'sendNote'])->name('enviar.notas.miembros');
     });
 
     Route::group(['prefix'=>'inscripciones'],function (){

@@ -6,6 +6,7 @@ use App\Models\Lugar;
 use App\Models\Persona;
 use App\Models\Sede;
 use App\Models\Servicio;
+use App\Models\ServicioInforme;
 use App\Models\SubtipoServicio;
 use App\Models\TipoServicio;
 use Illuminate\Http\Request;
@@ -128,7 +129,7 @@ class TenisController extends Controller
         if ($user->hasRole('ADMINISTRADOR')) {
             $tenis = DB::select("select
                                     s.id, sts.titulo as programa, l.descripcion as cancha, sr.inicio as start, sr.fin as end,
-                                    sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as title
+                                    sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as title, si.id as servicioinscripcion_id
                                     from
                                         servicio_reservas sr
                                         left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
@@ -145,7 +146,7 @@ class TenisController extends Controller
         } else {
             $tenis = DB::select("select
                                     s.id, sts.titulo as programa, l.descripcion as cancha, sr.inicio as start, sr.fin as end,
-                                    sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as title
+                                    sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as title, si.id as servicioinscripcion_id
                                     from
                                         servicio_reservas sr
                                         left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
@@ -382,5 +383,19 @@ class TenisController extends Controller
                                         and s.id = ?", [$id]);
 
         return response()->json($detalleActividad);
+    }
+
+    public function sendNote(Request $request){
+        $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
+        $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
+        $nota = new ServicioInforme();
+        $nota->servicioinscripcion_id = $request->servinscid;
+        $nota->detalle = $request->nota;
+        $nota->adjunto = $request->enlace;
+        $nota->estado = 'A';
+        $nota->usuario_creador = $nombre_usuario;
+        $nota->ip_usuario = $request->ip();
+
+        dd($nota);
     }
 }

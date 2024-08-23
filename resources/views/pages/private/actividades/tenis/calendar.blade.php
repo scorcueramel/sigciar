@@ -53,10 +53,14 @@
                 <button type="button" class="btn-close" data-bs-target="#modalcomponent" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="servinsc_id">
                 <div class="mb-3">
                     <label for="nota-miembro" class="form-label">Nota</label>
-                    <textarea class="form-control" id="nota-miembro" rows="3" placeholder="Escribir nota aquí" maxlength="300" aria-describedby="description" style="height: 150px;" required></textarea>
+                    <textarea class="form-control" id="nota-miembro" rows="3" placeholder="Escribir nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required></textarea>
                     <div id="description" class="form-text text-primary">300 caracteres como máximo permitido.</div>
+                    <div class="d-none" id="error">
+                        <p class="text-danger">Debes ingresar una nota para enviar</p>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="enlace" class="form-label">Enlace (link)</label>
@@ -148,7 +152,7 @@
                             <tr>
                                 <td>Envira Nota</td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary" id="nuevanota" onclick="notaModal('${info.event.title}')">Nueva Nota</button>
+                                    <button class="btn btn-sm btn-primary" id="nuevanota" onclick="notaModal('${info.event.title}',${info.event.extendedProps.servicioinscripcion_id})">Nueva Nota</button>
                                 </td>
                             </tr>
 
@@ -161,10 +165,11 @@
         calendar.render();
     });
 
-    function notaModal(miembro) {
+    function notaModal(miembro, servicioinscripcion) {
         $("#notamodal").modal("show");
         $("#modalcomponent").modal("hide");
         $("#modalnotas").html(`ENVIAR NOTA A <strong class="text-primary">${miembro}</strong>`);
+        $("#servinsc_id").val(`${servicioinscripcion}`);
     }
 
     $("#enviarnota").on('click', function() {
@@ -172,46 +177,62 @@
         let largo = miembro.length;
         let nombre = miembro.slice(14, largo);
 
-        $("#notamodal").modal('hide');
-        Swal.fire({
-            title: `¿Enviar Nota?`,
-            html: `
+        let servinscid = $("#servinsc_id").val();
+        let nota = $("#nota-miembro").val();
+        let enlace = $("#enlace-miemrbo").val();
+
+        if (nota == '' || enlace == '') {
+            $("#error").removeClass('d-none')
+        } else {
+            $("#notamodal").modal('hide');
+            Swal.fire({
+                title: `¿Enviar Nota?`,
+                html: `
                 A <strong>${nombre}</strong> <br>
                 Al enviar la nota el miembro recibirá un correo eléctronico y también encontrará la nota en su bandeja personal, ¿está seguro de enviar la nota?
                 `,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Si enviar",
-            cancelButtonText: "Cancelar",
-            allowOutsideClick: false,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let nota = $("#nota-miembro").val();
-                let enlace = $("#adjuntar-enlace").val();
-                Swal.fire({
-                    title: "Nota enviado",
-                    text: `${nombre}, recibió un correo eléctronico y se almaceno en su bandeja personal la nota enviada`,
-                    icon: "success",
-                    allowOutsideClick: false,
-                    confirmButtonColor: "#3085d6",
-                    confirmButtonText: "Entendido",
-                }).then((res) => {
-                    if (res.isConfirmed) {
-                        $("#nota-miembro").val("");
-                        $("#enlace-miemrbo").val("");
-                        $("#modalcomponent").modal('show');
-                    }
-                });
-            } else {
-                $("#notamodal").modal('show');
-            }
-        });
-
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si enviar",
+                cancelButtonText: "Cancelar",
+                allowOutsideClick: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Nota enviado",
+                        text: `${nombre}, recibió un correo eléctronico y se almaceno en su bandeja personal la nota enviada`,
+                        icon: "success",
+                        allowOutsideClick: false,
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Entendido",
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            $("#nota-miembro").val("");
+                            $("#enlace-miemrbo").val("");
+                            $.ajax({
+                                type: "POST",
+                                url: "{{route('enviar.notas.miembros')}}",
+                                data: {
+                                    nota,
+                                    enlace,
+                                    servinscid
+                                },
+                                success: function(response) {
+                                    $("#modalcomponent").modal('show');
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    $("#notamodal").modal('show');
+                }
+            });
+        }
     });
 
-    $("#cancelarenvio").on('click', function(){
+    $("#cancelarenvio").on('click', function() {
         $("#nota-miembro").val("");
         $("#enlace-miemrbo").val("");
     });
