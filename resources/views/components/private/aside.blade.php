@@ -81,7 +81,7 @@
             <ul class="menu-sub">
                 <li class="menu-item {{ $activePage == 'tenis.index' ? 'active' : '' }}">
                     <a href="{{route('tenis.index')}}" class="menu-link">
-                        <div data-i18n="Notifications">Programas Creados</div>
+                        <div data-i18n="Notifications">Programas / Inscritos</div>
                     </a>
                 </li>
                 @can('crear.tenis')
@@ -110,7 +110,7 @@
             <ul class="menu-sub">
                 <li class="menu-item {{ $activePage == 'nutricion.index' ? 'active' : '' }}">
                     <a href="{{route('nutricion.index')}}" class="menu-link">
-                        <div data-i18n="Notifications">Programas creados</div>
+                        <div data-i18n="Notifications">Programas / Inscritos</div>
                     </a>
                 </li>
                 @can('crear.nutricion')

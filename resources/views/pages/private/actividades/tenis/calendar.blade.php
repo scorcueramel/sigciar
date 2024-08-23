@@ -16,7 +16,7 @@
 @include('components.private.messages-session')
 <div class="row d-flex align-items-center">
     <div class="col-md">
-        <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Tenis Actividades /</span> Todas </h4>
+        <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Inscritos /</span> Todas </h4>
     </div>
     <div class="col-md text-end">
         <a href="{{ route('tenis.create',3) }}" class="btn btn-sm btn-info"><i class="fa-solid fa-tennis-ball me-1"></i>
@@ -41,6 +41,37 @@
         </div>
     </div>
 </div>
+
+
+
+
+<div class="modal fade" id="notamodal" aria-hidden="true" aria-labelledby="modalnotas" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalnotas"></h1>
+                <button type="button" class="btn-close" data-bs-target="#modalcomponent" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="nota-miembro" class="form-label">Nota</label>
+                    <textarea class="form-control" id="nota-miembro" rows="3" placeholder="Escribir nota aquí" maxlength="300" aria-describedby="description" style="height: 150px;" required></textarea>
+                    <div id="description" class="form-text text-primary">300 caracteres como máximo permitido.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="enlace" class="form-label">Enlace (link)</label>
+                    <input type="text" class="form-control" id="enlace-miemrbo" placeholder="Dirección url del adjunto">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-danger" id="cancelarenvio" data-bs-target="#modalcomponent" data-bs-toggle="modal">Cancelar</button>
+                <button class="btn btn-sm btn-primary" id="enviarnota">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @endsection
 @include('components.private.modal', [
 'tamanio'=>'modal-sm',
@@ -70,7 +101,7 @@
             eventOverlap: true,
             eventShortHeight: 'short',
             height: 500,
-            initialView: 'timeGridWeek',
+            initialView: 'dayGridMonth',
             locale: 'es-PE',
             selectable: true,
             timeZone: 'UTC',
@@ -117,21 +148,10 @@
                             <tr>
                                 <td>Envira Nota</td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary" id="mostrar" onclick="javascript:mostrarCampoNotas();">Nueva Nota</button>
-                                    <button class="btn btn-sm btn-danger" id="ocultar" onclick="javascript:ocutarCampoNotas();" hidden>No Enviar</button>
+                                    <button class="btn btn-sm btn-primary" id="nuevanota" onclick="notaModal('${info.event.title}')">Nueva Nota</button>
                                 </td>
                             </tr>
-                            <tr class="notas d-none">
-                                <td colspan="2">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Escribe la nota a enviar" id="nota-miembro" style="height: 100px"></textarea>
-                                        <label for="notas-miembro">Nota</label>
-                                    </div>
-                                    <div class="mt-2">
-                                        <button class="btn btn-sm btn-success w-100" type="button" onclick="javascript:enviarNota();">Enviar</button>
-                                    </div>
-                                </td>
-                            </tr>
+
                         </tbody>
                     </table>
                 `);
@@ -141,30 +161,59 @@
         calendar.render();
     });
 
-    function enviarNota(){
-        let enviar = confirm("¿Seguro de enviar el mensaje?");
-
-        if(enviar){
-            let nota = $("#nota-miembro").val();
-            alert(nota);
-        }
-        // else{
-        //     $("#nota-miembro").val("");
-        // }
-
+    function notaModal(miembro) {
+        $("#notamodal").modal("show");
+        $("#modalcomponent").modal("hide");
+        $("#modalnotas").html(`ENVIAR NOTA A <strong class="text-primary">${miembro}</strong>`);
     }
 
-    function mostrarCampoNotas() {
-        $(".notas").removeClass('d-none');
-        $("#ocultar").removeAttr('hidden');
-        $("#mostrar").addClass('d-none', 'd-none');
-    }
+    $("#enviarnota").on('click', function() {
+        let miembro = $("#modalnotas").text();
+        let largo = miembro.length;
+        let nombre = miembro.slice(14, largo);
 
-    function ocutarCampoNotas() {
+        $("#notamodal").modal('hide');
+        Swal.fire({
+            title: `¿Enviar Nota?`,
+            html: `
+                A <strong>${nombre}</strong> <br>
+                Al enviar la nota el miembro recibirá un correo eléctronico y también encontrará la nota en su bandeja personal, ¿está seguro de enviar la nota?
+                `,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si enviar",
+            cancelButtonText: "Cancelar",
+            allowOutsideClick: false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let nota = $("#nota-miembro").val();
+                let enlace = $("#adjuntar-enlace").val();
+                Swal.fire({
+                    title: "Nota enviado",
+                    text: `${nombre}, recibió un correo eléctronico y se almaceno en su bandeja personal la nota enviada`,
+                    icon: "success",
+                    allowOutsideClick: false,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Entendido",
+                }).then((res) => {
+                    if (res.isConfirmed) {
+                        $("#nota-miembro").val("");
+                        $("#enlace-miemrbo").val("");
+                        $("#modalcomponent").modal('show');
+                    }
+                });
+            } else {
+                $("#notamodal").modal('show');
+            }
+        });
+
+    });
+
+    $("#cancelarenvio").on('click', function(){
         $("#nota-miembro").val("");
-        $(".notas").addClass('d-none', 'd-none');
-        $("#ocultar").attr('hidden', 'hidden');
-        $("#mostrar").removeClass('d-none');
-    }
+        $("#enlace-miemrbo").val("");
+    });
 </script>
 @endpush
