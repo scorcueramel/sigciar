@@ -44,7 +44,7 @@
 @endsection
 @include('components.private.notas-modal')
 @include('components.private.modal', [
-'tamanio'=>'modal-sm',
+'tamanio'=>'modal-md',
 'withTitle' => true,
 'title' => '',
 'withButtons' => true,
@@ -261,14 +261,14 @@
                     for (let index = 0; index < response.length; index++) {
                         const element = response[index];
                         $("#modalnotabody").append(`
-                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion accordion-flush" id="accordion${index}">
                         <div class="accordion-item">
                                 <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${index}" aria-expanded="false" aria-controls="flush-collapse${index}">
-                                    Nota #${index+1}
+                                    Nota #${(index+1) < 10 ? '0' + (index+1) : (index+1)}
                                 </button>
                                 </h2>
-                                <div id="flush-collapse${index}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div id="flush-collapse${index}" class="accordion-collapse collapse" data-bs-parent="#accordion${index}">
                                         <div class="accordion-body">
                                         ${element.detalle}
                                         <br>
