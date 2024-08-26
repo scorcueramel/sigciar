@@ -41,42 +41,8 @@
         </div>
     </div>
 </div>
-
-
-
-
-<div class="modal fade" id="notamodal" aria-hidden="true" aria-labelledby="modalnotas" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modalnotas"></h1>
-                <button type="button" class="btn-close" data-bs-target="#modalcomponent" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="servinsc_id">
-                <div class="mb-3">
-                    <label for="nota-miembro" class="form-label">Nota</label>
-                    <textarea class="form-control" id="nota-miembro" rows="3" placeholder="Escribir nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required></textarea>
-                    <div id="description" class="form-text text-primary">300 caracteres como máximo permitido.</div>
-                    <div class="d-none" id="error">
-                        <p class="text-danger">Debes ingresar una nota para enviar</p>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="enlace" class="form-label">Enlace (link)</label>
-                    <input type="text" class="form-control" id="enlace-miemrbo" placeholder="Dirección url del adjunto">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-sm btn-danger" id="cancelarenvio" data-bs-target="#modalcomponent" data-bs-toggle="modal">Cancelar</button>
-                <button class="btn btn-sm btn-primary" id="enviarnota">Enviar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 @endsection
+@include('components.private.notas-modal')
 @include('components.private.modal', [
 'tamanio'=>'modal-sm',
 'withTitle' => true,
@@ -155,7 +121,12 @@
                                     <button class="btn btn-sm btn-primary" id="nuevanota" onclick="notaModal('${info.event.title}',${info.event.extendedProps.servicioinscripcion_id})">Nueva Nota</button>
                                 </td>
                             </tr>
-
+                            <tr>
+                                <td>Ver Notas</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" id="vernotas" onclick="verNotas('${info.event.title}',${info.event.extendedProps.servicioinscripcion_id})">Ver Notas</button>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 `);
@@ -169,10 +140,33 @@
         $("#notamodal").modal("show");
         $("#modalcomponent").modal("hide");
         $("#modalnotas").html(`ENVIAR NOTA A <strong class="text-primary">${miembro}</strong>`);
-        $("#servinsc_id").val(`${servicioinscripcion}`);
+
+        $("#modalnotabody").html("");
+
+        $("#modalnotabody").append(`
+                <input type="hidden" id="servinsc_id" value="${servicioinscripcion}">
+                <div class="mb-3">
+                    <label for="nota-miembro" class="form-label">Nota</label>
+                    <textarea class="form-control" id="nota-miembro" rows="3" placeholder="Escribir nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required></textarea>
+                    <div id="description" class="form-text text-primary">300 caracteres como máximo permitido.</div>
+                    <div class="d-none" id="error">
+                        <p class="text-danger">Debes ingresar una nota para enviar</p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="enlace" class="form-label">Enlace (link)</label>
+                    <input type="text" class="form-control" id="enlace-miemrbo" placeholder="Dirección url del adjunto">
+                </div>
+            `);
+
+        $("#modalnotafooter").html("");
+        $("#modalnotafooter").append(`
+                <button class="btn btn-sm btn-danger" id="cancelarenvio" data-bs-target="#modalcomponent" data-bs-toggle="modal">Cancelar</button>
+                <button class="btn btn-sm btn-primary" id="enviarnota" onclick="javascript:enviarNota();">Enviar</button>
+        `);
     }
 
-    $("#enviarnota").on('click', function() {
+    function enviarNota() {
         let miembro = $("#modalnotas").text();
         let largo = miembro.length;
         let nombre = miembro.slice(14, largo);
@@ -181,7 +175,7 @@
         let nota = $("#nota-miembro").val();
         let enlace = $("#enlace-miemrbo").val();
 
-        if (nota == '' || enlace == '') {
+        if (nota == '') {
             $("#error").removeClass('d-none')
         } else {
             $("#notamodal").modal('hide');
@@ -208,6 +202,14 @@
                         confirmButtonColor: "#3085d6",
                         confirmButtonText: "Entendido",
                     }).then((res) => {
+                        Swal.fire({
+                            icon: 'info',
+                            html: "Espere un momento porfavor ...",
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
                         if (res.isConfirmed) {
                             $("#nota-miembro").val("");
                             $("#enlace-miemrbo").val("");
@@ -220,7 +222,9 @@
                                     servinscid
                                 },
                                 success: function(response) {
-                                    $("#modalcomponent").modal('show');
+                                    if (response == 'ok') {
+                                        window.location.reload();
+                                    }
                                 }
                             });
                         }
@@ -230,7 +234,67 @@
                 }
             });
         }
-    });
+    }
+
+    function verNotas(miembro, servicioinscripcion) {
+        $("#notamodal").modal("show");
+        $("#modalcomponent").modal("hide");
+        $("#modalnotas").html(`NOTAS DE <strong class="text-primary">${miembro}</strong>`);
+        $("#modalnotabody").html("");
+        $("#modalnotabody").append(`
+            <div class="row mt-5">
+                <div class="col-md-12 text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-primary">Cargando...</p>
+                </div>
+            </div>
+        `);
+
+        $.ajax({
+            type: "GET",
+            url: `/admin/actividades/obtener/${servicioinscripcion}/notas`,
+            success: function(response) {
+                $("#modalnotabody").html("");
+                if (response.length > 0) {
+                    for (let index = 0; index < response.length; index++) {
+                        const element = response[index];
+                        $("#modalnotabody").append(`
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${index}" aria-expanded="false" aria-controls="flush-collapse${index}">
+                                    Nota #${index+1}
+                                </button>
+                                </h2>
+                                <div id="flush-collapse${index}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        ${element.detalle}
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        `);
+                    }
+                } else {
+                    $("#modalnotabody").append(`
+                    <div class="jumbotron jumbotron-fluid">
+                        <div class="container">
+                            <p class="lead">Este miembro no cuenta con ninguna nota enviada.</p>
+                        </div>
+                    </div>
+                    `)
+
+                }
+            }
+        });
+
+        $("modalnotafooter").html("");
+        $("modalnotafooter").append(`
+            <button class="btn btn-sm btn-danger" id="cancelarenvio" data-bs-target="#modalcomponent" data-bs-toggle="modal">Cancelar</button>
+        `);
+    }
 
     $("#cancelarenvio").on('click', function() {
         $("#nota-miembro").val("");

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NotasMiembro;
 use App\Models\Lugar;
 use App\Models\Persona;
 use App\Models\Sede;
@@ -9,12 +10,15 @@ use App\Models\Servicio;
 use App\Models\ServicioInforme;
 use App\Models\SubtipoServicio;
 use App\Models\TipoServicio;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use DateTime;
 use Illuminate\Support\Str;
+
 
 class TenisController extends Controller
 {
@@ -391,11 +395,35 @@ class TenisController extends Controller
         $nota = new ServicioInforme();
         $nota->servicioinscripcion_id = $request->servinscid;
         $nota->detalle = $request->nota;
-        $nota->adjunto = $request->enlace;
+        $nota->adjuntto = $request->enlace;
         $nota->estado = 'A';
         $nota->usuario_creador = $nombre_usuario;
         $nota->ip_usuario = $request->ip();
+        $nota->save();
 
-        dd($nota);
+        $resultNota = DB::select("SELECT si.* ,p.nombres ,p.apepaterno ,p.apematerno , p.usuario_id
+                                    FROM servicio_informes si
+                                    LEFT JOIN servicio_inscripcions si2
+                                    ON si.servicioinscripcion_id = si2.id
+                                    LEFT JOIN personas p
+                                    ON si2.persona_id = p.id
+                                    WHERE si.id = ?",[$nota->id]);
+
+        $correo = User::where('id',$resultNota[0]->usuario_id)->select('email')->get()[0]->email;
+
+        Mail::to($correo)->send(new NotasMiembro($resultNota[0]));
+
+        return response()->json("ok");
+    }
+
+    public function getNotesMember($idService){
+        $findNote = DB::select("SELECT si.id ,si.servicioinscripcion_id ,si.detalle, si.adjuntto ,p.nombres ,p.apepaterno ,p.apematerno ,p.usuario_id
+                                FROM servicio_informes si
+                                LEFT JOIN servicio_inscripcions si2
+                                ON si.servicioinscripcion_id = si2.id
+                                LEFT JOIN personas p
+                                ON si2.persona_id = p.id
+                                WHERE si.servicioinscripcion_id = ?",[$idService]);
+        return response()->json($findNote);
     }
 }
