@@ -49,33 +49,33 @@ class LandingController extends Controller
             )
             ->where('noticias.estado', '=', 'A')
             ->get();
-        $activitystarts = DB::select("select distinct
-                                        servicios.id as servicios_id,
+        $activitystarts = DB::select("SELECT DISTINCT
+                                        servicios.id AS servicios_id,
                                         subtipo_servicios.medicion,
                                         subtipo_servicios.titulo,
                                         subtipo_servicios.subtitulo,
                                         subtipo_servicios.imagen,
-                                        lugar_costos.costohora as desde
-                                        from servicios
-                                        left join public.tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
-                                        left join public.subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
-                                        left join public.sedes on servicios.sede_id = sedes.id
-                                        left join public.lugars on servicios.lugar_id = lugars.id
-                                        left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
-                                        left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
-                                        where subtipo_servicios.titulo  is not null
-                                        and tipo_servicios.id <> 3
-                                        and servicios.estado= 'A'");
+                                        lugar_costos.costohora AS desde
+                                        FROM servicios
+                                        LEFT JOIN public.tipo_servicios ON servicios.tiposervicio_id = tipo_servicios.id
+                                        LEFT JOIN public.subtipo_servicios ON servicios.subtiposervicio_id = subtipo_servicios.id
+                                        LEFT JOIN public.sedes ON servicios.sede_id = sedes.id
+                                        LEFT JOIN public.lugars ON servicios.lugar_id = lugars.id
+                                        LEFT JOIN public.lugar_costos ON lugar_costos.lugars_id = lugars.id AND lugar_costos.descripcion = 'DIURNO'
+                                        LEFT JOIN public.servicio_plantillas ON servicios.id = servicio_plantillas.servicio_id
+                                        WHERE subtipo_servicios.titulo IS NOT NULL
+                                        AND tipo_servicios.id NOT IN (1,3)
+                                        AND servicios.estado= 'A'");
 
-        $entrenadores = DB::select("select
-                                    concat(p.nombres,' ',p.apepaterno,' ',p.apematerno) as nombres,
+        $entrenadores = DB::select("SELECT
+                                    CONCAT(p.nombres,' ',p.apepaterno,' ',p.apematerno) AS nombres,
                                     p.directorio ,p.imagen
-                                    from model_has_roles mhr
-                                    left join users u
-                                    on u.id = mhr.model_id
-                                    left join personas p
-                                    on p.usuario_id = u.id
-                                    where mhr.role_id = 2");
+                                    FROM model_has_roles mhr
+                                    LEFT JOIN users u
+                                    ON u.id = mhr.model_id
+                                    LEFT JOIN personas p
+                                    ON p.usuario_id = u.id
+                                    WHERE mhr.role_id = 2");
 
 
         return view("pages.public.landing.index", compact("sedes", "actividades", "noticias", "activitystarts","entrenadores"));

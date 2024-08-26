@@ -56,6 +56,7 @@
     </div>
 </div>
 @endsection
+@include('components.private.notas-modal')
 <!-- modal reservation -->
 @include('components.private.modal', [
 'tamanio'=>'modal-md',
@@ -95,6 +96,8 @@
                     height: 900,
                     locale: 'es-PE',
                     timeZone: 'UTC',
+                    slotMinTime: '06:00',
+                    slotMaxTime: '24:00',
                     slotDuration: '01:00',
                     unselectAuto: true,
                     selectable: true,
@@ -167,6 +170,18 @@
                                         <td>HORA FIN</td>
                                         <td>${info.event.extendedProps.fin}</td>
                                     </tr>
+                                    <tr>
+                                <td>Envira Nota</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" id="nuevanota" onclick="notaModal('${info.event.title}',${info.event.extendedProps.servicioinscripcion})">Nueva Nota</button>
+                                </td>
+                                </tr>
+                                <tr>
+                                    <td>Ver Notas</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" id="vernotas" onclick="verNotas('${info.event.title}',${info.event.extendedProps.servicioinscripcion})">Ver Notas</button>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         `);
@@ -282,6 +297,174 @@
     //     else
     //         return true;
     // }
+
+    function notaModal(miembro, servicioinscripcion) {
+        $("#notamodal").modal("show");
+        $("#modalcomponent").modal("hide");
+        $("#modalnotas").html(`ENVIAR NOTA A <strong class="text-primary">${miembro}</strong>`);
+
+        $("#modalnotabody").html("");
+
+        $("#modalnotabody").append(`
+                <input type="hidden" id="servinsc_id" value="${servicioinscripcion}">
+                <div class="mb-3">
+                    <label for="nota-miembro" class="form-label">Nota</label>
+                    <textarea class="form-control" id="nota-miembro" rows="3" placeholder="Escribir nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required></textarea>
+                    <div id="description" class="form-text text-primary">300 caracteres como máximo permitido.</div>
+                    <div class="d-none" id="error">
+                        <p class="text-danger">Debes ingresar una nota para enviar</p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="enlace" class="form-label">Enlace (link)</label>
+                    <input type="text" class="form-control" id="enlace-miemrbo" placeholder="Dirección url del adjunto">
+                </div>
+            `);
+
+        $("#modalnotafooter").html("");
+        $("#modalnotafooter").append(`
+                <button class="btn btn-sm btn-danger" id="cancelarenvio" data-bs-target="#modalcomponent" data-bs-toggle="modal">Cancelar</button>
+                <button class="btn btn-sm btn-primary" id="enviarnota" onclick="javascript:enviarNota();">Enviar</button>
+        `);
+    }
+
+    function enviarNota() {
+        let miembro = $("#modalnotas").text();
+        let largo = miembro.length;
+        let nombre = miembro.slice(14, largo);
+
+        let servinscid = $("#servinsc_id").val();
+        let nota = $("#nota-miembro").val();
+        let enlace = $("#enlace-miemrbo").val();
+
+        if (nota == '') {
+            $("#error").removeClass('d-none')
+        } else {
+            $("#notamodal").modal('hide');
+            Swal.fire({
+                title: `¿Enviar Nota?`,
+                html: `
+                A <strong>${nombre}</strong> <br>
+                Al enviar la nota el miembro recibirá un correo eléctronico y también encontrará la nota en su bandeja personal, ¿está seguro de enviar la nota?
+                `,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si enviar",
+                cancelButtonText: "Cancelar",
+                allowOutsideClick: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Nota enviado",
+                        text: `${nombre}, recibió un correo eléctronico y se almaceno en su bandeja personal la nota enviada`,
+                        icon: "success",
+                        allowOutsideClick: false,
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Entendido",
+                    }).then((res) => {
+                        Swal.fire({
+                            icon: 'info',
+                            html: "Espere un momento porfavor ...",
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        if (res.isConfirmed) {
+                            $("#nota-miembro").val("");
+                            $("#enlace-miemrbo").val("");
+                            $.ajax({
+                                type: "POST",
+                                url: "{{route('enviar.notas.miembros')}}",
+                                data: {
+                                    nota,
+                                    enlace,
+                                    servinscid
+                                },
+                                success: function(response) {
+                                    if (response == 'ok') {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    $("#notamodal").modal('show');
+                }
+            });
+        }
+    }
+
+    function verNotas(miembro, servicioinscripcion) {
+        console.log(servicioinscripcion);
+        $("#notamodal").modal("show");
+        $("#modalcomponent").modal("hide");
+        $("#modalnotas").html(`NOTAS DE <strong class="text-primary">${miembro}</strong>`);
+        $("#modalnotabody").html("");
+        $("#modalnotabody").append(`
+            <div class="row mt-5">
+                <div class="col-md-12 text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-primary">Cargando...</p>
+                </div>
+            </div>
+        `);
+
+        $.ajax({
+            type: "GET",
+            url: `/admin/nutricion/obtener/${servicioinscripcion}/notas`,
+            success: function(response) {
+                $("#modalnotabody").html("");
+                if (response.length > 0) {
+                    for (let index = 0; index < response.length; index++) {
+                        const element = response[index];
+                        $("#modalnotabody").append(`
+                        <div class="accordion accordion-flush" id="accordion${index}">
+                        <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${index}" aria-expanded="false" aria-controls="flush-collapse${index}">
+                                    Nota #${(index+1) < 10 ? '0' + (index+1) : (index+1)}
+                                </button>
+                                </h2>
+                                <div id="flush-collapse${index}" class="accordion-collapse collapse" data-bs-parent="#accordion${index}">
+                                        <div class="accordion-body">
+                                        ${element.detalle}
+                                        <br>
+                                        ${element.adjuntto != null ? '<a href="'+element.adjuntto+'" class="btn btn-primary btn-sm mt-3" target="_blank">Ver adjunto</a>' : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        `);
+                    }
+                } else {
+                    $("#modalnotabody").append(`
+                    <div class="jumbotron jumbotron-fluid">
+                        <div class="container">
+                            <p class="lead">Este miembro no cuenta con ninguna nota enviada.</p>
+                        </div>
+                    </div>
+                    `)
+
+                }
+            }
+        });
+
+        $("modalnotafooter").html("");
+        $("modalnotafooter").append(`
+            <button class="btn btn-sm btn-danger" id="cancelarenvio" data-bs-target="#modalcomponent" data-bs-toggle="modal">Cancelar</button>
+        `);
+    }
+
+    $("#cancelarenvio").on('click', function() {
+        $("#nota-miembro").val("");
+        $("#enlace-miemrbo").val("");
+    });
 
     // Formtear Fecha Para Mostrar
     function formatearFecha(fecha) {

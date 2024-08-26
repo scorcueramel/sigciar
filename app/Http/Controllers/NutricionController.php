@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NotasMiembro;
 use App\Models\Lugar;
 use App\Models\Persona;
 use App\Models\Sede;
 use App\Models\Servicio;
+use App\Models\ServicioInforme;
 use App\Models\SubtipoServicio;
+use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -89,6 +93,7 @@ class NutricionController extends Controller
     {
         $reservas = [];
         $inscritos = DB::select("select pe.apepaterno || ' ' || pe.apematerno || ' ' || pe.nombres as title,
+                                    si.id as servicioinscripcion_id,pe.movil,
                                     pe.movil, us.email, sts.titulo as categoria,
                                     sr.estado as estado_pago, s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
                                     s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
@@ -122,6 +127,7 @@ class NutricionController extends Controller
                     'fin' => $fin,
                     'correo' => $inscrito->email,
                     'movil' => $inscrito->movil,
+                    'servicioinscripcion' => $inscrito->servicioinscripcion_id,
                 ],
             ];
         }
@@ -484,5 +490,43 @@ class NutricionController extends Controller
         $actividad->save();
         $actividad->delete();
         return redirect()->back()->with('success', 'El programa de nutrición fue eliminada');
+    }
+
+    public function sendNote(Request $request){
+        $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
+        $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
+        $nota = new ServicioInforme();
+        $nota->servicioinscripcion_id = $request->servinscid;
+        $nota->detalle = $request->nota;
+        $nota->adjuntto = $request->enlace;
+        $nota->estado = 'A';
+        $nota->usuario_creador = $nombre_usuario;
+        $nota->ip_usuario = $request->ip();
+        $nota->save();
+
+        $resultNota = DB::select("SELECT si.* ,p.nombres ,p.apepaterno ,p.apematerno , p.usuario_id
+                                    FROM servicio_informes si
+                                    LEFT JOIN servicio_inscripcions si2
+                                    ON si.servicioinscripcion_id = si2.id
+                                    LEFT JOIN personas p
+                                    ON si2.persona_id = p.id
+                                    WHERE si.id = ?",[$nota->id]);
+
+        $correo = User::where('id',$resultNota[0]->usuario_id)->select('email')->get()[0]->email;
+
+        Mail::to($correo)->send(new NotasMiembro($resultNota[0]));
+
+        return response()->json("ok");
+    }
+
+    public function getNotesMember($idService){
+        $findNote = DB::select("SELECT si.id ,si.servicioinscripcion_id ,si.detalle, si.adjuntto ,p.nombres ,p.apepaterno ,p.apematerno ,p.usuario_id
+                                FROM servicio_informes si
+                                LEFT JOIN servicio_inscripcions si2
+                                ON si.servicioinscripcion_id = si2.id
+                                LEFT JOIN personas p
+                                ON si2.persona_id = p.id
+                                WHERE si.servicioinscripcion_id = ?",[$idService]);
+        return response()->json($findNote);
     }
 }
