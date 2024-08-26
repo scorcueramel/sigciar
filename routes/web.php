@@ -140,6 +140,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/detalle/{id}/actividad',[TenisController::class,'show'])->name('show.actividad');
         Route::post('/inscribir/miembro', [TenisController::class,'storeInscripcion'])->name('inscribir.miembro');
         Route::post('/enviar/notas',[TenisController::class,'sendNote'])->name('enviar.notas.miembros');
+        Route::get('/obtener/{id}/notas',[TenisController::class,'getNotesMember'])->name('obtener.notas.miembros');
     });
 
     Route::group(['prefix'=>'inscripciones'],function (){
