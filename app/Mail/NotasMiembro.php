@@ -26,7 +26,7 @@ class NotasMiembro extends Mailable
     {
         return new Envelope(
             from: new Address('admin@ciar.com','CIAR SPORTS'),
-            subject: 'Nota a Miembro CIAR SPORTS',
+            subject: 'NOTA DE CIAR SPORTS',
         );
     }
 
