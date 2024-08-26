@@ -1,5 +1,5 @@
 <div class="modal fade" id="notamodal" aria-hidden="true" aria-labelledby="modalnotas" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="modalnotas"></h1>

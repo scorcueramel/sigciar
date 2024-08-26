@@ -269,8 +269,10 @@
                                 </button>
                                 </h2>
                                 <div id="flush-collapse${index}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">
+                                        <div class="accordion-body">
                                         ${element.detalle}
+                                        <br>
+                                        ${element.adjuntto != null ? '<a href="'+element.adjuntto+'" class="btn btn-primary btn-sm mt-3" target="_blank">Ver adjunto</a>' : ''}
                                         </div>
                                     </div>
                                 </div>
