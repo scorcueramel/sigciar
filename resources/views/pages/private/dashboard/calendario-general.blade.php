@@ -224,9 +224,18 @@
                                 </h2>
                                 <div id="flush-collapse${index}" class="accordion-collapse collapse" data-bs-parent="#accordion${index}">
                                         <div class="accordion-body">
-                                        ${element.detalle}
-                                        <br>
-                                        ${element.adjuntto != null ? '<a href="'+element.adjuntto+'" class="btn btn-primary btn-sm mt-3" target="_blank">Ver adjunto</a>' : ''}
+                                            <div class="row">
+                                                <div class="col-md-8 d-flex align-items-center">
+                                                    ${element.detalle}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-12 d-flex justify-content-end">
+                                                            ${element.adjuntto != null ? '<a href="'+element.adjuntto+'" class="btn btn-primary btn-sm mx-1" target="_blank">Ver adjunto</a>' : ''}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
