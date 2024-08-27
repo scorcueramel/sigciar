@@ -216,6 +216,8 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/inscritos/{idservicio}',[NutricionController::class, 'getReservations'])->name('nutricion.inscritos');
         Route::post('/enviar/notas',[NutricionController::class,'sendNote'])->name('enviar.notas.miembros');
         Route::get('/obtener/{id}/notas',[NutricionController::class,'getNotesMember'])->name('obtener.notas.miembros');
+        Route::get('/edit/{id}/notas',[NutricionController::class,'editNote'])->name('edit.notas.miembros');
+        Route::post('/actualizar/notas',[NutricionController::class,'updateNote'])->name('actualizar.notas.miembros');
     });
 
     Route::group(['prefix'=> 'tipos-servicio'], function () {
