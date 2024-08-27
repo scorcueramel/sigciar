@@ -399,7 +399,6 @@
     }
 
     function verNotas(miembro, servicioinscripcion) {
-        console.log(servicioinscripcion);
         $("#notamodal").modal("show");
         $("#modalcomponent").modal("hide");
         $("#modalnotas").html(`NOTAS DE <strong class="text-primary">${miembro}</strong>`);
@@ -432,10 +431,16 @@
                                 </button>
                                 </h2>
                                 <div id="flush-collapse${index}" class="accordion-collapse collapse" data-bs-parent="#accordion${index}">
-                                        <div class="accordion-body">
-                                        ${element.detalle}
-                                        <br>
-                                        ${element.adjuntto != null ? '<a href="'+element.adjuntto+'" class="btn btn-primary btn-sm mt-3" target="_blank">Ver adjunto</a>' : ''}
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-md-8 d-flex align-items-center">
+                                                ${element.detalle}
+                                            </div>
+                                            <div class="col-md-4 d-flex justify-content-end">
+                                                ${element.adjuntto != null ? '<a href="'+element.adjuntto+'" class="btn btn-primary btn-sm mx-1" target="_blank">Ver adjunto</a>' : ''}
+                                                <button type="button" class="btn btn-sm btn-success" onclick="javascript:editarNotaModal('${miembro}',${element.id});">Editar Nota</button>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -459,6 +464,109 @@
         $("modalnotafooter").append(`
             <button class="btn btn-sm btn-danger" id="cancelarenvio" data-bs-target="#modalcomponent" data-bs-toggle="modal">Cancelar</button>
         `);
+    }
+
+    function editarNotaModal(miembro, idinforme) {
+        $.ajax({
+            type: "GET",
+            url: `/admin/nutricion/edit/${idinforme}/notas`,
+            success: function(response) {
+                let data = response[0];
+                $("#notamodal").modal("show");
+                $("#modalcomponent").modal("hide");
+                $("#modalnotas").html(`EDITAR NOTA DE <strong class="text-primary">${miembro}</strong>`);
+                $("#modalnotabody").html("");
+                $("#modalnotabody").append(`
+                    <input type="hidden" id="informe_id" value="${data.id}">
+                    <div class="mb-3">
+                        <label for="nota-miembro" class="form-label">Nota</label>
+                        <textarea class="form-control" id="nota-miembro" rows="3" placeholder="Escribir nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required>${data.detalle}</textarea>
+                        <div id="description" class="form-text text-primary">300 caracteres como máximo permitido.</div>
+                        <div class="d-none" id="error">
+                            <p class="text-danger">Debes ingresar una nota para enviar</p>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="enlace" class="form-label">Enlace (link)</label>
+                        <input type="text" class="form-control" id="enlace-miemrbo" placeholder="Dirección url del adjunto" value="${data.adjuntto == null ? '' : data.adjuntto}">
+                    </div>
+                `);
+                $("#modalnotafooter").html("");
+                $("#modalnotafooter").append(`
+                        <button class="btn btn-sm btn-danger" id="cancelarenvio" data-bs-target="#modalcomponent" data-bs-toggle="modal">Cancelar</button>
+                        <button class="btn btn-sm btn-primary" id="enviarnota" onclick="javascript:actualizarNota(${data.id});">Enviar</button>
+                `);
+            }
+        });
+    }
+
+    function actualizarNota(id) {
+        let miembro = $("#modalnotas").text();
+        let largo = miembro.length;
+        let nombre = miembro.slice(14, largo);
+
+        let nota = $("#nota-miembro").val();
+        let enlace = $("#enlace-miemrbo").val();
+
+        if (nota == '') {
+            $("#error").removeClass('d-none')
+        } else {
+            $("#notamodal").modal('hide');
+            Swal.fire({
+                title: `¿Enviar Nota?`,
+                html: `
+                A <strong>${nombre}</strong> <br>
+                Vas a actualizar nota, esta acción enviara un nuevo correo al miembro con la actulaización realizada.
+                `,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si actializar",
+                cancelButtonText: "Cancelar",
+                allowOutsideClick: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Nota actualiizada",
+                        text: `${nombre}, recibió un correo eléctronico con la actualización realizada y se almaceno en su bandeja personal.`,
+                        icon: "success",
+                        allowOutsideClick: false,
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Entendido",
+                    }).then((res) => {
+                        Swal.fire({
+                            icon: 'info',
+                            html: "Espere un momento porfavor ...",
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        if (res.isConfirmed) {
+                            $("#nota-miembro").val("");
+                            $("#enlace-miemrbo").val("");
+                            $.ajax({
+                                type: "POST",
+                                url: "{{route('actualizar.notas.miembros')}}",
+                                data: {
+                                    nota,
+                                    enlace,
+                                    id
+                                },
+                                success: function(response) {
+                                    if (response == 'ok') {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    $("#notamodal").modal('show');
+                }
+            });
+        }
     }
 
     $("#cancelarenvio").on('click', function() {
