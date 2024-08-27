@@ -59,6 +59,7 @@
     @endcan
 </div>
 @endsection
+@include('components.private.notas-modal')
 <!-- moda details reservation -->
 @include('components.private.modal', [
 'tamanio'=>'modal-md',
@@ -175,6 +176,12 @@
                                             <td>HORA FIN</td>
                                             <td>${info.event.extendedProps.fin}</td>
                                         </tr>
+                                        <tr>
+                                            <td>Ver Notas</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" id="vernotas" onclick="verNotas('${info.event.title}',${info.event.extendedProps.servicioinscripcion})">Ver Notas</button>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             `);
@@ -182,6 +189,68 @@
         });
         calendar.render();
     });
+
+    function verNotas(miembro, servicioinscripcion) {
+        $("#notamodal").modal("show");
+        $("#modalcomponent").modal("hide");
+        $("#modalnotas").html(`NOTAS DE <strong class="text-primary">${miembro}</strong>`);
+        $("#modalnotabody").html("");
+        $("#modalnotabody").append(`
+            <div class="row mt-5">
+                <div class="col-md-12 text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-primary">Cargando...</p>
+                </div>
+            </div>
+        `);
+
+        $.ajax({
+            type: "GET",
+            url: `/admin/nutricion/obtener/${servicioinscripcion}/notas`,
+            success: function(response) {
+                $("#modalnotabody").html("");
+                if (response.length > 0) {
+                    for (let index = 0; index < response.length; index++) {
+                        const element = response[index];
+                        $("#modalnotabody").append(`
+                        <div class="accordion accordion-flush" id="accordion${index}">
+                        <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${index}" aria-expanded="false" aria-controls="flush-collapse${index}">
+                                    Nota #${(index+1) < 10 ? '0' + (index+1) : (index+1)}
+                                </button>
+                                </h2>
+                                <div id="flush-collapse${index}" class="accordion-collapse collapse" data-bs-parent="#accordion${index}">
+                                        <div class="accordion-body">
+                                        ${element.detalle}
+                                        <br>
+                                        ${element.adjuntto != null ? '<a href="'+element.adjuntto+'" class="btn btn-primary btn-sm mt-3" target="_blank">Ver adjunto</a>' : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        `);
+                    }
+                } else {
+                    $("#modalnotabody").append(`
+                    <div class="jumbotron jumbotron-fluid">
+                        <div class="container">
+                            <p class="lead">Este miembro no cuenta con ninguna nota enviada.</p>
+                        </div>
+                    </div>
+                    `)
+
+                }
+            }
+        });
+
+        $("modalnotafooter").html("");
+        $("modalnotafooter").append(`
+            <button class="btn btn-sm btn-danger" id="cancelarenvio" data-bs-target="#modalcomponent" data-bs-toggle="modal">Cancelar</button>
+        `);
+    }
 
     $("#btnBuscar").on('click', function() {
         var sede = $("#sedes").val() == "" || $("#sedes").val() == null ? 0 : $("#sedes").val();
@@ -191,7 +260,7 @@
         calendarRender(tiposervicio, sede, lugar);
     });
 
-    $('#btnLimpiar').on("click", function(){});
+    $('#btnLimpiar').on("click", function() {});
 
     function calendarRender(tiposervicio, sede, lugar) {
         moment.locale('es');
@@ -274,6 +343,12 @@
                                         <tr>
                                             <td>HORA FIN</td>
                                             <td>${info.event.extendedProps.fin}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ver Notas</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" id="vernotas" onclick="verNotas('${info.event.title}',${info.event.extendedProps.servicioinscripcion})">Ver Notas</button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

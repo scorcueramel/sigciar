@@ -171,17 +171,17 @@
                                         <td>${info.event.extendedProps.fin}</td>
                                     </tr>
                                     <tr>
-                                <td>Envira Nota</td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary" id="nuevanota" onclick="notaModal('${info.event.title}',${info.event.extendedProps.servicioinscripcion})">Nueva Nota</button>
-                                </td>
-                                </tr>
-                                <tr>
-                                    <td>Ver Notas</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary" id="vernotas" onclick="verNotas('${info.event.title}',${info.event.extendedProps.servicioinscripcion})">Ver Notas</button>
-                                    </td>
-                                </tr>
+                                        <td>Envira Nota</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary" id="nuevanota" onclick="notaModal('${info.event.title}',${info.event.extendedProps.servicioinscripcion})">Nueva Nota</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ver Notas</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary" id="vernotas" onclick="verNotas('${info.event.title}',${info.event.extendedProps.servicioinscripcion})">Ver Notas</button>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         `);
