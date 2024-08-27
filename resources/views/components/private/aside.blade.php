@@ -124,20 +124,20 @@
         </li>
         @endcan
         @can('ver.otrosprogramas')
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <li class="menu-item {{ $activePage == 'otrosprogramas.index' || $activePage == 'otrosprogramas.create' || $activePage == 'otrosprogramas.edit' ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'otrosprogramas.create' ? 'active' : '' }}">
                 <i class="fa-regular fa-list-check" style="margin-right: 13px;"></i>
                 <div data-i18n="Account Settings">Otros Programas</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
+                <li class="menu-item {{ $activePage == 'otrosprogramas.index' ? 'active' : '' }}">
+                    <a href="{{route('otrosprogramas.index')}}" class="menu-link">
                         <div data-i18n="Notifications">Programas creados</div>
                     </a>
                 </li>
-                @can('crear.nutricion')
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
+                @can('crear.otrosprogramas')
+                <li class="menu-item {{ $activePage == 'otrosprogramas.create' ? 'active' : '' }}">
+                    <a href="{{route('otrosprogramas.create',4)}}" class="menu-link">
                         <div data-i18n="Account">Nuevo Programa</div>
                     </a>
                 </li>

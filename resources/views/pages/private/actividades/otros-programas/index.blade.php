@@ -1,4 +1,4 @@
-@extends('layouts.private.private', ['activePage' => 'tenis.index'])
+@extends('layouts.private.private', ['activePage' => 'otrosprogramas.index'])
 @push('title', 'Tenis')
 @push('css')
 <style>
@@ -22,11 +22,11 @@
 @include('components.private.messages-session')
 <div class="row d-flex align-items-center">
     <div class="col-md">
-        <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Tenis Actividades /</span> Todas </h4>
+        <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Otros Programas /</span> Todas </h4>
     </div>
     <div class="col-md text-end">
-        @can('crear.tenis')
-        <a href="{{ route('tenis.create',3) }}" class="btn btn-sm btn-info"><i class="fa-solid fa-tennis-ball me-1"></i>
+        @can('crear.otrosprogramas')
+        <a href="{{ route('otrosprogramas.create',4) }}" class="btn btn-sm btn-info"><i class="fa-solid fa-tennis-ball me-1"></i>
             Nueva</a>
         @endcan
     </div>
@@ -37,10 +37,10 @@
         <div class="card-body">
             <div class="row pb-3">
                 <div class="col-md-auto">
-                    <a role="button" href="#" class="btn btn-primary">Modo lista</a>
+                    <a role="button" href="#" class="btn btn-primary">Programas</a>
                 </div>
                 <div class="col-md-auto d-flex align-items-center">
-                    <a role="button" href="{{route('tenis.render.calender')}}" class="text-decoration-none text-secondary">Modo calendario</a>
+                    <a role="button" href="{{route('tenis.render.calender')}}" class="text-decoration-none text-secondary">Inscritos</a>
                 </div>
             </div>
             <div class="row">
@@ -103,7 +103,7 @@
                 [10, 15, 20, -1],
                 [10, 15, 20, "Todos"]
             ],
-            "ajax": "{{route('tabla.tenis')}}",
+            "ajax": "{{route('tabla.otrosprogramas')}}",
             "columns": [{
                     data: 'id'
                 },
@@ -187,7 +187,7 @@
         });
         $.ajax({
             type: "POST",
-            url: `/admin/actividades/change/state`,
+            url: `/admin/otros-programas/change/state`,
             data: {
                 id: id
             },
@@ -238,7 +238,7 @@
     function showDetail(id) {
         $.ajax({
             method: 'GET',
-            url: `/admin/actividades/detalle/${id}/actividad`,
+            url: `/admin/otros-programas/detalle/${id}/actividad`,
             success: function(resp) {
                 let data = resp[0];
                 console.log(data);
