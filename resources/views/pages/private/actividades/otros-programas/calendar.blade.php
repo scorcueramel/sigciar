@@ -1,4 +1,4 @@
-@extends('layouts.private.private', ['activePage' => 'tenis.index'])
+@extends('layouts.private.private', ['activePage' => 'otrosprogramas.index'])
 @push('title', 'Tenis')
 @push('css')
 <style>

@@ -18,6 +18,7 @@ use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\InscripcionesController;
 use App\Http\Controllers\LugarCostosController;
 use App\Http\Controllers\NutricionController;
+use App\Http\Controllers\OtrosProgramasController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SubtipoServicioController;
@@ -143,6 +144,41 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/obtener/{id}/notas',[TenisController::class,'getNotesMember'])->name('obtener.notas.miembros');
     });
 
+    Route::group(['prefix'=>'nutricion'],function (){
+        Route::get('/lista',[NutricionController::class,'index'])->name('nutricion.index');
+        Route::get('/calendar',[NutricionController::class,'renderCalendar'])->name('nutricion.render.calender');
+        Route::get('/calendar/{id}',[NutricionController::class,'programForDays'])->name('nutricion.render.calender.fordays');
+        Route::get('/tablanutricion',[NutricionController::class,'tableNutricion'])->name('tabla.nutricion');
+        Route::get('/obtener/{document}/miembro', [NutricionController::class, 'searchMember'])->name('buscar.miembro');
+        Route::get('/calendarionutricion',[NutricionController::class,'calendarioNutricion'])->name('calendario.nutricion');
+        Route::get('/calendario/disponibilidad',[NutricionController::class,'disponibilidadDias'])->name('calendario.disponibilidad.nutricion');
+        Route::get('/nueva',[NutricionController::class,'create'])->name('nutricion.create');
+        Route::get('/obtener/{id}/lugares', [NutricionController::class, 'placesCharge'])->name('obtener.lugres');
+        Route::get('/obtener/consto/{idlugar}/{idactividad}/lugar',[NutricionController::class,'coastPlaces'])->name('obtener.costo.luagr');
+        Route::post('/nueva',[NutricionController::class,'store'])->name('nutricion.store');
+        Route::get('/nueva/inscripcion/{plantilla}/{horario}/redirigido',[TenisController::class, 'redirectAfterCreateActivity'])->name('redirigir.incripcion.actividad');
+        Route::post('/change/state', [NutricionController::class, 'changeState'])->name('tenis.change.state');
+        Route::get('/detalle/{id}/actividad',[NutricionController::class,'show'])->name('show.actividad');
+        Route::post('/eliminar',[NutricionController::class, 'destroy'])->name('nutricion.eliminar');
+        Route::get('/obtener/precio',[NutricionController::class, 'obtenerprecio'])->name('nutricion.obtenerprecio');
+        Route::post('/inscripcion/programa',[NutricionController::class, 'inscriptionToProgram'])->name('nutricion.inscripcion');
+        Route::get('/inscritos/{idservicio}',[NutricionController::class, 'getReservations'])->name('nutricion.inscritos');
+        Route::post('/enviar/notas',[NutricionController::class,'sendNote'])->name('enviar.notas.miembros');
+        Route::get('/obtener/{id}/notas',[NutricionController::class,'getNotesMember'])->name('obtener.notas.miembros');
+        Route::get('/edit/{id}/notas',[NutricionController::class,'editNote'])->name('edit.notas.miembros');
+        Route::post('/actualizar/notas',[NutricionController::class,'updateNote'])->name('actualizar.notas.miembros');
+    });
+
+    Route::group(['prefix'=>'otros-programas'],function(){
+        Route::get('/lista',[OtrosProgramasController::class, 'index'])->name('otrosprogramas.index');
+        Route::get('/tablaotrosprogramas',[OtrosProgramasController::class,'tableOtherQuery'])->name('tabla.otrosprogramas');
+        Route::get('/nueva/{id}',[OtrosProgramasController::class, 'create'])->name('otrosprogramas.create');
+        Route::post('/change/state', [OtrosProgramasController::class, 'changeState'])->name('otrosprogramas.change.state');
+        Route::post('/actividades/eliminar',[OtrosProgramasController::class, 'destroyActivity'])->name('otrosprogramas.actividad.eliminar');
+        Route::get('/detalle/{id}/actividad',[OtrosProgramasController::class,'show'])->name('show.actividad');
+        Route::get('/obtener/{id}/lugares', [OtrosProgramasController::class, 'placesCharge'])->name('obtener.lugres');
+    });
+
     Route::group(['prefix'=>'inscripciones'],function (){
         Route::get('/lista',[InscripcionesController::class,'index'])->name('inscripciones.index');
         Route::get('/tablaainscrpiciones',[InscripcionesController::class,'tableInscriptions'])->name('tabla.inscripciones');
@@ -193,31 +229,6 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/editar/{id}/rol',[RolesController::class,'edit'])->name('roles.edit');
         Route::put('/editar/{id}/rol',[RolesController::class,'update'])->name('roles.update');
         Route::delete('/eliminar/{id}', [RolesController::class, 'destroy'])->name('roles.destroy');
-    });
-
-    Route::group(['prefix'=>'nutricion'],function (){
-        Route::get('/lista',[NutricionController::class,'index'])->name('nutricion.index');
-        Route::get('/calendar',[NutricionController::class,'renderCalendar'])->name('nutricion.render.calender');
-        Route::get('/calendar/{id}',[NutricionController::class,'programForDays'])->name('nutricion.render.calender.fordays');
-        Route::get('/tablanutricion',[NutricionController::class,'tableNutricion'])->name('tabla.nutricion');
-        Route::get('/obtener/{document}/miembro', [NutricionController::class, 'searchMember'])->name('buscar.miembro');
-        Route::get('/calendarionutricion',[NutricionController::class,'calendarioNutricion'])->name('calendario.nutricion');
-        Route::get('/calendario/disponibilidad',[NutricionController::class,'disponibilidadDias'])->name('calendario.disponibilidad.nutricion');
-        Route::get('/nueva',[NutricionController::class,'create'])->name('nutricion.create');
-        Route::get('/obtener/{id}/lugares', [NutricionController::class, 'placesCharge'])->name('obtener.lugres');
-        Route::get('/obtener/consto/{idlugar}/{idactividad}/lugar',[NutricionController::class,'coastPlaces'])->name('obtener.costo.luagr');
-        Route::post('/nueva',[NutricionController::class,'store'])->name('nutricion.store');
-        Route::get('/nueva/inscripcion/{plantilla}/{horario}/redirigido',[TenisController::class, 'redirectAfterCreateActivity'])->name('redirigir.incripcion.actividad');
-        Route::post('/change/state', [NutricionController::class, 'changeState'])->name('tenis.change.state');
-        Route::get('/detalle/{id}/actividad',[NutricionController::class,'show'])->name('show.actividad');
-        Route::post('/eliminar',[NutricionController::class, 'destroy'])->name('nutricion.eliminar');
-        Route::get('/obtener/precio',[NutricionController::class, 'obtenerprecio'])->name('nutricion.obtenerprecio');
-        Route::post('/inscripcion/programa',[NutricionController::class, 'inscriptionToProgram'])->name('nutricion.inscripcion');
-        Route::get('/inscritos/{idservicio}',[NutricionController::class, 'getReservations'])->name('nutricion.inscritos');
-        Route::post('/enviar/notas',[NutricionController::class,'sendNote'])->name('enviar.notas.miembros');
-        Route::get('/obtener/{id}/notas',[NutricionController::class,'getNotesMember'])->name('obtener.notas.miembros');
-        Route::get('/edit/{id}/notas',[NutricionController::class,'editNote'])->name('edit.notas.miembros');
-        Route::post('/actualizar/notas',[NutricionController::class,'updateNote'])->name('actualizar.notas.miembros');
     });
 
     Route::group(['prefix'=> 'tipos-servicio'], function () {
