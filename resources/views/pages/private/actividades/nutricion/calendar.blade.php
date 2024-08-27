@@ -286,18 +286,6 @@
         });
     });
 
-    // function validarFechaMenorActual(date) {
-    //     var x = new Date();
-    //     var fecha = date.split("/");
-    //     x.setFullYear(fecha[2], fecha[1] - 1, fecha[0]);
-    //     var today = new Date();
-
-    //     if (x >= today)
-    //         return false;
-    //     else
-    //         return true;
-    // }
-
     function notaModal(miembro, servicioinscripcion) {
         $("#notamodal").modal("show");
         $("#modalcomponent").modal("hide");
@@ -427,7 +415,7 @@
                         <div class="accordion-item">
                                 <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${index}" aria-expanded="false" aria-controls="flush-collapse${index}">
-                                    Nota #${(index+1) < 10 ? '0' + (index+1) : (index+1)}
+                                    <strong>Nota #${(index+1) < 10 ? '0' + (index+1) : (index+1)}</strong>
                                 </button>
                                 </h2>
                                 <div id="flush-collapse${index}" class="accordion-collapse collapse" data-bs-parent="#accordion${index}">
@@ -436,11 +424,14 @@
                                             <div class="col-md-8 d-flex align-items-center">
                                                 ${element.detalle}
                                             </div>
-                                            <div class="col-md-4 d-flex justify-content-end">
-                                                ${element.adjuntto != null ? '<a href="'+element.adjuntto+'" class="btn btn-primary btn-sm mx-1" target="_blank">Ver adjunto</a>' : ''}
-                                                <button type="button" class="btn btn-sm btn-success" onclick="javascript:editarNotaModal('${miembro}',${element.id});">Editar Nota</button>
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <div class="col-12 d-flex justify-content-end">
+                                                        ${element.adjuntto != null ? '<a href="'+element.adjuntto+'" class="btn btn-primary btn-sm mx-1" target="_blank">Ver adjunto</a>' : ''}
+                                                        <button type="button" class="btn btn-sm btn-success" onclick="javascript:editarNotaModal('${miembro}',${element.id});">Editar Nota</button>
+                                                    </div>
+                                                </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -494,13 +485,13 @@
                 $("#modalnotafooter").html("");
                 $("#modalnotafooter").append(`
                         <button class="btn btn-sm btn-danger" id="cancelarenvio" data-bs-target="#modalcomponent" data-bs-toggle="modal">Cancelar</button>
-                        <button class="btn btn-sm btn-primary" id="enviarnota" onclick="javascript:actualizarNota(${data.id});">Enviar</button>
+                        <button class="btn btn-sm btn-primary" id="enviarnota" onclick="javascript:editarNota(${data.id});">Enviar</button>
                 `);
             }
         });
     }
 
-    function actualizarNota(id) {
+    function editarNota(id) {
         let miembro = $("#modalnotas").text();
         let largo = miembro.length;
         let nombre = miembro.slice(14, largo);
