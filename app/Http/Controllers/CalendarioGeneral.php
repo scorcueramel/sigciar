@@ -66,7 +66,7 @@ class CalendarioGeneral extends Controller
             20=>'#399918',
             21=>'#3FA2F6',
         ];
-        $inscritos = DB::select("SELECT tiposervicio_id, sede_id, lugar_id, start, ends as end, nombre, movil, email, categoria_id, categoria FROM calendario_listar(?,?,?)", [$tiposervicio, $sede, $lugar]);
+        $inscritos = DB::select("SELECT tiposervicio_id, sede_id, lugar_id, start, ends as end, nombre, movil, email, categoria_id, categoria, servicioinscripcion_id FROM calendario_listar(?,?,?)", [$tiposervicio, $sede, $lugar]);
 
         foreach ($inscritos as $key => $inscrito) {
             $fecha = Str::before($inscrito->start, " ");
@@ -92,7 +92,8 @@ class CalendarioGeneral extends Controller
                     'fin' => $fin,
                     'correo' => $inscrito->email,
                     'movil' => $inscrito->movil,
-                    'color' =>  $colores[$inscrito->categoria_id]
+                    'color' =>  $colores[$inscrito->categoria_id],
+                    'servicioinscripcion' => $inscrito->servicioinscripcion_id
                 ],
             ];
         }
