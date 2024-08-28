@@ -22,10 +22,10 @@
     <div class="col-md">
         <h4 class="fw-bold mt-3"><span class="text-muted fw-light">Generar Nueva /</span> Cita </h4>
     </div>
-    <div class="col-md text-end">
+    <!-- <div class="col-md text-end">
         <a href="{{route('nutricion.create')}}" class="btn btn-sm btn-info"><i class="fa-regular fa-salad me-1"></i>
             Nueva</a>
-    </div>
+    </div> -->
 </div>
 <div class="row p-3">
     <div class="card pt-2">

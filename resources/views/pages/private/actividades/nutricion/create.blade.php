@@ -188,45 +188,6 @@
                                             </span>
                                         </div>
                                     </div>
-                                    {{--
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label" for="cupos">Cupos</label>
-                                            <div class="col-sm-9">
-                                                <div class="input-group input-group-merge">
-                                                    <span id="cupos2" class="input-group-text"><i
-                                                            class="fa-regular fa-input-numeric"></i></span>
-                                                    <input type="number" id="cupos"
-                                                        class="form-control @error('cupos') is-invalid @enderror"
-                                                        aria-label="Nombre para la cupos" aria-describedby="cupos2"
-                                                        name="cupos"
-                                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                        maxlength="3" required />
-                                                </div>
-                                                <span class="text-danger d-none cuposError" role="alert">
-                                                    <span class="msjCuposError"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3 d-flex">
-                                            <label class="col-sm-6 col-form-label" for="horas">
-                                                Duración por actividad (en horas)
-                                            </label>
-                                            <div class="col-sm-6">
-                                                <div class="input-group input-group-merge">
-                                                    <span id="horas2" class="input-group-text"><i
-                                                            class="fa-regular fa-input-numeric"></i></span>
-                                                    <input type="number" id="horas"
-                                                        class="form-control @error('horas') is-invalid @enderror"
-                                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                        name="horas" maxlength="3" required />
-                                                </div>
-                                                <span class="text-danger d-none definirHorarioError" role="alert">
-                                                    <span class="msjDefinirHorarioError"></span>
-                                                </span>
-                                            </div>
-                                        </div>
---}}
                                     <div class="row mb-3">
                                         <label class="col-sm-3 form-label" for="publicado">Publicado</label>
                                         <div class="col-sm-9">
@@ -250,104 +211,95 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{--
-                                    <div class="col-md">
-                                        <!-- Basic Layout -->
-                                        <div class="d-flex justify-content-center">
-                                            <img class="img-fluid" src="{{ asset('assets/images/default-img.gif') }}"
-                                id="imagenSeleccionada" style="max-height: 510px; height: 510px;">
                             </div>
-                </div> --}}
-
-            </div>
-            <input type="button" class="next btn btn-primary btn-sm" value="Siguiente" />
-            </fieldset>
-            <fieldset class="d-none">
-                <h3> Paso 2: Definición de Horarios</h3>
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-7">
-                        <div class="row mb-3">
-                            <div class="col-md-4 mb-3 d-flex justify-content-between">
-                                <label class="col-sm-3 col-form-label" for="dias">Día</label>
-                                <div class="col-sm-9">
-                                    <div class="input-group input-group-merge">
-                                        <span class="input-group-text">
-                                            <i class="fa-regular fa-calendar-range"></i>
-                                        </span>
-                                        <select class="form-select" id="dias" aria-label="dias"
-                                            name="dias" required>
-                                            <option value="" selected disabled>DÍA</option>
-                                        </select>
+                            <input type="button" class="next btn btn-primary btn-sm" value="Siguiente" />
+                        </fieldset>
+                        <fieldset class="d-none">
+                            <h3> Paso 2: Definición de Horarios</h3>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-7">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4 mb-3 d-flex justify-content-between">
+                                            <label class="col-sm-3 col-form-label" for="dias">Día</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group input-group-merge">
+                                                    <span class="input-group-text">
+                                                        <i class="fa-regular fa-calendar-range"></i>
+                                                    </span>
+                                                    <select class="form-select" id="dias" aria-label="dias"
+                                                        name="dias" required>
+                                                        <option value="" selected disabled>DÍA</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3 d-flex justify-content-between">
+                                            <label class="col-sm-2 col-form-label" for="horaInicio">De</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group input-group-merge">
+                                                    <span id="horaInicio2" class="input-group-text">
+                                                        <i class="fa-regular fa-clock-two"></i>
+                                                    </span>
+                                                    <input class="form-control horas" type="time"
+                                                        aria-describedby="horaInicio2" name="horaInicio"
+                                                        id="horaInicio" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3 d-flex justify-content-between">
+                                            <label class="col-sm-2 col-form-label" for="horaFin">A</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group input-group-merge">
+                                                    <span id="horaFin2" class="input-group-text">
+                                                        <i class="fa-regular fa-clock-eight-thirty"></i>
+                                                    </span>
+                                                    <input class="form-control horas" type="time"
+                                                        aria-describedby="horaFin" name="horaFin" id="horaFin"
+                                                        required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-12 d-flex justify-content-end align-items-center">
+                                            <button type="button" class="btn btn-sm btn-primary btn-add"
+                                                id="btn-add-hour">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </button>
+                                            <span class="ms-2">
+                                                Agregar día
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 mb-3 d-flex justify-content-between">
-                                <label class="col-sm-2 col-form-label" for="horaInicio">De</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group input-group-merge">
-                                        <span id="horaInicio2" class="input-group-text">
-                                            <i class="fa-regular fa-clock-two"></i>
-                                        </span>
-                                        <input class="form-control horas" type="time"
-                                            aria-describedby="horaInicio2" name="horaInicio"
-                                            id="horaInicio" required />
+                                <div class="col-sm-12 col-md-12 col-lg-5">
+                                    <div class="card">
+                                        <div class="table-responsive text-nowrap">
+                                            @include('components.private.table', [
+                                            'titleTable' => '',
+                                            'searchable' => false,
+                                            'paginate' => 0,
+                                            ])
+                                        </div>
                                     </div>
+                                    <span class="text-danger d-none listaHorariosError" role="alert">
+                                        <span class="msjListaHorariosError text-center"></span>
+                                    </span>
                                 </div>
                             </div>
-                            <div class="col-md-4 mb-3 d-flex justify-content-between">
-                                <label class="col-sm-2 col-form-label" for="horaFin">A</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group input-group-merge">
-                                        <span id="horaFin2" class="input-group-text">
-                                            <i class="fa-regular fa-clock-eight-thirty"></i>
-                                        </span>
-                                        <input class="form-control horas" type="time"
-                                            aria-describedby="horaFin" name="horaFin" id="horaFin"
-                                            required />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-12 d-flex justify-content-end align-items-center">
-                                <button type="button" class="btn btn-sm btn-primary btn-add"
-                                    id="btn-add-hour">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <span class="ms-2">
-                                    Agregar día
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-5">
-                        <div class="card">
-                            <div class="table-responsive text-nowrap">
-                                @include('components.private.table', [
-                                'titleTable' => '',
-                                'searchable' => false,
-                                'paginate' => 0,
-                                ])
-                            </div>
-                        </div>
-                        <span class="text-danger d-none listaHorariosError" role="alert">
-                            <span class="msjListaHorariosError text-center"></span>
-                        </span>
-                    </div>
+                            <input type="button" name="previous" class="previous btn btn-secondary btn-sm"
+                                value="Atrás" />
+                            <input type="button" class=" btn btn-primary btn-sm" value="Guardar y Continuar"
+                                id="guardarycontinuar" />
+                        </fieldset>
+                        <!-- <fieldset class="d-none">
+                            <div class="row"></div>
+                        </fieldset> -->
+                    </form>
                 </div>
-                <input type="button" name="previous" class="previous btn btn-secondary btn-sm"
-                    value="Atrás" />
-                <input type="button" class=" btn btn-primary btn-sm" value="Guardar y Continuar"
-                    id="guardarycontinuar" />
-            </fieldset>
-            <fieldset class="d-none">
-                <div class="row"></div>
-            </fieldset>
-            </form>
+            </div>
         </div>
     </div>
-</div>
-</div>
 </div>
 @endsection
 @include('components.private.modal', [

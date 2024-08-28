@@ -1,5 +1,5 @@
 @extends('layouts.private.private', ['activePage' => 'otrosprogramas.index'])
-@push('title', 'Tenis')
+@push('title', 'Otros Programas')
 @push('css')
 <style>
     tbody>tr>td {
@@ -40,7 +40,7 @@
                     <a role="button" href="#" class="btn btn-primary">Programas</a>
                 </div>
                 <div class="col-md-auto d-flex align-items-center">
-                    <a role="button" href="{{route('tenis.render.calender')}}" class="text-decoration-none text-secondary">Inscritos</a>
+                    <a role="button" href="{{route('otrosprogramas.render.calender')}}" class="text-decoration-none text-secondary">Inscritos</a>
                 </div>
             </div>
             <div class="row">
@@ -50,18 +50,12 @@
                             <tr>
                                 <th>ID</th>
                                 <th>ESTADO</th>
-                                <th>TIPO SERVICIO</th>
-                                <th>TÍTULO</th>
-                                <th>SUBTÍTULO</th>
                                 <th>SEDE</th>
-                                <th>DIRECCIÓN SEDE</th>
-                                <th>LUGAR DESCRIPCIÓN</th>
+                                <th>CATEGORÍA</th>
                                 <th>COSTO HORA</th>
-                                <th>CAPACIDAD</th>
                                 <th>INICIO</th>
                                 <th>FIN</th>
-                                <th>HORAS POR ACTIVIDAD</th>
-                                <th>TURNO</th>
+                                <th>HORARIO</th>
                                 <th>RESPONSABLE</th>
                                 <th>ACCIONES</th>
                             </tr>
@@ -95,7 +89,7 @@
             autoWidth: false,
             processing: true,
             "columnDefs": [{
-                "targets": [15],
+                "targets": [9],
                 "orderable": false
             }],
             "pageLength": 10,
@@ -111,28 +105,13 @@
                     data: 'estado'
                 },
                 {
-                    data: 'tipo_servicio'
-                },
-                {
-                    data: 'titulo'
-                },
-                {
-                    data: 'subtitulo'
-                },
-                {
                     data: 'sede'
                 },
                 {
-                    data: 'direccion_sede'
-                },
-                {
-                    data: 'lugar_descripcion'
+                    data: 'categoria'
                 },
                 {
                     data: 'lugar_costo_hora'
-                },
-                {
-                    data: 'capacidad'
                 },
                 {
                     data: 'inicio'
@@ -141,10 +120,7 @@
                     data: 'fin'
                 },
                 {
-                    data: 'hora'
-                },
-                {
-                    data: 'turno'
+                    data: 'horario'
                 },
                 {
                     data: 'responsable'
@@ -274,26 +250,10 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        Horas x Actividad
-                                    </td>
-                                    <td>
-                                        ${data.hora} hrs.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Cupos
-                                    </td>
-                                    <td>
-                                        ${data.capacidad}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
                                         Costo
                                     </td>
                                     <td>
-                                        S/. ${data.lugar_costo_hora}
+                                        S/. ${data.lugar_costo_hora}.00
                                     </td>
                                 </tr>
                                 <tr>
@@ -326,14 +286,6 @@
                                     </td>
                                     <td>
                                         <span class="badge rounded-pill text-bg-secondary ${data.estado == 'A' ? 'bg-success' : 'bg-danger'}">${data.estado == 'A' ? 'PUBLICADO' : 'BORRADOR'}</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Tipo Servicio
-                                    </td>
-                                    <td>
-                                        ${data.tipo_servicio}
                                     </td>
                                 </tr>
                             </tbody>

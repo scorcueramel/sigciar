@@ -19,6 +19,7 @@ use App\Http\Controllers\InscripcionesController;
 use App\Http\Controllers\LugarCostosController;
 use App\Http\Controllers\NutricionController;
 use App\Http\Controllers\OtrosProgramasController;
+use App\Http\Controllers\PromesasController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SubtipoServicioController;
@@ -172,11 +173,24 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
     Route::group(['prefix'=>'otros-programas'],function(){
         Route::get('/lista',[OtrosProgramasController::class, 'index'])->name('otrosprogramas.index');
         Route::get('/tablaotrosprogramas',[OtrosProgramasController::class,'tableOtherQuery'])->name('tabla.otrosprogramas');
+        Route::get('/calendar',[OtrosProgramasController::class,'renderCalendar'])->name('otrosprogramas.render.calender');
+        Route::get('/calendar/{id}',[OtrosProgramasController::class,'programForDays'])->name('otros.render.calender.fordays');
         Route::get('/nueva/{id}',[OtrosProgramasController::class, 'create'])->name('otrosprogramas.create');
+        Route::post('/nueva',[OtrosProgramasController::class,'storeNewActivity'])->name('otrosprogramas.nueva.actividad');
         Route::post('/change/state', [OtrosProgramasController::class, 'changeState'])->name('otrosprogramas.change.state');
         Route::post('/actividades/eliminar',[OtrosProgramasController::class, 'destroyActivity'])->name('otrosprogramas.actividad.eliminar');
         Route::get('/detalle/{id}/actividad',[OtrosProgramasController::class,'show'])->name('show.actividad');
         Route::get('/obtener/{id}/lugares', [OtrosProgramasController::class, 'placesCharge'])->name('obtener.lugres');
+        Route::get('/obtener/consto/{idlugar}/{idactividad}/lugar',[OtrosProgramasController::class,'coastPlaces'])->name('obtener.costo.luagr');
+        Route::get('/obtener/imagen/{id}/categoria',[OtrosProgramasController::class, 'renderImageForCategory'])->name('obtener.imagen.categoria');
+        Route::get('/inscritos/{idservicio}',[OtrosProgramasController::class, 'getReservations'])->name('otrosprogramas.inscritos');
+        Route::post('/inscripcion/programa',[OtrosProgramasController::class, 'inscriptionToProgram'])->name('otrosprogramas.inscripcion');
+        Route::get('/obtener/precio',[OtrosProgramasController::class, 'obtenerprecio'])->name('otrosprogramas.obtenerprecio');
+        Route::get('/obtener/{document}/miembro', [OtrosProgramasController::class, 'searchMember'])->name('buscar.miembro');
+        Route::post('/enviar/notas',[OtrosProgramasController::class,'sendNote'])->name('enviar.notas.miembros');
+        Route::get('/obtener/{id}/notas',[OtrosProgramasController::class,'getNotesMember'])->name('obtener.notas.miembros');
+        Route::get('/edit/{id}/notas',[OtrosProgramasController::class,'editNote'])->name('edit.notas.miembros');
+        Route::post('/actualizar/notas',[OtrosProgramasController::class,'updateNote'])->name('actualizar.notas.miembros');
     });
 
     Route::group(['prefix'=>'inscripciones'],function (){
@@ -211,6 +225,17 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/editar/{id}/noticia', [NoticiasController::class, 'edit'])->name('noticias.edit');
         Route::post('/editar/noticia', [NoticiasController::class, 'update'])->name('noticias.update');
         Route::post('/eliminar', [NoticiasController::class, 'destroy'])->name('noticias.destroy');
+    });
+
+    Route::group(['prefix'=> 'promesas'], function (){
+        Route::get('/lista', [PromesasController::class,'index'])->name('promesas.index');
+        Route::get('/nueva', [PromesasController::class,'create'])->name('promesas.create');
+        Route::post('/nueva', [PromesasController::class, 'store'])->name('promesas.store');
+        Route::post('/change/state', [PromesasController::class, 'changeState'])->name('promesas.change.state');
+        Route::get('/detalle/{id}/noticia', [PromesasController::class, 'show'])->name('promesas.detalles');
+        Route::get('/editar/{id}/noticia', [PromesasController::class, 'edit'])->name('promesas.edit');
+        Route::post('/editar/noticia', [PromesasController::class, 'update'])->name('promesas.update');
+        Route::post('/eliminar', [PromesasController::class, 'destroy'])->name('promesas.destroy');
     });
 
     Route::group(['prefix'=> 'usuarios'], function (){

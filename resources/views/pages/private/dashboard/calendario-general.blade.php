@@ -269,7 +269,15 @@
         calendarRender(tiposervicio, sede, lugar);
     });
 
-    $('#btnLimpiar').on("click", function() {});
+    $('#btnLimpiar').on("click", function() {
+        $("#sedes option[value='']").attr("selected",true);
+        $("#lugares").html("");
+        $("#lugares").append(`
+            <option value="">SELECCIONA UN LUGAR</option>
+        `);
+        $("#lugares").attr("disabled",true);
+        $("#tiposervicios option[value='']").attr("selected",true);
+    });
 
     function calendarRender(tiposervicio, sede, lugar) {
         moment.locale('es');
