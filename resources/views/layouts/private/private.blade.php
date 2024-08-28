@@ -98,9 +98,9 @@
     <script src="{{ asset('assets/template/js/datatables/dataTables.js') }}"></script>
     <script src="{{ asset('assets/template/js/datatables/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('assets/template/js/datatables/dataTables.responsive.js') }}"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {{-- Personalized JS --}}
     <script>
         $(document).ready(function() {

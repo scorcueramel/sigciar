@@ -77,7 +77,6 @@
             </div>
         </div>
     </div>
-
     <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
         <div class="row">
             <div class="col-6 mb-4">
@@ -154,7 +153,55 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('js')
-<script src="{{asset('assets/template/js/personalized/activity-calendar.js')}}"></script>
+
+<script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                    label: 'Base 1',
+                    data: [1, 2, 3, 7, 5, 10],
+                    borderColor: '#36A2EB',
+                    backgroundColor: '#9BD0F5',
+                },
+                {
+                    label: 'Base 2',
+                    data: [2, 3, 4, 5, 8],
+                    borderColor: '#FF6384',
+                    backgroundColor: '#FFB1C1',
+                }
+            ]
+        },
+        options: {
+            events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+            plugins: {
+                tooltip: {
+                    // Tooltip will only receive click events
+                    events: ['click']
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 @endpush
