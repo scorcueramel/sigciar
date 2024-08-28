@@ -190,44 +190,6 @@
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label" for="cupos">Cupos</label>
-                                            <div class="col-sm-9">
-                                                <div class="input-group input-group-merge">
-                                                    <span id="cupos2" class="input-group-text"><i
-                                                            class="fa-regular fa-input-numeric"></i></span>
-                                                    <input type="number" id="cupos"
-                                                        class="form-control @error('cupos') is-invalid @enderror"
-                                                        aria-label="Nombre para la cupos" aria-describedby="cupos2"
-                                                        name="cupos"
-                                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                        maxlength="3" required />
-                                                </div>
-                                                <span class="text-danger d-none cuposError" role="alert">
-                                                    <span class="msjCuposError"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3 d-flex">
-                                            <label class="col-sm-6 col-form-label" for="horas">
-                                                Duración por actividad (en horas)
-                                            </label>
-                                            <div class="col-sm-6">
-                                                <div class="input-group input-group-merge">
-                                                    <span id="horas2" class="input-group-text"><i
-                                                            class="fa-regular fa-input-numeric"></i></span>
-                                                    <input type="number" id="horas"
-                                                        class="form-control @error('descripcion') is-invalid @enderror"
-                                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                        name="horas" maxlength="3" required />
-                                                </div>
-                                                <span class="text-danger d-none definirHorarioError" role="alert">
-                                                    <span class="msjDefinirHorarioError"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
                                             <label class="col-sm-3 form-label" for="publicado">Publicado</label>
                                             <div class="col-sm-9">
                                                 <div class="form-check form-check-inline">
@@ -340,9 +302,9 @@
                                 <input type="button" class=" btn btn-primary btn-sm" value="Guardar y Continuar"
                                     id="guardarycontinuar" />
                             </fieldset>
-                            <fieldset class="d-none">
+                            <!-- <fieldset class="d-none">
                                 <div class="row"></div>
-                            </fieldset>
+                            </fieldset> -->
                         </form>
                     </div>
                 </div>
@@ -426,7 +388,7 @@
             let sedeId = $(this).val();
             $.ajax({
                 type: "GET",
-                url: `/admin/actividades/obtener/${sedeId}/lugares`,
+                url: `/admin/otros-programas/obtener/${sedeId}/lugares`,
                 success: function(data) {
                     let datatype = typeof(data);
                     let defaultOptionCategory = $("#lugar");
@@ -543,13 +505,12 @@
         // Obtener costo por lugar
         $("#lugar").on('change', function() {
             //let idActividad = $('#actividad').val();
-            let idActividad = 3;
+            let idActividad = 4;
             let idLugar = $(this).val();
 
-            console.log(idActividad);
             $.ajax({
                 type: "GET",
-                url: `/admin/actividades/obtener/consto/${idActividad}/${idLugar}/lugar`,
+                url: `/admin/otros-programas/obtener/consto/${idActividad}/${idLugar}/lugar`,
                 success: function(response) {
                     if (response != null) {
                         $(".contenedor-turnos").html("");
@@ -582,7 +543,7 @@
             });
             $.ajax({
                 type: "GET",
-                url: `/admin/actividades/obtener/imagen/${id}/categoria`,
+                url: `/admin/otros-programas/obtener/imagen/${id}/categoria`,
                 success: function(response) {
                     console.log(response);
                     Swal.close();
@@ -599,7 +560,7 @@
             // e.preventDefault();
             let responsable = $("#respadmin").val();
             //let actividad = $("#actividad").val();
-            let actividad = 3;
+            let actividad = 4;
             let categoria = $("#categoria").val();
             let turnoIsChecked = $("input[name=turno]:checked ");
             let turno = turnoIsChecked.val();
@@ -607,10 +568,10 @@
             let lugar = $("#lugar").val();
             let fechaInicio = $("#fechaInicio").val();
             let termino = $("#termino").val();
-            let cupos = $("#cupos").val();
+            let cupos = 1;
             let publicadoIsChecked = $("input[name=publicado]:checked ");
             let publicado = publicadoIsChecked.val();
-            let horasActividad = $("#horas").val();
+            let horasActividad = 1;
             let fechasDefinidas = [];
             let data = {};
 
@@ -711,28 +672,6 @@
                 $('.fechaFinError').addClass('d-none');
             }
 
-            if (cupos == "") {
-                messagesInfo('Lo sentimos', 'warning',
-                    'Parece que no ingresaste ninguna cantidad de <br/><strong>Cupos</strong>,<br/> indica la cantidad de cupos y luego continua',
-                    'Verificar');
-                $('.cuposError').removeClass('d-none');
-                $('.msjCuposError').html('Porfavor Ingresa una cantidad de cupos');
-                return;
-            } else {
-                $('.cuposError').addClass('d-none');
-            }
-
-            if (horasActividad == "") {
-                messagesInfo('Lo sentimos', 'warning',
-                    'Parece que no indicaste la cantidad de <br/><strong>Horas</strong>,<br/> indica la cantidad de horas y luego continua',
-                    'Verificar');
-                $('.definirHorarioError').removeClass('d-none');
-                $('.msjDefinirHorarioError').html('Porfavor Ingresa una cantidad de horas');
-                return;
-            } else {
-                $('.definirHorarioError').addClass('d-none');
-            }
-
             if (fechasDefinidas.length <= 0) {
                 messagesInfo('Lo sentimos', 'warning',
                     'Parece que no indicaste <br/><strong>Fechas y Horas</strong>,<br/> para esta actividad, indicalas y luego continua',
@@ -746,7 +685,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "{{ route('nueva.actividad') }}",
+                url: "{{ route('otrosprogramas.nueva.actividad') }}",
                 data: {
                     responsable,
                     actividad,
@@ -773,7 +712,7 @@
 
                     if (response.respRegistro === "exito") {
                         window.location.href =
-                            `/admin/actividades/nueva/inscripcion/${response.idPlantilla}/${response.idRegistro}/redirigido`;
+                            `/admin/otros-programas/lista`;
                     } else {
                         messagesInfo('Lo sentimos', 'warning',
                             'Parece que algo sucedio, comunicate con el administrador',

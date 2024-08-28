@@ -168,7 +168,7 @@
         @endcan
 
         {{-- Sección de Noticias --}}
-        @if (auth()->user()->can('ver.categorias') || auth()->user()->can('ver.noticias'))
+        @if (auth()->user()->can('ver.categorias') || auth()->user()->can('ver.noticias') || auth()->user()->can('ver.promesas'))
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">INFORMACIÓN</span>
         </li>
@@ -217,27 +217,20 @@
             </ul>
         </li>
         @endcan
-
-        {{-- Sección de Usuarios --}}
-        @if (auth()->user()->can('ver.usuario') || auth()->user()->can('ver.roles') || auth()->user()->can('ver.promesas'))
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Personal y Roles</span>
-        </li>
-        @endif
         @can('ver.promesas')
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <li class="menu-item {{ $activePage == 'promesas.index' || $activePage == 'promesas.edit' ||  $activePage == 'promesas.create' ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'promesas.create' ? 'active' : '' }}">
                 <i class="fa-solid fa-hands-holding-child" style="margin-right: 13px"></i>
                 <div data-i18n="Account Settings">Promesas</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ $activePage == 'promesas.index' ? 'active' : '' }}">
                     <a href="#" class="menu-link">
                         <div data-i18n="Account">Todos las Promesas</div>
                     </a>
                 </li>
                 @can('crear.promesas')
-                <li class="menu-item">
+                <li class="menu-item {{ $activePage == 'promesas.create' ? 'active' : '' }}">
                     <a href="#" class="menu-link">
                         <div data-i18n="Account">Nueva Promesa</div>
                     </a>
@@ -246,6 +239,13 @@
             </ul>
         </li>
         @endcan
+
+        {{-- Sección de Usuarios --}}
+        @if (auth()->user()->can('ver.usuario') || auth()->user()->can('ver.roles'))
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Personal y Roles</span>
+        </li>
+        @endif
         @can('ver.usuario')
         <li class="menu-item {{ $activePage == 'usuarios.index' || $activePage == 'usuarios.edit' || $activePage == 'usuarios.create' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">

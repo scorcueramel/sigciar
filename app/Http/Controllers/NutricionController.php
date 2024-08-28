@@ -397,24 +397,6 @@ class NutricionController extends Controller
             return response()->json(['error' => $error]);
         }
 
-        // CREATE OR REPLACE FUNCTION public.servicio_tenis_crear(
-        //     p_desde timestamp without time zone,
-        //     p_hasta timestamp without time zone,
-        //     p_responsable_id integer,
-        //     p_tiposervicio_id integer,
-        //     p_sede_id integer,
-        //     p_lugar_id integer,
-        //     p_capacidad integer,
-        //     p_periodicidad_id integer,
-        //     p_usuario_creador character varying,
-        //     p_ip_usuario character varying,
-        //     p_created_at timestamp without time zone,
-        //     p_turno character varying,
-        //     p_categoria integer,
-        //     p_horas integer,
-        //     p_estado character varying)
-
-
         $servicioTenisCrear = DB::select("SELECT servicio_tenis_crear(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [$fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad, $estado]);
 
         $idRespuesta = $servicioTenisCrear[0]->servicio_tenis_crear;

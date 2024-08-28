@@ -86,7 +86,7 @@
             autoWidth: false,
             processing: true,
             "columnDefs": [{
-                "targets": [0],
+                "targets": [9],
                 "orderable": false
             }],
             "pageLength": 10,
@@ -101,9 +101,6 @@
                 {
                     data: 'estado'
                 },
-                // {
-                //     data: 'tipo_servicio'
-                // },
                 {
                     data: 'sede'
                 },
@@ -119,12 +116,6 @@
                 {
                     data: 'fin'
                 },
-                // {
-                //     data: 'turno'
-                // },
-                // {
-                //     data: 'capacidad'
-                // },
                 {
                     data: 'horario'
                 },
