@@ -225,13 +225,13 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item {{ $activePage == 'promesas.index' ? 'active' : '' }}">
-                    <a href="#" class="menu-link">
+                    <a href="{{route('promesas.index')}}" class="menu-link">
                         <div data-i18n="Account">Todos las Promesas</div>
                     </a>
                 </li>
                 @can('crear.promesas')
                 <li class="menu-item {{ $activePage == 'promesas.create' ? 'active' : '' }}">
-                    <a href="#" class="menu-link">
+                    <a href="{{route('promesas.create')}}" class="menu-link">
                         <div data-i18n="Account">Nueva Promesa</div>
                     </a>
                 </li>

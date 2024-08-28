@@ -1,42 +1,22 @@
-@extends('layouts.private.private', ['activePage' => 'noticias.create'])
-@push('title', 'Nueva Noticia')
+@extends('layouts.private.private', ['activePage' => 'promesas.create'])
+@push('title', 'Nueva Promesa')
 @section('content')
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Noticia /</span> Crear Nueva </h4>
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Promesas /</span> Crear Nueva </h4>
 <!-- Basic Layout & Basic with Icons -->
 <div class="row mb-3">
     <!-- Basic with Icons -->
     <div class="col-xxl">
-        <form method="post" action="{{route('noticias.store')}}" enctype="multipart/form-data" class="row g-3 needs-validation" id="form" novalidate>
+        <form method="post" action="{{route('promesas.store')}}" enctype="multipart/form-data" class="row g-3 needs-validation" id="form" novalidate>
             @csrf
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-3">
-                        <label class="col-sm-2 form-label" for="categoria">Categorías</label>
+                        <label class="col-sm-2 col-form-label" for="nombre">Nombres</label>
                         <div class="col-sm-10">
                             <div class="input-group input-group-merge">
-                                <span id="categoria2" class="input-group-text"><i class="fa-solid fa-layer-group"></i></span>
-                                <select class="form-select" id="categoria" aria-label="categoria" name="categoria" required>
-                                    <option selected disabled>Selecciona una categoría</option>
-                                    @foreach ($categorias as $categoria)
-                                    <option value="{{$categoria->id}}" {{ old('categoria') == "$categoria->nombre" ? "selected" : "" }}>{{$categoria->nombre}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-text">Selecciona una categoría para la noticia</div>
-                            @error('categoria')
-                            <span class="invalid-feedback d-block" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="titulo">Título</label>
-                        <div class="col-sm-10">
-                            <div class="input-group input-group-merge">
-                                <span id="titulo2" class="input-group-text"><i class="fa-regular fa-heading"></i></span>
-                                <input type="text" id="titulo" class="form-control @error('titulo') is-invalid @enderror" placeholder="Título de la nota" aria-label="Título de la nota" aria-describedby="titulo2" name="titulo" value="{{old('titulo')}}" maxlength="200" autofocus required />
-                                @error('titulo')
+                                <span id="nombre2" class="input-group-text"><i class="fa-light fa-input-text"></i></span>
+                                <input type="text" id="nombre" class="form-control @error('nombre') is-invalid @enderror" placeholder="Nombres" aria-label="nombres" aria-describedby="nombre2" name="nombre" value="{{old('nombre')}}" maxlength="200" autofocus required />
+                                @error('nombre')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -44,51 +24,109 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-3 d-flex justify-content-end">
-                        <div class="col-md-10">
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="edad">Edad</label>
+                        <div class="col-sm-10">
                             <div class="input-group input-group-merge">
-                                <span class="input-group-text" id="url">https://www.ciarsports.com/ciar/noticias/</span>
-                                <input type="text" class="form-control ps-3" id="slug" aria-describedby="url" disabled />
+                                <span id="edad2" class="input-group-text"><i class="fa-light fa-input-numeric"></i></span>
+                                <input type="text" id="edad" class="form-control @error('edad') is-invalid @enderror" placeholder="edad" aria-label="edad" aria-describedby="edad2" name="edad" value="{{old('edad')}}" maxlength="200" autofocus required />
+                                @error('edad')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="peso">Pesos</label>
+                        <div class="col-sm-10">
+                            <div class="input-group input-group-merge">
+                                <span id="peso2" class="input-group-text"><i class="fa-light fa-weight-scale"></i></span>
+                                <input type="text" id="peso" class="form-control @error('peso') is-invalid @enderror" placeholder="Pesos" aria-label="pesos" aria-describedby="peso2" name="peso" value="{{old('peso')}}" maxlength="200" autofocus required />
+                                @error('peso')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="estatura">Estatura</label>
+                        <div class="col-sm-10">
+                            <div class="input-group input-group-merge">
+                                <span id="estatura2" class="input-group-text"><i class="fa-light fa-ruler-vertical"></i></span>
+                                <input type="text" id="estatura" class="form-control @error('estatura') is-invalid @enderror" placeholder="estaturas" aria-label="estaturas" aria-describedby="estatura2" name="estatura" value="{{old('estatura')}}" maxlength="200" autofocus required />
+                                @error('estatura')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="mano">Mano</label>
+                        <div class="col-sm-10">
+                            <div class="input-group input-group-merge">
+                                <span id="mano2" class="input-group-text"><i class="fa-light fa-hand"></i></span>
+                                <input type="text" id="mano" class="form-control @error('mano') is-invalid @enderror" placeholder="manos" aria-label="manos" aria-describedby="mano2" name="mano" value="{{old('mano')}}" maxlength="200" autofocus required />
+                                @error('mano')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="academia">Academia</label>
+                        <div class="col-sm-10">
+                            <div class="input-group input-group-merge">
+                                <span id="academia2" class="input-group-text"><i class="fa-light fa-building-columns"></i></span>
+                                <input type="text" id="academia" class="form-control @error('academia') is-invalid @enderror" placeholder="academia" aria-label="academia" aria-describedby="academia2" name="academia" value="{{old('academia')}}" maxlength="200" autofocus required />
+                                @error('academia')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="preparador">Preparador Físico</label>
+                        <div class="col-sm-10">
+                            <div class="input-group input-group-merge">
+                                <span id="preparador2" class="input-group-text"><i class="fa-light fa-person-chalkboard"></i></span>
+                                <input type="text" id="preparador" class="form-control @error('preparador') is-invalid @enderror" placeholder="preparador" aria-label="preparador" aria-describedby="preparador2" name="preparador" value="{{old('preparador')}}" maxlength="200" autofocus required />
+                                @error('preparador')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="nutricionista">Nutricionista</label>
+                        <div class="col-sm-10">
+                            <div class="input-group input-group-merge">
+                                <span id="nutricionista2" class="input-group-text"><i class="fa-light fa-salad"></i></span>
+                                <input type="text" id="nutricionista" class="form-control @error('nutricionista') is-invalid @enderror" placeholder="nutricionista" aria-label="nutricionista" aria-describedby="nutricionista2" name="nutricionista" value="{{old('nutricionista')}}" maxlength="200" autofocus required />
+                                @error('nutricionista')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3 mt-2">
                         <label class="col-sm-2 form-label" for="extracto">Extracto</label>
                         <div class="col-sm-10">
-                            <textarea id="extracto" class="form-control @error('extracto') is-invalid @enderror" placeholder="Extracto para la noticia" aria-label="Extracto para la noticia" aria-describedby="extracto2" maxlength="300" rows="1" name="extracto" required>{{old('extracto')}}</textarea>
-                            <div class="form-text">Recuerda, agregar solo un pequeño extracto de la noticia</div>
+                            <textarea id="extracto" class="form-control @error('extracto') is-invalid @enderror" placeholder="Agrega una descripción con formato" aria-label="Agrega una descripción con formato" aria-describedby="extracto2" rows="1" name="extracto">{{old('extracto')}}</textarea>
                             @error('extracto')
-                            <span class="invalid-feedback d-block" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 form-label" for="cuerpo">Cuerpo</label>
-                        <div class="col-sm-10">
-                            <textarea id="cuerpo" class="form-control @error('cuerpo') is-invalid @enderror" placeholder="cuerpo para la noticia" aria-label="cuerpo para la noticia" aria-describedby="cuerpo2" maxlength="300" rows="1" name="cuerpo" required>{{old('cuerpo')}}</textarea>
-                            <div class="form-text">En esta sección agrega el cuelpo de la noticia</div>
-                            @error('cuerpo')
-                            <span class="invalid-feedback d-block" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 form-label" for="estado">Estado</label>
-                        <div class="col-sm-10">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="estado" id="activo" value="A">
-                                <label class="form-check-label" for="activo">ACTIVO</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="estado" id="inactivo" value="I" checked>
-                                <label class="form-check-label" for="inactivo">INACTIVO</label>
-                            </div>
-                            <div class="form-text">Inidica el estado inicial para la sede</div>
-                            @error('estado')
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -100,7 +138,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="imagen">Imagen de portada</label>
+                        <label class="col-sm-2 col-form-label" for="imagen">Foto</label>
                         <div class="col-sm-10">
                             <div class="input-group input-group-merge">
                                 <span id="imagen" class="input-group-text @error('imagen') @enderror"><i class="bx bx-image-add"></i></span>
@@ -124,13 +162,12 @@
 
                     <div class="row justify-content-end">
                         <div class="col-sm-12">
-                            <button type="submit" class="btn btn-primary">Crear Noticia</button>
+                            <button type="submit" class="btn btn-primary">Registrar Promesa</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
-
     </div>
 </div>
 @endsection
@@ -146,21 +183,7 @@
         });
 
         $('#extracto').summernote({
-            placeholder: 'Extracto de la noticia',
-            tabsize: 2,
-            height: 250,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture', 'video']],
-                ['view', ['codeview', 'help']]
-            ]
-        });
-        $('#cuerpo').summernote({
-            placeholder: 'Cuerpo de la noticia',
+            placeholder: 'Agrega una descripción con formato',
             tabsize: 2,
             height: 250,
             toolbar: [
@@ -186,10 +209,10 @@
         });
     });
 
-    $("#titulo").on('keyup', function() {
-        var str = $(this).val();
-        str = str.replace(/\s+/g, '-').toLowerCase();
-        $('#slug').val(str);
-    });
+    // $("#nombre").on('keyup', function() {
+    //     var str = $(this).val();
+    //     str = str.replace(/\s+/g, '-').toLowerCase();
+    //     $('#slug').val(str);
+    // });
 </script>
 @endpush
