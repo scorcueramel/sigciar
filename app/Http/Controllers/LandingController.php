@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Noticia;
+use App\Models\Promesa;
 use App\Models\Sede;
 use App\Models\Servicio;
 use App\Models\User;
@@ -76,9 +77,9 @@ class LandingController extends Controller
                                     LEFT JOIN personas p
                                     ON p.usuario_id = u.id
                                     WHERE mhr.role_id = 2");
+        $promesas = Promesa::all();
 
-
-        return view("pages.public.landing.index", compact("sedes", "actividades", "noticias", "activitystarts","entrenadores"));
+        return view("pages.public.landing.index", compact("sedes", "actividades", "noticias", "activitystarts","entrenadores","promesas"));
     }
 
     //SECTION ACTIVITY

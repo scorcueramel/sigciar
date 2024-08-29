@@ -8,6 +8,25 @@
         </div>
         <div class="row padding3 justify-content-center">
             <div class="col-12 col-md-10">
+                @if (count($promesas) > 0)
+                <ul class="cloud-tags">
+                    @foreach ($promesas as $promesa)
+                    <li class="p-3" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="50">
+                        <a href="#">
+                            <div class="bgWhite item d-flex justify-content-center align-items-center text-start">
+                                <img class="foto me-3" src="{{asset('/storage/promesas/'.$promesa->foto)}}" alt="">
+                                <ul class="info nolist mb-0 py-3">
+                                    <li>
+                                        <h3 class="nombre black mb-0 altas fw-bold">{{ $promesa->nombre }}</h3>
+                                    </li>
+                                    <li class="edad">{{$promesa->edad}}</li>
+                                </ul>
+                            </div>
+                        </a>
+                    </li>
+                    @endforeach
+                </ul>
+                @else
                 <ul class="cloud-tags">
                     <li class="p-3" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="50">
                         <a href="#">
@@ -101,6 +120,7 @@
                         </a>
                     </li>
                 </ul>
+                @endif
             </div>
         </div>
         <div class="justify-content-center">
