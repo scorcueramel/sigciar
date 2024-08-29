@@ -232,9 +232,9 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/nueva', [PromesasController::class,'create'])->name('promesas.create');
         Route::post('/nueva', [PromesasController::class, 'store'])->name('promesas.store');
         Route::post('/change/state', [PromesasController::class, 'changeState'])->name('promesas.change.state');
-        Route::get('/detalle/{id}/noticia', [PromesasController::class, 'show'])->name('promesas.detalles');
-        Route::get('/editar/{id}/noticia', [PromesasController::class, 'edit'])->name('promesas.edit');
-        Route::post('/editar/noticia', [PromesasController::class, 'update'])->name('promesas.update');
+        Route::get('/detalle/{id}/promesas', [PromesasController::class, 'show'])->name('promesas.detalles');
+        Route::get('/editar/{id}', [PromesasController::class, 'edit'])->name('promesas.edit');
+        Route::post('/editar/{id}/promesas', [PromesasController::class, 'update'])->name('promesas.update');
         Route::post('/eliminar', [PromesasController::class, 'destroy'])->name('promesas.destroy');
     });
 
