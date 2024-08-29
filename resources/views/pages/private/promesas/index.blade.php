@@ -160,9 +160,9 @@
                             <img src="{{ asset('/storage/promesas/${data.foto}') }}" alt="foto de nuestras promesas" class="img-fluid d-flex mx-auto my-4"/>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <table class="table table-bordered table-striped table-hover">
+                    <div class="row mx-5 px-3">
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <table class="table table-bordered table-striped table-hover w-75">
                                 <tr>
                                     <td>Edad</td>
                                     <td>${data.edad}</td>
