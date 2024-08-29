@@ -29,13 +29,13 @@
         @endif
         @if($botones ?? false)
             @if($botonDetalle ?? false)
-                <a href="#" role="button" data-id="{{ $detalleId ?? '' }}" class="btn rounded-pill btn-outline-info btn-detail">Detalle</a>
+                <a href="#" role="button" data-id="{{ $detalleId ?? '' }}" class="btn rounded-pill btn-outline-info btn-detail btn-sm">Detalle</a>
             @endif
             @if($botonEditar ?? false)
-                <a href="{{ $ruta ?? '' }}" class="btn rounded-pill btn-outline-success btn-edit">Editar</a>
+                <a href="{{ $ruta ?? '' }}" class="btn rounded-pill btn-outline-success btn-edit btn-sm">Editar</a>
             @endif
             @if($botonEliminar ?? false)
-                <a href="#" role="button" class="btn rounded-pill btn-outline-danger delete" data-id="{{ $eliminarId ?? '' }}">Eliminar</a>
+                <a href="#" role="button" class="btn rounded-pill btn-outline-danger delete btn-sm" data-id="{{ $eliminarId ?? '' }}">Eliminar</a>
             @endif
         @endif
     </div>

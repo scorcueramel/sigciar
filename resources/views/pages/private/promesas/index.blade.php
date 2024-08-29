@@ -48,13 +48,13 @@
         </div>
         <div class="row">
             @foreach ($promesas as $promesa)
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-4 mb-3">
                     @include('components.private.card',
                             [
                                 'titulo'=>Str::title(Str::limit($promesa->nombre, 80)),
                                 'subtitulo'=>$promesa->edad,
                                 'imagen'=>true,
-                                'imagenDestacada'=>asset('/storage/promesas/'.$promesa->foto),
+                                'imagenDestacada'=>asset("/storage/promesas/{$promesa->foto}"),
                                 'botones'=>true,
                                 'botonDetalle'=>true,
                                 'detalleId'=>$promesa->id,
@@ -107,7 +107,7 @@
             let id = $(this).attr('data-id');
             Swal.fire({
                 title: "Seguro de eliminar?",
-                text: "Vas a eliminar esta noticia",
+                text: "Vas a eliminar esta promesa",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -146,7 +146,7 @@
             console.log(id);
             $.ajax({
                 type: "GET",
-                url: `/admin/promesas/detalle/${id}/noticia`,
+                url: `/admin/promesas/detalle/${id}/promesas`,
                 success: function (response) {
                     let data = response[0];
                     $("#modalcomponent").modal("show");

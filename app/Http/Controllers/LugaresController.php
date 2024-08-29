@@ -163,7 +163,10 @@ class LugaresController extends Controller
     {
         //
         $lugar = Lugar::findOrFail($request->id);
+        $lugar->estado = 'I';
+        $lugar->save();
         $lugar->delete();
+
         return redirect()->back()->with('success', 'La sede fue eliminada');
     }
 }

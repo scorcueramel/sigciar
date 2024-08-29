@@ -49,7 +49,7 @@
         </div>
         <div class="row">
             @foreach ($noticias as $noticia)
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-4 mb-3">
                     @include('components.private.card',
                             [
                                 'titulo'=>Str::title(Str::limit($noticia->titulo, 80)),

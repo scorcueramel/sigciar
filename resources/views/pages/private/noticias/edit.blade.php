@@ -7,8 +7,8 @@
     <!-- Basic with Icons -->
     <div class="col-xxl">
         <form method="post" action="{{route('noticias.update')}}" enctype="multipart/form-data" class="row g-3 needs-validation" id="form" novalidate>
-            <input type="hidden" value="{{$noticia->noticia_id}}" name="id">
             @csrf
+            <input type="hidden" value="{{$noticia->noticia_id}}" name="id">
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-3">
