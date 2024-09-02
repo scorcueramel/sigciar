@@ -586,7 +586,10 @@
     function formatearCreatedat(fecha) {
         var cutDate = fecha.split('-');
         var lastDay = cutDate[2].split(" ")
-        var fecha_salida = lastDay[0] + '/' + cutDate[1] + '/' + cutDate[0]
+        var cutHour = cutDate[2].split(" ");
+        var getHour = cutHour[1].split(":")
+
+        var fecha_salida = `${lastDay[0]}/${cutDate[1]}/${cutDate[0]} ${getHour[0]}:${getHour[1]} ${getHour[0] > 12 ? 'PM' : 'AM'}`;
 
         return fecha_salida;
     }

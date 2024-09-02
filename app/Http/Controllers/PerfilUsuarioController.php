@@ -63,7 +63,7 @@ class PerfilUsuarioController extends Controller
                                 LEFT JOIN servicio_pagos pag ON ins.id = pag.servicioinscripcion_id
                                 WHERE ins.persona_id = ? ", [$datosPersona["persona_id"]]);
 
-        $notasPrivadas = ServicioInforme::where("privado",true)->where('persona_id',auth()->user()->id)->orderBy('id','ASC')->get();
+        $notasPrivadas = ServicioInforme::where("privado",true)->where('estado','A')->where('persona_id',auth()->user()->id)->orderBy('id','ASC')->get();
 
         return view("pages.public.users.userprofile.index", compact("datosPersona", 'tipoDocumentos', 'programas','notasPrivadas'));
     }
@@ -178,7 +178,6 @@ class PerfilUsuarioController extends Controller
         $nota = new ServicioInforme();
         $nota->servicioinscripcion_id = $request->servinscid;
         $nota->detalle = $request->nota;
-        $nota->adjuntto = $request->enlace;
         $nota->estado = 'A';
         $nota->usuario_creador = $nombre_usuario;
         $nota->ip_usuario = $request->ip();
@@ -197,6 +196,39 @@ class PerfilUsuarioController extends Controller
         // $correo = User::where('id',$resultNota[0]->usuario_id)->select('email')->get()[0]->email;
 
         // Mail::to($correo)->send(new NotasMiembro($resultNota[0]));
+
+        return redirect()->route('prfole.user');
+    }
+
+    public function editNote($idNota){
+        $noteById = DB::select("SELECT
+                                    si.id ,si.servicioinscripcion_id ,si.detalle, si.adjuntto ,p.nombres ,p.apepaterno ,p.apematerno ,p.usuario_id
+                                FROM servicio_informes si
+                                LEFT JOIN servicio_inscripcions si2
+                                ON si.servicioinscripcion_id = si2.id
+                                LEFT JOIN personas p
+                                ON si2.persona_id = p.id
+                                WHERE si.id = ?",[$idNota]);
+
+        return response()->json($noteById);
+    }
+
+    public function updateNote(Request $request){
+        $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
+        $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
+        $nota = ServicioInforme::find($request->id);
+
+        $nota->detalle = $request->detalle;
+        $nota->estado = 'A';
+        $nota->usuario_editor = $nombre_usuario;
+        $nota->save();
+        return redirect()->route('prfole.user');
+    }
+
+    public function destroyNote($idNota){
+        $nota = ServicioInforme::find($idNota);
+        $nota->estado = 'I';
+        $nota->save();
 
         return redirect()->route('prfole.user');
     }
