@@ -65,7 +65,20 @@ class PerfilUsuarioController extends Controller
 
         $notasPrivadas = ServicioInforme::where("privado",true)->where('estado','A')->where('persona_id',auth()->user()->id)->orderBy('id','ASC')->get();
 
-        return view("pages.public.users.userprofile.index", compact("datosPersona", 'tipoDocumentos', 'programas','notasPrivadas'));
+        $notasEntrenador = DB::select("SELECT
+                                        si.id,
+                                        si.persona_id,
+                                        inf.created_at AS fecha, ts.descripcion || ' | ' || sts.titulo AS servicio,
+                                        inf.id AS servicioincripcion_id, inf.detalle, inf.adjuntto
+                                        FROM servicio_informes inf
+                                        JOIN servicio_inscripcions si ON si.id = inf.servicioinscripcion_id
+                                        LEFT JOIN servicios s ON s.id = si.servicio_id
+                                        LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
+                                        LEFT JOIN subtipo_servicios sts ON s.subtiposervicio_id = sts.id
+                                        WHERE si.estado = 'A' AND si.persona_id = ?
+                                        ORDER BY inf.created_at", [auth()->user()->id]);
+
+        return view("pages.public.users.userprofile.index", compact("datosPersona", 'tipoDocumentos', 'programas','notasPrivadas','notasEntrenador'));
     }
 
     public function updateImage(Request $request)
@@ -167,11 +180,6 @@ class PerfilUsuarioController extends Controller
         return redirect()->back()->with('success', 'Datos actualizados exitosamente!');
     }
 
-    public function destroy($id)
-    {
-        //
-    }
-
     public function sendNote(Request $request){
         $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
         $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
@@ -184,18 +192,6 @@ class PerfilUsuarioController extends Controller
         $nota->privado = true;
         $nota->persona_id = Auth::user()->id;
         $nota->save();
-
-        // $resultNota = DB::select("SELECT si.* ,p.nombres ,p.apepaterno ,p.apematerno , p.usuario_id
-        //                             FROM servicio_informes si
-        //                             LEFT JOIN servicio_inscripcions si2
-        //                             ON si.servicioinscripcion_id = si2.id
-        //                             LEFT JOIN personas p
-        //                             ON si2.persona_id = p.id
-        //                             WHERE si.id = ?",[$nota->id]);
-
-        // $correo = User::where('id',$resultNota[0]->usuario_id)->select('email')->get()[0]->email;
-
-        // Mail::to($correo)->send(new NotasMiembro($resultNota[0]));
 
         return redirect()->route('prfole.user');
     }
