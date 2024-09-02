@@ -35,7 +35,7 @@ use App\Http\Controllers\TipoServicioController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Route List
+
 // Login USERS
 Route::get('/login', function () { return view('auth.login'); });
 // Login STAFF

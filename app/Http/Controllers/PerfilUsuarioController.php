@@ -26,6 +26,7 @@ class PerfilUsuarioController extends Controller
     {
         $this->middleware('auth');
     }
+
     public function index()
     {
         //
@@ -126,6 +127,7 @@ class PerfilUsuarioController extends Controller
 
         return redirect()->back()->with('success', 'Tu foto de perfil fue eliminado');
     }
+
     public function update(Request $request, $id)
     {
         //
