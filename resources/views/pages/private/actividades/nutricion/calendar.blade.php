@@ -410,19 +410,27 @@
                 if (response.length > 0) {
                     for (let index = 0; index < response.length; index++) {
                         const element = response[index];
-                        $("#modalnotabody").append(`
+                        if (!element.privado) {
+                            $("#modalnotabody").append(`
                         <div class="accordion accordion-flush" id="accordion${index}">
                         <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${index}" aria-expanded="false" aria-controls="flush-collapse${index}">
-                                    <strong>Nota #${(index+1) < 10 ? '0' + (index+1) : (index+1)}</strong>
-                                </button>
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${index}" aria-expanded="false" aria-controls="flush-collapse${index}">
+                                        <strong>Nota #${(index+1) < 10 ? '0' + (index+1) : (index+1)}</strong>
+                                    </button>
                                 </h2>
                                 <div id="flush-collapse${index}" class="accordion-collapse collapse" data-bs-parent="#accordion${index}">
                                     <div class="accordion-body">
                                         <div class="row">
                                             <div class="col-md-8 d-flex align-items-center">
-                                                ${element.detalle}
+                                                <div class="row">
+                                                    <div class="col-12 mb-4">
+                                                        <small>Fecha de envío: ${formatearCreatedat(element.created_at)}</small>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        ${element.detalle}
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="row">
@@ -437,6 +445,15 @@
                                 </div>
                         </div>
                         `);
+                        } else {
+                            $("#modalnotabody").append(`
+                                <div class="jumbotron jumbotron-fluid">
+                                    <div class="container">
+                                        <p class="lead">Este miembro no cuenta con ninguna nota enviada.</p>
+                                    </div>
+                                </div>
+                    `)
+                        }
                     }
                 } else {
                     $("#modalnotabody").append(`
@@ -564,6 +581,15 @@
         $("#nota-miembro").val("");
         $("#enlace-miemrbo").val("");
     });
+
+    // formatear fecha creted_at
+    function formatearCreatedat(fecha) {
+        var cutDate = fecha.split('-');
+        var lastDay = cutDate[2].split(" ")
+        var fecha_salida = lastDay[0] + '/' + cutDate[1] + '/' + cutDate[0]
+
+        return fecha_salida;
+    }
 
     // Formtear Fecha Para Mostrar
     function formatearFecha(fecha) {

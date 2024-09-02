@@ -453,7 +453,7 @@ class OtrosProgramasController extends Controller
     }
 
     public function getNotesMember($idService){
-        $findNote = DB::select("SELECT si.id ,si.servicioinscripcion_id ,si.detalle, si.adjuntto ,p.nombres ,p.apepaterno ,p.apematerno ,p.usuario_id
+        $findNote = DB::select("SELECT si.id ,si.servicioinscripcion_id ,si.detalle, si.adjuntto ,p.nombres ,p.apepaterno ,p.apematerno ,p.usuario_id,si.privado ,si.created_at
                                 FROM servicio_informes si
                                 LEFT JOIN servicio_inscripcions si2
                                 ON si.servicioinscripcion_id = si2.id

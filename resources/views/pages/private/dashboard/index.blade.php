@@ -173,20 +173,21 @@
     new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                    label: 'Base 1',
-                    data: [1, 2, 3, 7, 5, 10],
-                    borderColor: '#36A2EB',
-                    backgroundColor: '#9BD0F5',
-                },
-                {
-                    label: 'Base 2',
-                    data: [2, 3, 4, 5, 8],
-                    borderColor: '#FF6384',
-                    backgroundColor: '#FFB1C1',
-                }
-            ]
+            labels: ['A', 'B', 'C'],
+  datasets: [
+    {
+      label: 'Dataset 1',
+      data: [1, 2, 3],
+      borderColor: '#36A2EB',
+      backgroundColor: '#9BD0F5',
+    },
+    {
+      label: 'Dataset 2',
+      data: [2, 3, 4],
+      borderColor: '#FF6384',
+      backgroundColor: '#FFB1C1',
+    }
+  ]
         },
         options: {
             events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
