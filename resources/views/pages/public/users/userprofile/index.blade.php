@@ -547,14 +547,6 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="row">
-                                                                            <div class="col-12 d-flex justify-content-end">
-                                                                                <button type="button" class="btn btn-sm btn-success mx-1" onclick="javascript:editarNotaModal({{$programa->id}});"><i class="fa-solid fa-file-pen"></i></button>
-                                                                                <button type="button" class="btn btn-sm btn-danger" onclick="javascript:eliminarNota({{$programa->id}});"><i class="fa-solid fa-trash"></i></button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
