@@ -512,13 +512,66 @@
                                     </div>
                                     <div class="tab-pane fade" id="nav-trainer-notes" role="tabpanel"
                                         aria-labelledby="nav-trainer-notes-tab" tabindex="0">
+                                        @if (count($notasEntrenador) > 0)
                                         <div class="row">
-                                            <div class="col-md border border-secondary  mx-3 mt-3"
+                                            <div class="col-md border border-secondary mx-3 mt-3"
+                                                style="background: #f1f2f3">
+                                                <div class="accordion accordion-flush my-3" id="accordionFlushExample">
+                                                    <?php
+                                                    $contador4 = 0;
+                                                    ?>
+                                                    @foreach($notasEntrenador as $programa)
+                                                    <?php
+                                                    $contador4++;
+                                                    ?>
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header">
+                                                            <button class="accordion-button collapsed" type="button"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#flush-collapse{{$programa->id}}"
+                                                                aria-expanded="false"
+                                                                aria-controls="flush-collapse{{$programa->id}}">
+                                                                {{ $programa->servicio }}
+                                                            </button>
+                                                        </h2>
+                                                        <div id="flush-collapse{{$programa->id}}"
+                                                            class="accordion-collapse collapse"
+                                                            data-bs-parent="#accordionFlushExample">
+                                                            <div class="accordion-body">
+                                                                <div class="row">
+
+                                                                    <div class="col-md-8 d-flex align-items-center">
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                {{ $programa->detalle }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="row">
+                                                                            <div class="col-12 d-flex justify-content-end">
+                                                                                <button type="button" class="btn btn-sm btn-success mx-1" onclick="javascript:editarNotaModal({{$programa->id}});"><i class="fa-solid fa-file-pen"></i></button>
+                                                                                <button type="button" class="btn btn-sm btn-danger" onclick="javascript:eliminarNota({{$programa->id}});"><i class="fa-solid fa-trash"></i></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @else
+                                        <div class="row">
+                                            <div class="col-md border border-secondary mx-3 mt-3"
                                                 style="background: #f1f2f3">
                                                 <p class="text-center my-4">Aún no se han creado notas del
                                                     entrenador.</p>
                                             </div>
                                         </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
