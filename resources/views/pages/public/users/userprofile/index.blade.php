@@ -476,7 +476,24 @@
                                                             class="accordion-collapse collapse"
                                                             data-bs-parent="#accordionFlushExample">
                                                             <div class="accordion-body">
-                                                                {{ $programa->detalle }}
+                                                                <div class="row">
+
+                                                                    <div class="col-md-8 d-flex align-items-center">
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                {{ $programa->detalle }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="row">
+                                                                            <div class="col-12 d-flex justify-content-end">
+                                                                                <button type="button" class="btn btn-sm btn-success mx-1" onclick="javascript:editarNotaModal({{$programa->id}});"><i class="fa-solid fa-file-pen"></i></button>
+                                                                                <button type="button" class="btn btn-sm btn-danger" onclick="javascript:eliminarNota({{$programa->id}});"><i class="fa-solid fa-trash"></i></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -561,6 +578,7 @@
                 Swal.showLoading();
             }
         });
+
     }
 
     $('#btn-edit-info').on('click', function() {
@@ -623,7 +641,6 @@
         $('.modal_cuerpo').html(`
             <form method="post" action="{{ route('notas.privadas.user') }}" id="guardarnota" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" id="informe_id" value="{{ $datosPersona->id }}">
                 <div class="mb-3">
                     <label for="nota-miembro" class="form-label">Nota</label>
                     <textarea class="form-control" id="nota-miembro" name="nota" rows="3" placeholder="Escribe una nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required></textarea>
@@ -639,5 +656,75 @@
             </form>
         `);
     });
+
+    function actualizarNota() {
+        let id = $("#informe_id").val();
+        let detalle = $("#nota-miembro").val();
+
+        $.ajax({
+            type: "POST",
+            url: "{{route('actualizar.notas.user')}}",
+            data: {
+                detalle,
+                id
+            },
+            success: function(response) {
+                guardarNota();
+                window.location.reload();
+            }
+        });
+    }
+
+    function editarNotaModal(idinforme) {
+        $.ajax({
+            type: "GET",
+            url: `/ciar/edit/${idinforme}/notas`,
+            success: function(response) {
+                let data = response[0];
+                $("#modal").modal("show");
+                $('#modalLabel').html('MIS NOTA PRIVADAS');
+                $(".modal_cuerpo").html("");
+                $(".modal_cuerpo").html(`
+                    <input type="hidden" id="informe_id" value="${data.id}">
+                    <div class="mb-3">
+                        <label for="nota-miembro" class="form-label">Nota</label>
+                        <textarea class="form-control" id="nota-miembro" name="detalle" rows="3" placeholder="Escribe una nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required>${data.detalle}</textarea>
+                        <div id="description" class="form-text text-primary">300 caracteres como máximo permitido.</div>
+                        <div class="d-none" id="error">
+                            <p class="text-danger">Debes ingresar una nota para enviar</p>
+                        </div>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary mx-1" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" onclick="javascript:actualizarNota()">Guardar</button>
+                    </div>
+                `);
+            }
+        });
+    }
+
+    function eliminarNota(idinforme) {
+        Swal.fire({
+            title: `¿Eliminar Nota?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            allowOutsideClick: false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "GET",
+                    url: `/ciar/eliminar/${idinforme}/notas`,
+                    success: function(response) {
+                        guardarNota();
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+    }
 </script>
 @endpush
