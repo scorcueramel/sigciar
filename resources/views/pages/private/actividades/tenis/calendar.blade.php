@@ -260,7 +260,8 @@
                 if (response.length > 0) {
                     for (let index = 0; index < response.length; index++) {
                         const element = response[index];
-                        $("#modalnotabody").append(`
+                        if (!element.privado) {
+                            $("#modalnotabody").append(`
                         <div class="accordion accordion-flush" id="accordion${index}">
                         <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -272,7 +273,14 @@
                                     <div class="accordion-body">
                                         <div class="row">
                                             <div class="col-md-8 d-flex align-items-center">
-                                                ${element.detalle}
+                                                <div class="row">
+                                                    <div class="col-12 mb-4">
+                                                        <small>Fecha de envío: ${formatearCreatedat(element.created_at)}</small>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        ${element.detalle}
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="row">
@@ -287,6 +295,15 @@
                                 </div>
                         </div>
                         `);
+                        } else {
+                            $("#modalnotabody").append(`
+                                <div class="jumbotron jumbotron-fluid">
+                                    <div class="container">
+                                        <p class="lead">Este miembro no cuenta con ninguna nota enviada.</p>
+                                    </div>
+                                </div>
+                    `)
+                        }
                     }
                 } else {
                     $("#modalnotabody").append(`
@@ -305,6 +322,15 @@
         $("modalnotafooter").append(`
             <button class="btn btn-sm btn-danger" id="cancelarenvio" data-bs-target="#modalcomponent" data-bs-toggle="modal">Cancelar</button>
         `);
+    }
+
+    // formatear fecha creted_at
+    function formatearCreatedat(fecha) {
+        var cutDate = fecha.split('-');
+        var lastDay = cutDate[2].split(" ")
+        var fecha_salida = lastDay[0] + '/' + cutDate[1] + '/' + cutDate[0]
+
+        return fecha_salida;
     }
 
     function editarNotaModal(miembro, idinforme) {

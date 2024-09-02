@@ -17,5 +17,7 @@ class ServicioInforme extends Model
         'usuario_creador',
         'usuario_editor',
         'ip_usuario',
+        'privado',
+        'persona_id'
     ];
 }

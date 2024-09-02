@@ -445,12 +445,53 @@
                                 <div class="tab-content" id="nav-tabContent">
                                     <div class="tab-pane fade show active" id="nav-notes" role="tabpanel"
                                         aria-labelledby="nav-notes-tab" tabindex="0">
+                                        <div class="row mt-3">
+                                            <div class="col-md-12 mx-3">
+                                                <button class="btn btn-outline-primary btn-sm" id="crearnota">Crear nota privada</button>
+                                            </div>
+                                        </div>
+                                        @if (count($notasPrivadas) > 0)
                                         <div class="row">
-                                            <div class="col-md border border-secondary  mx-3 mt-3"
+                                            <div class="col-md border border-secondary mx-3 mt-3"
+                                                style="background: #f1f2f3">
+                                                <div class="accordion accordion-flush my-3" id="accordionFlushExample">
+                                                    <?php
+                                                    $contador3 = 0;
+                                                    ?>
+                                                    @foreach($notasPrivadas as $programa)
+                                                    <?php
+                                                    $contador3++;
+                                                    ?>
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header">
+                                                            <button class="accordion-button collapsed" type="button"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#flush-collapse{{$programa->id}}"
+                                                                aria-expanded="false"
+                                                                aria-controls="flush-collapse{{$programa->id}}">
+                                                                Nota {{ $contador3 }}
+                                                            </button>
+                                                        </h2>
+                                                        <div id="flush-collapse{{$programa->id}}"
+                                                            class="accordion-collapse collapse"
+                                                            data-bs-parent="#accordionFlushExample">
+                                                            <div class="accordion-body">
+                                                                {{ $programa->detalle }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @else
+                                        <div class="row">
+                                            <div class="col-md border border-secondary mx-3 mt-3"
                                                 style="background: #f1f2f3">
                                                 <p class="text-center my-4">Aún no se han creado notas privadas</p>
                                             </div>
                                         </div>
+                                        @endif
                                     </div>
                                     <div class="tab-pane fade" id="nav-trainer-notes" role="tabpanel"
                                         aria-labelledby="nav-trainer-notes-tab" tabindex="0">
@@ -475,27 +516,32 @@
 @include('components.public.modal', [
 'titulo' => true,
 'titulo_modal' => 'Cambiar mi foto de perfil',
-'botones' => true,
+'botones' => false,
 'boton_cerrar' => 'Cancelar',
 'boton_guardar' => 'Guardar',
 ])
 @push('js')
 <script>
     $('#btn-imagen').on('click', function() {
+        $('#modalLabel').html('CAMBIAR MI FOTO DE PERFIL');
         $('.modal_cuerpo').html('');
         $('.modal_cuerpo').html(`
                 <form method="post" action="{{ route('image.user.update') }}" id="frmactualizafoto" enctype="multipart/form-data">
                     @csrf
-            <div class="mb-3">
-                <input type="hidden" name="idpersona" value="{{ $datosPersona->id }}"/>
+                    <div class="mb-3">
+                        <input type="hidden" name="idpersona" value="{{ $datosPersona->id }}"/>
                         <label for="imageFile" class="form-label">Selecciona una foto</label>
                         <input class="form-control" type="file" id="cargarImagen" name="imagen" accept="image/*"/>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary mx-1" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" onclick="javascript:guardarFoto()">Guardar</button>
                     </div>
                 </form>
             `);
     });
 
-    $('#btn-guardar').on('click', function() {
+    function guardarFoto() {
         Swal.fire({
             icon: 'info',
             html: "Espere un momento porfavor ...",
@@ -503,9 +549,19 @@
             didOpen: () => {
                 Swal.showLoading();
             }
-        })
-        $('#frmactualizafoto').trigger('submit');
-    })
+        });
+    }
+
+    function guardarNota() {
+        Swal.fire({
+            icon: 'info',
+            html: "Espere un momento porfavor ...",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
 
     $('#btn-edit-info').on('click', function() {
         $('.dp_vista').addClass('d-none');
@@ -558,6 +614,30 @@
                 Swal.showLoading();
             }
         });
+    });
+
+    $("#crearnota").on("click", function() {
+        $("#modal").modal("show");
+        $('#modalLabel').html('MIS NOTA PRIVADAS');
+        $('.modal_cuerpo').html('');
+        $('.modal_cuerpo').html(`
+            <form method="post" action="{{ route('notas.privadas.user') }}" id="guardarnota" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" id="informe_id" value="{{ $datosPersona->id }}">
+                <div class="mb-3">
+                    <label for="nota-miembro" class="form-label">Nota</label>
+                    <textarea class="form-control" id="nota-miembro" name="nota" rows="3" placeholder="Escribe una nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required></textarea>
+                    <div id="description" class="form-text text-primary">300 caracteres como máximo permitido.</div>
+                    <div class="d-none" id="error">
+                        <p class="text-danger">Debes ingresar una nota para enviar</p>
+                    </div>
+                </div>
+                <div class="mt-3 d-flex justify-content-end">
+                    <button type="button" class="btn btn-secondary mx-1" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" onclick="javascript:guardarNota()">Guardar</button>
+                </div>
+            </form>
+        `);
     });
 </script>
 @endpush

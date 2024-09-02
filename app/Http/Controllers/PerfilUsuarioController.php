@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NotasMiembro;
 use App\Models\Persona;
+use App\Models\ServicioInforme;
 use App\Models\TipoDocumento;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Mail;
 use function PHPUnit\Framework\isNull;
 
 class PerfilUsuarioController extends Controller
@@ -36,31 +39,33 @@ class PerfilUsuarioController extends Controller
         $tipoDocumentos = TipoDocumento::where('estado', 'A')->get();
 
         $programas = DB::select("SELECT DISTINCT
-					                    s.id AS servicios_id,
-                                        s.tiposervicio_id,
-					                    ts.descripcion || ' - ' || sts.titulo || ' - ' ||sts.subtitulo AS descripcion,
-					                    per.documento,
-					                    per.apepaterno || ' ' || per.apematerno || ' ' || nombres AS apeynom,
-					                    ver_horarios(cast (s.id AS INTEGER)) AS horario,
-					                    ver_horarios_ins(cast (s.id AS INTEGER),cast (ins.persona_id AS INTEGER)) AS horario_inscripcion,
-					                    lc.costohora AS pago,
-					                    ins.estado AS estado_inscripcion,
-					                    pag.estadopago AS estado_pago,
-					                    pag.fechapago
-					                    FROM servicios s
-					                    LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
-					                    LEFT JOIN subtipo_servicios sts ON s.subtiposervicio_id = sts.id
-					                    LEFT JOIN sedes sed ON s.sede_id = sed.id
-					                    LEFT JOIN lugars l ON s.lugar_id = l.id
-					                    LEFT JOIN lugar_costos lc ON lc.lugars_id = l.id AND lc.descripcion = s.turno
-					                    LEFT JOIN servicio_plantillas  sp ON s.id = sp.servicio_id
-					                    LEFT JOIN servicio_inscripcions ins ON s.id = ins.servicio_id
-					                    LEFT JOIN servicio_reservas sr ON ins.id = sr.servicioinscripcion_id
-					                    LEFT JOIN personas per ON ins.persona_id = per.id
-					                    LEFT JOIN servicio_pagos pag ON ins.id = pag.servicioinscripcion_id
-                                    where ins.persona_id = ? ", [$datosPersona["persona_id"]]);
+                                    s.id AS servicios_id,
+                                    s.tiposervicio_id,
+                                    ts.descripcion || ' - ' || sts.titulo || ' - ' ||sts.subtitulo AS descripcion,
+                                    per.documento,
+                                    per.apepaterno || ' ' || per.apematerno || ' ' || nombres AS apeynom,
+                                    ver_horarios(cast (s.id AS INTEGER)) AS horario,
+                                    ver_horarios_ins(cast (s.id AS INTEGER),cast (ins.persona_id AS INTEGER)) AS horario_inscripcion,
+                                    lc.costohora AS pago,
+                                    ins.estado AS estado_inscripcion,
+                                    pag.estadopago AS estado_pago,
+                                    pag.fechapago
+                                FROM servicios s
+                                LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
+                                LEFT JOIN subtipo_servicios sts ON s.subtiposervicio_id = sts.id
+                                LEFT JOIN sedes sed ON s.sede_id = sed.id
+                                LEFT JOIN lugars l ON s.lugar_id = l.id
+                                LEFT JOIN lugar_costos lc ON lc.lugars_id = l.id AND lc.descripcion = s.turno
+                                LEFT JOIN servicio_plantillas  sp ON s.id = sp.servicio_id
+                                LEFT JOIN servicio_inscripcions ins ON s.id = ins.servicio_id
+                                LEFT JOIN servicio_reservas sr ON ins.id = sr.servicioinscripcion_id
+                                LEFT JOIN personas per ON ins.persona_id = per.id
+                                LEFT JOIN servicio_pagos pag ON ins.id = pag.servicioinscripcion_id
+                                WHERE ins.persona_id = ? ", [$datosPersona["persona_id"]]);
 
-        return view("pages.public.users.userprofile.index", compact("datosPersona", 'tipoDocumentos', 'programas'));
+        $notasPrivadas = ServicioInforme::where("privado",true)->where('persona_id',auth()->user()->id)->orderBy('id','ASC')->get();
+
+        return view("pages.public.users.userprofile.index", compact("datosPersona", 'tipoDocumentos', 'programas','notasPrivadas'));
     }
 
     public function updateImage(Request $request)
@@ -165,5 +170,34 @@ class PerfilUsuarioController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function sendNote(Request $request){
+        $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
+        $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
+        $nota = new ServicioInforme();
+        $nota->servicioinscripcion_id = $request->servinscid;
+        $nota->detalle = $request->nota;
+        $nota->adjuntto = $request->enlace;
+        $nota->estado = 'A';
+        $nota->usuario_creador = $nombre_usuario;
+        $nota->ip_usuario = $request->ip();
+        $nota->privado = true;
+        $nota->persona_id = Auth::user()->id;
+        $nota->save();
+
+        // $resultNota = DB::select("SELECT si.* ,p.nombres ,p.apepaterno ,p.apematerno , p.usuario_id
+        //                             FROM servicio_informes si
+        //                             LEFT JOIN servicio_inscripcions si2
+        //                             ON si.servicioinscripcion_id = si2.id
+        //                             LEFT JOIN personas p
+        //                             ON si2.persona_id = p.id
+        //                             WHERE si.id = ?",[$nota->id]);
+
+        // $correo = User::where('id',$resultNota[0]->usuario_id)->select('email')->get()[0]->email;
+
+        // Mail::to($correo)->send(new NotasMiembro($resultNota[0]));
+
+        return redirect()->route('prfole.user');
     }
 }

@@ -143,7 +143,6 @@
 
         $('.btn-detail').on('click', function () {
             var id = $(this).attr('data-id');
-            console.log(id);
             $.ajax({
                 type: "GET",
                 url: `/admin/promesas/detalle/${id}/promesas`,

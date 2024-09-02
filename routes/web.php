@@ -37,20 +37,14 @@ use App\Http\Controllers\TipoServicioController;
 */
 // Route List
 // Login USERS
-Route::get('/login', function () {
-    return view('auth.login');
-});
+Route::get('/login', function () { return view('auth.login'); });
 // Login STAFF
-Route::get('/login-staff',function(){
-    return view('auth.login-staff');
-})->name('login.staff');
+Route::get('/login-staff',function(){ return view('auth.login-staff'); })->name('login.staff');
 Route::post('/login-staff',[LoginStaffController::class, 'login'])->name('login.staff');
 Route::post('/logout-staff',[LoginStaffController::class, 'logout'])->name('logout.staff');
 
 // Login MEMBER
-Route::get('/login-member',function(){
-    return view('auth.login-members');
-})->name('login.member');
+Route::get('/login-member',function(){ return view('auth.login-members'); })->name('login.member');
 Route::post('/login-member',[LoginMemberController::class, 'login'])->name('login.member');
 Route::post('/logout-member',[LoginMemberController::class, 'logout'])->name('logout.member');
 
@@ -93,6 +87,7 @@ Route::group(['prefix' => 'ciar'], function () {
     Route::post('/cargar-foto-perfil', [PerfilUsuarioController::class,'updateImage'])->name('image.user.update');
     Route::post('/quitar-foto-perfil', [PerfilUsuarioController::class,'removeImage'])->name('image.user.remove');
     Route::post('/editar-datos-usuario/{id}', [PerfilUsuarioController::class, 'update'])->name('user.editar');
+    Route::post('/enviar/notas',[PerfilUsuarioController::class,'sendNote'])->name('notas.privadas.user');
 });
 
 // Rutas para el Administrador
