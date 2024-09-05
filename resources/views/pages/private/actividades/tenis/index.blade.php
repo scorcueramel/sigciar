@@ -350,5 +350,9 @@
         $("#mcbody").html('');
         $("#mcLabel").html('');
     });
+
+    function editProgram(id) {
+        window.location.href = `/admin/actividades/editar/${id}/actividad`
+    }
 </script>
 @endpush

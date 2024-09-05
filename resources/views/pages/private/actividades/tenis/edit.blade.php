@@ -1,5 +1,5 @@
-@extends('layouts.private.private', ['activePage' => 'tenis.create'])
-@push('title', 'Nueva Actividad')
+@extends('layouts.private.private', ['activePage' => 'tenis.index'])
+@push('title', 'Editar Programa de Tenis')
 @push('css')
 <style>
     #regiration_form fieldset:not(:first-of-type) {
@@ -18,16 +18,15 @@
 </style>
 @endpush
 @section('content')
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Tenis /</span> Crear Nueva </h4>
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Tenis /</span> Editar Programa </h4>
 <!-- Basic Layout & Basic with Icons -->
-
 <div class="row mb-3">
     <!-- Basic with Icons -->
     <div class="col-xxl">
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="mb-0">Formulario de registro</h5>
-                <small class="text-muted float-end">Nueva Actividad</small>
+                <small class="text-muted float-end">Editar Programa</small>
             </div>
             <div class="card-body mt-3">
                 <div class="container">
@@ -37,6 +36,7 @@
                         </div>
                     </div>
                     <form enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
+                        <input type="hidden" value="{{$getProgram[0]->id}}">
                         <fieldset>
                             <h3> Paso 1: Nueva Actividad</h3>
                             <div class="row">
@@ -53,7 +53,7 @@
                                                     </option>
                                                     @foreach ($responsables as $resp)
                                                     <option value="{{ $resp->id }}"
-                                                        {{ old($resp->id) == $resp->id ? 'selected' : '' }}>
+                                                        {{ $resp->id == auth()->user()->id ? 'selected' : '' }}>
                                                         {{ $resp->nombres }}
                                                         {{ $resp->apepaterno }} {{ $resp->apematerno }}
                                                     </option>
@@ -96,7 +96,7 @@
                                                     <option value="" selected disabled>SELECCIONA UNA CATEGORÍA
                                                     </option>
                                                     @foreach($subtiposervicio as $sts)
-                                                    <option value="{{$sts->id}}">
+                                                    <option value="{{$sts->id}}" {{ $sts->id == $getProgram[0]->categoria_id ? 'selected' : ''}}>
                                                         {{$sts->titulo}} - {{$sts->subtitulo}}
                                                     </option>
                                                     @endforeach
@@ -119,7 +119,7 @@
                                                     <option value="" selected disabled>SELECCIONA UNA SEDE
                                                     </option>
                                                     @foreach ($sedes as $sede)
-                                                    <option value="{{ $sede->id }}">{{ $sede->descripcion }}
+                                                    <option value="{{ $sede->id }}" {{ $sede->id == $getProgram[0]->sede_id ? 'selected':''}}>{{ $sede->descripcion }}
                                                     </option>
                                                     @endforeach
                                                 </select>
@@ -137,9 +137,16 @@
                                                 <span id="lugar2" class="input-group-text"><i
                                                         class="fa-regular fa-court-sport"></i></span>
                                                 <select class="form-select" id="lugar" aria-label="lugar"
-                                                    name="lugar" disabled required>
+                                                    name="lugar">
                                                     <option value="" selected disabled>SELECCIONA UN LUGAR
                                                     </option>
+                                                    @foreach ($lugares as $lugar)
+                                                    @if($lugar->sede_id == $getProgram[0]->sede_id)
+                                                    @if (str_contains($lugar->descripcion,"CAMPO"))
+                                                    <option value="{{$lugar->id}}" {{ $lugar->id == $getProgram[0]->lugar_id ? 'selected' : '' }}>{{$lugar->descripcion}}</option>
+                                                    @endif
+                                                    @endif
+                                                    @endforeach
                                                 </select>
                                             </div>
                                             <span class="text-danger d-none lugarError" role="alert">
@@ -166,7 +173,7 @@
                                         <label class="col-sm-3 col-form-label" for="fechaInicio">Inicio</label>
                                         <div class="col-sm-9">
                                             <div class="input-group input-group-merge">
-                                                <input type="date" id="fechaInicio"
+                                                <input type="date" value="{{substr($getProgram[0]->inicio,0,10)}}" id="fechaInicio"
                                                     class="form-control @error('fechaInicio') is-invalid @enderror"
                                                     aria-label="Fecha de inicio" name="fechaInicio" required />
                                             </div>
@@ -180,7 +187,7 @@
                                         <label class="col-sm-3 col-form-label" for="termino">Término</label>
                                         <div class="col-sm-9">
                                             <div class="input-group input-group-merge">
-                                                <input type="date" id="termino"
+                                                <input type="date" value="{{substr($getProgram[0]->fin,0,10)}}" id="termino"
                                                     class="form-control @error('termino') is-invalid @enderror"
                                                     name="termino" required />
                                             </div>
@@ -196,7 +203,7 @@
                                             <div class="input-group input-group-merge">
                                                 <span id="cupos2" class="input-group-text"><i
                                                         class="fa-regular fa-input-numeric"></i></span>
-                                                <input type="number" id="cupos"
+                                                <input type="number" value="{{$getProgram[0]->cupos}}" id="cupos"
                                                     class="form-control @error('cupos') is-invalid @enderror"
                                                     aria-label="Nombre para la cupos" aria-describedby="cupos2"
                                                     name="cupos"
@@ -217,7 +224,7 @@
                                             <div class="input-group input-group-merge">
                                                 <span id="horas2" class="input-group-text"><i
                                                         class="fa-regular fa-input-numeric"></i></span>
-                                                <input type="number" id="horas"
+                                                <input type="number" value="{{$getProgram[0]->duracion}}" id="horas"
                                                     class="form-control @error('descripcion') is-invalid @enderror"
                                                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                                     name="horas" maxlength="3" required />
@@ -233,14 +240,14 @@
                                         <div class="col-sm-9">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="publicado"
-                                                    value="A" id="SI">
+                                                    value="A" id="SI" {{ $getProgram[0]->estado == 'A' ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="si">
                                                     SI
                                                 </label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="publicado"
-                                                    value="I" id="NO" checked>
+                                                    value="I" id="NO" {{ $getProgram[0]->estado == 'I' ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="no">
                                                     NO
                                                 </label>
@@ -363,7 +370,9 @@
     // arreglo de horarios
     var totalHorarios = new Array();
     var horasInscripcion = new Array();
+
     $(document).ready(function() {
+        obtenerHorario();
         // Días del select para la sección horarios
         const dias = [
             'LUNES',
@@ -422,6 +431,34 @@
         }
     });
 
+    function obtenerHorario(){
+        let turno = "{{ $getProgram[0]->turno }}"
+        let idActividad = 3;
+        let idLugar = "{{$getProgram[0]->lugar_id}}";
+
+            $.ajax({
+                type: "GET",
+                url: `/admin/actividades/obtener/costo/${idActividad}/${idLugar}/lugar`,
+                success: function(response) {
+                    if (response != null) {
+                        $(".contenedor-turnos").html("");
+                        response.forEach(function(e) {
+                            $(".contenedor-turnos").append(`
+                                <div class="form-check">
+                                    <input class="form-check-input turno-radio" type="radio" name="turno" value="${e.descripcion}" id="${e.descripcion}">
+                                    <label class="form-check-label" for="${e.descripcion}">
+                                        ${e.descripcion}
+                                    </label>
+                                </div>
+                            `)
+                            e.descripcion == turno ? $(".turno-radio").prop('checked', true):'';
+                        });
+                        $('.turnos').removeClass('d-none');
+                    }
+                }
+            });
+    }
+
     // Obtener sede basada en lugares
     $("#sede").on('change', function() {
         let sedeId = $(this).val();
@@ -444,11 +481,9 @@
                     defaultOptionCategory.append(
                         "<option selected disabled>SELECCIONA UN LUGAR</option>");
                     data.forEach((e) => {
-                        if (e.descripcion.includes("CAMPO")) {
-                            $("#lugar").append(`
-                                <option value="${e.id}">${e.descripcion}</option>
+                        $("#lugar").append(`
+                                    <option value="${e.id}">${e.descripcion}</option>
                                 `);
-                        }
                     });
                 }
             },
@@ -549,10 +584,9 @@
         let idActividad = 3;
         let idLugar = $(this).val();
 
-        console.log(idActividad);
         $.ajax({
             type: "GET",
-            url: `/admin/actividades/obtener/consto/${idActividad}/${idLugar}/lugar`,
+            url: `/admin/actividades/obtener/costo/${idActividad}/${idLugar}/lugar`,
             success: function(response) {
                 if (response != null) {
                     $(".contenedor-turnos").html("");

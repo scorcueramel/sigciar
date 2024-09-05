@@ -166,39 +166,64 @@
 </div>
 @endsection
 @push('js')
-
 <script>
     const ctx = document.getElementById('myChart');
 
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['A', 'B', 'C'],
-            datasets: [{
-                    label: 'Dataset 1',
-                    data: [1, 8, 3],
-                    borderColor: '#36A2EB',
-                    backgroundColor: '#9BD0F5',
-                },
-                {
-                    label: 'Dataset 2',
-                    data: [2, 5, 4],
-                    borderColor: '#FF6384',
-                    backgroundColor: '#FFB1C1',
-                }
-            ]
-        },
-        options: {
-            events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
-            plugins: {
-                tooltip: {
-                    // Tooltip will only receive click events
-                    events: ['click']
-                }
+    const Utils = ChartUtils.init();
+
+    const actions = [{
+        name: 'Randomize',
+        handler(chart) {
+            chart.data.datasets.forEach(dataset => {
+                dataset.data = chart.data.labels.map(() => {
+                    return [Utils.rand(-100, 100), Utils.rand(-100, 100)];
+                });
+            });
+            chart.update();
+        }
+    }, ];
+
+    const DATA_COUNT = 7;
+    const NUMBER_CFG = {
+        count: DATA_COUNT,
+        min: -100,
+        max: 100
+    };
+
+    const labels = Utils.months({
+        count: 8
+    });
+    const data = {
+        labels: labels,
+        datasets: [{
+                label: 'Dataset 1',
+                data: labels.map(() => {
+                    return [Utils.rand(-100, 100), Utils.rand(-100, 100)];
+                }),
+                backgroundColor: Utils.CHART_COLORS.red,
             },
-            scales: {
-                y: {
-                    beginAtZero: true
+            {
+                label: 'Dataset 2',
+                data: labels.map(() => {
+                    return [Utils.rand(-100, 100), Utils.rand(-100, 100)];
+                }),
+                backgroundColor: Utils.CHART_COLORS.blue,
+            },
+        ]
+    };
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Chart.js Floating Bar Chart'
                 }
             }
         }

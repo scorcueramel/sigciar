@@ -9,7 +9,6 @@ use App\Models\Sede;
 use App\Models\Servicio;
 use App\Models\ServicioInforme;
 use App\Models\SubtipoServicio;
-use App\Models\TipoServicio;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -104,10 +103,13 @@ class TenisController extends Controller
                                 <i class="fa-duotone fa-gear"></i>
                             </button>
                             <div class="dropdown-menu">
-                                <button data-bs-toggle="modal" data-bs-target="#modalcomponent" onclick="showDetail(' . $row->id . ')" class="dropdown-item">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modalcomponent" onclick="showDetail(' . $row->id . ')" class="dropdown-item">
                                     <i class="bx bx-message-alt-detail me-1"></i> Detalle
                                 </button>
-                                <button class="dropdown-item delete" onclick="deleteActivity(' . $row->id . ')">
+                                <button type="button" onclick="editProgram(' . $row->id . ')" class="dropdown-item">
+                                    <i class="bx bx-edit-alt me-1"></i> Editar
+                                </button>
+                                <button type="button" class="dropdown-item delete" onclick="deleteActivity(' . $row->id . ')">
                                     <i class="bx bx-trash me-1"></i> Eliminar
                                 </button>
                             </div>
@@ -416,7 +418,7 @@ class TenisController extends Controller
         return response()->json("ok");
     }
 
-    public function getNotesMember($idService){
+    public function getNotesMember(string $idService){
         $findNote = DB::select("SELECT si.id ,si.servicioinscripcion_id ,si.detalle, si.adjuntto ,p.nombres ,p.apepaterno ,p.apematerno ,p.usuario_id,si.privado ,si.created_at
                                 FROM servicio_informes si
                                 LEFT JOIN servicio_inscripcions si2
@@ -425,5 +427,36 @@ class TenisController extends Controller
                                 ON si2.persona_id = p.id
                                 WHERE si.servicioinscripcion_id = ?",[$idService]);
         return response()->json($findNote);
+    }
+
+    public function edit(string $idServicio){
+
+        $responsable = Persona::where('usuario_id', Auth::user()->id)->get()[0];
+        $responsables = Persona::where('tipocategoria_id', '<>', 1)->where('tipocategoria_id', '<>', 2)->get();
+        $sedes = Sede::where('estado', 'A')->get();
+        $lugares = Lugar::where('estado', 'A')->get();
+        $subtiposervicio = SubtipoServicio::where('tiposervicio_id', 3)->orderBy('id', 'desc')->get();
+
+        $getProgram = DB::select("SELECT
+                                s.id , s.responsable_id,
+                                s.subtiposervicio_id AS categoria_id,
+                                s.sede_id , s.lugar_id,l.descripcion AS lugar_descripcion, s.turno,
+                                s.inicio AS inicio,s.fin AS fin, s.capacidad as cupos, s.horas as duracion, s.estado
+                                FROM servicios s
+                                LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
+                                LEFT JOIN subtipo_servicios sts ON s.subtiposervicio_id = sts.id
+                                LEFT JOIN sedes s2 ON s.sede_id = s2.id
+                                LEFT JOIN lugars l ON s.lugar_id = l.id
+                                LEFT JOIN personas p ON s.responsable_id = p.id
+                                LEFT JOIN subtipo_servicios ss ON s.subtiposervicio_id = ss.id
+                                WHERE s.id = ?", [$idServicio]);
+
+        $getDaysToProgram = DB::select("SELECT
+                                        sp.servicio_id, sh.servicioplantilla_id, sh.dia, sh.horainicio, sh.horafin,  sh.estado
+                                        FROM servicio_horarios sh
+                                        LEFT JOIN servicio_plantillas sp ON sh.servicioplantilla_id = sp.id
+                                        WHERE sp.servicio_id = ?",[$idServicio]);
+
+        return view('pages.private.actividades.tenis.edit', compact("getProgram","getDaysToProgram","responsable", "responsables", "sedes", "lugares","subtiposervicio"));
     }
 }

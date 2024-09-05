@@ -132,7 +132,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/nueva/{id}',[TenisController::class, 'create'])->name('tenis.create');
         Route::get('/obtener/{id}/lugares', [TenisController::class, 'placesCharge'])->name('obtener.lugres');
         Route::get('/obtener/{document}/miembro', [TenisController::class, 'searchMember'])->name('buscar.miembro');
-        Route::get('/obtener/consto/{idlugar}/{idactividad}/lugar',[TenisController::class,'coastPlaces'])->name('obtener.costo.luagr');
+        Route::get('/obtener/costo/{idlugar}/{idactividad}/lugar',[TenisController::class,'coastPlaces'])->name('obtener.costo.luagr');
         Route::get('/obtener/imagen/{id}/categoria',[TenisController::class, 'renderImageForCategory'])->name('obtener.imagen.categoria');
         Route::post('/nueva',[TenisController::class,'storeNewActivity'])->name('nueva.actividad');
         Route::get('/nueva/inscripcion/{plantilla}/{horario}/redirigido',[TenisController::class, 'redirectAfterCreateActivity'])->name('redirigir.incripcion.actividad');
@@ -141,6 +141,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/inscribir/miembro', [TenisController::class,'storeInscripcion'])->name('inscribir.miembro');
         Route::post('/enviar/notas',[TenisController::class,'sendNote'])->name('enviar.notas.miembros');
         Route::get('/obtener/{id}/notas',[TenisController::class,'getNotesMember'])->name('obtener.notas.miembros');
+        Route::get('/editar/{id}/actividad',[TenisController::class, 'edit'])->name('tenis.editar.actividad');
     });
 
     Route::group(['prefix'=>'nutricion'],function (){
