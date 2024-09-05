@@ -193,6 +193,8 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/obtener/{id}/notas',[OtrosProgramasController::class,'getNotesMember'])->name('obtener.notas.miembros');
         Route::get('/edit/{id}/notas',[OtrosProgramasController::class,'editNote'])->name('edit.notas.miembros');
         Route::post('/actualizar/notas',[OtrosProgramasController::class,'updateNote'])->name('actualizar.notas.miembros');
+        Route::get('/editar/{id}/actividad',[OtrosProgramasController::class, 'edit'])->name('nutricion.editar.actividad');
+        Route::post('/editar/actividad',[OtrosProgramasController::class, 'update'])->name('nutricion.actualizar.actividad');
     });
 
     Route::group(['prefix'=>'inscripciones'],function (){

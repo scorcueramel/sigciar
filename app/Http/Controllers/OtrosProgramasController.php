@@ -86,6 +86,9 @@ class OtrosProgramasController extends Controller
                         </button>
                         <div class="dropdown-menu">
                             <button data-bs-toggle="modal" data-bs-target="#modalcomponent" onclick="showDetail(' . $row->id . ')" class="dropdown-item"><i class="bx bx-message-alt-detail me-1"></i> Detalle</button>
+                            <button type="button" onclick="editProgram(' . $row->id . ')" class="dropdown-item">
+                                <i class="bx bx-edit-alt me-1"></i> Editar
+                            </button>
                             <button class="dropdown-item delete" onclick="deleteNutricion(' . $row->id . ')"><i class="bx bx-trash me-1"></i> Eliminar</button>
                         </div>
                     </div>';
@@ -408,16 +411,6 @@ class OtrosProgramasController extends Controller
         }
     }
 
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
     public function destroyActivity(Request $request)
     {
         $actividad = Servicio::find($request->id);
@@ -499,5 +492,89 @@ class OtrosProgramasController extends Controller
         Mail::to($correo)->send(new NotasMiembro($resultNota[0]));
 
         return response()->json("ok");
+    }
+
+    public function edit(string $idServicio)
+    {
+
+        $responsable = Persona::where('usuario_id', Auth::user()->id)->get()[0];
+        $responsables = Persona::where('tipocategoria_id', '<>', 1)->where('tipocategoria_id', '<>', 2)->get();
+        $sedes = Sede::where('estado', 'A')->get();
+        $lugares = Lugar::where('estado', 'A')->get();
+        $subtiposervicios = SubtipoServicio::where('estado','A')->where('tiposervicio_id', 2)->orderBy('id', 'desc')->get();
+
+        $getProgram = DB::select("SELECT
+                                s.id , s.responsable_id,
+                                s.subtiposervicio_id AS categoria_id,
+                                s.sede_id , s.lugar_id,l.descripcion AS lugar_descripcion, s.turno,
+                                s.inicio AS inicio,s.fin AS fin, s.capacidad as cupos, s.horas as duracion, s.estado, sts.imagen
+                                FROM servicios s
+                                LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
+                                LEFT JOIN subtipo_servicios sts ON s.subtiposervicio_id = sts.id
+                                LEFT JOIN sedes s2 ON s.sede_id = s2.id
+                                LEFT JOIN lugars l ON s.lugar_id = l.id
+                                LEFT JOIN personas p ON s.responsable_id = p.id
+                                LEFT JOIN subtipo_servicios ss ON s.subtiposervicio_id = ss.id
+                                WHERE s.id = ?", [$idServicio]);
+
+        $getDaysToProgram = DB::select("SELECT
+                                        sp.servicio_id, sh.servicioplantilla_id, sh.dia, sh.horainicio, sh.horafin,  sh.estado
+                                        FROM servicio_horarios sh
+                                        LEFT JOIN servicio_plantillas sp ON sh.servicioplantilla_id = sp.id
+                                        WHERE sp.servicio_id = ?", [$idServicio]);
+
+        return view('pages.private.actividades.otros-programas.edit', compact("getProgram", "getDaysToProgram", "responsable", "responsables", "sedes", "lugares", "subtiposervicios"));
+    }
+
+    public function update(Request $request)
+    {
+        $responsable = $request->responsable;
+        $actividad = $request->actividad;
+        $categoria = $request->categoria;
+        $sede = $request->sede;
+        $lugar = $request->lugar;
+        $fechaInicio = "{$request->fechaInicio} 00:00:00";
+        $termino = "{$request->termino} 00:00:00";
+        $cupos = $request->cupos;
+        $horasActividad = $request->horasActividad;
+        $turno = $request->turno;
+        $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
+        $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
+        $ip = $request->ip();
+        $created_at = new DateTime();
+        $creacion = $created_at->format('Y-m-d H:i:s');
+        $fechasDefinidas = $request->fechasDefinidas;
+        $estado = $request->publicado;
+
+        $validation = Validator::make(
+            $request->all(),
+            [
+                'actividad' => 'required',
+                'categoria' => 'required',
+                'sede' => 'required',
+                'lugar' => 'required',
+                'fechaInicio' => 'required',
+                'termino' => 'required',
+                'cupos' => 'required',
+                'horasActividad' => 'required',
+            ],
+            [
+                'actividad.required' => 'Porfavor selecciona una actividad',
+                'categoria.required' => 'Porfavor selecciona una categoría',
+                'sede.required' => 'Porfavor selecciona una sede',
+                'lugar.required' => 'Porfavor selecciona un lugar',
+                'fechaInicio.required' => 'Porfavor ingresa una fecha de inicio',
+                'termino.required' => 'Porfavor ingresa una fecha de termino',
+                'cupos.required' => 'Porfavor ingresa la cantidad de cupos',
+                'horasActividad.required' => 'Porfavor indica las horas por actividad',
+            ]
+        );
+
+        if ($validation->fails()) {
+            $error = $validation->errors();
+            return response()->json(['error' => $error]);
+        }
+
+        return $request->all();
     }
 }

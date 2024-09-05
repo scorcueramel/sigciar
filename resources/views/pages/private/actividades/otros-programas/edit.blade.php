@@ -1,4 +1,4 @@
-@extends('layouts.private.private', ['activePage' => 'nutricion.index'])
+@extends('layouts.private.private', ['activePage' => 'otrosprogramas.index'])
 @push('title', 'Editar Programa')
 @push('css')
 <style>
@@ -18,7 +18,7 @@
 </style>
 @endpush
 @section('content')
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Nutrición /</span> Editar </h4>
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Otros Programas /</span> Editar </h4>
 <!-- Basic Layout & Basic with Icons -->
 
 <div class="row mb-3">
@@ -26,7 +26,7 @@
     <div class="col-xxl">
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center justify-content-between">
-                <h5 class="mb-0">Formulario de Edición</h5>
+                <h5 class="mb-0">Formulario de registro</h5>
                 <small class="text-muted float-end">Editar Programa</small>
             </div>
             <div class="card-body mt-3">
@@ -39,7 +39,7 @@
                     <form enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
                         <input type="hidden" value="{{$getProgram[0]->id}}" id="idPrograma">
                         <fieldset>
-                            <h3> Paso 1: Editar Programa</h3>
+                            <h3> Paso 1: Nueva Actividad</h3>
                             <div class="row">
                                 <div class="col-md">
                                     @role('ADMINISTRADOR')
@@ -86,8 +86,6 @@
                                         </div>
                                     </div>
                                     @endif
-                                    <!-- id tipo de servicio, categoria -->
-                                    <!-- <input type="hidden" name="categoria" value="4" id="categoria"> -->
                                     <div class="row mb-3">
                                         <label class="col-sm-3 col-form-label" for="categoria">Categoría</label>
                                         <div class="col-sm-9">
@@ -110,7 +108,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <!-- end -->
+
                                     <div class="row mb-3">
                                         <label class="col-sm-3 col-form-label" for="sede">Sede</label>
                                         <div class="col-sm-9">
@@ -222,6 +220,15 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md">
+                                    <!-- Basic Layout -->
+                                    <div class="d-flex justify-content-center">
+                                        <img class="img-fluid" src="{{ asset('storage/subtipos/'.$getProgram[0]->imagen) }}"
+                                            id="imagenSeleccionada" style="max-height: 510px; height: 510px;">
+                                    </div>
+                                </div>
+
                             </div>
                             <input type="button" class="next btn btn-primary btn-sm" value="Siguiente" />
                         </fieldset>
@@ -304,8 +311,8 @@
                                 id="guardarycontinuar" />
                         </fieldset>
                         <!-- <fieldset class="d-none">
-                            <div class="row"></div>
-                        </fieldset> -->
+                                <div class="row"></div>
+                            </fieldset> -->
                     </form>
                 </div>
             </div>
@@ -326,9 +333,6 @@
     var totalHorarios = new Array();
     var horasInscripcion = new Array();
     $(document).ready(function() {
-        obtenerHorario();
-        obteneDiasHoras();
-
         // Días del select para la sección horarios
         const dias = [
             'LUNES',
@@ -387,61 +391,12 @@
         }
     });
 
-    function obtenerHorario() {
-        let turno = "{{ $getProgram[0]->turno }}"
-        let idActividad = 2;
-        let idLugar = "{{$getProgram[0]->lugar_id}}";
-
-        $.ajax({
-            type: "GET",
-            url: `/admin/actividades/obtener/costo/${idActividad}/${idLugar}/lugar`,
-            success: function(response) {
-                if (response != null) {
-                    $(".contenedor-turnos").html("");
-                    response.forEach(function(e) {
-                        $(".contenedor-turnos").append(`
-                                <div class="form-check">
-                                    <input class="form-check-input turno-radio" type="radio" name="turno" value="${e.descripcion}" id="${e.descripcion}">
-                                    <label class="form-check-label" for="${e.descripcion}">
-                                        ${e.descripcion}
-                                    </label>
-                                </div>
-                            `)
-                        e.descripcion == turno ? $(".turno-radio").prop('checked', true) : '';
-                    });
-                    $('.turnos').removeClass('d-none');
-                }
-            }
-        });
-    }
-
-    function obteneDiasHoras() {
-        let diashoras = @json($getDaysToProgram);
-
-        bodyTable.html("");
-
-        for (let i = 0; i < diashoras.length; i++) {
-            const el = diashoras[i];
-            bodyTable.append(`
-                        <tr>
-                            <td>${el.dia}</td>
-                            <td>${el.horainicio.slice(0,5)} - ${el.horafin.slice(0,5)}</td>
-                            <td>
-                                <button type='button' class='btn btn-sm btn-danger' onclick='removerElemento("${i}");'>
-                                    <i class='fa-solid fa-ban'></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-        }
-    }
-
     // Obtener sede basada en lugares
     $("#sede").on('change', function() {
         let sedeId = $(this).val();
         $.ajax({
             type: "GET",
-            url: `/admin/nutricion/obtener/${sedeId}/lugares`,
+            url: `/admin/otros-programas/obtener/${sedeId}/lugares`,
             success: function(data) {
                 let datatype = typeof(data);
                 let defaultOptionCategory = $("#lugar");
@@ -458,11 +413,9 @@
                     defaultOptionCategory.append(
                         "<option selected disabled>SELECCIONA UN LUGAR</option>");
                     data.forEach((e) => {
-                        if (!e.descripcion.includes("CAMPO")) {
                         $("#lugar").append(`
                                     <option value="${e.id}">${e.descripcion}</option>
                                 `);
-                        }
                     });
                 }
             },
@@ -510,7 +463,7 @@
                 "horainicio": horaInicio.val(),
                 "horafin": horaFin.val()
             });
-            // bodyTable.html("");
+            bodyTable.html("");
 
             for (let i = 0; i < totalHorarios.length; i++) {
                 const el = totalHorarios[i];
@@ -560,11 +513,12 @@
     // Obtener costo por lugar
     $("#lugar").on('change', function() {
         //let idActividad = $('#actividad').val();
-        let idActividad = 2;
+        let idActividad = 4;
         let idLugar = $(this).val();
+
         $.ajax({
             type: "GET",
-            url: `/admin/nutricion/obtener/consto/${idActividad}/${idLugar}/lugar`,
+            url: `/admin/otros-programas/obtener/consto/${idActividad}/${idLugar}/lugar`,
             success: function(response) {
                 if (response != null) {
                     $(".contenedor-turnos").html("");
@@ -584,12 +538,37 @@
         });
     });
 
+    // Obtener imagen de categoría
+    $("#categoria").on('change', function() {
+        let id = $(this).val();
+        Swal.fire({
+            icon: 'info',
+            html: "Espere un momento porfavor ...",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: `/admin/otros-programas/obtener/imagen/${id}/categoria`,
+            success: function(response) {
+                console.log(response);
+                Swal.close();
+                if (response) {
+                    let imagen = response.imagen;
+                    $('#imagenSeleccionada').attr('src', "/storage/subtipos/" + imagen);
+                }
+            }
+        });
+    });
+
     // Registrar la nueva actividad
     $("#guardarycontinuar").on('click', function(e) {
         // e.preventDefault();
         let responsable = $("#respadmin").val();
-        let idPrograma = $("#idPrograma").val();
-        let actividad = 2;
+        //let actividad = $("#actividad").val();
+        let actividad = 4;
         let categoria = $("#categoria").val();
         let turnoIsChecked = $("input[name=turno]:checked ");
         let turno = turnoIsChecked.val();
@@ -701,28 +680,6 @@
             $('.fechaFinError').addClass('d-none');
         }
 
-        if (cupos == "") {
-            messagesInfo('Lo sentimos', 'warning',
-                'Parece que no ingresaste ninguna cantidad de <br/><strong>Cupos</strong>,<br/> indica la cantidad de cupos y luego continua',
-                'Verificar');
-            $('.cuposError').removeClass('d-none');
-            $('.msjCuposError').html('Porfavor Ingresa una cantidad de cupos');
-            return;
-        } else {
-            $('.cuposError').addClass('d-none');
-        }
-
-        if (horasActividad == "") {
-            messagesInfo('Lo sentimos', 'warning',
-                'Parece que no indicaste la cantidad de <br/><strong>Horas</strong>,<br/> indica la cantidad de horas y luego continua',
-                'Verificar');
-            $('.definirHorarioError').removeClass('d-none');
-            $('.msjDefinirHorarioError').html('Porfavor Ingresa una cantidad de horas');
-            return;
-        } else {
-            $('.definirHorarioError').addClass('d-none');
-        }
-
         if (fechasDefinidas.length <= 0) {
             messagesInfo('Lo sentimos', 'warning',
                 'Parece que no indicaste <br/><strong>Fechas y Horas</strong>,<br/> para esta actividad, indicalas y luego continua',
@@ -736,9 +693,8 @@
 
         $.ajax({
             type: "POST",
-            url: "{{ route('nutricion.actualizar.actividad') }}",
+            url: "{{ route('otrosprogramas.nueva.actividad') }}",
             data: {
-                idPrograma,
                 responsable,
                 actividad,
                 categoria,
@@ -764,7 +720,7 @@
 
                 if (response.respRegistro === "exito") {
                     window.location.href =
-                        `/admin/nutricion/lista`;
+                        `/admin/otros-programas/lista`;
                 } else {
                     messagesInfo('Lo sentimos', 'warning',
                         'Parece que algo sucedio, comunicate con el administrador',
