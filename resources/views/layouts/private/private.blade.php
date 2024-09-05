@@ -100,7 +100,8 @@
     <script src="{{ asset('assets/template/js/datatables/dataTables.responsive.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{asset('assets/js/chart-utils/chart.js')}}"></script>
+    <script src="{{asset('assets/js/chart-utils/chart-utils.min.js')}}"></script>
     {{-- Personalized JS --}}
     <script>
         $(document).ready(function() {
