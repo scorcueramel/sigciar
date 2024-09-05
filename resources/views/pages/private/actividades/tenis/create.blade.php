@@ -341,9 +341,9 @@
                             <input type="button" class=" btn btn-primary btn-sm" value="Guardar y Continuar"
                                 id="guardarycontinuar" />
                         </fieldset>
-                        <fieldset class="d-none">
+                        <!-- <fieldset class="d-none">
                             <div class="row"></div>
-                        </fieldset>
+                        </fieldset> -->
                     </form>
                 </div>
             </div>

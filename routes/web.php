@@ -142,6 +142,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/enviar/notas',[TenisController::class,'sendNote'])->name('enviar.notas.miembros');
         Route::get('/obtener/{id}/notas',[TenisController::class,'getNotesMember'])->name('obtener.notas.miembros');
         Route::get('/editar/{id}/actividad',[TenisController::class, 'edit'])->name('tenis.editar.actividad');
+        Route::post('/editar/actividad',[TenisController::class, 'update'])->name('tenis.actualizar.actividad');
     });
 
     Route::group(['prefix'=>'nutricion'],function (){
@@ -167,6 +168,8 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/obtener/{id}/notas',[NutricionController::class,'getNotesMember'])->name('obtener.notas.miembros');
         Route::get('/edit/{id}/notas',[NutricionController::class,'editNote'])->name('edit.notas.miembros');
         Route::post('/actualizar/notas',[NutricionController::class,'updateNote'])->name('actualizar.notas.miembros');
+        Route::get('/editar/{id}/actividad',[NutricionController::class, 'edit'])->name('nutricion.editar.actividad');
+        Route::post('/editar/actividad',[NutricionController::class, 'update'])->name('nutricion.actualizar.actividad');
     });
 
     Route::group(['prefix'=>'otros-programas'],function(){
