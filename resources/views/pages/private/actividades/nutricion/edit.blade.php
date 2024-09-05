@@ -1,5 +1,5 @@
-@extends('layouts.private.private', ['activePage' => 'tenis.index'])
-@push('title', 'Editar Programa de Tenis')
+@extends('layouts.private.private', ['activePage' => 'nutricion.index'])
+@push('title', 'Editar Programa')
 @push('css')
 <style>
     #regiration_form fieldset:not(:first-of-type) {
@@ -18,8 +18,9 @@
 </style>
 @endpush
 @section('content')
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Tenis /</span> Editar Programa </h4>
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Nutrición /</span> Editar </h4>
 <!-- Basic Layout & Basic with Icons -->
+
 <div class="row mb-3">
     <!-- Basic with Icons -->
     <div class="col-xxl">
@@ -36,9 +37,9 @@
                         </div>
                     </div>
                     <form enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
-                        <input type="hidden" value="{{$getProgram[0]->id}}" id="idactividad">
+                        <input type="hidden" value="{{$getProgram[0]->id}}" id="idPrograma">
                         <fieldset>
-                            <h3> Paso 1: Datos del Programa</h3>
+                            <h3> Paso 1: Editar Programa</h3>
                             <div class="row">
                                 <div class="col-md">
                                     @role('ADMINISTRADOR')
@@ -85,6 +86,8 @@
                                         </div>
                                     </div>
                                     @endif
+                                    <!-- id tipo de servicio, categoria -->
+                                    <!-- <input type="hidden" name="categoria" value="4" id="categoria"> -->
                                     <div class="row mb-3">
                                         <label class="col-sm-3 col-form-label" for="categoria">Categoría</label>
                                         <div class="col-sm-9">
@@ -95,7 +98,7 @@
                                                     name="categoria" required>
                                                     <option value="" selected disabled>SELECCIONA UNA CATEGORÍA
                                                     </option>
-                                                    @foreach($subtiposervicio as $sts)
+                                                    @foreach($subtiposervicios as $sts)
                                                     <option value="{{$sts->id}}" {{ $sts->id == $getProgram[0]->categoria_id ? 'selected' : ''}}>
                                                         {{$sts->titulo}} - {{$sts->subtitulo}}
                                                     </option>
@@ -107,7 +110,7 @@
                                             </span>
                                         </div>
                                     </div>
-
+                                    <!-- end -->
                                     <div class="row mb-3">
                                         <label class="col-sm-3 col-form-label" for="sede">Sede</label>
                                         <div class="col-sm-9">
@@ -142,7 +145,7 @@
                                                     </option>
                                                     @foreach ($lugares as $lugar)
                                                     @if($lugar->sede_id == $getProgram[0]->sede_id)
-                                                    @if (str_contains($lugar->descripcion,"CAMPO"))
+                                                    @if (!str_contains($lugar->descripcion,"CAMPO"))
                                                     <option value="{{$lugar->id}}" {{ $lugar->id == $getProgram[0]->lugar_id ? 'selected' : '' }}>{{$lugar->descripcion}}</option>
                                                     @endif
                                                     @endif
@@ -159,8 +162,7 @@
                                         <label class="col-sm-3 col-form-label" for="turno">Turno</label>
                                         <div class="col-sm-9">
                                             <div class="input-group input-group-merge shadow-none">
-                                                <div
-                                                    class="col-sm-12 d-flex justify-content-between contenedor-turnos">
+                                                <div class="col-sm-12 d-flex justify-content-between contenedor-turnos">
                                                 </div>
                                             </div>
                                             <span class="text-danger d-none turnosError" role="alert">
@@ -198,44 +200,6 @@
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label class="col-sm-3 col-form-label" for="cupos">Cupos</label>
-                                        <div class="col-sm-9">
-                                            <div class="input-group input-group-merge">
-                                                <span id="cupos2" class="input-group-text"><i
-                                                        class="fa-regular fa-input-numeric"></i></span>
-                                                <input type="number" value="{{$getProgram[0]->cupos}}" id="cupos"
-                                                    class="form-control @error('cupos') is-invalid @enderror"
-                                                    aria-label="Nombre para la cupos" aria-describedby="cupos2"
-                                                    name="cupos"
-                                                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                    maxlength="3" required />
-                                            </div>
-                                            <span class="text-danger d-none cuposError" role="alert">
-                                                <span class="msjCuposError"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3 d-flex">
-                                        <label class="col-sm-6 col-form-label" for="horas">
-                                            Duración por actividad (en horas)
-                                        </label>
-                                        <div class="col-sm-6">
-                                            <div class="input-group input-group-merge">
-                                                <span id="horas2" class="input-group-text"><i
-                                                        class="fa-regular fa-input-numeric"></i></span>
-                                                <input type="number" value="{{$getProgram[0]->duracion}}" id="horas"
-                                                    class="form-control @error('descripcion') is-invalid @enderror"
-                                                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                    name="horas" maxlength="3" required />
-                                            </div>
-                                            <span class="text-danger d-none definirHorarioError" role="alert">
-                                                <span class="msjDefinirHorarioError"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
                                         <label class="col-sm-3 form-label" for="publicado">Publicado</label>
                                         <div class="col-sm-9">
                                             <div class="form-check form-check-inline">
@@ -258,15 +222,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md">
-                                    <!-- Basic Layout -->
-                                    <div class="d-flex justify-content-center">
-                                        <img class="img-fluid" src="{{ asset('storage/subtipos/'.$getProgram[0]->imagen) }}"
-                                            id="imagenSeleccionada" style="max-height: 510px; height: 510px;">
-                                    </div>
-                                </div>
-
                             </div>
                             <input type="button" class="next btn btn-primary btn-sm" value="Siguiente" />
                         </fieldset>
@@ -370,7 +325,6 @@
     // arreglo de horarios
     var totalHorarios = new Array();
     var horasInscripcion = new Array();
-
     $(document).ready(function() {
         obtenerHorario();
         obteneDiasHoras();
@@ -435,12 +389,12 @@
 
     function obtenerHorario() {
         let turno = "{{ $getProgram[0]->turno }}"
-        let idActividad = 3;
+        let idActividad = 2;
         let idLugar = "{{$getProgram[0]->lugar_id}}";
 
         $.ajax({
             type: "GET",
-            url: `/admin/nutricion/obtener/costo/${idActividad}/${idLugar}/lugar`,
+            url: `/admin/actividades/obtener/costo/${idActividad}/${idLugar}/lugar`,
             success: function(response) {
                 if (response != null) {
                     $(".contenedor-turnos").html("");
@@ -487,7 +441,7 @@
         let sedeId = $(this).val();
         $.ajax({
             type: "GET",
-            url: `/admin/actividades/obtener/${sedeId}/lugares`,
+            url: `/admin/nutricion/obtener/${sedeId}/lugares`,
             success: function(data) {
                 let datatype = typeof(data);
                 let defaultOptionCategory = $("#lugar");
@@ -504,7 +458,7 @@
                     defaultOptionCategory.append(
                         "<option selected disabled>SELECCIONA UN LUGAR</option>");
                     data.forEach((e) => {
-                        if (e.descripcion.includes("CAMPO")) {
+                        if (!e.descripcion.includes("CAMPO")) {
                         $("#lugar").append(`
                                     <option value="${e.id}">${e.descripcion}</option>
                                 `);
@@ -606,12 +560,11 @@
     // Obtener costo por lugar
     $("#lugar").on('change', function() {
         //let idActividad = $('#actividad').val();
-        let idActividad = 3;
+        let idActividad = 2;
         let idLugar = $(this).val();
-
         $.ajax({
             type: "GET",
-            url: `/admin/actividades/obtener/costo/${idActividad}/${idLugar}/lugar`,
+            url: `/admin/nutricion/obtener/consto/${idActividad}/${idLugar}/lugar`,
             success: function(response) {
                 if (response != null) {
                     $(".contenedor-turnos").html("");
@@ -631,37 +584,12 @@
         });
     });
 
-    // Obtener imagen de categoría
-    $("#categoria").on('change', function() {
-        let id = $(this).val();
-        Swal.fire({
-            icon: 'info',
-            html: "Espere un momento porfavor ...",
-            timerProgressBar: true,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: `/admin/actividades/obtener/imagen/${id}/categoria`,
-            success: function(response) {
-                console.log(response);
-                Swal.close();
-                if (response) {
-                    let imagen = response.imagen;
-                    $('#imagenSeleccionada').attr('src', "/storage/subtipos/" + imagen);
-                }
-            }
-        });
-    });
-
     // Registrar la nueva actividad
     $("#guardarycontinuar").on('click', function(e) {
         // e.preventDefault();
         let responsable = $("#respadmin").val();
-        let idPrograma = $("#idactividad").val();
-        let actividad = 3;
+        let idPrograma = $("#idPrograma").val();
+        let actividad = 2;
         let categoria = $("#categoria").val();
         let turnoIsChecked = $("input[name=turno]:checked ");
         let turno = turnoIsChecked.val();
@@ -669,10 +597,10 @@
         let lugar = $("#lugar").val();
         let fechaInicio = $("#fechaInicio").val();
         let termino = $("#termino").val();
-        let cupos = $("#cupos").val();
+        let cupos = 1;
         let publicadoIsChecked = $("input[name=publicado]:checked ");
         let publicado = publicadoIsChecked.val();
-        let horasActividad = $("#horas").val();
+        let horasActividad = 1;
         let fechasDefinidas = [];
         let data = {};
 
@@ -808,7 +736,7 @@
 
         $.ajax({
             type: "POST",
-            url: "{{ route('tenis.actualizar.actividad') }}",
+            url: "{{ route('nutricion.actualizar.actividad') }}",
             data: {
                 idPrograma,
                 responsable,
@@ -836,7 +764,7 @@
 
                 if (response.respRegistro === "exito") {
                     window.location.href =
-                        `/admin/actividades/nueva/inscripcion/${response.idPlantilla}/${response.idRegistro}/redirigido`;
+                        `/admin/nutricion/lista`;
                 } else {
                     messagesInfo('Lo sentimos', 'warning',
                         'Parece que algo sucedio, comunicate con el administrador',

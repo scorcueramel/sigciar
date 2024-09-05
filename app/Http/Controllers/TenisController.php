@@ -441,7 +441,7 @@ class TenisController extends Controller
                                 s.id , s.responsable_id,
                                 s.subtiposervicio_id AS categoria_id,
                                 s.sede_id , s.lugar_id,l.descripcion AS lugar_descripcion, s.turno,
-                                s.inicio AS inicio,s.fin AS fin, s.capacidad as cupos, s.horas as duracion, s.estado
+                                s.inicio AS inicio,s.fin AS fin, s.capacidad as cupos, s.horas as duracion, s.estado, sts.imagen
                                 FROM servicios s
                                 LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
                                 LEFT JOIN subtipo_servicios sts ON s.subtiposervicio_id = sts.id
@@ -458,5 +458,56 @@ class TenisController extends Controller
                                         WHERE sp.servicio_id = ?",[$idServicio]);
 
         return view('pages.private.actividades.tenis.edit', compact("getProgram","getDaysToProgram","responsable", "responsables", "sedes", "lugares","subtiposervicio"));
+    }
+
+    public function update(Request $request){
+        $responsable = $request->responsable;
+        $actividad = $request->actividad;
+        $categoria = $request->categoria;
+        $sede = $request->sede;
+        $lugar = $request->lugar;
+        $fechaInicio = "{$request->fechaInicio} 00:00:00";
+        $termino = "{$request->termino} 00:00:00";
+        $cupos = $request->cupos;
+        $horasActividad = $request->horasActividad;
+        $turno = $request->turno;
+        $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
+        $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
+        $ip = $request->ip();
+        $created_at = new DateTime();
+        $creacion = $created_at->format('Y-m-d H:i:s');
+        $fechasDefinidas = $request->fechasDefinidas;
+        $estado = $request->publicado;
+
+        $validation = Validator::make(
+            $request->all(),
+            [
+                'actividad' => 'required',
+                'categoria' => 'required',
+                'sede' => 'required',
+                'lugar' => 'required',
+                'fechaInicio' => 'required',
+                'termino' => 'required',
+                'cupos' => 'required',
+                'horasActividad' => 'required',
+            ],
+            [
+                'actividad.required' => 'Porfavor selecciona una actividad',
+                'categoria.required' => 'Porfavor selecciona una categoría',
+                'sede.required' => 'Porfavor selecciona una sede',
+                'lugar.required' => 'Porfavor selecciona un lugar',
+                'fechaInicio.required' => 'Porfavor ingresa una fecha de inicio',
+                'termino.required' => 'Porfavor ingresa una fecha de termino',
+                'cupos.required' => 'Porfavor ingresa la cantidad de cupos',
+                'horasActividad.required' => 'Porfavor indica las horas por actividad',
+            ]
+        );
+
+        if ($validation->fails()) {
+            $error = $validation->errors();
+            return response()->json(['error' => $error]);
+        }
+
+        return $request->all();
     }
 }

@@ -395,9 +395,11 @@
                     defaultOptionCategory.append(
                         "<option selected disabled>SELECCIONA UN LUGAR</option>");
                     data.forEach((e) => {
+                        if (!e.descripcion.includes("CAMPO")) {
                         $("#lugar").append(`
                                     <option value="${e.id}">${e.descripcion}</option>
                                 `);
+                        }
                     });
                 }
             },
