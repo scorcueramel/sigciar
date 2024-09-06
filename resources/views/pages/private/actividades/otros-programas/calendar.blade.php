@@ -40,7 +40,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <label for="cargaprogramas" class="form-label">Programas de Nutrición</label>
+                    <label for="cargaprogramas" class="form-label">Programas de Otros Programas</label>
                     <select class="form-select" id="cargaprogramas" required>
                         <option selected disabled value="">Seleccina un Programa</option>
                         @foreach ($otrosProgramas as $programa)
