@@ -401,7 +401,7 @@
 
         $.ajax({
             type: "GET",
-            url: `/admin/otros-programas/obtener/costo/${idLugar}/${idActividad}/lugar`,
+            url: `/admin/otros-programas/obtener/costo/${idActividad}/${idLugar}/lugar`,
             success: function(response) {
                 if (response != null) {
                     $(".contenedor-turnos").html("");
@@ -414,7 +414,7 @@
                                     </label>
                                 </div>
                             `)
-                        e.descripcion == turno ? $(".turno-radio").prop('checked', true) : '';
+                            e.descripcion == turno ? $(".turno-radio").prop('checked', true) : '';
                     });
                     $('.turnos').removeClass('d-none');
                 }
@@ -466,9 +466,11 @@
                     defaultOptionCategory.append(
                         "<option selected disabled>SELECCIONA UN LUGAR</option>");
                     data.forEach((e) => {
-                        $("#lugar").append(`
+                        if (!e.descripcion.includes("CAMPO")) {
+                            $("#lugar").append(`
                                     <option value="${e.id}">${e.descripcion}</option>
                                 `);
+                        }
                     });
                 }
             },
@@ -516,7 +518,7 @@
                 "horainicio": horaInicio.val(),
                 "horafin": horaFin.val()
             });
-            bodyTable.html("");
+            // bodyTable.html("");
 
             for (let i = 0; i < totalHorarios.length; i++) {
                 const el = totalHorarios[i];
@@ -629,7 +631,8 @@
         let lugar = $("#lugar").val();
         let fechaInicio = $("#fechaInicio").val();
         let termino = $("#termino").val();
-        let cupos = 1;0
+        let cupos = 1;
+        0
         let publicadoIsChecked = $("input[name=publicado]:checked ");
         let publicado = publicadoIsChecked.val();
         let horasActividad = 1;
