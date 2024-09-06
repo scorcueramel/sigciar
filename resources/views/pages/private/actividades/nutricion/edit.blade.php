@@ -564,7 +564,7 @@
         let idLugar = $(this).val();
         $.ajax({
             type: "GET",
-            url: `/admin/nutricion/obtener/consto/${idActividad}/${idLugar}/lugar`,
+            url: `/admin/nutricion/obtener/costo/${idActividad}/${idLugar}/lugar`,
             success: function(response) {
                 if (response != null) {
                     $(".contenedor-turnos").html("");

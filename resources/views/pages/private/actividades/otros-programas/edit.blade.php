@@ -333,6 +333,9 @@
     var totalHorarios = new Array();
     var horasInscripcion = new Array();
     $(document).ready(function() {
+        obtenerHorario();
+        obteneDiasHoras();
+
         // Días del select para la sección horarios
         const dias = [
             'LUNES',
@@ -390,6 +393,56 @@
                 .html(percent + "%");
         }
     });
+
+    function obtenerHorario() {
+        let turno = "{{ $getProgram[0]->turno }}"
+        let idActividad = 2;
+        let idLugar = "{{$getProgram[0]->lugar_id}}";
+
+        $.ajax({
+            type: "GET",
+            url: `/admin/otros-programas/obtener/costo/${idLugar}/${idActividad}/lugar`,
+            success: function(response) {
+                if (response != null) {
+                    $(".contenedor-turnos").html("");
+                    response.forEach(function(e) {
+                        $(".contenedor-turnos").append(`
+                                <div class="form-check">
+                                    <input class="form-check-input turno-radio" type="radio" name="turno" value="${e.descripcion}" id="${e.descripcion}">
+                                    <label class="form-check-label" for="${e.descripcion}">
+                                        ${e.descripcion}
+                                    </label>
+                                </div>
+                            `)
+                        e.descripcion == turno ? $(".turno-radio").prop('checked', true) : '';
+                    });
+                    $('.turnos').removeClass('d-none');
+                }
+            }
+        });
+    }
+
+    function obteneDiasHoras() {
+        let diashoras = @json($getDaysToProgram);
+
+        bodyTable.html("");
+
+        for (let i = 0; i < diashoras.length; i++) {
+            const el = diashoras[i];
+            bodyTable.append(`
+                        <tr>
+                            <td>${el.dia}</td>
+                            <td>${el.horainicio.slice(0,5)} - ${el.horafin.slice(0,5)}</td>
+                            <td>
+                                <button type='button' class='btn btn-sm btn-danger' onclick='removerElemento("${i}");'>
+                                    <i class='fa-solid fa-ban'></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `);
+        }
+    }
+
 
     // Obtener sede basada en lugares
     $("#sede").on('change', function() {
@@ -518,7 +571,7 @@
 
         $.ajax({
             type: "GET",
-            url: `/admin/otros-programas/obtener/consto/${idActividad}/${idLugar}/lugar`,
+            url: `/admin/otros-programas/obtener/costo/${idLugar}/${idActividad}/lugar`,
             success: function(response) {
                 if (response != null) {
                     $(".contenedor-turnos").html("");
@@ -567,7 +620,7 @@
     $("#guardarycontinuar").on('click', function(e) {
         // e.preventDefault();
         let responsable = $("#respadmin").val();
-        //let actividad = $("#actividad").val();
+        let idPrograma = $("#idPrograma").val();
         let actividad = 4;
         let categoria = $("#categoria").val();
         let turnoIsChecked = $("input[name=turno]:checked ");
@@ -576,7 +629,7 @@
         let lugar = $("#lugar").val();
         let fechaInicio = $("#fechaInicio").val();
         let termino = $("#termino").val();
-        let cupos = 1;
+        let cupos = 1;0
         let publicadoIsChecked = $("input[name=publicado]:checked ");
         let publicado = publicadoIsChecked.val();
         let horasActividad = 1;
@@ -693,8 +746,9 @@
 
         $.ajax({
             type: "POST",
-            url: "{{ route('otrosprogramas.nueva.actividad') }}",
+            url: "{{ route('otrosprogramas.actualizar.actividad') }}",
             data: {
+                idPrograma,
                 responsable,
                 actividad,
                 categoria,

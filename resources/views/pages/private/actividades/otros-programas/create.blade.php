@@ -510,7 +510,7 @@
 
             $.ajax({
                 type: "GET",
-                url: `/admin/otros-programas/obtener/consto/${idActividad}/${idLugar}/lugar`,
+                url: `/admin/otros-programas/obtener/costo/${idActividad}/${idLugar}/lugar`,
                 success: function(response) {
                     if (response != null) {
                         $(".contenedor-turnos").html("");

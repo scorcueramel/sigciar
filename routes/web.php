@@ -155,7 +155,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/calendario/disponibilidad',[NutricionController::class,'disponibilidadDias'])->name('calendario.disponibilidad.nutricion');
         Route::get('/nueva',[NutricionController::class,'create'])->name('nutricion.create');
         Route::get('/obtener/{id}/lugares', [NutricionController::class, 'placesCharge'])->name('obtener.lugres');
-        Route::get('/obtener/consto/{idlugar}/{idactividad}/lugar',[NutricionController::class,'coastPlaces'])->name('obtener.costo.luagr');
+        Route::get('/obtener/costo/{idlugar}/{idactividad}/lugar',[NutricionController::class,'coastPlaces'])->name('obtener.costo.luagr');
         Route::post('/nueva',[NutricionController::class,'store'])->name('nutricion.store');
         Route::get('/nueva/inscripcion/{plantilla}/{horario}/redirigido',[TenisController::class, 'redirectAfterCreateActivity'])->name('redirigir.incripcion.actividad');
         Route::post('/change/state', [NutricionController::class, 'changeState'])->name('tenis.change.state');
@@ -183,7 +183,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/actividades/eliminar',[OtrosProgramasController::class, 'destroyActivity'])->name('otrosprogramas.actividad.eliminar');
         Route::get('/detalle/{id}/actividad',[OtrosProgramasController::class,'show'])->name('show.actividad');
         Route::get('/obtener/{id}/lugares', [OtrosProgramasController::class, 'placesCharge'])->name('obtener.lugres');
-        Route::get('/obtener/consto/{idlugar}/{idactividad}/lugar',[OtrosProgramasController::class,'coastPlaces'])->name('obtener.costo.luagr');
+        Route::get('/obtener/costo/{idlugar}/{idactividad}/lugar',[OtrosProgramasController::class,'coastPlaces'])->name('obtener.costo.luagr');
         Route::get('/obtener/imagen/{id}/categoria',[OtrosProgramasController::class, 'renderImageForCategory'])->name('obtener.imagen.categoria');
         Route::get('/inscritos/{idservicio}',[OtrosProgramasController::class, 'getReservations'])->name('otrosprogramas.inscritos');
         Route::post('/inscripcion/programa',[OtrosProgramasController::class, 'inscriptionToProgram'])->name('otrosprogramas.inscripcion');
@@ -193,8 +193,8 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/obtener/{id}/notas',[OtrosProgramasController::class,'getNotesMember'])->name('obtener.notas.miembros');
         Route::get('/edit/{id}/notas',[OtrosProgramasController::class,'editNote'])->name('edit.notas.miembros');
         Route::post('/actualizar/notas',[OtrosProgramasController::class,'updateNote'])->name('actualizar.notas.miembros');
-        Route::get('/editar/{id}/actividad',[OtrosProgramasController::class, 'edit'])->name('nutricion.editar.actividad');
-        Route::post('/editar/actividad',[OtrosProgramasController::class, 'update'])->name('nutricion.actualizar.actividad');
+        Route::get('/editar/{id}/actividad',[OtrosProgramasController::class, 'edit'])->name('otrosprogramas.editar.actividad');
+        Route::post('/editar/actividad',[OtrosProgramasController::class, 'update'])->name('otrosprogramas.actualizar.actividad');
     });
 
     Route::group(['prefix'=>'inscripciones'],function (){
