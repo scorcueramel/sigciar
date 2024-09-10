@@ -95,32 +95,3 @@
     </div>
 </div>
 @endsection
-@push('js')
-<script>
-    // function preregistro() {
-    //     let inicio = $("#inicio").val()
-    //     let fin = $("#fin").val()
-    //     let sedeseleccionada = $("#sedeseleccionada").val()
-    //     let lugarseleccionado = $("#lugarseleccionado").val()
-    //     let precio = $("#precio").val()
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "",
-    //         data: {
-    //             inicio,
-    //             fin,
-    //             sedeseleccionada,
-    //             lugarseleccionado,
-    //             precio,
-    //         },
-    //         success: function(response) {
-    //             console.log("ok");
-    //         },
-    //         error: function(err) {
-    //             console.log(err);
-    //         }
-    //     });
-    // };
-</script>
-@endpush

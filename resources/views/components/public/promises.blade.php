@@ -124,7 +124,7 @@
             </div>
         </div>
         <div class="justify-content-center">
-            <a class="btn-cta altas" href="nuestras-promesas.php" data-aos="fade-up" data-aos-duration="1000">
+            <a href="{{route('landing.promises')}}" class="btn-cta altas" href="nuestras-promesas.php" data-aos="fade-up" data-aos-duration="1000">
                 <img src="{{asset('assets/images/arrow-bt.svg')}}" class="icon me-2 me-lg-1" /> Ver todos
             </a>
         </div>

@@ -116,7 +116,8 @@ class LandingController extends Controller
     // SECTION PROMISES
     public function promises()
     {
-        return view("pages.public.landing.promises");
+        $promesas = Promesa::all();
+        return view("pages.public.landing.promises",compact('promesas'));
     }
     // END SECTION PROMISES
 
