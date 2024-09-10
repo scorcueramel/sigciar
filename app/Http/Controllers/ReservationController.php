@@ -52,7 +52,7 @@ class ReservationController extends Controller
             'currency' => 'USD',
             'orderId' => "Reserva de cancha",
             'customer' => [
-                'email' => auth()->user()->email
+                'email' => Auth::user()->email
             ]
         ])->json();
 
@@ -67,9 +67,6 @@ class ReservationController extends Controller
 
     public function izipay(Request $request)
     {
-        $authenticate = false;
-        $personalInfo = null;
-
         if ($request->get('kr-hash-algorithm') !== 'sha256_hmac') {
             throw new \Exception('Invalid hash algoritm');
         }
@@ -85,14 +82,6 @@ class ReservationController extends Controller
 
         $lastRegister = DB::select("SELECT * FROM reserva_temporal rt ORDER BY id DESC LIMIT 1;");
         DB::select("UPDATE reserva_temporal SET codigo = ? WHERE id = ?;", [$codigo, $lastRegister[0]->id]);
-
-        if (Auth::check()) {
-            $authenticate = true;
-            $personalInfo = Persona::where('usuario_id', Auth::user()->id)->select('id', 'nombres', 'apepaterno', 'apematerno')->get();
-        }
-
-        $sede = Sede::where('estado', 'A')->select('id', 'descripcion', 'abreviatura', 'estado')->get();
-        $lugares = null;
 
         if ($this->store($codigo)) {
             return redirect()->route('prfole.user')->with(['msg' => 'Tu reserva fue generada satisfactoriamente!']);
