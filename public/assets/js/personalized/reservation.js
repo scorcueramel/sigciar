@@ -49,11 +49,13 @@ function chargeSelects(sede) {
                 $('#lugar').html("");
                 $('#lugar').append('<option value="" disabled selected>Seleccionar cancha</option>');
                 lugares.forEach((e) => {
-                    $('#lugar').append(
-                        `
+                    if (e.descripcion.includes("CAMPO")) {
+                        $('#lugar').append(
+                            `
                             <option value="${e.id}">${e.descripcion}</opttion>
                         `
-                    );
+                        );
+                    }
                 });
             }
         })
@@ -64,7 +66,7 @@ function chargeSelects(sede) {
 
 function chargeCalendar(sede, lugar) {
     var checkLogin = $('#loginCheck').val();
-    var formulario = document.getElementById('reserva');
+    // var formulario = document.getElementById('reserva');
     // Obtener la fecha actual para bloquear los días pasados.
     moment.locale('es'); //->colocar el idioma español.
     var now = moment();  //formato pedido por el OP (los meses en español empiezan por minúscula).
@@ -139,7 +141,7 @@ function chargeCalendar(sede, lugar) {
                             var respuesta = resp.data.msg;
 
                             if (respuesta == 'disponible') {
-                                formulario.reset();
+                                // formulario.reset();
                                 var sedeID = $('#sede').val();
 
                                 $('#inicio').val(start);
@@ -186,7 +188,7 @@ function chargeCalendar(sede, lugar) {
                                 var fecStart = formatearFechaInicial(start);
                                 if (respuesta == 'disponible') {
 
-                                    formulario.reset();
+                                    // formulario.reset();
                                     var sedeID = $('#sede').val();
 
                                     $('#inicio').val(fecStart);
@@ -197,6 +199,7 @@ function chargeCalendar(sede, lugar) {
                                     obtenerSedeLugar(sedeID);
                                     if (sede != null && lugar != null) {
                                         $('#modal').modal('show');
+
                                     } else {
                                         sedeLugarSelection();
                                     }
@@ -229,9 +232,9 @@ function payPlace() {
     var precio = $('#percioModal').val();
     var conluz = "";
 
-    if($('#conluz').is(':checked')){
+    if ($('#conluz').is(':checked')) {
         conluz = 'ON';
-    }else{
+    } else {
         conluz = 'OFF'
     }
 
@@ -243,7 +246,7 @@ function payPlace() {
         'sede': sede,
         'lugar': lugar,
         'precio': precio,
-        'conluz':conluz
+        'conluz': conluz
     }
     axios
         .post("/ciar/nueva", datos)
