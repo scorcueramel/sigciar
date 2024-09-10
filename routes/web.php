@@ -69,12 +69,15 @@ Route::group(['prefix' => 'ciar'], function () {
     Route::get('/reserva', [ReservationController::class, 'index'])->name('reservation');
     Route::get('/servicios/{sede}/{lugar}', [ReservationController::class, 'show'])->name('reservas.obtener');
     Route::get('/obtener/{id}/lugares', [ReservationController::class, 'getPlaces'])->name('reservas.obtener.lugares');
+    Route::post('/formulario/{codigo}/pago',[ReservationController::class, 'generateFormToken'])->name('reservation.pay');
+    Route::post('/paid/izipay', [ReservationController::class,'izipay'])->name('paid.izipay');
     // Registro
     Route::get('/registro/cliente', [PersonaRegisterController::class, 'index'])->name('registro.cliente');
     Route::post('/registro/cliente', [PersonaRegisterController::class, 'store'])->name('registro.cliente');
     // Registro member
     Route::get('/registro/member', [MemberRegisterController::class, 'index'])->name('registro.member');
     Route::post('/registro/member', [MemberRegisterController::class, 'store'])->name('registro.member');
+
 });
 
 Auth::routes();
@@ -82,7 +85,7 @@ Auth::routes();
 // Reserva privado consulta fecha y registro de reserva
 Route::group(['prefix' => 'ciar'], function () {
     Route::post('/conuslta/fecha', [ReservationController::class, 'dateQuery'])->name('reserva.consulta.fecha');
-    Route::post('/nueva', [ReservationController::class, 'store'])->name('reserva.nuevo');
+    // Route::post('/nueva', [ReservationController::class, 'store'])->name('reserva.nuevo');
     Route::get('/mi-perfil',[PerfilUsuarioController::class, 'index'])->name('prfole.user');
     Route::post('/cargar-foto-perfil', [PerfilUsuarioController::class,'updateImage'])->name('image.user.update');
     Route::post('/quitar-foto-perfil', [PerfilUsuarioController::class,'removeImage'])->name('image.user.remove');

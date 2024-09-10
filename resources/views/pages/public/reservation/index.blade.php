@@ -1,12 +1,18 @@
 @extends('layouts.public.public')
 @push('title', 'Reservas')
+
 @push('css')
 <style>
     .select2-selection {
         border: 1px solid gray !important;
     }
-    #conluz{
+
+    #conluz {
         font-size: 25px;
+    }
+
+    table>tbody>tr {
+        background-color: #fff !important;
     }
 </style>
 @endpush
@@ -112,7 +118,6 @@
     </div>
 </div>
 @include('components.public.modal-detalle')
-@include('components.public.modal-pago')
 @endsection
 @push('js')
 <script>
@@ -122,13 +127,6 @@
 
     $('#sede').change(() => {
         $('#lugar').removeAttr("disabled");
-    });
-
-    $('#btnReservar').click(() => {
-        let precio = $('#percioModal').val()
-        $('#modal_pago').modal('show');
-        $('#modal').modal('hide');
-        $('#btnPagar').val(`S/. ${precio}.00`);
     });
 
     $('#closeUp').click(() => {
@@ -143,6 +141,11 @@
     $(document).ready(function() {
         $('#sede option:first').prop('selected', true).trigger("change");
         $('#lugar option:first').prop('selected', true).trigger("change");
+    });
+
+    $("#continuarReserva").on('click', function() {
+        $(this).addClass('d-none');
+        $("#boton-carga").removeClass('d-none')
     });
 </script>
 @endpush
