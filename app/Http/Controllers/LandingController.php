@@ -117,7 +117,8 @@ class LandingController extends Controller
     public function promises()
     {
         $promesas = Promesa::all();
-        return view("pages.public.landing.promises",compact('promesas'));
+        $noticiaPromesas = DB::select("SELECT * FROM noticias n WHERE n.categoria_id = 1 ORDER BY id DESC LIMIT 1;");
+        return view("pages.public.landing.promises",compact('promesas','noticiaPromesas'));
     }
     public function promisesDetails(string $id){
         $promesa = Promesa::find($id);
