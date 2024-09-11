@@ -25,7 +25,13 @@ class HomeController extends Controller
             $personalInfo = Persona::where('usuario_id', Auth::user()->id)->select('id', 'nombres', 'apepaterno', 'apematerno')->get();
         }
 
-        return view('pages.private.dashboard.index', compact('authenticate', 'personalInfo'));
+        $dataresponse = DB::select("SELECT * FROM grafico_inscritos(2024);");
+
+        $datareplace = substr($dataresponse[0]->grafico_inscritos,7,-1)."}";
+
+        $dataGrafico = json_decode($datareplace, true);
+
+        return view('pages.private.dashboard.index', compact('authenticate', 'personalInfo', 'dataGrafico'));
     }
 
     public function activities()
