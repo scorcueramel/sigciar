@@ -16,13 +16,13 @@
 	<div class="container">
 		<div class="row justify-content-center align-items-center">
 			<div class="col-11 col-md-5">
-				<img class="w-100" src="images/jovenes-promesas.webp" alt="CIAR" />
+				<img class="w-100" src="{{asset('/storage/noticias/'.$noticiaPromesas[0]->imagen_destacada)}}" alt="CIAR" />
 			</div>
 			<div class="col-11 col-md-6 text-start px-5 intro">
-				<h2 class="titulo mainColor altas fw-bold mb-4">Desafíos del Tenis en Perú</h2>
-				<p class="lema">Aproximadamente mil niños compiten en el Perú en los eventos organizados por la federación peruana de tenis, por los clubes sociales y por las academias.</p>
-				<p>La práctica del tenis es costosa debido a clases, alquiler de canchas, equipo, y servicios profesionales. Además, los deportistas enfrentan costos de inscripciones, torneos, transporte y alojamiento. Los niños tenistas dedican de tres a seis horas diarias a su preparación, combinando entrenamiento intensivo con sus estudios escolares.</p>
-				<p>El apoyo privado es crucial ya que los deportistas no reciben ayuda de las federaciones. En su lugar, son las familias de los deportistas quienes financian este deporte en Perú.</p>
+				<h2 class="titulo mainColor altas fw-bold mb-4">{{$noticiaPromesas[0]->titulo}}</h2>
+                {!! $noticiaPromesas[0]->extracto !!}
+                <p class="lema"></p>
+				{!! $noticiaPromesas[0]->cuerpo !!}
 			</div>
 		</div>
         @if (count($promesas) > 0)
