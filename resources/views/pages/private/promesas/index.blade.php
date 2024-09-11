@@ -179,6 +179,10 @@
                                     <td>${data.mano}</td>
                                 </tr>
                                 <tr>
+                                    <td>Utr</td>
+                                    <td>${data.utr}</td>
+                                </tr>
+                                <tr>
                                     <td>Preparador Físico</td>
                                     <td>${data.preparador}</td>
                                 </tr>

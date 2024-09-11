@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-6 col-md-6 bgWhite text-end">
                         <span class="text-start fw-bold">UTR</span>
-                        <div class="utr mt-2">4.6</div>
+                        <div class="utr mt-2">{{$promesa->utr}}</div>
                     </div>
                     <div class="col-12 col-md-12 bgWhite text-end">
                         <span class="text-start fw-bold">Mano</span> {{ $promesa->mano }}

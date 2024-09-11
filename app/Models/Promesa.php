@@ -19,5 +19,6 @@ class Promesa extends Model
         'detalle',
         'foto',
         'edad',
+        'utr'
     ];
 }

@@ -50,6 +50,7 @@ class PromesasController extends Controller
             'peso' => ['required'],
             'estatura' => ['required'],
             'mano' => ['required'],
+            'utr' => ['required'],
             'academia' => ['required'],
             'preparador' => ['required'],
             'nutricionista' => ['required'],
@@ -59,6 +60,7 @@ class PromesasController extends Controller
             'edad.required' => 'El campo edad es obligatorio',
             'estatura.required' => 'El campo estatura es obligatorio',
             'mano.required' => 'El campo mano es obligatorio',
+            'utr.required' => 'El campo utr es obligatorio',
             'academia.required' => 'El campo academia es obligatorio',
             'extracto.required' => 'El campo extracto es obligatorio',
             'preparador.required' => 'El campo preparador es obligatorio',
@@ -79,6 +81,7 @@ class PromesasController extends Controller
         $promesa->nutricionista = Str::title($request->nutricionista);
         $promesa->detalle = $request->extracto;
         $promesa->edad = $request->edad;
+        $promesa->utr = $request->utr;
 
         if ($imagen = $request->file('imagen')) {
             $imgRename = date('YmdHis') . "." . $imagen->getClientOriginalExtension();
@@ -114,6 +117,7 @@ class PromesasController extends Controller
             'peso' => ['required'],
             'estatura' => ['required'],
             'mano' => ['required'],
+            'utr' => ['required'],
             'academia' => ['required'],
             'preparador' => ['required'],
             'nutricionista' => ['required'],
@@ -123,6 +127,7 @@ class PromesasController extends Controller
             'edad.required' => 'El campo edad es obligatorio',
             'estatura.required' => 'El campo estatura es obligatorio',
             'mano.required' => 'El campo mano es obligatorio',
+            'utr.required' => 'El campo utr es obligatorio',
             'academia.required' => 'El campo academia es obligatorio',
             'extracto.required' => 'El campo extracto es obligatorio',
             'preparador.required' => 'El campo preparador es obligatorio',
@@ -143,6 +148,7 @@ class PromesasController extends Controller
         $promesa->nutricionista = Str::title($request->nutricionista);
         $promesa->detalle = $request->extracto;
         $promesa->edad = $request->edad;
+        $promesa->utr = $request->utr;
         if ($request->imagen != null) {
             if ($imagen = $request->file('imagen')) {
                 if (\File::exists(public_path("/storage/promesas/{$promesa->foto}"))) {
