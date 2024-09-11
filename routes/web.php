@@ -62,6 +62,7 @@ Route::group(['prefix' => 'ciar'], function () {
 
     /* SECTION NEWS */
     Route::get('/nuestras-promesas',[LandingController::class, 'promises'])->name('landing.promises');
+    Route::get('/nuestras-promesas/{id}/detalle',[LandingController::class, 'promisesDetails'])->name('landing.promises.details');
     Route::get('/noticicas',[LandingController::class, 'news'])->name('landing.news');
     Route::get('/noticias/{slug}',[LandingController::class,'newsDetails'])->name('landing.news.details');
     /** END SECTION NEWS */

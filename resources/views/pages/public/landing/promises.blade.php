@@ -43,7 +43,7 @@
                                 <h3 class="titulo-item altas mb-0">
                                     <a href="promesa-1.php">{{$promesa->nombre}}</a>
 								</h3>
-								<div class="edades altas">{{$promesa->edad}}<a href="promesa-1.php" class="enlace"><img src="{{asset('assets/images/link.svg')}}" /></a></div>
+								<div class="edades altas">{{$promesa->edad}}<a href="{{route('landing.promises.details',$promesa->id)}}" class="enlace"><img src="{{asset('assets/images/link.svg')}}" /></a></div>
 							</div>
 						</div>
 					</div>
