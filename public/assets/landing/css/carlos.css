@@ -2,10 +2,34 @@
 p{
 	font-size: 1.3rem
 }
+.interna p{
+	font-size: 1rem;
+	line-height: 1.8rem
+}
+.interna p.lema{
+	font-size: 1.4rem;
+	line-height: 2.1rem
+}
+.interna .intro p.lema:after {
+    content: "";
+    display: block;
+    background-color: #FFEB3B;
+    margin: 1rem 0 .75rem;
+    width: 3rem;
+    height: 7px
+}
+.interna .intro .logo {
+	height: 5em
+}
+.interna strong{
+	color: #27326f
+}
+.interna figcaption strong{
+	display: block
+}
 /* -----  _header.scss     -----*/
 .menu{
-    background: url("../../images/base.png") no-repeat left top !important;
-    /* background: url("../images/base.png") no-repeat left top !important; */
+    background: url("../images/base.png") no-repeat left top !important;
     background-size: 250px  !important;
     background-color: rgba(39,50,111,0.5) !important;
     margin-top: 1em
@@ -201,12 +225,12 @@ p{
     border: none
 }
 .banner.esInterna {
-	background: url("../../images/iso-interna.svg") no-repeat left bottom !important;
+	background: url("../images/iso-interna.svg") no-repeat left bottom !important;
     background-color: #27326F!important
 }
 @media only screen and (max-width: 767px) {
 	.banner.esInterna {
-		background: url("../../images/iso-interna.svg") no-repeat right 150% !important;
+		background: url("../images/iso-interna.svg") no-repeat right 150% !important;
 	    background-color: #27326F!important;
 		background-size: 150% !important
 	}
@@ -296,7 +320,7 @@ p{
 }
 /* -----  _footer.scss     -----*/
 .footer{
-	background: url("../../images/iso-footer.svg") no-repeat left center !important;
+	background: url("../images/iso-footer.svg") no-repeat left center !important;
 	font-size: 0.9em;
 	background-color: #323643 !important
 }
@@ -412,11 +436,10 @@ p{
 }
 /* -----  _actividades-inicio.scss     -----*/
 .actividades-inicio {
-	/* background: url("../images/iso-cover.svg") no-repeat left 15%; */
-	background: url("../../images/iso-cover.svg") no-repeat left 15%;
+	background: url("../images/iso-cover.svg") no-repeat left 15%;
 }
 .actividades-inicio p, .entrenadores p{
-	background: url("../../images/arrows.svg") no-repeat left 3px;
+	background: url("../images/arrows.svg") no-repeat left 3px;
 	padding-left: 85px;
 	font-size: 2em;
 	font-style: italic;
@@ -438,7 +461,7 @@ section .icon {
     background:-webkit-gradient(linear,left bottom,left top,color-stop(0,rgba(50,54,67,1)),color-stop(1,rgba(50,54,67,0)))
 }
 .entrenadores {
-	background: url("../../images/iso-outline.svg") no-repeat center 15%;
+	background: url("../images/iso-outline.svg") no-repeat center 15%;
 }
 .item-entrenadores .overlay-item{
     background:-webkit-gradient(linear,left bottom,left top,color-stop(0,rgba(39,50,111,1)),color-stop(1,rgba(39,50,111,0)))
@@ -597,4 +620,147 @@ section .icon {
     100% {
         box-shadow: 0 0 0 1em rgba(0,0,0,0)
     }
+}
+
+/* -----  _quienes-somos.scss     -----*/
+.vh-90 {
+    min-height: 90vh
+}
+
+.destacado {
+    box-shadow: 0 0 100px rgba(0,0,0,.4)
+}
+@media(min-width: 768px) {
+    .destacado {
+        background-attachment:fixed
+    }
+}
+.destacado.mision {
+    background-image: url(../images/bkg-mision.webp)
+}
+@media(min-width: 768px) {
+    .destacado.mision {
+        background-image:url(../images/bkg-mision.webp)
+    }
+}
+
+@media(min-width: 1200px) {
+    .destacado.mision {
+        background-image:url(../images/bkg-mision.webp)
+    }
+}
+.destacado.vision {
+    background-image: url(../images/bkg-vision.webp)
+}
+@media(min-width: 768px) {
+    .destacado.vision {
+        background-image:url(../images/bkg-vision.webp)
+    }
+}
+
+@media(min-width: 1200px) {
+    .destacado.vision {
+        background-image:url(../images/bkg-vision.webp)
+    }
+}
+.vh-90 .subtitulo {
+    font-size: 24px
+}
+
+@media(min-width: 768px) {
+    .vh-90 .subtitulo {
+        font-size:28px
+    }
+}
+
+@media(min-width: 992px) {
+    .vh-90 .subtitulo {
+        font-size:32px
+    }
+}
+
+@media(min-width: 1200px) {
+    .vh-90 .subtitulo {
+        font-size:36px
+    }
+}
+.valores h3{
+	font-size: 1.2em;
+	color: #27326f;
+	text-decoration: underline;
+	text-underline-offset: -7px;
+	text-decoration-skip-ink: none;
+	text-decoration-color: #fff000;
+	text-decoration-thickness: 15px
+}
+
+/* -----  _nuestro-metodo.scss     -----*/
+.destacado.metodo01 {
+    background-image: url(../images/bkg-metodo-1.webp)
+}
+@media(min-width: 768px) {
+    .destacado.metodo01 {
+        background-image:url(../images/bkg-metodo-1.webp)
+    }
+}
+@media(min-width: 1200px) {
+    .destacado.metodo01 {
+        background-image:url(../images/bkg-metodo-1.webp)
+    }
+}
+.destacado.metodo02 {
+    background-image: url(../images/bkg-metodo-2.webp)
+}
+@media(min-width: 768px) {
+    .destacado.metodo02 {
+        background-image:url(../images/bkg-metodo-2.webp)
+    }
+}
+@media(min-width: 1200px) {
+    .destacado.metodo02 {
+        background-image:url(../images/bkg-metodo-2.webp)
+    }
+}
+.destacado.metodo03 {
+    background-image: url(../images/bkg-metodo-3.webp)
+}
+@media(min-width: 768px) {
+    .destacado.metodo03 {
+        background-image:url(../images/bkg-metodo-3.webp)
+    }
+}
+@media(min-width: 1200px) {
+    .destacado.metodo03 {
+        background-image:url(../images/bkg-metodo-3.webp)
+    }
+}
+span.number{
+	font-size: 3.6em;
+	font-style: italic;
+	color: #FFF100
+}
+.destacado p {
+	font-size: 1em !important
+}
+.destacado p.lema {
+	font-size: 1.45em !important
+}
+.destacado hr{
+	color: #fff
+}
+
+/* -----  _nuestras-promesas.scss     -----*/
+.datos-personales .bgWhite{
+	border: solid 5px #EBEEF8;
+	border-radius: 0.5em;
+	padding: 0.5em 1em !important
+}
+.datos-personales .bgWhite span{
+	display: inline-block !important;
+	float: left;
+	font-style: italic;
+	color: #27326f
+}
+.datos-personales .utr{
+	font-size: 2.4em
 }

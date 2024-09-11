@@ -119,6 +119,10 @@ class LandingController extends Controller
         $promesas = Promesa::all();
         return view("pages.public.landing.promises",compact('promesas'));
     }
+    public function promisesDetails(string $id){
+        $promesa = Promesa::find($id);
+        return view("pages.public.landing.promesas.promesa-detalle",compact("promesa"));
+    }
     // END SECTION PROMISES
 
     // SECTION NEWS
