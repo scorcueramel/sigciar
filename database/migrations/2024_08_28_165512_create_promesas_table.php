@@ -25,6 +25,7 @@ return new class extends Migration
             $table->text('detalle')->nullable(true);
             $table->string('foto')->nullable(true);
             $table->string('edad')->nullable(true);
+            $table->string('utr')->nullable(true);
             $table->timestamps();
         });
     }

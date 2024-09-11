@@ -81,6 +81,20 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="utr">UTR</label>
+                        <div class="col-sm-10">
+                            <div class="input-group input-group-merge">
+                                <span id="utr2" class="input-group-text"><i class="fa-light fa-input-numeric"></i></span>
+                                <input type="text" id="utr" class="form-control @error('utr') is-invalid @enderror" placeholder="utr" aria-label="utr" aria-describedby="utr2" name="utr" value="{{old('utr')  ?? $promesa->utr}}" maxlength="5" autofocus required />
+                                @error('utr')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label class="col-sm-2 col-form-label" for="academia">Academia</label>
                         <div class="col-sm-10">
                             <div class="input-group input-group-merge">
