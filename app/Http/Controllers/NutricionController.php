@@ -580,6 +580,7 @@ class NutricionController extends Controller
 
     public function update(Request $request)
     {
+        $idprograma = $request->idPrograma;
         $responsable = $request->responsable;
         $actividad = $request->actividad;
         $categoria = $request->categoria;
@@ -627,6 +628,29 @@ class NutricionController extends Controller
             return response()->json(['error' => $error]);
         }
 
-        return $request->all();
+        $servicioTenisCrear = DB::select(
+            "SELECT servicio_tenis_update(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            [
+                $fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad, $estado, $idprograma]
+        );
+
+        $idRespuesta = $servicioTenisCrear[0]->servicio_tenis_update;
+
+        $idPlantillaConvert = Str::of($idRespuesta)->after(',')->before(')');
+        $idRegistroConvert = Str::of($idRespuesta)->before(',')->after('(');
+
+        DB::select("DELETE FROM public.servicio_horarios where servicioplantilla_id = $idPlantillaConvert");
+
+        foreach ($fechasDefinidas as $fecha) {
+            $dia = $fecha["dias"];
+            $hInicio = Str::of($fecha["horarios"])->before(' ');
+            $hFin = Str::of($fecha["horarios"])->after('- ');
+            $servicioTenisHoras = DB::select("SELECT servicio_programa_horario_update(?,?,?,?,?,?,?);", [$idPlantillaConvert, $dia, $hInicio, $hFin, $nombre_usuario, $ip, $creacion]);
+        }
+
+        $respuestaHorarios = $servicioTenisHoras[0]->servicio_programa_horario_update;
+        $respuesta = Str::of($respuestaHorarios)->after(',')->before(')');
+
+        return response()->json(['idPlantilla' => $idPlantillaConvert, 'idRegistro' => $idRegistroConvert, 'respRegistro' => $respuesta]);
     }
 }

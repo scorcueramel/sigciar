@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <form enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
-                        <input type="hidden" value="{{$getProgram[0]->id}}" id="idactividad">
+                        <input type="hidden" value="{{$getProgram[0]->id}}" id="idPrograma">
                         <fieldset>
                             <h3> Paso 1: Datos del Programa</h3>
                             <div class="row">
@@ -48,7 +48,7 @@
                                             <div class="input-group input-group-merge">
                                                 <span class="input-group-text"><i class='bx bx-user'></i></span>
                                                 <select class="selectpicker form-select" id="respadmin"
-                                                    aria-label="respadmin" name="respadmin" required>
+                                                    aria-label="respadmin" name="respadmin">
                                                     <option value="" selected disabled>SELECCIONA UN RESPONSABLE
                                                     </option>
                                                     @foreach ($responsables as $resp)
@@ -80,7 +80,7 @@
                                                     aria-label="Nombre para el/la responsableNoAdmin"
                                                     aria-describedby="respnoadmin2" name="respnoadmin"
                                                     value="{{ $responsable->nombres }} {{ $responsable->apepaterno }} {{ $responsable->apematerno }}"
-                                                    readonly required />
+                                                    readonly />
                                             </div>
                                         </div>
                                     </div>
@@ -92,7 +92,7 @@
                                                 <span id="categoria2" class="input-group-text"><i
                                                         class="fa-light fa-list"></i></span>
                                                 <select class="form-select" id="categoria" aria-label="categoria"
-                                                    name="categoria" required>
+                                                    name="categoria">
                                                     <option value="" selected disabled>SELECCIONA UNA CATEGORÍA
                                                     </option>
                                                     @foreach($subtiposervicio as $sts)
@@ -115,7 +115,7 @@
                                                 <span id="sede2" class="input-group-text"><i
                                                         class="fa-regular fa-hotel"></i></span>
                                                 <select class="form-select" id="sede" aria-label="sede"
-                                                    name="sede" required>
+                                                    name="sede">
                                                     <option value="" selected disabled>SELECCIONA UNA SEDE
                                                     </option>
                                                     @foreach ($sedes as $sede)
@@ -175,7 +175,7 @@
                                             <div class="input-group input-group-merge">
                                                 <input type="date" value="{{substr($getProgram[0]->inicio,0,10)}}" id="fechaInicio"
                                                     class="form-control @error('fechaInicio') is-invalid @enderror"
-                                                    aria-label="Fecha de inicio" name="fechaInicio" required />
+                                                    aria-label="Fecha de inicio" name="fechaInicio" />
                                             </div>
                                             <span class="text-danger d-none fechaInicioError" role="alert">
                                                 <span class="msjFechaInicioError"></span>
@@ -189,7 +189,7 @@
                                             <div class="input-group input-group-merge">
                                                 <input type="date" value="{{substr($getProgram[0]->fin,0,10)}}" id="termino"
                                                     class="form-control @error('termino') is-invalid @enderror"
-                                                    name="termino" required />
+                                                    name="termino" />
                                             </div>
                                             <span class="text-danger d-none fechaFinError" role="alert">
                                                 <span class="msjFechaFinError"></span>
@@ -208,7 +208,7 @@
                                                     aria-label="Nombre para la cupos" aria-describedby="cupos2"
                                                     name="cupos"
                                                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                    maxlength="3" required />
+                                                    maxlength="3" />
                                             </div>
                                             <span class="text-danger d-none cuposError" role="alert">
                                                 <span class="msjCuposError"></span>
@@ -227,7 +227,7 @@
                                                 <input type="number" value="{{$getProgram[0]->duracion}}" id="horas"
                                                     class="form-control @error('descripcion') is-invalid @enderror"
                                                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                    name="horas" maxlength="3" required />
+                                                    name="horas" maxlength="3" />
                                             </div>
                                             <span class="text-danger d-none definirHorarioError" role="alert">
                                                 <span class="msjDefinirHorarioError"></span>
@@ -283,7 +283,7 @@
                                                         <i class="fa-regular fa-calendar-range"></i>
                                                     </span>
                                                     <select class="form-select" id="dias" aria-label="dias"
-                                                        name="dias" required>
+                                                        name="dias">
                                                         <option value="" selected disabled>DÍA</option>
                                                     </select>
                                                 </div>
@@ -298,7 +298,7 @@
                                                     </span>
                                                     <input class="form-control horas" type="time"
                                                         aria-describedby="horaInicio2" name="horaInicio"
-                                                        id="horaInicio" required />
+                                                        id="horaInicio" />
                                                 </div>
                                             </div>
                                         </div>
@@ -310,8 +310,7 @@
                                                         <i class="fa-regular fa-clock-eight-thirty"></i>
                                                     </span>
                                                     <input class="form-control horas" type="time"
-                                                        aria-describedby="horaFin" name="horaFin" id="horaFin"
-                                                        required />
+                                                        aria-describedby="horaFin" name="horaFin" id="horaFin" />
                                                 </div>
                                             </div>
                                         </div>
@@ -370,6 +369,12 @@
     // arreglo de horarios
     var totalHorarios = new Array();
     var horasInscripcion = new Array();
+
+    // Agregar cabecera a la tabla horarios
+    const headerTable = $('#headertable');
+    const bodyTable = $('#bodytable');
+    const bodyTableScriptions = $("#tablainscripciones");
+
 
     $(document).ready(function() {
         obtenerHorario();
@@ -468,6 +473,13 @@
 
         for (let i = 0; i < diashoras.length; i++) {
             const el = diashoras[i];
+
+            totalHorarios.push({
+                "dia": el.dia,
+                "horainicio": el.horainicio,
+                "horafin": el.horafin
+            });
+
             bodyTable.append(`
                         <tr>
                             <td>${el.dia}</td>
@@ -505,7 +517,7 @@
                         "<option selected disabled>SELECCIONA UN LUGAR</option>");
                     data.forEach((e) => {
                         if (e.descripcion.includes("CAMPO")) {
-                        $("#lugar").append(`
+                            $("#lugar").append(`
                                     <option value="${e.id}">${e.descripcion}</option>
                                 `);
                         }
@@ -519,20 +531,8 @@
         });
     });
 
-    // Agregar cabecera a la tabla horarios
-    const headerTable = $('#headertable');
-    const bodyTable = $('#bodytable');
-    const bodyTableScriptions = $("#tablainscripciones");
+    headerTable.append(`<tr><th>DÍAS</th><th>HORARIOS</th><th>QUITAR</th></tr>`);
 
-    headerTable.append(`
-                <tr>
-                    <th>DÍAS</th>
-                    <th>HORARIOS</th>
-                    <th>QUITAR</th>
-                </tr>
-            `);
-
-    // Click en boton quitar
     $("#btn-add-hour").on("click", function() {
         const dia = $("#dias");
         const duracion = $("#horas");
@@ -551,19 +551,37 @@
                 duracion.focus();
             });
         } else {
+            let idPrograma = $("#idactividad").val();
+
             totalHorarios.push({
                 "dia": dia.val(),
                 "horainicio": horaInicio.val(),
                 "horafin": horaFin.val()
             });
-            // bodyTable.html("");
 
-            for (let i = 0; i < totalHorarios.length; i++) {
-                const el = totalHorarios[i];
-                bodyTable.append(`
+            bodyTable.html("");
+
+            $.ajax({
+                type: "GET",
+                url: `/admin/actividades/obtener/${idPrograma}/dias`,
+                success: function(response) {
+                    for (let i = 0; i < response.length; i++) {
+                        const el = response[i];
+
+                        if(totalHorarios[i].dia != el.dia){
+                            totalHorarios.push({
+                                "dia": el.dia,
+                                "horainicio": el.horainicio,
+                                "horafin": el.horafin
+                            });
+                        }
+                    }
+                    for (let i = 0; i < totalHorarios.length; i++) {
+                        const el = totalHorarios[i];
+                        bodyTable.append(`
                         <tr>
                             <td>${el.dia}</td>
-                            <td>${el.horainicio} - ${el.horafin}</td>
+                            <td>${el.horainicio.slice(0,5)} - ${el.horafin.slice(0,5)}</td>
                             <td>
                                 <button type='button' class='btn btn-sm btn-danger' onclick='removerElemento("${i}");'>
                                     <i class='fa-solid fa-ban'></i>
@@ -571,13 +589,19 @@
                             </td>
                         </tr>
                     `);
-            }
+                    }
+                }
+            });
         }
     });
 
     // funcion remover de tabla horarios
     function removerElemento(indice) {
+
+        // alert(`Quitar de la list indice : ${indice}`);
+
         if (totalHorarios.length > 0) {
+            console.log(totalHorarios);
             for (let i = 0; i < totalHorarios.length; i++) {
                 const el = totalHorarios[i];
                 if (i == indice) {
@@ -590,7 +614,7 @@
                 bodyTable.append(`
                         <tr>
                             <td>${el.dia}</td>
-                            <td>${el.horainicio} - ${el.horafin}</td>
+                            <td>${el.horainicio.slice(0,5)} - ${el.horafin.slice(0,5)}</td>
                             <td>
                                 <button type='button' class='btn btn-sm btn-danger' onclick='removerElemento("${i}");'>
                                     <i class='fa-solid fa-ban'></i>
@@ -683,6 +707,8 @@
             JsonData.horarios = $("td:eq(1)", row).text();
             fechasDefinidas.push(JsonData);
         });
+
+        console.log(fechasDefinidas);
 
         if (responsable == null) {
             messagesInfo('Lo sentimos', 'warning',
@@ -835,24 +861,24 @@
                 });
 
                 if (response.respRegistro === "exito") {
-                    window.location.href =
-                        `/admin/actividades/nueva/inscripcion/${response.idPlantilla}/${response.idRegistro}/redirigido`;
+                    window.location.href = "/admin/actividades/lista";
                 } else {
                     messagesInfo('Lo sentimos', 'warning',
                         'Parece que algo sucedio, comunicate con el administrador',
                         'Entiendo');
-                    Swal.close();
+                    // Swal.close();
                 }
             }
         });
     });
 
-    function messagesInfo(title, icon, bodyMessage, textButton) {
+    function messagesInfo(title, icon, bodyMessage, confirmButton, textButton) {
         Swal.fire({
             title: `<strong>${title} <i class="fa-solid fa-face-scream"></i></strong>`,
             icon: `${icon}`,
             html: `<p>${bodyMessage}</p>`,
             showCloseButton: true,
+            showCancelButton: `${confirmButton ?? false}`,
             focusConfirm: true,
             confirmButtonText: `${textButton}`,
         });
