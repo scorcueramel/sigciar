@@ -146,6 +146,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/enviar/notas',[TenisController::class,'sendNote'])->name('enviar.notas.miembros');
         Route::get('/obtener/{id}/notas',[TenisController::class,'getNotesMember'])->name('obtener.notas.miembros');
         Route::get('/editar/{id}/actividad',[TenisController::class, 'edit'])->name('tenis.editar.actividad');
+        Route::get('/obtener/{id}/dias',[TenisController::class, 'getDaysForUpdate'])->name('tenis.obtener.editar');
         Route::post('/editar/actividad',[TenisController::class, 'update'])->name('tenis.actualizar.actividad');
     });
 

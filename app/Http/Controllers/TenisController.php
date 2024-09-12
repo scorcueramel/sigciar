@@ -460,7 +460,17 @@ class TenisController extends Controller
         return view('pages.private.actividades.tenis.edit', compact("getProgram","getDaysToProgram","responsable", "responsables", "sedes", "lugares","subtiposervicio"));
     }
 
+    public function getDaysForUpdate(string $idService){
+        $getDaysToProgram = DB::select("SELECT
+        sp.servicio_id, sh.servicioplantilla_id, sh.dia, sh.horainicio, sh.horafin,  sh.estado
+        FROM servicio_horarios sh
+        LEFT JOIN servicio_plantillas sp ON sh.servicioplantilla_id = sp.id
+        WHERE sp.servicio_id = ?",[$idService]);
+        return response()->json($getDaysToProgram);
+    }
+
     public function update(Request $request){
+        $idprograma = $request->idPrograma;
         $responsable = $request->responsable;
         $actividad = $request->actividad;
         $categoria = $request->categoria;
@@ -508,6 +518,31 @@ class TenisController extends Controller
             return response()->json(['error' => $error]);
         }
 
-        return $request->all();
+        // dd($request->all());
+
+        $servicioTenisCrear = DB::select(
+            "SELECT servicio_tenis_update(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            [
+                $fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad, $estado, $idprograma]
+        );
+
+        $idRespuesta = $servicioTenisCrear[0]->servicio_tenis_update;
+
+        $idPlantillaConvert = Str::of($idRespuesta)->after(',')->before(')');
+        $idRegistroConvert = Str::of($idRespuesta)->before(',')->after('(');
+
+        DB::select("DELETE FROM public.servicio_horarios where servicioplantilla_id = $idPlantillaConvert");
+
+        foreach ($fechasDefinidas as $fecha) {
+            $dia = $fecha["dias"];
+            $hInicio = Str::of($fecha["horarios"])->before(' ');
+            $hFin = Str::of($fecha["horarios"])->after('- ');
+            $servicioTenisHoras = DB::select("SELECT servicio_tenis_horario_update(?,?,?,?,?,?,?);", [$idPlantillaConvert, $dia, $hInicio, $hFin, $nombre_usuario, $ip, $creacion]);
+        }
+
+        $respuestaHorarios = $servicioTenisHoras[0]->servicio_tenis_horario_update;
+        $respuesta = Str::of($respuestaHorarios)->after(',')->before(')');
+
+        return response()->json(['idPlantilla' => $idPlantillaConvert, 'idRegistro' => $idRegistroConvert, 'respRegistro' => $respuesta]);
     }
 }

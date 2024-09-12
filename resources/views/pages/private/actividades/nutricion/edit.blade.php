@@ -325,6 +325,11 @@
     // arreglo de horarios
     var totalHorarios = new Array();
     var horasInscripcion = new Array();
+    // Agregar cabecera a la tabla horarios
+    const headerTable = $('#headertable');
+    const bodyTable = $('#bodytable');
+    const bodyTableScriptions = $("#tablainscripciones");
+
     $(document).ready(function() {
         obtenerHorario();
         obteneDiasHoras();
@@ -422,6 +427,13 @@
 
         for (let i = 0; i < diashoras.length; i++) {
             const el = diashoras[i];
+
+            totalHorarios.push({
+                "dia": el.dia,
+                "horainicio": el.horainicio,
+                "horafin": el.horafin
+            });
+
             bodyTable.append(`
                         <tr>
                             <td>${el.dia}</td>
@@ -459,7 +471,7 @@
                         "<option selected disabled>SELECCIONA UN LUGAR</option>");
                     data.forEach((e) => {
                         if (!e.descripcion.includes("CAMPO")) {
-                        $("#lugar").append(`
+                            $("#lugar").append(`
                                     <option value="${e.id}">${e.descripcion}</option>
                                 `);
                         }
@@ -473,10 +485,6 @@
         });
     });
 
-    // Agregar cabecera a la tabla horarios
-    const headerTable = $('#headertable');
-    const bodyTable = $('#bodytable');
-    const bodyTableScriptions = $("#tablainscripciones");
 
     headerTable.append(`
                 <tr>
@@ -505,19 +513,37 @@
                 duracion.focus();
             });
         } else {
+            let idPrograma = $("#idPrograma").val();
+
             totalHorarios.push({
                 "dia": dia.val(),
                 "horainicio": horaInicio.val(),
                 "horafin": horaFin.val()
             });
-            // bodyTable.html("");
 
-            for (let i = 0; i < totalHorarios.length; i++) {
-                const el = totalHorarios[i];
-                bodyTable.append(`
+            bodyTable.html("");
+
+            $.ajax({
+                type: "GET",
+                url: `/admin/actividades/obtener/${idPrograma}/dias`,
+                success: function(response) {
+                    for (let i = 0; i < response.length; i++) {
+                        const el = response[i];
+
+                        if (totalHorarios[i].dia != el.dia) {
+                            totalHorarios.push({
+                                "dia": el.dia,
+                                "horainicio": el.horainicio,
+                                "horafin": el.horafin
+                            });
+                        }
+                    }
+                    for (let i = 0; i < totalHorarios.length; i++) {
+                        const el = totalHorarios[i];
+                        bodyTable.append(`
                         <tr>
                             <td>${el.dia}</td>
-                            <td>${el.horainicio} - ${el.horafin}</td>
+                            <td>${el.horainicio.slice(0,5)} - ${el.horafin.slice(0,5)}</td>
                             <td>
                                 <button type='button' class='btn btn-sm btn-danger' onclick='removerElemento("${i}");'>
                                     <i class='fa-solid fa-ban'></i>
@@ -525,13 +551,19 @@
                             </td>
                         </tr>
                     `);
-            }
+                    }
+                }
+            });
         }
     });
 
     // funcion remover de tabla horarios
     function removerElemento(indice) {
+
+        // alert(`Quitar de la list indice : ${indice}`);
+
         if (totalHorarios.length > 0) {
+            console.log(totalHorarios);
             for (let i = 0; i < totalHorarios.length; i++) {
                 const el = totalHorarios[i];
                 if (i == indice) {
@@ -544,7 +576,7 @@
                 bodyTable.append(`
                         <tr>
                             <td>${el.dia}</td>
-                            <td>${el.horainicio} - ${el.horafin}</td>
+                            <td>${el.horainicio.slice(0,5)} - ${el.horafin.slice(0,5)}</td>
                             <td>
                                 <button type='button' class='btn btn-sm btn-danger' onclick='removerElemento("${i}");'>
                                     <i class='fa-solid fa-ban'></i>

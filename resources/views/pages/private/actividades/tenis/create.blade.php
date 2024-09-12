@@ -552,7 +552,7 @@
         console.log(idActividad);
         $.ajax({
             type: "GET",
-            url: `/admin/actividades/obtener/consto/${idActividad}/${idLugar}/lugar`,
+            url: `/admin/actividades/obtener/costo/${idActividad}/${idLugar}/lugar`,
             success: function(response) {
                 if (response != null) {
                     $(".contenedor-turnos").html("");
