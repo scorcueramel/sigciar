@@ -551,7 +551,7 @@
                 duracion.focus();
             });
         } else {
-            let idPrograma = $("#idactividad").val();
+            let idPrograma = $("#idPrograma").val();
 
             totalHorarios.push({
                 "dia": dia.val(),
@@ -684,7 +684,7 @@
     $("#guardarycontinuar").on('click', function(e) {
         // e.preventDefault();
         let responsable = $("#respadmin").val();
-        let idPrograma = $("#idactividad").val();
+        let idPrograma = $("#idPrograma").val();
         let actividad = 3;
         let categoria = $("#categoria").val();
         let turnoIsChecked = $("input[name=turno]:checked ");
