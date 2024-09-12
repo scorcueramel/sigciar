@@ -33,7 +33,7 @@
                 <div class="item-promesas position-relative">
                     <div class="contenedor-item">
 						<figure class="imagen-item">
-                            <a href="promesa-1.php">
+                            <a href="{{route('landing.promises.details',$promesa->id)}}">
 								<img src="{{asset('/storage/promesas/'.$promesa->foto)}}" class="w-100" />
 							</a>
 						</figure>
@@ -41,7 +41,7 @@
 						<div class="overlay-item text-start">
 							<div class="info-item py-3 px-3">
                                 <h3 class="titulo-item altas mb-0">
-                                    <a href="promesa-1.php">{{$promesa->nombre}}</a>
+                                    <a href="{{route('landing.promises.details',$promesa->id)}}">{{$promesa->nombre}}</a>
 								</h3>
 								<div class="edades altas">{{$promesa->edad}}<a href="{{route('landing.promises.details',$promesa->id)}}" class="enlace"><img src="{{asset('assets/images/link.svg')}}" /></a></div>
 							</div>
