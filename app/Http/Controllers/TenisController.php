@@ -133,7 +133,7 @@ class TenisController extends Controller
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
-            $tenis = DB::select("select
+            $tenis = DB::select("SELECT
                                     s.id, sts.titulo as programa, l.descripcion as cancha, sr.inicio as start, sr.fin as end,
                                     sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as title, si.id as servicioinscripcion_id
                                     from
@@ -150,7 +150,7 @@ class TenisController extends Controller
                                         s.estado = 'A'
                                         and s.tiposervicio_id = 3");
         } else {
-            $tenis = DB::select("select
+            $tenis = DB::select("SELECT
                                     s.id, sts.titulo as programa, l.descripcion as cancha, sr.inicio as start, sr.fin as end,
                                     sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as title, si.id as servicioinscripcion_id
                                     from
@@ -532,6 +532,7 @@ class TenisController extends Controller
         $idRegistroConvert = Str::of($idRespuesta)->before(',')->after('(');
 
         DB::select("DELETE FROM public.servicio_horarios where servicioplantilla_id = $idPlantillaConvert");
+        DB::select("DELETE FROM public.servicio_disponibles WHERE servicioplantilla_id = $idPlantillaConvert");
 
         foreach ($fechasDefinidas as $fecha) {
             $dia = $fecha["dias"];

@@ -174,6 +174,8 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/edit/{id}/notas',[NutricionController::class,'editNote'])->name('edit.notas.miembros');
         Route::post('/actualizar/notas',[NutricionController::class,'updateNote'])->name('actualizar.notas.miembros');
         Route::get('/editar/{id}/actividad',[NutricionController::class, 'edit'])->name('nutricion.editar.actividad');
+        Route::get('/obtener/{id}/dias',[NutricionController::class, 'getDaysForUpdate'])->name('nutricion.obtener.editar');
+
         Route::post('/editar/actividad',[NutricionController::class, 'update'])->name('nutricion.actualizar.actividad');
     });
 

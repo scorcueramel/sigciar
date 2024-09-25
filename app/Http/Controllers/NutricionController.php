@@ -578,6 +578,17 @@ class NutricionController extends Controller
         return view('pages.private.actividades.nutricion.edit', compact("getProgram", "getDaysToProgram", "responsable", "responsables", "sedes", "lugares", "subtiposervicios"));
     }
 
+
+    public function getDaysForUpdate(string $idService){
+        $getDaysToProgram = DB::select("SELECT
+        sp.servicio_id, sh.servicioplantilla_id, sh.dia, sh.horainicio, sh.horafin,  sh.estado
+        FROM servicio_horarios sh
+        LEFT JOIN servicio_plantillas sp ON sh.servicioplantilla_id = sp.id
+        WHERE sp.servicio_id = ?",[$idService]);
+        return response()->json($getDaysToProgram);
+    }
+
+
     public function update(Request $request)
     {
         $idprograma = $request->idPrograma;
@@ -640,6 +651,7 @@ class NutricionController extends Controller
         $idRegistroConvert = Str::of($idRespuesta)->before(',')->after('(');
 
         DB::select("DELETE FROM public.servicio_horarios where servicioplantilla_id = $idPlantillaConvert");
+        DB::select("DELETE FROM public.servicio_disponibles WHERE servicioplantilla_id = $idPlantillaConvert");
 
         foreach ($fechasDefinidas as $fecha) {
             $dia = $fecha["dias"];
