@@ -808,7 +808,7 @@
         Swal.fire({
             title: `¿Eliminar Reserva?`,
             html: `
-                    <p>Recuerda: Al quitar la reserva pasará a la sección de historial.</p>
+                    <p>Recuerda: Al quitar la reserva pasará a la sección de historial. Para regresar al estado actual debes coordinar con el staff de CIAR SPORTS</p>
                 `,
             icon: "warning",
             showCancelButton: true,
