@@ -220,6 +220,7 @@ class PerfilUsuarioController extends Controller
         $nota->detalle = $request->detalle;
         $nota->estado = 'A';
         $nota->usuario_editor = $nombre_usuario;
+        $nota->titulo = $request->titulo;
         $nota->save();
         return redirect()->route('prfole.user');
     }

@@ -712,13 +712,15 @@
     function actualizarNota() {
         let id = $("#informe_id").val();
         let detalle = $("#nota-miembro").val();
+        let titulo = $("#titulo-nota").val();
 
         $.ajax({
             type: "POST",
             url: "{{route('actualizar.notas.user')}}",
             data: {
+                id,
                 detalle,
-                id
+                titulo
             },
             success: function(response) {
                 guardarNota();
@@ -740,7 +742,7 @@
                     <input type="hidden" id="informe_id" value="${data.id}">
                     <div class="mb-3">
                         <label for="nota-miembro" class="form-label">Título de la nota</label>
-                        <input type="text" class="form-control" placeholder="Título para tu nueva nota" name="titulonota" maxlength="100" value="${data.titulo ?? 'Nota sin título'}" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" required>
+                        <input type="text" class="form-control" placeholder="Título para tu nueva nota" id="titulo-nota" name="titulonota" maxlength="100" value="${data.titulo ?? 'Nota sin título'}" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" required>
                         <div id="description" class="form-text text-primary">100 caracteres como máximo permitido.</div>
                         <div class="d-none" id="error">
                             <p class="text-danger">Debes ingresar una nota para enviar</p>
