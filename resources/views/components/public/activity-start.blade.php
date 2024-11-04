@@ -20,7 +20,7 @@
                             <div class="contenedor-item">
                                 <figure class="imagen-item">
                                     <a href="#">
-                                        <img src="{{asset('assets/images/actividades/nutricion.webp')}}" class="w-100" />
+                                        <img src="{{asset('storage/subtipos/'.$acts->imagen)}}" class="w-100" />
                                     </a>
                                 </figure>
 
