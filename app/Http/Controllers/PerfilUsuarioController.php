@@ -201,7 +201,7 @@ class PerfilUsuarioController extends Controller
 
     public function editNote($idNota){
         $noteById = DB::select("SELECT
-                                    si.id ,si.servicioinscripcion_id ,si.detalle, si.adjuntto ,p.nombres ,p.apepaterno ,p.apematerno ,p.usuario_id
+                                    si.id ,si.servicioinscripcion_id ,si.detalle, si.adjuntto ,p.nombres ,p.apepaterno ,p.apematerno ,p.usuario_id, si.titulo
                                 FROM servicio_informes si
                                 LEFT JOIN servicio_inscripcions si2
                                 ON si.servicioinscripcion_id = si2.id
