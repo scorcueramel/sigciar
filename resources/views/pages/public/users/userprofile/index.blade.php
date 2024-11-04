@@ -73,7 +73,7 @@
                                 </button>
                                 @endif
                                 <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                    class="btn btn-outline-primary ms-1" id="btn-edit-info">Editar Información
+                                    class="btn btn-outline-primary ms-1" id="btn-edit-info">Editar mis datos
                                 </button>
                             </form>
                         </div>
@@ -648,10 +648,10 @@
             html: "<small>Al eliminar tu foto no la podrás recuperar, tendras que cargar una nueva de ser necesario</small>",
             icon: "info",
             showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Sí, Quitar",
-            cancelButtonText: "No, cancelar!",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
@@ -738,6 +738,14 @@
                 $(".modal_cuerpo").html("");
                 $(".modal_cuerpo").html(`
                     <input type="hidden" id="informe_id" value="${data.id}">
+                    <div class="mb-3">
+                        <label for="nota-miembro" class="form-label">Título de la nota</label>
+                        <input type="text" class="form-control" placeholder="Título para tu nueva nota" name="titulonota" maxlength="100" value="${data.titulo}" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" required>
+                        <div id="description" class="form-text text-primary">100 caracteres como máximo permitido.</div>
+                        <div class="d-none" id="error">
+                            <p class="text-danger">Debes ingresar una nota para enviar</p>
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <label for="nota-miembro" class="form-label">Nota</label>
                         <textarea class="form-control" id="nota-miembro" name="detalle" rows="3" placeholder="Escribe una nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required>${data.detalle}</textarea>
