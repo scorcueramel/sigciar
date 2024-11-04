@@ -469,7 +469,7 @@
                                                                 data-bs-target="#flush-collapse{{$programa->id}}"
                                                                 aria-expanded="false"
                                                                 aria-controls="flush-collapse{{$programa->id}}">
-                                                                Nota {{ $contador3 }}
+                                                                {{ $programa->titulo ?? 'Nota sin título'}}
                                                             </button>
                                                         </h2>
                                                         <div id="flush-collapse{{$programa->id}}"
@@ -539,7 +539,6 @@
                                                             data-bs-parent="#accordionFlushExample">
                                                             <div class="accordion-body">
                                                                 <div class="row">
-
                                                                     <div class="col-md-8 d-flex align-items-center">
                                                                         <div class="row">
                                                                             <div class="col-12">
@@ -686,6 +685,14 @@
         $('.modal_cuerpo').html(`
             <form method="post" action="{{ route('notas.privadas.user') }}" id="guardarnota" enctype="multipart/form-data">
                 @csrf
+                <div class="mb-3">
+                    <label for="nota-miembro" class="form-label">Título de la nota</label>
+                    <input type="text" class="form-control" placeholder="Título para tu nueva nota" name="titulonota" maxlength="100" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" required>
+                    <div id="description" class="form-text text-primary">100 caracteres como máximo permitido.</div>
+                    <div class="d-none" id="error">
+                        <p class="text-danger">Debes ingresar una nota para enviar</p>
+                    </div>
+                </div>
                 <div class="mb-3">
                     <label for="nota-miembro" class="form-label">Nota</label>
                     <textarea class="form-control" id="nota-miembro" name="nota" rows="3" placeholder="Escribe una nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required></textarea>

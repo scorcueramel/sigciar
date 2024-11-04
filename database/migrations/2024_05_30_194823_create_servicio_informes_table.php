@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('ip_usuario',20);
             $table->boolean('privado')->nullable(true)->default(false);
             $table->boolean('persona_id')->nullable(true);
+            $table->string('titulo',100)->nullable(true);
             $table->softDeletes();
             $table->timestamps();
         });
