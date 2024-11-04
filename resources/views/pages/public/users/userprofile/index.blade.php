@@ -182,7 +182,7 @@
                                                                 {!! Str::replace('|','<br />',Str::after($programa->horario_inscripcion, '|')) !!}
                                                             </div>
                                                             <div class="col-3">
-                                                                <button class="btn btn-sm btn-outline-danger" id="btnQuitarReserva" data-id-servicioid="{{$programa->servicios_id}}">Quitar</button>
+                                                                <button class="btn btn-sm btn-outline-danger btnQuitarReserva" data-id-servicioid="{{$programa->servicios_id}}">Quitar</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -803,7 +803,7 @@
         });
     }
 
-    $("#btnQuitarReserva").on('click', function() {
+    $(".btnQuitarReserva").on('click', function() {
         let servicioid = $(this).attr("data-id-servicioid");
         Swal.fire({
             title: `¿Eliminar Reserva?`,
