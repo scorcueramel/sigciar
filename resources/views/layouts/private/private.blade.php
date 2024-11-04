@@ -82,11 +82,6 @@
     {{-- FullCalendar Free --}}
     <script src="{{asset('assets/js/fullcalendar/main.min.js')}}"></script>
     <script src="{{asset('assets/js/fullcalendar/locales-all.min.js')}}"></script>
-    {{-- MomentJS (locale date) --}}
-    <script src="{{asset('assets/js/fullcalendar/moment-with-locales.min.js')}}"></script>
-    {{-- FullCalendar Free --}}
-    <script src="{{asset('assets/js/fullcalendar/main.min.js')}}"></script>
-    <script src="{{asset('assets/js/fullcalendar/locales-all.min.js')}}"></script>
     {{-- Sweetalert2 --}}
     <script src="{{ asset('assets/js/sweetalert/sweetalert2@11.js') }}"></script>
     {{-- Select2 --}}
