@@ -193,6 +193,7 @@ class PerfilUsuarioController extends Controller
         $nota->ip_usuario = $request->ip();
         $nota->privado = true;
         $nota->persona_id = Auth::user()->id;
+        $nota->titulo = $request->titulonota;
         $nota->save();
 
         return redirect()->route('prfole.user');
