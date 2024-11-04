@@ -19,7 +19,7 @@ class NoticiasController extends Controller
 
         $noticias = Noticia::leftJoin('categoria_noticias', 'categoria_noticias.id', '=', 'noticias.categoria_id')
                             ->select("noticias.id as noticia_id", "categoria_noticias.nombre as nombre", "categoria_noticias.id as categoria_id", "noticias.titulo as titulo", "noticias.extracto as extracto", "noticias.cuerpo as cuerpo", "noticias.estado as estado", "noticias.imagen_destacada as imagen_destacada", "noticias.slug as slug")
-                            ->where('noticias.titulo', 'LIKE', '%' . $buscar . '%')
+                            ->where('noticias.titulo', 'LIKE', "%$buscar%")
                             ->orderBy('estado', 'asc')
                             ->paginate(6);
         return view("pages.private.noticias.index", compact("noticias", "buscar"));
