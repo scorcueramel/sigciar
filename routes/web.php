@@ -92,6 +92,8 @@ Route::group(['prefix' => 'ciar'], function () {
     Route::post('/quitar-foto-perfil', [PerfilUsuarioController::class,'removeImage'])->name('image.user.remove');
     Route::post('/editar-datos-usuario/{id}', [PerfilUsuarioController::class, 'update'])->name('user.editar');
     Route::post('/enviar/notas',[PerfilUsuarioController::class,'sendNote'])->name('notas.privadas.user');
+    Route::get('/historial/{id}/reservas',[PerfilUsuarioController::class,'historialReservas'])->name('view.history.reservas');
+    Route::get('/quitar/{id}/reservas',[PerfilUsuarioController::class,'reservationRemmove'])->name('remove.reserva');
     Route::get('/edit/{id}/notas',[PerfilUsuarioController::class,'editNote'])->name('edit.notas.user');
     Route::post('/actualizar/notas',[PerfilUsuarioController::class,'updateNote'])->name('actualizar.notas.user');
     Route::get('/eliminar/{id}/notas',[PerfilUsuarioController::class,'destroyNote'])->name('eliminar.notas.user');

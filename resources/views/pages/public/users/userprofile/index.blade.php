@@ -17,6 +17,10 @@
         -webkit-transition: all 1s ease;
         transition: 1s ease;
     }
+
+    #image-sad {
+        filter: drop-shadow(.5px 2.5px 28px #000)
+    }
 </style>
 @endpush
 @section('content')
@@ -149,6 +153,11 @@
                                         ?>
                                         @if(count($programas) > 0)
                                         <div class="accordion accordion-flush my-3" id="accordionFlushExample">
+                                            <div class="row mb-4">
+                                                <div class="col-12 d-grid gap-2">
+                                                    <button class="btn btn-sm btn-outline-primary" id="historiaMisReservas" data-id-usuario="{{Auth::user()->id}}">Historial</button>
+                                                </div>
+                                            </div>
                                             @foreach($programas as $programa)
                                             @if ($programa->tiposervicio_id == 1)
                                             <?php
@@ -168,7 +177,14 @@
                                                     class="accordion-collapse collapse"
                                                     data-bs-parent="#accordionFlushExample">
                                                     <div class="accordion-body">
-                                                        {!! Str::replace('|','<br />',Str::after($programa->horario_inscripcion, '|'))!!}
+                                                        <div class="row d-flex align-items-center">
+                                                            <div class="col-9">
+                                                                {!! Str::replace('|','<br />',Str::after($programa->horario_inscripcion, '|')) !!}
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <button class="btn btn-sm btn-outline-danger" id="btnQuitarReserva" data-id-servicioid="{{$programa->servicios_id}}">Quitar</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -176,9 +192,19 @@
                                             @endforeach
                                         </div>
                                         @if ($contador2 == 0)
+                                        <div class="row mb-4">
+                                            <div class="col-12 d-grid gap-2">
+                                                <button class="btn btn-sm btn-outline-primary" id="historiaMisReservas" data-id-usuario="{{Auth::user()->id}}">Historial</button>
+                                            </div>
+                                        </div>
                                         <p class="text-center my-4">Aún no tienes reservas.</p>
                                         @endif
                                         @else
+                                        <div class="row mb-4">
+                                            <div class="col-12 d-grid gap-2">
+                                                <button class="btn btn-sm btn-outline-primary" id="historiaMisReservas" data-id-usuario="{{Auth::user()->id}}">Historial</button>
+                                            </div>
+                                        </div>
                                         <p class="text-center my-4">Aún no tienes reservas.</p>
                                         @endif
                                     </div>
@@ -445,14 +471,14 @@
                                 <div class="tab-content" id="nav-tabContent">
                                     <div class="tab-pane fade show active" id="nav-notes" role="tabpanel"
                                         aria-labelledby="nav-notes-tab" tabindex="0">
-                                        <div class="row mt-3">
-                                            <div class="col-md-12 mx-3">
+                                        <div class="row mt-3 mx-2" style="width: 98%;">
+                                            <div class="col-md-12 d-grid gap-2">
                                                 <button class="btn btn-outline-primary btn-sm" id="crearnota">Crear nota privada</button>
                                             </div>
                                         </div>
                                         @if (count($notasPrivadas) > 0)
                                         <div class="row">
-                                            <div class="col-md border border-secondary mx-3 mt-3"
+                                            <div class="col-md border border-secondary mx-3 "
                                                 style="background: #f1f2f3">
                                                 <div class="accordion accordion-flush my-3" id="accordionFlushExample">
                                                     <?php
@@ -596,13 +622,13 @@
                     </div>
                     <div class="mt-3 d-flex justify-content-end">
                         <button type="button" class="btn btn-secondary mx-1" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" onclick="javascript:guardarFoto()">Guardar</button>
+                        <button type="submit" class="btn btn-primary" onclick="javascript:whileLoading()">Guardar</button>
                     </div>
                 </form>
             `);
     });
 
-    function guardarFoto() {
+    function whileLoading() {
         Swal.fire({
             icon: 'info',
             html: "Espere un momento porfavor ...",
@@ -611,18 +637,6 @@
                 Swal.showLoading();
             }
         });
-    }
-
-    function guardarNota() {
-        Swal.fire({
-            icon: 'info',
-            html: "Espere un momento porfavor ...",
-            timerProgressBar: true,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-
     }
 
     $('#btn-edit-info').on('click', function() {
@@ -688,7 +702,7 @@
                 <div class="mb-3">
                     <label for="nota-miembro" class="form-label">Título de la nota</label>
                     <input type="text" class="form-control" placeholder="Título para tu nueva nota" name="titulonota" maxlength="100" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" required>
-                    <div id="description" class="form-text text-primary">100 caracteres como máximo permitido.</div>
+                    <div id="description" class="form-text text-primary text-end">100 caracteres como máximo permitido.</div>
                     <div class="d-none" id="error">
                         <p class="text-danger">Debes ingresar una nota para enviar</p>
                     </div>
@@ -696,14 +710,14 @@
                 <div class="mb-3">
                     <label for="nota-miembro" class="form-label">Nota</label>
                     <textarea class="form-control" id="nota-miembro" name="nota" rows="3" placeholder="Escribe una nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required></textarea>
-                    <div id="description" class="form-text text-primary">300 caracteres como máximo permitido.</div>
+                    <div id="description" class="form-text text-primary text-end">300 caracteres como máximo permitido.</div>
                     <div class="d-none" id="error">
                         <p class="text-danger">Debes ingresar una nota para enviar</p>
                     </div>
                 </div>
                 <div class="mt-3 d-flex justify-content-end">
                     <button type="button" class="btn btn-secondary mx-1" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" onclick="javascript:guardarNota()">Guardar</button>
+                    <button type="submit" class="btn btn-primary" onclick="javascript:whileLoading()">Guardar</button>
                 </div>
             </form>
         `);
@@ -723,7 +737,7 @@
                 titulo
             },
             success: function(response) {
-                guardarNota();
+                whileLoading();
                 window.location.reload();
             }
         });
@@ -781,12 +795,91 @@
                     type: "GET",
                     url: `/ciar/eliminar/${idinforme}/notas`,
                     success: function(response) {
-                        guardarNota();
+                        whileLoading();
                         window.location.reload();
                     }
                 });
             }
         });
     }
+
+    $("#btnQuitarReserva").on('click', function() {
+        let servicioid = $(this).attr("data-id-servicioid");
+        Swal.fire({
+            title: `¿Eliminar Reserva?`,
+            html: `
+                    <p>Recuerda: Al quitar la reserva pasará a la sección de historial.</p>
+                `,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            allowOutsideClick: false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                whileLoading();
+                $.ajax({
+                    type: "GET",
+                    url: `/ciar/quitar/${servicioid}/reservas`,
+                    success: function(response) {
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+    });
+
+    $("#historiaMisReservas").on("click", function() {
+        $('#modalLabel').html('HISTORIAL MIS RESERVAS');
+        $('.modal_cuerpo').html('');
+        $('.modal_cuerpo').html(`
+            <div clas="row  mx-4">
+                <div class="col-12">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">DESCRIPCIÓN</th>
+                                <th scope="col">HORARIO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablehistoryreservations">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `);
+        let idusuario = $(this).attr('data-id-usuario');
+        $.ajax({
+            type: "GET",
+            url: `/ciar/historial/${idusuario}/reservas`,
+            success: function(response) {
+                $("#modal").modal("show");
+                if (response.length > 0) {
+                    response.forEach((e) => {
+                        console.log(e)
+                        $("#tablehistoryreservations").append(`
+                            <tr>
+                                <th scope="row">${e.descripcion}</th>
+                                <td>${e.horario}</td>
+                            </tr>`);
+                        });
+                } else {
+                    $('.modal_cuerpo').html(`
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="jumbotron text-center">
+                                    <h1 class="display-4"><img src="https://img.icons8.com/3d-fluency/188/downcast-face-with-sweat.png" id="image-sad"></h1>
+                                    <h4>Lo sentimos, aún no cuentas con un historial.</h1>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                }
+
+            }
+        });
+    });
 </script>
 @endpush

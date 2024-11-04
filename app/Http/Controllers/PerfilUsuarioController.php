@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\NotasMiembro;
 use App\Models\Persona;
 use App\Models\ServicioInforme;
+use App\Models\ServicioInscripcion;
 use App\Models\TipoDocumento;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -39,32 +40,9 @@ class PerfilUsuarioController extends Controller
 
         $tipoDocumentos = TipoDocumento::where('estado', 'A')->get();
 
-        $programas = DB::select("SELECT DISTINCT
-                                    s.id AS servicios_id,
-                                    s.tiposervicio_id,
-                                    ts.descripcion || ' - ' || sts.titulo || ' - ' ||sts.subtitulo AS descripcion,
-                                    per.documento,
-                                    per.apepaterno || ' ' || per.apematerno || ' ' || nombres AS apeynom,
-                                    ver_horarios(cast (s.id AS INTEGER)) AS horario,
-                                    ver_horarios_ins(cast (s.id AS INTEGER),cast (ins.persona_id AS INTEGER)) AS horario_inscripcion,
-                                    lc.costohora AS pago,
-                                    ins.estado AS estado_inscripcion,
-                                    pag.estadopago AS estado_pago,
-                                    pag.fechapago
-                                FROM servicios s
-                                LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
-                                LEFT JOIN subtipo_servicios sts ON s.subtiposervicio_id = sts.id
-                                LEFT JOIN sedes sed ON s.sede_id = sed.id
-                                LEFT JOIN lugars l ON s.lugar_id = l.id
-                                LEFT JOIN lugar_costos lc ON lc.lugars_id = l.id AND lc.descripcion = s.turno
-                                LEFT JOIN servicio_plantillas  sp ON s.id = sp.servicio_id
-                                LEFT JOIN servicio_inscripcions ins ON s.id = ins.servicio_id
-                                LEFT JOIN servicio_reservas sr ON ins.id = sr.servicioinscripcion_id
-                                LEFT JOIN personas per ON ins.persona_id = per.id
-                                LEFT JOIN servicio_pagos pag ON ins.id = pag.servicioinscripcion_id
-                                WHERE ins.persona_id = ? ", [$datosPersona["persona_id"]]);
+        $programas = $this->getProgramas($datosPersona["persona_id"], 'A');
 
-        $notasPrivadas = ServicioInforme::where("privado",true)->where('estado','A')->where('persona_id',auth()->user()->id)->orderBy('id','ASC')->get();
+        $notasPrivadas = ServicioInforme::where("privado", true)->where('estado', 'A')->where('persona_id', auth()->user()->id)->orderBy('id', 'ASC')->get();
 
         $notasEntrenador = DB::select("SELECT
                                         si.id,
@@ -79,7 +57,55 @@ class PerfilUsuarioController extends Controller
                                         WHERE si.estado = 'A' AND si.persona_id = ?
                                         ORDER BY inf.created_at", [auth()->user()->id]);
 
-        return view("pages.public.users.userprofile.index", compact("datosPersona", 'tipoDocumentos', 'programas','notasPrivadas','notasEntrenador'));
+        return view("pages.public.users.userprofile.index", compact("datosPersona", 'tipoDocumentos', 'programas', 'notasPrivadas', 'notasEntrenador'));
+    }
+
+    public function historialReservas(int $idusuario)
+    {
+        $programas = $this->getProgramas($idusuario, 'I');
+
+        return response()->json($programas);
+    }
+
+    private function getProgramas(int $idusuario, string $estado)
+    {
+        return DB::select("SELECT DISTINCT
+                                             s.id AS servicios_id,
+                                             s.tiposervicio_id,
+                                             ts.descripcion || ' - ' || sts.titulo || ' - ' ||sts.subtitulo AS descripcion,
+                                             per.documento,
+                                             per.apepaterno || ' ' || per.apematerno || ' ' || nombres AS apeynom,
+                                             ver_horarios(cast (s.id AS INTEGER)) AS horario,
+                                             ver_horarios_ins(cast (s.id AS INTEGER),cast (ins.persona_id AS INTEGER)) AS horario_inscripcion,
+                                             lc.costohora AS pago,
+                                             ins.estado AS estado_inscripcion,
+                                             pag.estadopago AS estado_pago,
+                                             pag.fechapago
+                                FROM servicios s
+                                LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
+                                LEFT JOIN subtipo_servicios sts ON s.subtiposervicio_id = sts.id
+                                LEFT JOIN sedes sed ON s.sede_id = sed.id
+                                LEFT JOIN lugars l ON s.lugar_id = l.id
+                                LEFT JOIN lugar_costos lc ON lc.lugars_id = l.id AND lc.descripcion = s.turno
+                                LEFT JOIN servicio_plantillas  sp ON s.id = sp.servicio_id
+                                LEFT JOIN servicio_inscripcions ins ON s.id = ins.servicio_id
+                                LEFT JOIN servicio_reservas sr ON ins.id = sr.servicioinscripcion_id
+                                LEFT JOIN personas per ON ins.persona_id = per.id
+                                LEFT JOIN servicio_pagos pag ON ins.id = pag.servicioinscripcion_id
+                                WHERE ins.persona_id = ? AND ins.estado = ?
+                                ORDER BY s.id DESC", [$idusuario, $estado]);
+    }
+
+    public function reservationRemmove(int $servicioid)
+    {
+        $servicioInscripcion = ServicioInscripcion::where('servicio_id', $servicioid)->get();
+
+        foreach ($servicioInscripcion as $si) {
+            $si->estado = 'I';
+            $si->save();
+        }
+
+        return redirect()->back()->with('success', 'Reserva removida correctamente, puedes encontrarla en historial.');
     }
 
     public function updateImage(Request $request)
@@ -182,7 +208,8 @@ class PerfilUsuarioController extends Controller
         return redirect()->back()->with('success', 'Datos actualizados exitosamente!');
     }
 
-    public function sendNote(Request $request){
+    public function sendNote(Request $request)
+    {
         $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
         $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
         $nota = new ServicioInforme();
@@ -199,7 +226,8 @@ class PerfilUsuarioController extends Controller
         return redirect()->route('prfole.user');
     }
 
-    public function editNote($idNota){
+    public function editNote($idNota)
+    {
         $noteById = DB::select("SELECT
                                     si.id ,si.servicioinscripcion_id ,si.detalle, si.adjuntto ,p.nombres ,p.apepaterno ,p.apematerno ,p.usuario_id, si.titulo
                                 FROM servicio_informes si
@@ -207,12 +235,13 @@ class PerfilUsuarioController extends Controller
                                 ON si.servicioinscripcion_id = si2.id
                                 LEFT JOIN personas p
                                 ON si2.persona_id = p.id
-                                WHERE si.id = ?",[$idNota]);
+                                WHERE si.id = ?", [$idNota]);
 
         return response()->json($noteById);
     }
 
-    public function updateNote(Request $request){
+    public function updateNote(Request $request)
+    {
         $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
         $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
         $nota = ServicioInforme::find($request->id);
@@ -225,7 +254,8 @@ class PerfilUsuarioController extends Controller
         return redirect()->route('prfole.user');
     }
 
-    public function destroyNote($idNota){
+    public function destroyNote($idNota)
+    {
         $nota = ServicioInforme::find($idNota);
         $nota->estado = 'I';
         $nota->save();
