@@ -76,7 +76,7 @@ class LandingController extends Controller
                                     ON u.id = mhr.model_id
                                     LEFT JOIN personas p
                                     ON p.usuario_id = u.id
-                                    WHERE mhr.role_id = 2");
+                                    WHERE mhr.role_id = 4");
         $promesas = Promesa::all();
 
         return view("pages.public.landing.index", compact("sedes", "actividades","noticias", "activitystarts","entrenadores","promesas"));
