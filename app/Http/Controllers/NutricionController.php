@@ -48,6 +48,19 @@ class NutricionController extends Controller
         return view("pages.private.actividades.nutricion.calendar", compact("progrmasNutricion", "persona"));
     }
 
+    public function validateDateTimeInRange(Request $request)
+    {
+        $idprograma = (int)$request->programa;
+        $fechaSeleccionada = (string)$request->fechaSeleccionada;
+        $fechahoraactual = (string)$request->fechaHoraActual;
+
+        // dd("idPrograma : $idprograma, fechaSeleccionada : $fechaSeleccionada, fechaHoraActual : $fechahoraactual");
+
+        $rpt = DB::select("select * from public.servicio_validafecha(?,?,?);", [$idprograma, $fechaSeleccionada, $fechahoraactual])[0];
+
+        return response()->json($rpt);
+    }
+
     public function programForDays(string $idprograma)
     {
         $user = Auth::user();
@@ -553,7 +566,7 @@ class NutricionController extends Controller
         $responsables = Persona::where('tipocategoria_id', '<>', 1)->where('tipocategoria_id', '<>', 2)->get();
         $sedes = Sede::where('estado', 'A')->get();
         $lugares = Lugar::where('estado', 'A')->get();
-        $subtiposervicios = SubtipoServicio::where('estado','A')->where('tiposervicio_id', 2)->orderBy('id', 'desc')->get();
+        $subtiposervicios = SubtipoServicio::where('estado', 'A')->where('tiposervicio_id', 2)->orderBy('id', 'desc')->get();
 
         $getProgram = DB::select("SELECT
                                 s.id , s.responsable_id,
@@ -579,12 +592,13 @@ class NutricionController extends Controller
     }
 
 
-    public function getDaysForUpdate(string $idService){
+    public function getDaysForUpdate(string $idService)
+    {
         $getDaysToProgram = DB::select("SELECT
         sp.servicio_id, sh.servicioplantilla_id, sh.dia, sh.horainicio, sh.horafin,  sh.estado
         FROM servicio_horarios sh
         LEFT JOIN servicio_plantillas sp ON sh.servicioplantilla_id = sp.id
-        WHERE sp.servicio_id = ?",[$idService]);
+        WHERE sp.servicio_id = ?", [$idService]);
         return response()->json($getDaysToProgram);
     }
 
@@ -642,7 +656,23 @@ class NutricionController extends Controller
         $servicioTenisCrear = DB::select(
             "SELECT servicio_tenis_update(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             [
-                $fechaInicio, $termino, $responsable, $actividad, $sede, $lugar, $cupos, 2, $nombre_usuario, $ip, $creacion, $turno, $categoria, $horasActividad, $estado, $idprograma]
+                $fechaInicio,
+                $termino,
+                $responsable,
+                $actividad,
+                $sede,
+                $lugar,
+                $cupos,
+                2,
+                $nombre_usuario,
+                $ip,
+                $creacion,
+                $turno,
+                $categoria,
+                $horasActividad,
+                $estado,
+                $idprograma
+            ]
         );
 
         $idRespuesta = $servicioTenisCrear[0]->servicio_tenis_update;

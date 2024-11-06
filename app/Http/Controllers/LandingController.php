@@ -33,9 +33,9 @@ class LandingController extends Controller
                                     left join public.lugars on servicios.lugar_id = lugars.id
                                     left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
                                     left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
-                                    where subtipo_servicios.titulo  is not null
+                                    where subtipo_servicios.titulo is not null
                                     and tipo_servicios.id = 3
-                                    and servicios.estado= 'A'");
+                                    and servicios.estado = 'A'");
         $noticias = Noticia::leftJoin('categoria_noticias', 'categoria_noticias.id', '=', 'noticias.categoria_id')
             ->select(
                 "noticias.id as noticia_id",
