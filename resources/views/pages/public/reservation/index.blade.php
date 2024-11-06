@@ -58,6 +58,13 @@
             </div>
         </div>
         @endif
+        <div class="col-10">
+            <div class="alert d-flex justify-content-center" role="alert">
+                <span class="descripcion" style="font-size: 20px; color:#FFF000">
+                    Recurda primero seleccionar la sede y el lugar de tu preferencia para continuar con tu reserva.
+                </span>
+            </div>
+        </div>
         <div class="col-md-10 options">
             <div class="row align-items-center">
                 <div class="col-md-6">

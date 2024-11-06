@@ -180,7 +180,6 @@ function chargeCalendar(sede, lugar) {
             } else {
                 if (checkLogin == "1") {
                     if (sede != null && lugar != null) {
-
                         axios
                             .post("/ciar/conuslta/fecha", { start, end, sede, lugar })
                             .then((resp) => {
@@ -232,11 +231,7 @@ function payPlace() {
     var precio = $('#percioModal').val();
     var conluz = "";
 
-    if ($('#conluz').is(':checked')) {
-        conluz = 'ON';
-    } else {
-        conluz = 'OFF'
-    }
+    $('#conluz').is(':checked') ? conluz = 'ON' : conluz = 'OFF';
 
     const datos =
     {

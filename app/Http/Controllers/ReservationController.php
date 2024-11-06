@@ -227,12 +227,18 @@ class ReservationController extends Controller
 
     public function show($sede, $lugar)
     {
+        // $reservations = DB::select("select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
+        //                             s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
+        //                             from servicio_reservas sr
+        //                             left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
+        //                             left join servicios s on sp.servicio_id = s.id
+        //                             WHERE s.sede_id = ? AND s.lugar_id = ? AND sr.estado= 'CA'", [$sede, $lugar]);
         $reservations = DB::select("select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
                                     s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
                                     from servicio_reservas sr
                                     left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
                                     left join servicios s on sp.servicio_id = s.id
-                                    WHERE s.sede_id = ? AND s.lugar_id = ? AND sr.estado= 'CA'", [$sede, $lugar]);
+                                    WHERE s.sede_id = ? AND s.lugar_id = ?", [$sede, $lugar]);
 
         return response()->json($reservations);
     }
