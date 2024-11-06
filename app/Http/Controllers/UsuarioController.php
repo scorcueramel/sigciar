@@ -138,6 +138,9 @@ class UsuarioController extends Controller
 
     public function update(Request $request, $id)
     {
+
+        // dd($request->input('roles'));
+
         $persona = Persona::find($id);
         $user = User::find($persona->id);
 
@@ -173,6 +176,8 @@ class UsuarioController extends Controller
         if ($request->password != null){
             $user->password = Hash::make($request->password);
         }
+        $user->save();
+
 
         $usuarioid = $user->id;
         $persona->tipodocumento_id = $request->tipodocumento;
@@ -199,12 +204,11 @@ class UsuarioController extends Controller
         }
 
         $persona->directorio = $dirName;
+        $persona->save();
 
         $user->assignRole($request->input('roles'));
         $msn = "Usuario Actualizado Correctamente";
 
-        $user->save();
-        $persona->save();
 
         return redirect()->route('usuarios.index')->with('success', $msn);
     }

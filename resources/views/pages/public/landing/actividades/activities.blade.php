@@ -21,6 +21,8 @@
             </div>
         </div>
 
+
+
         @if(empty($actividades))
             <div class="row padding2">
                 <div class="col-12 col-md-4 py-4">
