@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        @if(count($actividades) <= 0)
+        @if(empty($actividades))
             <div class="row padding2">
                 <div class="col-12 col-md-4 py-4">
                     <div class="item-actividades position-relative">

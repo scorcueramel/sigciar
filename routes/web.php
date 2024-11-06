@@ -156,6 +156,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/lista',[NutricionController::class,'index'])->name('nutricion.index');
         Route::get('/calendar',[NutricionController::class,'renderCalendar'])->name('nutricion.render.calender');
         Route::get('/calendar/{id}',[NutricionController::class,'programForDays'])->name('nutricion.render.calender.fordays');
+        Route::post('/calendar/validate/datetime',[NutricionController::class,'validateDateTimeInRange'])->name('nutricion.validate.datetime');
         Route::get('/tablanutricion',[NutricionController::class,'tableNutricion'])->name('tabla.nutricion');
         Route::get('/obtener/{document}/miembro', [NutricionController::class, 'searchMember'])->name('buscar.miembro');
         Route::get('/calendarionutricion',[NutricionController::class,'calendarioNutricion'])->name('calendario.nutricion');
