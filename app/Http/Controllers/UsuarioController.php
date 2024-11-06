@@ -206,6 +206,8 @@ class UsuarioController extends Controller
         $persona->directorio = $dirName;
         $persona->save();
 
+        DB::table('model_has_roles')->where('model_id',$usuarioid)->delete();
+
         $user->assignRole($request->input('roles'));
         $msn = "Usuario Actualizado Correctamente";
 

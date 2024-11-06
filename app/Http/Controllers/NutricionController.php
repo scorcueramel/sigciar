@@ -54,8 +54,6 @@ class NutricionController extends Controller
         $fechaSeleccionada = (string)$request->fechaSeleccionada;
         $fechahoraactual = (string)$request->fechaHoraActual;
 
-        // dd("idPrograma : $idprograma, fechaSeleccionada : $fechaSeleccionada, fechaHoraActual : $fechahoraactual");
-
         $rpt = DB::select("select * from public.servicio_validafecha(?,?,?);", [$idprograma, $fechaSeleccionada, $fechahoraactual])[0];
 
         return response()->json($rpt);
