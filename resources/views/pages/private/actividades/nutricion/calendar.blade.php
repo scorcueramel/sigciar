@@ -688,7 +688,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <p>${response}.</p>
-                                <p>De lo contrario puedes intentar registrnado al usuario dando click en el enlace a continuación <a href="{{route('registro.member')}}" target="_blank">Registrar</a></p>
+                                <p>De lo contrario puedes intentar registrnado al usuario dando click en el enlace a continuación <button class="javascript:registrarNuevo()">Registrar</button></p>
                             </div>
                         </div>
                     `);
@@ -703,6 +703,11 @@
                 }
             }
         });
+    }
+
+    function registrarNuevo(){
+        $("#mcLabel").html('');
+        $("#mcLabel").html('Registrar Nuevo Miembro');
     }
 </script>
 @endpush
