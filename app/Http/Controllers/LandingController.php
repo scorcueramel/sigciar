@@ -101,6 +101,7 @@ class LandingController extends Controller
                     left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
                     left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
                     where subtipo_servicios.titulo  is not null
+		    and tipo_servicios.id <> 1
                     and servicios.estado= 'A'");
 
         return view("pages.public.landing.actividades.activities", compact("actividades"));
