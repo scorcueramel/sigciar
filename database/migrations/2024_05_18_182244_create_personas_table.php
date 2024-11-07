@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('documento')->unique();
             $table->foreignId('tipocategoria_id')->constrained('tipo_categorias');
             $table->string('apepaterno',50);
-            $table->string('apematerno',50);
+            $table->string('apematerno',50)->nullable(true);
             $table->string('nombres',100);
             $table->string('movil',15);
             $table->string('directorio',20)->nullable(true);

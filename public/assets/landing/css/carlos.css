@@ -29,7 +29,7 @@ p{
 }
 /* -----  _header.scss     -----*/
 .menu{
-    background: url("../images/base.png") no-repeat left top !important;
+    background: url("../../images/base.png") no-repeat left top !important;
     background-size: 250px  !important;
     background-color: rgba(39,50,111,0.5) !important;
     margin-top: 1em
@@ -320,7 +320,7 @@ p{
 }
 /* -----  _footer.scss     -----*/
 .footer{
-	background: url("../images/iso-footer.svg") no-repeat left center !important;
+	background: url("../../images/iso-footer.svg") no-repeat left center !important;
 	font-size: 0.9em;
 	background-color: #323643 !important
 }
@@ -436,10 +436,10 @@ p{
 }
 /* -----  _actividades-inicio.scss     -----*/
 .actividades-inicio {
-	background: url("../images/iso-cover.svg") no-repeat left 15%;
+	background: url("../../images/iso-cover.svg") no-repeat left 15%;
 }
 .actividades-inicio p, .entrenadores p{
-	background: url("../images/arrows.svg") no-repeat left 3px;
+	background: url("../../images/arrows.svg") no-repeat left 3px;
 	padding-left: 85px;
 	font-size: 2em;
 	font-style: italic;
@@ -461,7 +461,7 @@ section .icon {
     background:-webkit-gradient(linear,left bottom,left top,color-stop(0,rgba(50,54,67,1)),color-stop(1,rgba(50,54,67,0)))
 }
 .entrenadores {
-	background: url("../images/iso-outline.svg") no-repeat center 15%;
+	background: url("../../images/iso-outline.svg") no-repeat center 15%;
 }
 .item-entrenadores .overlay-item{
     background:-webkit-gradient(linear,left bottom,left top,color-stop(0,rgba(39,50,111,1)),color-stop(1,rgba(39,50,111,0)))
@@ -636,31 +636,31 @@ section .icon {
     }
 }
 .destacado.mision {
-    background-image: url(../images/bkg-mision.webp)
+    background-image: url(../../images/bkg-mision.webp)
 }
 @media(min-width: 768px) {
     .destacado.mision {
-        background-image:url(../images/bkg-mision.webp)
+        background-image:url(../../images/bkg-mision.webp)
     }
 }
 
 @media(min-width: 1200px) {
     .destacado.mision {
-        background-image:url(../images/bkg-mision.webp)
+        background-image:url(../../images/bkg-mision.webp)
     }
 }
 .destacado.vision {
-    background-image: url(../images/bkg-vision.webp)
+    background-image: url(../../images/bkg-vision.webp)
 }
 @media(min-width: 768px) {
     .destacado.vision {
-        background-image:url(../images/bkg-vision.webp)
+        background-image:url(../../images/bkg-vision.webp)
     }
 }
 
 @media(min-width: 1200px) {
     .destacado.vision {
-        background-image:url(../images/bkg-vision.webp)
+        background-image:url(../../images/bkg-vision.webp)
     }
 }
 .vh-90 .subtitulo {
@@ -696,42 +696,42 @@ section .icon {
 
 /* -----  _nuestro-metodo.scss     -----*/
 .destacado.metodo01 {
-    background-image: url(../images/bkg-metodo-1.webp)
+    background-image: url(../../images/bkg-metodo-1.webp)
 }
 @media(min-width: 768px) {
     .destacado.metodo01 {
-        background-image:url(../images/bkg-metodo-1.webp)
+        background-image:url(../../images/bkg-metodo-1.webp)
     }
 }
 @media(min-width: 1200px) {
     .destacado.metodo01 {
-        background-image:url(../images/bkg-metodo-1.webp)
+        background-image:url(../../images/bkg-metodo-1.webp)
     }
 }
 .destacado.metodo02 {
-    background-image: url(../images/bkg-metodo-2.webp)
+    background-image: url(../../images/bkg-metodo-2.webp)
 }
 @media(min-width: 768px) {
     .destacado.metodo02 {
-        background-image:url(../images/bkg-metodo-2.webp)
+        background-image:url(../../images/bkg-metodo-2.webp)
     }
 }
 @media(min-width: 1200px) {
     .destacado.metodo02 {
-        background-image:url(../images/bkg-metodo-2.webp)
+        background-image:url(../../images/bkg-metodo-2.webp)
     }
 }
 .destacado.metodo03 {
-    background-image: url(../images/bkg-metodo-3.webp)
+    background-image: url(../../images/bkg-metodo-3.webp)
 }
 @media(min-width: 768px) {
     .destacado.metodo03 {
-        background-image:url(../images/bkg-metodo-3.webp)
+        background-image:url(../../images/bkg-metodo-3.webp)
     }
 }
 @media(min-width: 1200px) {
     .destacado.metodo03 {
-        background-image:url(../images/bkg-metodo-3.webp)
+        background-image:url(../../images/bkg-metodo-3.webp)
     }
 }
 span.number{
@@ -762,5 +762,5 @@ span.number{
 	color: #27326f
 }
 .datos-personales .utr{
-	font-size: 2.4em
+	font-size: 1.8em
 }

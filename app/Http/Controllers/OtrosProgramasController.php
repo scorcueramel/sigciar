@@ -9,6 +9,7 @@ use App\Models\Sede;
 use App\Models\Servicio;
 use App\Models\ServicioInforme;
 use App\Models\SubtipoServicio;
+use App\Models\TipoDocumento;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -125,8 +126,9 @@ class OtrosProgramasController extends Controller
                                             LEFT JOIN personas p ON s.responsable_id = p.id
                                             LEFT JOIN subtipo_servicios ss ON s.subtiposervicio_id = ss.id
                                             WHERE s.deleted_at IS NULL AND s.tiposervicio_id = 4");
+        $tipoDocs = TipoDocumento::where('estado', 'A')->get();
 
-        return view("pages.private.actividades.otros-programas.calendar", compact("otrosProgramas","persona"));
+        return view("pages.private.actividades.otros-programas.calendar", compact("otrosProgramas","tipoDocs","persona"));
     }
 
     public function programForDays(string $idprograma)

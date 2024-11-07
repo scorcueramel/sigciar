@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#lugar').select2({
         theme: 'bootstrap-5',
         minimumResultsForSearch: -1,
-        placeholder: "Seleccionar Lugar",
+        placeholder: "Seleccionar Cancha",
     });
 
     setTimeout(() => {

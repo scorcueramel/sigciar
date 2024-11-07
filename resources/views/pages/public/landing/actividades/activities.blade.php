@@ -7,7 +7,7 @@
         <div class="row justify-content-center justify-content-md-start position-relative">
             <div class="col-11 col-md-12 col-xl-12 text-center">
                 <div class="padding2"></div>
-                <h2 class="titulo altas fw-bold mb-3 mb-lg-4">Actividades</h2>
+                <h2 class="titulo altas fw-bold mb-3 mb-lg-4">Programas</h2>
             </div>
         </div>
     </div>
@@ -17,7 +17,7 @@
         <div class="row justify-content-center">
             <div class="col-12 col-md-8">
                 <h2 class="titulo mainColor altas fw-bold mt-5 mb-4">¡Entrena Hoy!</h2>
-                <p>Elige tu actividad e inscríbete ahora:</p>
+                <p>Elige tu programa e inscríbete ahora:</p>
             </div>
         </div>
 

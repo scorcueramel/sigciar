@@ -41,7 +41,7 @@
             <div class="row">
                 <div class="col-12">
                     <label for="cargaprogramas" class="form-label">Programas de Otros Programas</label>
-                    <select class="form-select" id="cargaprogramas" required>
+                    <select class="form-select" id="cargaprogramas" name="cargaprogramas" required>
                         <option selected disabled value="">Seleccina un Programa</option>
                         @foreach ($otrosProgramas as $programa)
                         <option value="{{$programa->id}}">{{$programa->categoria}} / {{$programa->sede}} / {{$programa->lugar_descripcion}}</option>
@@ -50,6 +50,10 @@
                 </div>
                 <div class="col-12 mt-4">
                     <div id='otrosprogramas'></div>
+                    {{-- inputs para luego de registrar miembor, opcional --}}
+                    <input type="hidden" id="fecha">
+                    <input type="hidden" id="start">
+                    <input type="hidden" id="end">
                 </div>
             </div>
         </div>
@@ -191,6 +195,10 @@
                         var start = info.startStr;
                         var end = info.endStr;
 
+                        $("#fecha").val(fecha);
+                        $("#start").val(start);
+                        $("#end").val(end);
+
                         var programa = $("#cargaprogramas").val();
 
                         var fechaSeleccionada = formatdatefromvalidate(start);
@@ -210,75 +218,7 @@
                             dataType: 'JSON',
                             success: function(response) {
                                 if (response.codigo == 0) {
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "{{route('nutricion.obtenerprecio')}}",
-                                        success: function(response) {
-                                            $("#precio_cita").val(`S/.${response[0].lugar_costo_hora}.00`);
-                                            if (response[0].tipo == 'V') {
-                                                $("#precio_cita").removeAttr('readonly');
-                                            }
-                                        }
-                                    });
-                                    $("#modalcomponent").modal('show');
-                                    $("#mcLabel").text(`
-                                        RESERVA DE CITA
-                                    `);
-                                    $("#mcbody").html(`
-                                        <form method="POST" action="{{route('otrosprogramas.inscripcion')}}" id="inscribirmiembro">
-                                        @csrf
-                                            <input type="hidden" id="idservicio" name="idservicio" value="${id}"/>
-                                            <div class="row">
-                                                <div class="col-sm-12 col-md-6 col-lg-6">
-                                                    <div class="mb-3">
-                                                        <input type="hidden" name="fecha" value="${fecha}" id="fecha">
-                                                        <label for="fecha" class="form-label">Fecha Seleccionada</label>
-                                                        <input type="text" class="form-control" value="${formatearFecha(fecha)}" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12 col-md-6 col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label for="hora_inicio" class="form-label">Hora de Inicio</label>
-                                                        <input type="text" class="form-control" id="hora_inicio" name="hora_inicio" value="${formatearHora(start)}" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12 col-md-6 col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label for="hora_fin" class="form-label">Hora de Termino</label>
-                                                        <input type="text" class="form-control" name="hora_fin" id="hora_fin" value="${formatearHora(end)}" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12 col-md-6 col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label for="hora_fin" class="form-label">Precio Cita</label>
-                                                        <input type="text" name="precio_cita" class="form-control" id="precio_cita" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm-12 col-md-12 col-lg-12">
-                                                    <label for="buscar-miembro" class="form-label">Búscar Miembro</label>
-                                                    <div class="input-group mb-3">
-                                                        <input type="text" class="form-control" placeholder="Búscar Miembro" aria-label="Búsacar Miembro" aria-describedby="datos-miembro" id="documento-miembro">
-                                                        <button class="btn btn-outline-primary" type="button" onclick="javascript:buscarMiembro(document.getElementById('documento-miembro').value)">Búscar</button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12 col-md-12 col-lg-12">
-                                                    <label for="datos-miembro" class="form-label">Nombre de Miembro</label>
-                                                    <div class="input-group mb-3">
-                                                        <span class="input-group-text" id="mimebro-encontrado">Datos</span>
-                                                        <input type="hidden" id="id_miembro" name="id_miembro">
-                                                        <input type="text" class="form-control" id="miembro-encontrado" placeholder="Datos del Miembro" aria-label="mimebro-encontrado" aria-describedby="mimebro-encontrado" readonly>
-                                                        <button class="btn btn-outline-primary" type="submit" id="inscribirMiembro" disabled>Reservar</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    `);
-                                    $('.cancelButton').on('click', function() {
-                                        $("#mcLabel").text(``);
-                                        $("#mcbody").text(``);
-                                    });
+                                    cargarFormularioInscripcion(id, fecha, start, end);
                                 } else if (response.codigo == 88) {
                                     $("#modalcomponent").modal('show');
                                     $("#mcLabel").text(`
@@ -323,6 +263,79 @@
             }
         });
     });
+
+    function cargarFormularioInscripcion(id, fecha, start, end) {
+        let title = $('select[name="cargaprogramas"] option:selected').text().split('/');
+
+        $.ajax({
+            type: "GET",
+            url: "{{route('nutricion.obtenerprecio')}}",
+            success: function(response) {
+                $("#precio_cita").val(`S/.${response[0].lugar_costo_hora}.00`);
+                if (response[0].tipo == 'V') {
+                    $("#precio_cita").removeAttr('readonly');
+                }
+            }
+        });
+        $("#modalcomponent").modal('show');
+        $("#mcLabel").html(`RESERVEAR CITA PARA <strong>${title[0]}</strong>`);
+        $("#mcbody").html(`
+            <form method="POST" action="{{route('nutricion.inscripcion')}}" id="inscribirmiembro">
+            @csrf
+                <input type="hidden" id="idservicio" name="idservicio" value="${id}"/>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="mb-3">
+                            <input type="hidden" name="fecha" value="${fecha}" id="fecha">
+                            <label for="fecha" class="form-label">Fecha Seleccionada</label>
+                            <input type="text" class="form-control" value="${formatearFecha(fecha)}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="mb-3">
+                            <label for="hora_inicio" class="form-label">Hora de Inicio</label>
+                            <input type="text" class="form-control" id="hora_inicio" name="hora_inicio" value="${formatearHora(start)}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="mb-3">
+                            <label for="hora_fin" class="form-label">Hora de Termino</label>
+                            <input type="text" class="form-control" name="hora_fin" id="hora_fin" value="${formatearHora(end)}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="mb-3">
+                            <label for="hora_fin" class="form-label">Precio Cita</label>
+                            <input type="text" name="precio_cita" class="form-control" id="precio_cita" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <label for="buscar-miembro" class="form-label">Búscar Miembro</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Búscar Miembro" aria-label="Búsacar Miembro" aria-describedby="datos-miembro" id="documento-miembro">
+                            <button class="btn btn-outline-primary" type="button" onclick="javascript:buscarMiembro(document.getElementById('documento-miembro').value)">Búscar</button>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 errordocumento mb-3" style="margin-top:-10px"></div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <label for="datos-miembro" class="form-label">Nombre de Miembro</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="mimebro-encontrado">Datos</span>
+                            <input type="hidden" id="id_miembro" name="id_miembro">
+                            <input type="text" class="form-control" id="miembro-encontrado" placeholder="Datos del Miembro" aria-label="mimebro-encontrado" aria-describedby="mimebro-encontrado" readonly>
+                            <button class="btn btn-outline-primary" type="submit" id="inscribirMiembro" disabled>Reservar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        `);
+        $('.cancelButton').on('click', function() {
+            $("#mcLabel").text(``);
+            $("#mcbody").text(``);
+        });
+    }
 
     function formatdatefromvalidate(fecha) {
         var fecha_date = fecha.split('T');
@@ -689,7 +702,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <p>${response}.</p>
-                                <p>De lo contrario puedes intentar registrnado al usuario dando click en el enlace a continuación <a href="{{route('registro.member')}}" target="_blank">Registrar</a></p>
+                                <p>De lo contrario puedes intentar registrnado al usuario dando click al botón a continuación <button class="btn btn-sm btn-primary" onclick="javascript:registrarNuevo()">Registrar</button></p>
                             </div>
                         </div>
                     `);
@@ -704,6 +717,300 @@
                 }
             }
         });
+    }
+
+    function registrarNuevo() {
+        $(".modal-footer").addClass('d-none');
+        $("#mcLabel").html('');
+        $("#mcLabel").html('Registrar Nuevo Miembro');
+        $("#mcbody").html('');
+        $("#mcbody").append(`
+                <div class="row mb-3">
+                    <label for="tipodocumento_id" class="col-md-4 col-form-label text-md-end">{{ __('Tipo de documento:') }}</label>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <label class="input-group-text" for="tipodocumento_id"><i class="fa-solid fa-id-card"></i></label>
+                            <select class="form-select" id="tipodocumento_id" name="tipodocumento_id" onchange="$('#documentto').removeAttr('readonly')" required>
+                                <option selected disabled>Seleccionar tipo</option>
+                                @foreach ($tipoDocs as $tpd)
+                                    <option value="{{ $tpd->id }}">{{ $tpd->abreviatura }}</option>
+                                @endforeach
+                            </select>
+                            <div class="d-none errortipodocumento">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="documento" class="col-md-4 col-form-label text-md-end">{{ __('Documento') }}</label>
+                    <div class="col-md-6">
+                        <input id="documentto" type="number" class="form-control @error('documento') is-invalid @enderror" name="documento" value="{{ old('documento') }}" maxLength="12" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" inputmode="numeric" readonly required>
+                        <div class="d-none errordocumento">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="apepaterno" class="col-md-4 col-form-label text-md-end">{{ __('Apellido Parterno') }}</label>
+
+                    <div class="col-md-6">
+                        <input id="apepaterno" type="text" class="form-control @error('apepaterno') is-invalid @enderror" name="apepaterno" value="{{ old('apepaterno') }}" maxlength="50" required>
+
+                        <div class="d-none errorapepaterno">
+                            <strong class="apepaterno"></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="apematerno" class="col-md-4 col-form-label text-md-end">{{ __('Apellido Marterno') }}</label>
+
+                    <div class="col-md-6">
+                        <input id="apematerno" type="text" class="form-control @error('apematerno') is-invalid @enderror" name="apematerno" value="{{ old('apematerno') }}" maxlength="50" required>
+
+                        <div class="d-none erroraapematerno">
+                            <strong class="apematerno"></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="nombres" class="col-md-4 col-form-label text-md-end">{{ __('Nombres') }}</label>
+
+                    <div class="col-md-6">
+                        <input id="nombres" type="text" class="form-control @error('nombres') is-invalid @enderror" name="nombres" value="{{ old('nombres') }}" maxlength="50" required>
+
+                        <div class="d-none erroranombres">
+                            <strong class="nombres"></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="movil" class="col-md-4 col-form-label text-md-end">{{ __('movil') }}</label>
+
+                    <div class="col-md-6">
+                        <input id="movil" type="text" class="form-control @error('movil') is-invalid @enderror" name="movil" value="{{ old('movil') }}" maxLength="12" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required>
+
+                        <div class="d-none erroramovil">
+                            <strong class="movil"></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Correo Eléctronico') }}</label>
+
+                    <div class="col-md-6">
+                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                        <div class="d-none erroraemail">
+                            <strong class="email"></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Contraseña') }}</label>
+
+                    <div class="col-md-6">
+                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+
+                        <div class="d-none errorapassword">
+                            <strong class="password"></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirmar Contraseña') }}</label>
+
+                    <div class="col-md-6">
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+
+                        <div class="d-none errorapassword-confirm">
+                            <strong class="password-confirm"></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-0 d-flex justify-content-between text-center">
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-sm btn-primary" onclick="javascript:registrarMiembro();">
+                            {{ __('Register') }}
+                        </button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+                            {{ __('Cerrar') }}
+                        </button>
+                    </div>
+                </div>
+        `);
+
+    }
+
+    function obtenerCamposRegistroMiembros() {
+        let tipodocumento = $("#tipodocumento_id").val();
+        let documento = $("#documentto").val();
+        let apepaterno = $("#apepaterno").val();
+        let apematerno = $("#apematerno").val();
+        let nombres = $("#nombres").val();
+        let movil = $("#movil").val();
+        let email = $("#email").val();
+        let password = $("#password").val();
+        let passwordconfirm = $("#password-confirm").val();
+
+        let data = {
+            tipodocumento,
+            documento,
+            apepaterno,
+            apematerno,
+            nombres,
+            movil,
+            email,
+            password,
+            passwordconfirm,
+        }
+
+        return data
+    }
+
+    function registrarMiembro() {
+        $("#modalcomponent").modal('hide');
+        let data = obtenerCamposRegistroMiembros();
+        Swal.fire({
+            icon: 'info',
+            html: "Espere un momento porfavor ...",
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "{{route('nutricion.registro.member')}}",
+            data: data,
+            dataType: "JSON",
+            success: function(response) {
+                Swal.close();
+                Swal.fire({
+                        title: 'Registro Exitoso',
+                        html: '<p>Miembro <strong>registrado satisfactoriamente</strong>, ahora puedes continuar con realizar una reserve a su nombre</p>',
+                        icon: 'success',
+                        allowOutsideClick: false,
+                        showCloseButton: false,
+                        showConfirmButton: true,
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: 'Entendido!',
+                        showCancelButton: false,
+                        focusConfirm: true,
+                    })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            // window.location.reload();
+                            let idprograma = $("#cargaprogramas").val();
+                            let fecha = $("#fecha").val()
+                            let start = $("#start").val()
+                            let end = $("#end").val()
+                            cargarFormularioInscripcion(idprograma, fecha, start, end);
+                            $("#documento-miembro").val(data.documento);
+                        }
+                    });
+            },
+            error: function(error) {
+                Swal.close();
+                $("#modalcomponent").modal('show');
+                let errores = error.responseJSON;
+                gestionMensajes(errores.errors);
+            }
+        });
+    }
+
+    function gestionMensajes(erroresresp) {
+        let tipodocumentoexist = 'tipodocumento' in erroresresp;
+        let documentoexist = 'documento' in erroresresp;
+        let apepaternoexist = 'apepaterno' in erroresresp;
+        let apematernoexist = 'apematerno' in erroresresp;
+        let nombresexist = 'nombres' in erroresresp;
+        let movilexist = 'movil' in erroresresp;
+        let emailexist = 'email' in erroresresp;
+        let passwordexist = 'password' in erroresresp;
+        let passwordconfirmexist = 'passwordconfirm' in erroresresp;
+
+        if (tipodocumentoexist) {
+            $('.errortipodocumento').removeClass('d-none');
+            $('.errortipodocumento').html(`<small class="text-danger">${erroresresp.tipodocumento}</small>`)
+        } else {
+            $('.errortipodocumento').addClass('d-none');
+            $('.errortipodocumento').html('');
+        }
+
+        if (documentoexist) {
+            $('.errordocumento').removeClass('d-none');
+            $('.errordocumento').html(`<small class="text-danger">${erroresresp.documento}</small>`)
+        } else {
+            $('.errordocumento').addClass('d-none');
+            $('.errordocumento').html('');
+        }
+
+        if (apepaternoexist) {
+            $('.errorapepaterno').removeClass('d-none');
+            $('.errorapepaterno').html(`<small class="text-danger">${erroresresp.apepaterno}</small>`)
+        } else {
+            $('.errorapepaterno').addClass('d-none');
+            $('.errorapepaterno').html('');
+        }
+
+        if (apematernoexist) {
+            $('.erroraapematerno').removeClass('d-none');
+            $('.erroraapematerno').html(`<small class="text-danger">${erroresresp.apematerno}</small>`)
+        } else {
+            $('.erroraapematerno').addClass('d-none');
+            $('.erroraapematerno').html('');
+        }
+
+        if (nombresexist) {
+            $('.erroranombres').removeClass('d-none');
+            $('.erroranombres').html(`<small class="text-danger">${erroresresp.nombres}</small>`)
+        } else {
+            $('.erroranombres').addClass('d-none');
+            $('.erroranombres').html('');
+        }
+
+        if (movilexist) {
+            $('.erroramovil').removeClass('d-none');
+            $('.erroramovil').html(`<small class="text-danger">${erroresresp.movil}</small>`)
+        } else {
+            $('.erroramovil').addClass('d-none');
+            $('.erroramovil').html('');
+        }
+
+        if (emailexist) {
+            $('.erroraemail').removeClass('d-none');
+            $('.erroraemail').html(`<small class="text-danger">${erroresresp.email}</small>`)
+        } else {
+            $('.erroraemail').addClass('d-none');
+            $('.erroraemail').html('');
+        }
+
+        if (passwordexist) {
+            $('.errorapassword').removeClass('d-none');
+            $('.errorapassword').html(`<small class="text-danger">${erroresresp.password}</small>`)
+        } else {
+            $('.errorapassword').addClass('d-none');
+            $('.errorapassword').html('');
+        }
+
+        if (passwordconfirmexist) {
+            $('.errorapassword-confirm').removeClass('d-none');
+            $('.errorapassword-confirm').html(`<small class="text-danger">${erroresresp.passwordconfirm}</small>`)
+        } else {
+            $('.errorapassword-confirm').addClass('d-none');
+            $('.errorapassword-confirm').html('');
+        }
     }
 </script>
 @endpush

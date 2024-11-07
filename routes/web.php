@@ -56,7 +56,7 @@ Route::group(['prefix' => 'ciar'], function () {
     Route::get('/',[LandingController::class,'index'])->name('landing.index');
     // Landing público
     /*ACTIVIDADES*/
-    Route::get('/actividades',[LandingController::class, 'activities'])->name('landing.activities');
+    Route::get('/actividades',[LandingController::class, 'activities'])->name('landing.programas');
     Route::get('/detalle/{id}/actividad',[LandingController::class,'activitiesDetails'])->name('actividades.detalle');
     /*END ACTIVIDADES*/
 
@@ -178,8 +178,9 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::post('/actualizar/notas',[NutricionController::class,'updateNote'])->name('actualizar.notas.miembros');
         Route::get('/editar/{id}/actividad',[NutricionController::class, 'edit'])->name('nutricion.editar.actividad');
         Route::get('/obtener/{id}/dias',[NutricionController::class, 'getDaysForUpdate'])->name('nutricion.obtener.editar');
-
         Route::post('/editar/actividad',[NutricionController::class, 'update'])->name('nutricion.actualizar.actividad');
+
+        Route::post('/registro/member', [NutricionController::class, 'registerMember'])->name('nutricion.registro.member');
     });
 
     Route::group(['prefix'=>'otros-programas'],function(){

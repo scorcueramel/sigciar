@@ -9,11 +9,14 @@ use App\Models\Sede;
 use App\Models\Servicio;
 use App\Models\ServicioInforme;
 use App\Models\SubtipoServicio;
+use App\Models\TipoDocumento;
 use App\Models\User;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -44,8 +47,9 @@ class NutricionController extends Controller
                                             LEFT JOIN personas p ON s.responsable_id = p.id
                                             LEFT JOIN subtipo_servicios ss ON s.subtiposervicio_id = ss.id
                                             where s.deleted_at IS NULL AND s.tiposervicio_id = 2");
+        $tipoDocs = TipoDocumento::where('estado', 'A')->get();
 
-        return view("pages.private.actividades.nutricion.calendar", compact("progrmasNutricion", "persona"));
+        return view("pages.private.actividades.nutricion.calendar", compact("progrmasNutricion", "persona", "tipoDocs"));
     }
 
     public function validateDateTimeInRange(Request $request)
@@ -692,5 +696,67 @@ class NutricionController extends Controller
         $respuesta = Str::of($respuestaHorarios)->after(',')->before(')');
 
         return response()->json(['idPlantilla' => $idPlantillaConvert, 'idRegistro' => $idRegistroConvert, 'respRegistro' => $respuesta]);
+    }
+
+    public function registerMember(Request $request)
+    {
+
+        $persona_registra = Persona::where('usuario_id', Auth::user()->id)->get()[0];
+        $persona = "$persona_registra->nombres $persona_registra->apepaterno $persona_registra->apermaterno";
+
+        $request->validate([
+            'tipodocumento' => ['required'],
+            'documento' => ['required', 'unique:personas'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'min:8'],
+            'passwordconfirm' => ['required_with:password', 'same:password', 'min:8'],
+            'apepaterno' => ['required'],
+            'apematerno' => ['required'],
+            'nombres' => ['required'],
+            'movil' => ['required'],
+
+        ], [
+            'tipodocumento.required' => 'El tipo de documento es obligatorio.',
+            'documento.required' => 'El número de documento es obligatorio.',
+            'documento.unique' => 'Este número de documento ya fue registrado cona anterioridad',
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'movil.required' => 'El número movil es obligatorio.',
+            'email.email' => 'El correo electrónico no es valido.',
+            'email.max' => 'El correo electrónico debe contar con un máximo de 255 caracteres.',
+            'email.unique' => 'El correo electrónico ya fue registrado con anterioridad.',
+            'password.required' => 'La contraseña es obligatoria.',
+            'passwordconfirm.same' => 'Las contraseñas deben coincidir.',
+            'passwordconfirm.min' => 'La contraseña debe contar con un largo minimo de 8 carateres.',
+            'password.min' => 'La contraseña debe contar con un largo minimo de 8 carateres.',
+            'apepaterno.required' => 'El apellido paterno es obligatorio.',
+            'apematerno.required' => 'El apellido materno es obligatorio.',
+            'nombres.required' => 'El nombre es obligatorio.',
+        ]);
+
+        $user = User::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        Persona::create([
+            'imagen' => null,
+            'fecharegistro' => Carbon::now()->toDateTimeString(),
+            'tipodocumento_id' => $request->tipodocumento,
+            'documento' => $request->documento,
+            'tipocategoria_id' => 2,
+            'apepaterno' => Str::upper($request->apepaterno),
+            'apematerno' => Str::upper($request->apematerno),
+            'nombres' => Str::upper($request->nombres),
+            'movil' => $request->movil,
+            'estado' => 'A',
+            'usuario_creador' => $persona,
+            'usuario_editor' => $persona,
+            'ip_usuario' => $request->ip(),
+            'usuario_id' => $user->id,
+        ]);
+
+        $msn = "Miembro registrado satisfactoriamente, ya puedes proceder con la reserva.";
+
+        return response()->json(['code' => 200, 'message' => $msn]);
     }
 }
