@@ -19,23 +19,28 @@ class LandingController extends Controller
     {
         $sedes = Sede::where('estado', 'A')->orderBy('id', 'asc')->get();
         $actividades = DB::select("select distinct
-                                    tipo_servicios.id as tiposervicios_id,
-                                    subtipo_servicios.id as subtiposervicios_id,
-                                    subtipo_servicios.medicion,
-                                    subtipo_servicios.titulo,
-                                    subtipo_servicios.subtitulo,
-                                    subtipo_servicios.imagen,
-                                    lugar_costos.costohora as desde
-                                    from servicios
-                                    left join public.tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
-                                    left join public.subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
-                                    left join public.sedes on servicios.sede_id = sedes.id
-                                    left join public.lugars on servicios.lugar_id = lugars.id
-                                    left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
-                                    left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
-                                    where subtipo_servicios.titulo is not null
-                                    and tipo_servicios.id = 3
-                                    and servicios.estado = 'A'");
+                                                tipo_servicios.id as tiposervicios_id,
+                                                subtipo_servicios.id as subtiposervicios_id,
+                                                subtipo_servicios.medicion,
+                                                subtipo_servicios.titulo,
+                                                subtipo_servicios.subtitulo,
+                                                subtipo_servicios.imagen,
+                                                (lugar_costos.costohora * 4) as desde,
+                                                lugar_costos.id,
+                                                lugars.id
+                                                from servicios
+                                                left join public.tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
+                                                left join public.subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
+                                                left join public.sedes on servicios.sede_id = sedes.id
+                                                left join public.lugars on servicios.lugar_id = lugars.id
+                                                left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  --and lugar_costos.descripcion = 'DIURNO'
+                                                left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
+                                                where subtipo_servicios.titulo  is not null
+                                                and tipo_servicios.id = 3
+                                                and servicios.estado= 'A'
+                                                limit 5");
+
+
         $noticias = Noticia::leftJoin('categoria_noticias', 'categoria_noticias.id', '=', 'noticias.categoria_id')
             ->select(
                 "noticias.id as noticia_id",
@@ -79,7 +84,7 @@ class LandingController extends Controller
                                     WHERE mhr.role_id = 4");
         $promesas = Promesa::all();
 
-        return view("pages.public.landing.index", compact("sedes", "actividades","noticias", "activitystarts","entrenadores","promesas"));
+        return view("pages.public.landing.index", compact("sedes", "actividades", "noticias", "activitystarts", "entrenadores", "promesas"));
     }
 
     //SECTION ACTIVITY
@@ -101,9 +106,9 @@ class LandingController extends Controller
                     left join public.lugar_costos on lugar_costos.lugars_id = lugars.id  and lugar_costos.descripcion = 'DIURNO'
                     left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
                     where subtipo_servicios.titulo  is not null
-		    and tipo_servicios.id <> 1
-                    and servicios.estado= 'A'");
-
+                    and tipo_servicios.id <> 1
+                    and servicios.estado= 'A'
+                    order by subtipo_servicios.medicion asc");
         return view("pages.public.landing.actividades.activities", compact("actividades"));
     }
 
@@ -118,11 +123,12 @@ class LandingController extends Controller
     {
         $promesas = Promesa::all();
         $noticiaPromesas = DB::select("SELECT * FROM noticias n WHERE n.categoria_id = 1 ORDER BY id DESC LIMIT 1;");
-        return view("pages.public.landing.promises",compact('promesas','noticiaPromesas'));
+        return view("pages.public.landing.promises", compact('promesas', 'noticiaPromesas'));
     }
-    public function promisesDetails(string $id){
+    public function promisesDetails(string $id)
+    {
         $promesa = Promesa::find($id);
-        return view("pages.public.landing.promesas.promesa-detalle",compact("promesa"));
+        return view("pages.public.landing.promesas.promesa-detalle", compact("promesa"));
     }
     // END SECTION PROMISES
 

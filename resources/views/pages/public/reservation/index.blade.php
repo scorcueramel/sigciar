@@ -24,7 +24,7 @@
         <div class="col-md-6">
             <div class="row mb-5">
                 <div class="col-md-12 text-center">
-                    <h1 class="title_rse text-white">Reserva de Espacios</h1>
+                    <h1 class="title_rse text-white">Reserva tu Cancha</h1>
                 </div>
             </div>
             <div class="row">
@@ -61,7 +61,7 @@
         <div class="col-10">
             <div class="alert d-flex justify-content-center" role="alert">
                 <span class="descripcion" style="font-size: 20px; color:#FFF000">
-                    Recurda primero seleccionar la sede y el lugar de tu preferencia para continuar con tu reserva.
+                    Recuerda primero seleccionar la sede y la cancha de tu preferencia para continuar con tu reserva.
                 </span>
             </div>
         </div>
@@ -97,7 +97,7 @@
                     <div class="input-group mb-3">
                         {{-- <label class="input-group-text border-secondary shadow-sm" for="lugar"><i class="fa-solid fa-court-sport"></i></label> --}}
                         <select class="form-select border-secondary shadow-sm" id="lugar">
-                            <option value="" select disabled>Seleccinar Lugar</option>
+                            <option value="" select disabled>Seleccinar Cancha</option>
                         </select>
                     </div>
                 </div>

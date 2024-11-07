@@ -43,7 +43,7 @@ class UsuarioController extends Controller
             'numerodocumento' => 'required',
             'nombres' => 'required',
             'apepaterno' => 'required',
-            'apematerno' => 'required',
+            // 'apematerno' => 'required',
             'movil' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
@@ -55,8 +55,8 @@ class UsuarioController extends Controller
             'nombres.max' => 'El nombre solo permite 50 caracteres como máximo',
             'apepaterno.required' => 'No debes dejar en blanco el apellido parterno',
             'apepaterno.max' => 'El apellido paterno solo permite 50 caracteres como máximo',
-            'apematerno.required' => 'No debes dejar en blanco el apellido marterno',
-            'apematerno.max' => 'El apellido materno solo permite 50 caracteres como máximo',
+            // 'apematerno.required' => 'No debes dejar en blanco el apellido marterno',
+            // 'apematerno.max' => 'El apellido materno solo permite 50 caracteres como máximo',
             'email.required' => 'No debes dejar en blanco el correo',
             'tipo_documento.required' => 'Debes seleccionar un tipo de documento',
             'documento' => 'No debes dejar en blanco el número de documento',
@@ -151,7 +151,7 @@ class UsuarioController extends Controller
             'numerodocumento' => 'required',
             'nombres' => 'required',
             'apepaterno' => 'required',
-            'apematerno' => 'required',
+            // 'apematerno' => 'required',
             'movil' => 'required',
             'password' => 'same:confirm-password',
             'roles' => 'required'
@@ -160,8 +160,8 @@ class UsuarioController extends Controller
             'nombres.max' => 'El nombre solo permite 50 caracteres como máximo',
             'apepaterno.required' => 'No debes dejar en blanco el apellido parterno',
             'apepaterno.max' => 'El apellido paterno solo permite 50 caracteres como máximo',
-            'apematerno.required' => 'No debes dejar en blanco el apellido marterno',
-            'apematerno.max' => 'El apellido materno solo permite 50 caracteres como máximo',
+            // 'apematerno.required' => 'No debes dejar en blanco el apellido marterno',
+            // 'apematerno.max' => 'El apellido materno solo permite 50 caracteres como máximo',
             'correo.required' => 'No debes dejar en blanco el correo',
             'tipo_documento.required' => 'Debes seleccionar un tipo de documento',
             'documento' => 'No debes dejar en blanco el número de documento',
@@ -185,7 +185,7 @@ class UsuarioController extends Controller
         $persona->tipocategoria_id = 3;
         $persona->nombres = Str::upper($request->nombres);
         $persona->apepaterno = Str::upper($request->apepaterno);
-        $persona->apematerno = Str::upper($request->apematerno);
+        $persona->apematerno = Str::upper($request->apematerno) ?? '';
         $persona->movil = $request->movil;
         $persona->estado = $request->estado;
         $persona->usuario_editor = $usuarioActual;

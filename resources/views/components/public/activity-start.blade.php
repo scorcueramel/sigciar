@@ -5,7 +5,7 @@
                 <h2 class="titulo altas fw-bold mb-3 mb-lg-4" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="500">Centro internacional <span data-aos="fade-left" data-aos-duration="1000" data-aos-delay="700">de alto rendimiento</span></h2>
             </div>
             <div class="col-12 col-md-6 text-start mt-5">
-                <p data-aos="fade-right" data-aos-duration="1000" data-aos-delay="500">Conoce todas nuestras actividades</p>
+                <p data-aos="fade-right" data-aos-duration="1000" data-aos-delay="500">Conoce todos nuestros programas</p>
             </div>
         </div>
     </div>
@@ -175,7 +175,7 @@
             </div>
         </div>
         <div class="justify-content-center">
-            <a class="btn-cta altas" href="actividades.php" data-aos="fade-up" data-aos-duration="1000"><img src="{{asset('assets/images/arrow-bt.svg')}}" class="icon me-2 me-lg-1" />Todas las actividades</a>
+            <a class="btn-cta altas" href="{{ route('landing.programas') }}" data-aos="fade-up" data-aos-duration="1000"><img src="{{asset('assets/images/arrow-bt.svg')}}" class="icon me-2 me-lg-1" />Todos los programas</a>
         </div>
     </div>
 </section>

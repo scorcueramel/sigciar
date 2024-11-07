@@ -12,9 +12,9 @@
                 <ul class="cloud-tags">
                     @foreach ($promesas as $promesa)
                     <li class="p-3" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="50">
-                        <a href="#">
+                        <a href="{{url('/ciar/nuestras-promesas/'.$promesa->id.'/detalle')}}">
                             <div class="bgWhite item d-flex justify-content-center align-items-center text-start">
-                                <img class="foto me-3" src="{{asset('/storage/promesas/'.$promesa->foto)}}" alt="">
+                                <img class="foto me-3" src="{{asset('/storage/promesas/'.$promesa->foto)}}" alt="Fotos de promesas">
                                 <ul class="info nolist mb-0 py-3">
                                     <li>
                                         <h3 class="nombre black mb-0 altas fw-bold">{{ $promesa->nombre }}</h3>

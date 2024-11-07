@@ -43,8 +43,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-7">
                                     <div class="row mb-3 d-flex align-items-center">
-                                        <label class="col-sm-4 col-form-label" for="datos-inscripcion">Documento de
-                                            identidad</label>
+                                        <label class="col-sm-4 col-form-label" for="datos-inscripcion">Documento de identidad</label>
                                         <div class="col-sm-6">
                                             <div class="input-group input-group-merge">
                                                 <span id="datos-inscripcion2" class="input-group-text">

@@ -22,23 +22,23 @@
                 <div class="py-2"></div>
                 <ul class="redes nolist d-flex mb-0">
                     <li>
-                        <a href="#" target="_blank">
+                        <a href="https://www.facebook.com/ciar.tenis" target="_blank">
                             <svg class="icon me-2 facebook">
                                 <use href="{{asset('assets/images/redes.svg')}}#facebook"></use>
                             </svg>
                         </a>
                     </li>
                     <li>
-                        <a href="#" target="_blank">
+                        <a href="https://www.instagram.com/ciar.tenis/" target="_blank">
                             <svg class="icon mx-2 instagram">
                                 <use href="{{asset('assets/images/redes.svg')}}#instagram"></use>
                             </svg>
                         </a>
                     </li>
                     <li>
-                        <a href="#" target="_blank">
-                            <svg class="icon mx-2 youtube">
-                                <use href="{{asset('assets/images/redes.svg')}}#youtube"></use>
+                        <a href="https://www.tiktok.com/@ciar_tenis" target="_blank">
+                            <svg class="icon mx-2 tiktok">
+                                <use href="{{asset('assets/images/redes.svg')}}#tiktok"></use>
                             </svg>
                         </a>
                     </li>

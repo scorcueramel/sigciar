@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Persona;
+use App\Models\TipoDocumento;
 use Illuminate\Console\View\Components\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -149,7 +150,8 @@ class InscripcionesController extends Controller
                                         and tipo_servicios.id = 3
                                         and servicios.estado= 'A' and s.responsable_id = ?", [$persona[0]->id]);
         }
-        return view("pages.private.actividades.inscripciones.create", compact("actividades"));
+        $tipoDocs = TipoDocumento::where('estado', 'A')->get();
+        return view("pages.private.actividades.inscripciones.create", compact("actividades","tipoDocs"));
     }
 
     // public function chargePrograms()
@@ -214,6 +216,7 @@ class InscripcionesController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->apepaterno . " " . $persona[0]->apematerno;
