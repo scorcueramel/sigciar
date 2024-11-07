@@ -878,7 +878,7 @@
     }
 
     function registrarMiembro() {
-        $("#modalcomponent").modal('hide');
+        // $("#modalcomponent").modal('hide');
         let data = obtenerCamposRegistroMiembros();
         Swal.fire({
             icon: 'info',
@@ -895,7 +895,7 @@
             data: data,
             dataType: "JSON",
             success: function(response) {
-                Swal.close();
+                // Swal.close();
                 Swal.fire({
                         title: 'Registro Exitoso',
                         html: '<p>Miembro <strong>registrado satisfactoriamente</strong>, ahora puedes continuar con realizar una reserve a su nombre</p>',
@@ -921,7 +921,7 @@
                     });
             },
             error: function(error) {
-                Swal.close();
+                // Swal.close();
                 $("#modalcomponent").modal('show');
                 let errores = error.responseJSON;
                 gestionMensajes(errores.errors);

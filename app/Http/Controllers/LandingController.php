@@ -88,6 +88,7 @@ class LandingController extends Controller
     public function activities()
     {
         $actividades = DB::select("select distinct
+
                     servicios.id as servicios_id,
                     servicios.created_at as created_at,
                     subtipo_servicios.medicion,
