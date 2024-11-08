@@ -50,17 +50,12 @@ $codigo = Illuminate\Support\Str::random(10);
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary" id="continuarReserva">Reservar Cancha</button>
-                    <button type="button" class="btn btn-sm btn-secondary disabled d-none" id="boton-carga">
-                        <div class="spinner-grow text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
+
+                    <div class="text-center">
+                        <div class="spinner-border text-primary d-none" id="boton-carga" role="status">
+                            <span class="sr-only">Loading...</span>
                         </div>
-                        <div class="spinner-grow text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <div class="spinner-grow text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </button>
+                    </div>
                 </div>
             </form>
         </div>

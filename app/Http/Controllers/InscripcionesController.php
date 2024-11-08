@@ -216,7 +216,7 @@ class InscripcionesController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->apepaterno . " " . $persona[0]->apematerno;

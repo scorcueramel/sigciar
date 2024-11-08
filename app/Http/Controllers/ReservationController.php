@@ -16,7 +16,6 @@ class ReservationController extends Controller
 {
     public function index(Request $request)
     {
-        //
         $authenticate = false;
         $personalInfo = null;
 

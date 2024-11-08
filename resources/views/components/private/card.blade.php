@@ -19,7 +19,7 @@
         @endif
         @if($imagen ?? false)
             <img
-                class="img-fluid d-flex mx-auto my-4"
+                class="img-fluid d-flex mx-auto my-6 rounded"
                 src="{{$imagenDestacada ?? ''}}"
                 alt="Card image cap"
             />
