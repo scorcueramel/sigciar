@@ -27,26 +27,6 @@
                     <h1 class="title_rse text-white">Reserva tu Cancha</h1>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-4 text-end">
-                    <small style="color:#fff;font-weight: bold;">
-                        <i class="fa-duotone fa-circle" style="color: yellow"></i>
-                        Disponible
-                    </small>
-                </div>
-                <div class="col-4 text-center">
-                    <small style="color:#fff;font-weight: bold;">
-                        <i class="fa-duotone fa-circle" style="color: tomato"></i>
-                        Ocupado
-                    </small>
-                </div>
-                <div class="col-4">
-                    <small style="color:#fff;font-weight: bold;">
-                        <i class="fa-duotone fa-circle" style="color: cyan"></i>
-                        Sleccionado
-                    </small>
-                </div>
-            </div>
         </div>
     </div>
     <div class="row pt-4 pb-3 d-flex justify-content-center">
@@ -58,14 +38,14 @@
             </div>
         </div>
         @endif
-        <div class="col-10">
+        <div class="col-11 col-md-8">
             <div class="alert d-flex justify-content-center" role="alert">
                 <span class="descripcion" style="font-size: 20px; color:#FFF000">
                     Recuerda primero seleccionar la sede y la cancha de tu preferencia para continuar con tu reserva.
                 </span>
             </div>
         </div>
-        <div class="col-md-10 options">
+        <div class="col-11 col-md-8 options">
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <label for="sede" class="descripcion">
@@ -116,10 +96,30 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-4 text-end">
+                    <small style="color:#fff;font-weight: bold;">
+                        <i class="fa-duotone fa-circle" style="color: yellow"></i>
+                        Disponible
+                    </small>
+                </div>
+                <div class="col-4 text-center">
+                    <small style="color:#fff;font-weight: bold;">
+                        <i class="fa-duotone fa-circle" style="color: tomato"></i>
+                        Ocupado
+                    </small>
+                </div>
+                <div class="col-4">
+                    <small style="color:#fff;font-weight: bold;">
+                        <i class="fa-duotone fa-circle" style="color: cyan"></i>
+                        Seleccionado
+                    </small>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row py-4 d-flex justify-content-center">
-        <div class="col-md-10 calendar">
+        <div class="col-11 col-md-8 calendar">
             <div id='reservation'></div>
         </div>
     </div>
