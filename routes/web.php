@@ -25,6 +25,8 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SubtipoServicioController;
 use App\Http\Controllers\TipoServicioController;
 
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -78,6 +80,10 @@ Route::group(['prefix' => 'ciar'], function () {
     // Registro member
     Route::get('/registro/member', [MemberRegisterController::class, 'index'])->name('registro.member');
     Route::post('/registro/member', [MemberRegisterController::class, 'store'])->name('registro.member');
+
+    /**SECTION TORNEOS */
+    Route::get('/torneos', [LandingController::class, 'renderTorneos'])->name('landing.torneos');
+    /**ENDSECTION TORNEOS */
 
 });
 
