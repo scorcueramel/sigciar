@@ -93,7 +93,11 @@ class LandingController extends Controller
     //SECTION ACTIVITY
     public function activities()
     {
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 250632f466d605bd733fb2445e9cc3f8162ab309
     }
 
     public function activitiesDetails(string $id)
