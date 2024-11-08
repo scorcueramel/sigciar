@@ -88,22 +88,22 @@ class LandingController extends Controller
     public function activities()
     {
         $actividades = DB::select("select distinct
-                                        subtipo_servicios.medicion,
-                                        subtipo_servicios.titulo,
-                                        subtipo_servicios.subtitulo,
-                                        subtipo_servicios.imagen,
-                                        lugar_costos.costohora as desde
-                                        from servicios
-                                        left join public.tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
-                                        left join public.subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
-                                        left join public.sedes on servicios.sede_id = sedes.id
-                                        left join public.lugars on servicios.lugar_id = lugars.id
-                                        left join public.lugar_costos on lugar_costos.lugars_id = lugars.id
-                                        left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
-                                        where subtipo_servicios.titulo  is not null
-                                        and tipo_servicios.id <> 1
-                                        and servicios.estado= 'A'
-                                        order by subtipo_servicios.medicion;");
+subtipo_servicios.medicion,
+subtipo_servicios.titulo,
+subtipo_servicios.subtitulo,
+subtipo_servicios.imagen,
+case when tipo_servicios.id=3 then (lugar_costos.costohora * 4) else lugar_costos.costohora end as desde
+from servicios
+left join public.tipo_servicios  on servicios.tiposervicio_id = tipo_servicios.id
+left join public.subtipo_servicios on servicios.subtiposervicio_id = subtipo_servicios.id
+left join public.sedes on servicios.sede_id = sedes.id
+left join public.lugars on servicios.lugar_id = lugars.id
+left join public.lugar_costos on lugar_costos.lugars_id = lugars.id and lugar_costos.estado= 'A'
+left join public.servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
+where subtipo_servicios.titulo  is not null
+and tipo_servicios.id <> 1
+and servicios.estado= 'A'
+order by subtipo_servicios.medicion;");
 
         return view("pages.public.landing.actividades.activities", compact("actividades"));
     }
