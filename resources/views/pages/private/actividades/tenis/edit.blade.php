@@ -670,7 +670,7 @@
             type: "GET",
             url: `/admin/actividades/obtener/imagen/${id}/categoria`,
             success: function(response) {
-                console.log(response);
+
                 Swal.close();
                 if (response) {
                     let imagen = response.imagen;

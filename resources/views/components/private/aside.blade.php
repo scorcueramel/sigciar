@@ -4,7 +4,7 @@
     <div class="app-brand demo">
         <a href="{{route('home.dashboard')}}" class="app-brand-link">
             <!-- <img src="{{asset('assets/images/ciar-logo-azul.png')}}" alt="CIAR" class="img-fluid img-thumbnail"> -->
-            <img src="{{asset('assets/images/LOGO-AZUL-HORIZONTAL.png')}}" alt="CIAR" class="img-fluid img-thumbnail">
+            <img src="{{asset('assets/images/ciar-logo-azul.png')}}" alt="CIAR" class="img-fluid img-thumbnail">
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">

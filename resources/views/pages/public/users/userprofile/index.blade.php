@@ -170,7 +170,7 @@
                                                         data-bs-target="#flush-collapse{{$programa->servicios_id}}"
                                                         aria-expanded="false"
                                                         aria-controls="flush-collapse{{$programa->servicios_id}}">
-                                                        {{$programa->descripcion}}
+                                                        {{ Str::of($programa->descripcion)->explode('-')[0]}}
                                                     </button>
                                                 </h2>
                                                 <div id="flush-collapse{{$programa->servicios_id}}"
@@ -178,12 +178,24 @@
                                                     data-bs-parent="#accordionFlushExample">
                                                     <div class="accordion-body">
                                                         <div class="row d-flex align-items-center">
-                                                            <div class="col-9">
-                                                                {!! Str::replace('|','<br />',Str::after($programa->horario_inscripcion, '|')) !!}
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <button class="btn btn-sm btn-outline-danger btnQuitarReserva" data-id-servicioid="{{$programa->servicios_id}}">Quitar</button>
-                                                            </div>
+                                                            <table class="table table-sm">
+                                                                <thead>
+                                                                    <tr style="font-size:12px">
+                                                                        <th>SEDE</th>
+                                                                        <th>CANCHA</th>
+                                                                        <th>HORARIO</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr style="font-size:12px">
+                                                                        <td>{{ $programa->sede }}</td>
+                                                                        <td>{{ $programa->lugar }}</td>
+                                                                        <td>{!! Str::replace('|','<br />',Str::after($programa->horario_inscripcion, '|')) !!}</td>
+                                                                        <td><button class="btn btn-sm btn-outline-danger btnQuitarReserva" data-id-servicioid="{{$programa->servicios_id}}">Ocultar</button></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -806,9 +818,9 @@
     $(".btnQuitarReserva").on('click', function() {
         let servicioid = $(this).attr("data-id-servicioid");
         Swal.fire({
-            title: `¿Eliminar Reserva?`,
+            title: `Ocultar Reserva?`,
             html: `
-                    <p>Recuerda: Al quitar la reserva pasará a la sección de historial. Para regresar al estado actual debes coordinar con el staff de CIAR SPORTS</p>
+                    <p>Recuerda: Al ocultar la reserva pasará a la sección de historial. Para regresar al estado actual debes coordinar con el staff de CIAR SPORTS</p>
                 `,
             icon: "warning",
             showCancelButton: true,
@@ -858,11 +870,11 @@
                 $("#modal").modal("show");
                 if (response.length > 0) {
                     response.forEach((e) => {
-                        console.log(e)
+
                         $("#tablehistoryreservations").append(`
                             <tr>
-                                <th scope="row">${e.descripcion}</th>
-                                <td>${e.horario}</td>
+                                <td>${e.descripcion.split('-')[0]}</td>
+                                <td>${e.horario.split('|')[1]}</td>
                             </tr>`);
                         });
                 } else {

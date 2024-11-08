@@ -104,10 +104,6 @@
                                 <td>${info.event.extendedProps.sede}</td>
                             </tr>
                             <tr>
-                                <td>Turno</td>
-                                <td>${info.event.extendedProps.turno}</td>
-                            </tr>
-                            <tr>
                                 <td>Horas</td>
                                 <td>${info.event.extendedProps.horas} hrs.</td>
                             </tr>

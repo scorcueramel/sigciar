@@ -70,30 +70,32 @@ class PerfilUsuarioController extends Controller
     private function getProgramas(int $idusuario, string $estado)
     {
         return DB::select("SELECT DISTINCT
-                                             s.id AS servicios_id,
-                                             s.tiposervicio_id,
-                                             ts.descripcion || ' - ' || sts.titulo || ' - ' ||sts.subtitulo AS descripcion,
-                                             per.documento,
-                                             per.apepaterno || ' ' || per.apematerno || ' ' || nombres AS apeynom,
-                                             ver_horarios(cast (s.id AS INTEGER)) AS horario,
-                                             ver_horarios_ins(cast (s.id AS INTEGER),cast (ins.persona_id AS INTEGER)) AS horario_inscripcion,
-                                             lc.costohora AS pago,
-                                             ins.estado AS estado_inscripcion,
-                                             pag.estadopago AS estado_pago,
-                                             pag.fechapago
-                                FROM servicios s
-                                LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
-                                LEFT JOIN subtipo_servicios sts ON s.subtiposervicio_id = sts.id
-                                LEFT JOIN sedes sed ON s.sede_id = sed.id
-                                LEFT JOIN lugars l ON s.lugar_id = l.id
-                                LEFT JOIN lugar_costos lc ON lc.lugars_id = l.id AND lc.descripcion = s.turno
-                                LEFT JOIN servicio_plantillas  sp ON s.id = sp.servicio_id
-                                LEFT JOIN servicio_inscripcions ins ON s.id = ins.servicio_id
-                                LEFT JOIN servicio_reservas sr ON ins.id = sr.servicioinscripcion_id
-                                LEFT JOIN personas per ON ins.persona_id = per.id
-                                LEFT JOIN servicio_pagos pag ON ins.id = pag.servicioinscripcion_id
-                                WHERE ins.persona_id = ? AND ins.estado = ?
-                                ORDER BY s.id DESC", [$idusuario, $estado]);
+                                            s.id AS servicios_id,
+                                            s.tiposervicio_id,
+                                            ts.descripcion || ' - ' || sts.titulo || ' - ' ||sts.subtitulo AS descripcion,
+                                            per.documento,
+                                            per.apepaterno || ' ' || per.apematerno || ' ' || nombres AS apeynom,
+                                            ver_horarios(cast (s.id AS INTEGER)) AS horario,
+                                            ver_horarios_ins(cast (s.id AS INTEGER),cast (ins.persona_id AS INTEGER)) AS horario_inscripcion,
+                                            sed.descripcion as sede,
+                                            l.descripcion as lugar,
+                                            lc.costohora AS pago,
+                                            ins.estado AS estado_inscripcion,
+                                            pag.estadopago AS estado_pago,
+                                            pag.fechapago
+                                        FROM servicios s
+                                        LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
+                                        LEFT JOIN subtipo_servicios sts ON s.subtiposervicio_id = sts.id
+                                        LEFT JOIN sedes sed ON s.sede_id = sed.id
+                                        LEFT JOIN lugars l ON s.lugar_id = l.id
+                                        LEFT JOIN lugar_costos lc ON lc.lugars_id = l.id AND lc.descripcion = s.turno
+                                        LEFT JOIN servicio_plantillas  sp ON s.id = sp.servicio_id
+                                        LEFT JOIN servicio_inscripcions ins ON s.id = ins.servicio_id
+                                        LEFT JOIN servicio_reservas sr ON ins.id = sr.servicioinscripcion_id
+                                        LEFT JOIN personas per ON ins.persona_id = per.id
+                                        LEFT JOIN servicio_pagos pag ON ins.id = pag.servicioinscripcion_id
+                                        WHERE ins.persona_id = ? AND ins.estado = ?
+                                        ORDER BY s.id DESC", [$idusuario, $estado]);
     }
 
     public function reservationRemmove(int $servicioid)

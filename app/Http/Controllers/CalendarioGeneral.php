@@ -74,7 +74,7 @@ class CalendarioGeneral extends Controller
             $fin = Str::after($inscrito->end, " ");
 
             $sede = Sede::where('id', $inscrito->sede_id)->where('estado','=','A')->get()[0];
-            $lugar = DB::select("select  * from lugars l where id = 3 and l.estado = 'A'")[0];
+            $lugar = Lugar::where('id', $inscrito->lugar_id)->where('estado','=','A')->get()[0];
 
             $reservas[] = [
                 'title' => $inscrito->nombre,

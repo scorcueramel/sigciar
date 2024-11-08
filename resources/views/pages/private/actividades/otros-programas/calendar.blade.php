@@ -895,6 +895,7 @@
             data: data,
             dataType: "JSON",
             success: function(response) {
+                $("#modalcomponent").modal('hide');
                 // Swal.close();
                 Swal.fire({
                         title: 'Registro Exitoso',

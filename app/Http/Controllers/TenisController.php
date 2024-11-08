@@ -133,22 +133,19 @@ class TenisController extends Controller
         $user = Auth::user();
         $persona = Persona::where('usuario_id', $user->id)->get();
         if ($user->hasRole('ADMINISTRADOR')) {
-            $tenis = DB::select("SELECT
-                                    s.id, sts.titulo as programa, l.descripcion as cancha, sr.inicio as start, sr.fin as end,
-                                    sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as title, si.id as servicioinscripcion_id
-                                    from
-                                        servicio_reservas sr
+            $tenis = DB::select("select s.id, sts.titulo as programa, l.descripcion as cancha, sr.inicio as start, sr.fin as end,
+                                        sr.dia, s.horas, se.descripcion as sede, s.turno, concat(pe.nombres,' ', pe.apepaterno, ' ', pe.apematerno) as title, si.id as servicioinscripcion_id
+                                        from servicio_reservas sr
                                         left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
                                         left join servicios s on sp.servicio_id = s.id
-                                        left join tipo_servicios ts on ts.id = s.tiposervicio_id
                                         left join subtipo_servicios sts on s.subtiposervicio_id = sts.id
+                                        left join servicio_inscripcions si on sr.servicioinscripcion_id = si.id
+                                        left join personas pe on si.persona_id= pe.id
+                                        left join users us on pe.usuario_id = us.id
                                         left join lugars l on s.lugar_id = l.id
                                         left join sedes se on se.id = s.sede_id
-                                        left join servicio_inscripcions si on si.servicio_id = s.id
-                                        left join personas pe on pe.id = si.persona_id
-                                    where
-                                        s.estado = 'A'
-                                        and s.tiposervicio_id = 3");
+                                        WHERE (s.tiposervicio_id=3)
+                                        AND (s.estado = 'A');");
         } else {
             $tenis = DB::select("SELECT
                                     s.id, sts.titulo as programa, l.descripcion as cancha, sr.inicio as start, sr.fin as end,
