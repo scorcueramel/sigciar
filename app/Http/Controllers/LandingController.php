@@ -90,6 +90,12 @@ class LandingController extends Controller
     }
     //END SECTION TORNEOS
 
+    //SECTION TORNEOS
+    public function inscribirProgramaMiembro(){
+        return view('pages.public.inscription.programa-inscripcion');
+    }
+    //END SECTION TORNEOS
+
     //SECTION ACTIVITY
     public function activities()
     {

@@ -58,7 +58,7 @@ Route::group(['prefix' => 'ciar'], function () {
     Route::get('/',[LandingController::class,'index'])->name('landing.index');
     // Landing público
     /*ACTIVIDADES*/
-    Route::get('/actividades',[LandingController::class, 'activities'])->name('landing.programas');
+    Route::get('/programas',[LandingController::class, 'activities'])->name('landing.programas');
     Route::get('/detalle/{id}/actividad',[LandingController::class,'activitiesDetails'])->name('actividades.detalle');
     /*END ACTIVIDADES*/
 
@@ -84,6 +84,10 @@ Route::group(['prefix' => 'ciar'], function () {
     /**SECTION TORNEOS */
     Route::get('/torneos', [LandingController::class, 'renderTorneos'])->name('landing.torneos');
     /**ENDSECTION TORNEOS */
+
+    /**SECTION INSCRIPCION MIEMBRO */
+    Route::get('/inscripcion/id/programa', [LandingController::class, 'inscribirProgramaMiembro'])->name('landing.inscripcion.miembro');
+    /**ENDSECTION INSCRIPCION MIEMBRO */
 
 });
 

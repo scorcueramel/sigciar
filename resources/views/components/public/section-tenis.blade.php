@@ -31,7 +31,7 @@
                                     <div class="tag-item">{{$actividad->medicion}}</div>
                                     <div class="precio text-start">
                                         desde S/ {{$actividad->desde}} <span class="frecuencia">/ 4 clases al mes</span>
-                                        <a href="#" class="enlace"><img src="{{asset('assets/images/link.svg')}}" /></a>
+                                        <a href="{{ route('landing.inscripcion.miembro') }}" class="enlace"><img src="{{asset('assets/images/link.svg')}}" /></a>
                                     </div>
                                 </div>
 

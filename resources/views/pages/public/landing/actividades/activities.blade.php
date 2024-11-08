@@ -128,7 +128,7 @@
                             <div class="precio text-start">
                                 desde S/ {{$actividad->desde}} <span class="frecuencia">/ 4 clases al mes</span>
                                  {{-- <a href="{{route('actividades.detalle',$actividad->servicios_id)}}" class="enlace"><img src="{{asset('assets/images/link.svg')}}" /></a> --}}
-                                <a href="#" class="enlace"><img src="{{asset('assets/images/link.svg')}}"/></a>
+                                <a href="{{ route('landing.inscripcion.miembro') }}" class="enlace"><img src="{{asset('assets/images/link.svg')}}"/></a>
                             </div>
                         </div>
 
