@@ -19,10 +19,10 @@
 
         <div class="row justify-content-center align-items-center">
             <div class="col-11 col-md-5">
-                <img class="w-100" src="images/torneos.webp" alt="CIAR" />
+                <img class="w-100" src="{{asset('assets/images/torneos/torneos.webp')}}" alt="CIAR" />
             </div>
             <div class="col-11 col-md-6 text-start px-5 intro">
-                <img class="logo my-4" src="images/utr-oracle.webp" alt="UTR" />
+                <img class="logo my-4" src="{{asset('assets/images/torneos/utr-oracle.webp')}}" alt="UTR" />
                 <p class="lema">Contamos con la licencia UTR para organizar torneos y podemos organizar tu torneo con 4 jugadores del mismo nivel UTR.</p>
                 <p>Nuestros torneos son con el modelo Round Robin de tal manera que en una jornada puedes jugar varios partidos al día.</p>
                 <p>Para conseguir un buen UTR, esencial para obtener una beca universitaria en USA, se necesitan 30 partidos. Nosotros podemos organizar estos partidos a bajo costo, evitando gastos en viajes internacionales e incurrir en gastos de pasajes aéreos, hoteles, traslados y estadías.</p>
@@ -30,7 +30,7 @@
         </div>
         <div class="row justify-content-center align-items-center padding2">
             <div class="col-11 col-md-5">
-                <a class="btn-cta altas" href="#"><img src="images/arrow-bt.svg" class="icon me-2 me-lg-1" />Reserva tu Torneo aquí</a>
+                <a class="btn-cta altas" href="#"><img src="{{asset('assets/images/arrow-bt.svg')}}" class="icon me-2 me-lg-1" />Reserva tu Torneo aquí</a>
             </div>
         </div>
     </div>
