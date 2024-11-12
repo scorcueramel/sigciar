@@ -20,9 +20,12 @@
                         @guest
                         @if (Route::has('login'))
                         <li class="nav-item">
-                            <a class="btn btn-success" href="{{ route('login') }}">
+                            {{-- <a class="btn btn-success" href="{{ route('login') }}">
                                 <i class="fa-solid fa-user-vneck" style="color: #fff; margin-right: 5px"></i>
                                 Ir a mi cuenta
+                            </a> --}}
+                            <a class="btn enlace btn-menu miembros ms-lg-3" href="{{ route('login') }}" style="background-color: transparent; border: 1px solid; color:#FFF000; border-radius: 30px; padding: 10px">
+                                <img src="{{ asset('assets/images/miembro.svg') }}" class="icon me-2 me-lg-1" />Ir a mi cuenta
                             </a>
                         </li>
                         @endif
@@ -35,10 +38,12 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                @if ($profile)
                                 <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('prfole.user') }}">
                                     {{ __('Mi Perfil') }}
                                     <i class="fa-solid fa-user"></i>
                                 </a>
+                                @endif
                                 <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Cerrar Sesión') }}

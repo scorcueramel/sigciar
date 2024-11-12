@@ -1,3 +1,12 @@
+@php
+$personalInfo = null;
+
+if (Auth::check()) {
+$authenticate = true;
+$personalInfo = App\Models\Persona::where('usuario_id', Auth::user()->id)->select('id', 'nombres', 'apepaterno', 'apematerno')->get();
+}
+@endphp
+
 @extends('layouts.public.public')
 @push('title', 'Mi Perfil')
 @push('css')
@@ -24,6 +33,7 @@
 </style>
 @endpush
 @section('content')
+@include('components.public.navbar',['profile'=>false])
 <section class="mt-2">
     <div class="container">
         <div class="row">
@@ -243,7 +253,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Correo Electrónico</p>
+                                <p class="mb-0">Email</p>
                             </div>
                             <div class="col-sm-9">
                                 <p class="text-muted mb-0">{{ Str::upper($datosPersona->correo) }}</p>
@@ -271,7 +281,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Teléfono Movil</p>
+                                <p class="mb-0">Teléfono Celular</p>
                             </div>
                             <div class="col-sm-9">
                                 <p class="text-muted mb-0">{{ $datosPersona->movil }}</p>
@@ -405,7 +415,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <p class="mb-0">Teléfono Movil</p>
+                                    <p class="mb-0">Celular</p>
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">
@@ -876,7 +886,7 @@
                                 <td>${e.descripcion.split('-')[0]}</td>
                                 <td>${e.horario.split('|')[1]}</td>
                             </tr>`);
-                        });
+                    });
                 } else {
                     $('.modal_cuerpo').html(`
                         <div class="row mb-4">

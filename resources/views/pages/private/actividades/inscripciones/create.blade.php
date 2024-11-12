@@ -321,7 +321,7 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="movil" class="col-md-4 col-form-label text-md-end">{{ __('movil') }}</label>
+                    <label for="movil" class="col-md-4 col-form-label text-md-end">{{ __('Celular') }}</label>
 
                     <div class="col-md-6">
                         <input id="movil" type="text" class="form-control @error('movil') is-invalid @enderror" name="movil" value="{{ old('movil') }}" maxLength="12" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required>

@@ -17,7 +17,7 @@
 </style>
 @endpush
 @section('content')
-@include('components.public.navbar')
+@include('components.public.navbar',['profile'=>true])
 <div class="container-fluid">
     <input type="hidden" id="loginCheck" value="{{ Auth::check() }}">
     <div class="row d-flex justify-content-center bg-secondary py-4">

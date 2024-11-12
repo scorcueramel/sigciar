@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2-bootstrap-5-theme.min.css') }}">
     {{-- Personalized --}}
     <link rel="stylesheet" href="{{ asset('assets/css/personalized/style.css') }}">
+    <link rel="stylesheet" href="{{asset('assets/auth/css/style-login.css')}}">
 
     @stack('css')
 

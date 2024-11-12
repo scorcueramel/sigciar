@@ -137,7 +137,7 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label class="form-label" for="movil">Movíl</label>
+                                    <label class="form-label" for="movil">Celular</label>
                                     <input
                                         type="text"
                                         id="movil"

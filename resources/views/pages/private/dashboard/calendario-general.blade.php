@@ -145,7 +145,7 @@
                                             <td>${info.event.title}</td>
                                         </tr>
                                         <tr>
-                                            <td>MOVIL</td>
+                                            <td>Celular</td>
                                             <td>${info.event.extendedProps.movil}</td>
                                         </tr>
                                         <tr>
@@ -348,7 +348,7 @@
                                             <td>${info.event.title}</td>
                                         </tr>
                                         <tr>
-                                            <td>MOVIL</td>
+                                            <td>CELULAR</td>
                                             <td>${info.event.extendedProps.movil}</td>
                                         </tr>
                                         <tr>

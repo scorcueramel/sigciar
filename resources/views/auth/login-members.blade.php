@@ -12,7 +12,7 @@
                     <div class="col-md-8">
                         <div class="mb-4">
                             <h3>Inicio de Sesión para Miembros</h3>
-                            <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>
+                            <!-- <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p> -->
                         </div>
                         @if(Session::has('warning'))
 
@@ -61,7 +61,7 @@
                             <div class="text-white">
                                 <span class="d-block text-center my-4 text-muted">&mdash; ó &mdash;</span>
                                 <a href="{{route('registro.member')}}" class="btn btn-block btn-primary pt-3 text-decoration-none text-light">
-                                    Registrate
+                                    Registrame
                                 </a>
                             </div>
                         </form>
