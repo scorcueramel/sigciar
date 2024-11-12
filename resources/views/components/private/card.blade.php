@@ -18,11 +18,13 @@
             <h6 class="card-subtitle text-muted">{{$subtitulo ?? ''}}</h6>
         @endif
         @if($imagen ?? false)
-            <img
-                class="img-fluid d-flex mx-auto my-6 rounded"
-                src="{{$imagenDestacada ?? ''}}"
-                alt="Card image cap"
-            />
+            <div class="w-75 ">
+                <img
+                    class="img-fluid img-thumbnail d-flex mx-auto card-img-top rounded"
+                    src="{{$imagenDestacada ?? ''}}"
+                    alt="Card image cap"
+                />
+            </div>
         @endif
         @if($muestraExtracto ?? false)
             {!! $extracto !!}

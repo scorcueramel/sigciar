@@ -24,7 +24,7 @@
                                 <i class="fa-solid fa-user-vneck" style="color: #fff; margin-right: 5px"></i>
                                 Ir a mi cuenta
                             </a> --}}
-                            <a class="btn enlace btn-menu miembros ms-lg-3" href="{{ route('login') }}" style="background-color: transparent; border: 1px solid; color:#FFF000; border-radius: 30px; padding: 10px">
+                            <a class="btn enlace btn-menu miembros ms-lg-3" href="{{ route('login.member') }}" style="background-color: transparent; border: 1px solid; color:#FFF000; border-radius: 30px; padding: 10px">
                                 <img src="{{ asset('assets/images/miembro.svg') }}" class="icon me-2 me-lg-1" />Ir a mi cuenta
                             </a>
                         </li>

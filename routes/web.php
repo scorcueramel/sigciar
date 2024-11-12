@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Auth;
 
 // Login USERS
 Route::get('/login', function () { return view('auth.login'); });
+
 // Login STAFF
 Route::get('/login-staff',function(){ return view('auth.login-staff'); })->name('login.staff');
 Route::post('/login-staff',[LoginStaffController::class, 'login'])->name('login.staff');

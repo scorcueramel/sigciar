@@ -11,7 +11,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="mb-4">
-                            <h3>Iniciar Sesión</h3>
+                            <h3>Inicio de Sesión para Miembros</h3>
                             <!-- <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p> -->
                         </div>
                         @if(Session::has('warning'))
