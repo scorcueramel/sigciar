@@ -90,16 +90,41 @@ class LandingController extends Controller
     }
     //END SECTION TORNEOS
 
-    //SECTION TORNEOS
-    public function inscribirProgramaMiembro(){
-        return view('pages.public.inscription.programa-inscripcion');
+    //SECTION PROGRAM INSCRIPTONS
+    public function inscribirProgramaMiembro(int $programaid, string $programatitulo){
+        $programaResponse = DB::select("SELECT DISTINCT
+                                            servicios.id AS servicios_id,
+                                            subtipo_servicios.medicion,
+                                            subtipo_servicios.titulo,
+                                            subtipo_servicios.subtitulo,
+                                            subtipo_servicios.imagen,
+                                            lugars.descripcion,
+                                            ver_horarios (cast(servicios.id as integer)) as horario,
+                                            lugar_costos.costohora
+                                        FROM servicios
+                                                 LEFT JOIN public.tipo_servicios ON servicios.tiposervicio_id = tipo_servicios.id
+                                                 LEFT JOIN public.subtipo_servicios ON servicios.subtiposervicio_id = subtipo_servicios.id
+                                                 LEFT JOIN public.sedes ON servicios.sede_id = sedes.id
+                                                 LEFT JOIN public.lugars ON servicios.lugar_id = lugars.id
+                                                 LEFT JOIN public.lugar_costos ON lugar_costos.lugars_id = lugars.id --AND lugar_costos.descripcion = 'DIURNO'
+                                                 LEFT JOIN public.servicio_plantillas ON servicios.id = servicio_plantillas.servicio_id
+                                        WHERE tipo_servicios.id = ? and titulo = ?",[$programaid,$programatitulo]);
+/*        $horarios = "";
+
+        foreach ($programaResponse as $pr){
+            $horas = Str::of($pr->horario)->explode('|')[1];
+            dd(Str::of($horas)->trim());
+        }*/
+
+        return view('pages.public.inscription.programa-inscripcion',compact('programaResponse'));
     }
-    //END SECTION TORNEOS
+    //END SECTION PROGRAM INSCRIPTONS
 
     //SECTION ACTIVITY
     public function activities()
     {
         $actividades = DB::select("select distinct
+                                            tipo_servicios.id as tiposervicio_id,
                                             subtipo_servicios.medicion,
                                             subtipo_servicios.titulo,
                                             subtipo_servicios.subtitulo,

@@ -87,7 +87,7 @@ Route::group(['prefix' => 'ciar'], function () {
     /**ENDSECTION TORNEOS */
 
     /**SECTION INSCRIPCION MIEMBRO */
-    Route::get('/inscripcion/id/programa', [LandingController::class, 'inscribirProgramaMiembro'])->name('landing.inscripcion.miembro');
+    Route::get('/inscripcion/{id}/programa/{titulo}', [LandingController::class, 'inscribirProgramaMiembro'])->name('landing.inscripcion.miembro');
     /**ENDSECTION INSCRIPCION MIEMBRO */
 
 });
