@@ -55,6 +55,11 @@ class MemberRegisterController extends Controller
             'usuario_id' => $user->id,
         ]);
 
+        if ($request->inscripcion == '1') {
+            $this->guard()->login($user);
+            return redirect()->back()->with('success', 'Tu registro como miembro se realizo exitosamente');
+        }
+
         $this->guard()->login($user);
 
         return redirect()->route('prfole.user');

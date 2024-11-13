@@ -6,6 +6,7 @@ use App\Models\Noticia;
 use App\Models\Promesa;
 use App\Models\Sede;
 use App\Models\Servicio;
+use App\Models\TipoDocumento;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -92,6 +93,9 @@ class LandingController extends Controller
 
     //SECTION PROGRAM INSCRIPTONS
     public function inscribirProgramaMiembro(int $programaid, string $programatitulo){
+
+        $tipoDocs = TipoDocumento::where('estado', 'A')->get();
+
         $programaResponse = DB::select("SELECT DISTINCT
                                             servicios.id AS servicios_id,
                                             subtipo_servicios.medicion,
@@ -109,14 +113,8 @@ class LandingController extends Controller
                                                  LEFT JOIN public.lugar_costos ON lugar_costos.lugars_id = lugars.id --AND lugar_costos.descripcion = 'DIURNO'
                                                  LEFT JOIN public.servicio_plantillas ON servicios.id = servicio_plantillas.servicio_id
                                         WHERE tipo_servicios.id = ? and titulo = ?",[$programaid,$programatitulo]);
-/*        $horarios = "";
 
-        foreach ($programaResponse as $pr){
-            $horas = Str::of($pr->horario)->explode('|')[1];
-            dd(Str::of($horas)->trim());
-        }*/
-
-        return view('pages.public.inscription.programa-inscripcion',compact('programaResponse'));
+        return view('pages.public.inscription.programa-inscripcion',compact('programaResponse','tipoDocs'));
     }
     //END SECTION PROGRAM INSCRIPTONS
 

@@ -16,27 +16,27 @@
                     </li>
                     <li>Luis Felipe De Las Casas Grieve, Cieneguilla</li>
 
-                    <li class="ls-05  pt-3"><a href="https://wa.me/51977505569?text=Hola!%20Escribo%20desde%20el%20sitio%20web%20de%20CIAR%20y%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20acerca%20de%20sus%20actividades" class="whatsapp"><img src="{{asset('assets/images/ic-whatsapp.svg')}}" class="me-2" /> 977 505 569</a></li>
+                    <li class="ls-05  pt-3"><a href="https://wa.me/51977505569?text=Hola!%20Escribo%20desde%20el%20sitio%20web%20de%20CIAR%20y%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20acerca%20de%20sus%20actividades" class="whatsapp" style="color:#fff"><img src="{{asset('assets/images/ic-whatsapp.svg')}}" class="me-2" /> 977 505 569</a></li>
                 </ul>
 
                 <div class="py-2"></div>
                 <ul class="redes nolist d-flex mb-0">
                     <li>
-                        <a href="https://www.facebook.com/ciar.tenis" target="_blank">
+                        <a href="https://www.facebook.com/ciar.tenis" target="_blank" style="color: #fff">
                             <svg class="icon me-2 facebook">
                                 <use href="{{asset('assets/images/redes.svg')}}#facebook"></use>
                             </svg>
                         </a>
                     </li>
                     <li>
-                        <a href="https://www.instagram.com/ciar.tenis/" target="_blank">
+                        <a href="https://www.instagram.com/ciar.tenis/" target="_blank" style="color: #fff">
                             <svg class="icon mx-2 instagram">
                                 <use href="{{asset('assets/images/redes.svg')}}#instagram"></use>
                             </svg>
                         </a>
                     </li>
                     <li>
-                        <a href="https://www.tiktok.com/@ciar_tenis" target="_blank">
+                        <a href="https://www.tiktok.com/@ciar_tenis" target="_blank" style="color: #fff">
                             <svg class="icon mx-2 tiktok">
                                 <use href="{{asset('assets/images/redes.svg')}}#tiktok"></use>
                             </svg>
@@ -47,12 +47,12 @@
             <div class="informativas col-11 col-md-5 col-lg-4 col-xl-4 text-end">
                 <ul class="nolist">
                     <li>
-                        <a class="mb-4" href="#" target="_blank">
+                        <a class="mb-4" href="#" target="_blank" style="color: #fff">
                             Reglamento interno
                         </a>
                     </li>
                     <li>
-                        <a class="" href="#" target="_blank">
+                        <a class="" href="#" target="_blank" style="color: #fff">
                             Políticas de privacidad
                         </a>
                     </li>

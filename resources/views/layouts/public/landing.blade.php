@@ -48,8 +48,8 @@
         <main>
             @yield('content')
         </main>
-        {{-- <!-- JQuery --> --}}
-        <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
+
+        <script src="{{asset('assets/auth/js/jquery-3.3.1.min.js')}}"></script>
         <script src="{{asset('assets/landing/libs/swiper/swiper-bundle.min.js')}}"></script>
         <script src="{{asset('assets/landing/libs/aos/aos.js')}}"></script>
         <script src="{{asset('assets/landing/js/main.js?v=205')}}"></script>

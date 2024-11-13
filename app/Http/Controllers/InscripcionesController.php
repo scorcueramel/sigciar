@@ -148,7 +148,7 @@ class InscripcionesController extends Controller
                                         left join servicio_plantillas on servicios.id = servicio_plantillas.servicio_id
                                         where subtipo_servicios.titulo  is not null
                                         and tipo_servicios.id = 3
-                                        and servicios.estado= 'A' and s.responsable_id = ?", [$persona[0]->id]);
+                                        and servicios.estado= 'A' and servicios.responsable_id = ?", [$persona[0]->id]);
         }
         $tipoDocs = TipoDocumento::where('estado', 'A')->get();
         return view("pages.private.actividades.inscripciones.create", compact("actividades","tipoDocs"));
@@ -197,7 +197,6 @@ class InscripcionesController extends Controller
     //                                     and tipo_servicios.id = 3
     //                                     and servicios.estado= 'A' and s.responsable_id = ?", [$persona[0]->id]);
     //     }
-
     //     return response()->json($actividades);
     // }
 

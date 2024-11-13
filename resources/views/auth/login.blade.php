@@ -15,7 +15,6 @@
                             <!-- <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p> -->
                         </div>
                         @if(Session::has('warning'))
-
                         <div class="col-md-12">
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <strong>Lo sentimos!</strong> {{Session::get('warning')}}
@@ -24,6 +23,7 @@
                         </div>
                         @endif
                         <form action="{{ route('login') }}" method="post" autocomplete="off" id="login">
+                            <input type="hidden" name="inscripcion" value="0">
                             @csrf
                             <div class="form-group first">
                                 <label for="username">Correo</label>
@@ -67,9 +67,7 @@
                         </form>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
 </div>

@@ -25,6 +25,7 @@
                         @endif
                         <form action="{{ route('login.member') }}" method="post" autocomplete="off" id="login">
                             @csrf
+                            <input type="hidden" name="inscripcion" value="0">
                             <div class="form-group first">
                                 <label for="username">Correo</label>
                                 <input type="email" class="form-control @error('email') is-invalid @enderror" id="username" name="email" value="{{ old('email') }}" autocomplete="off" autofill="off" autofocus required>
