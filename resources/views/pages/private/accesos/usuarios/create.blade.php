@@ -232,8 +232,9 @@
                                 </thead>
                                 <tbody>
                                 @foreach($roles as $rol)
-                                    @if($rol != "ADMINISTRADOR")
+{{--                                    @if($rol != "ADMINISTRADOR")--}}
                                         <tr>
+
                                             <td class="text-nowrap"><label for="{{$rol}}">{{$rol}}</label></td>
                                             <td>
                                                 <div class="form-check d-flex justify-content-center">
@@ -242,7 +243,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endif
+{{--                                    @endif--}}
                                 @endforeach
                                 </tbody>
                             </table>

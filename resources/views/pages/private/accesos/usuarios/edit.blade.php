@@ -188,7 +188,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($roles as $id => $role)
-                                    @if ($id != 1)
+{{--                                    @if ($id != 1)--}}
                                         <tr>
                                             <td class="text-nowrap">
                                                 <label for="{{ $role }}">
@@ -203,7 +203,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endif
+{{--                                    @endif--}}
                                 @endforeach
                             </tbody>
                         </table>
