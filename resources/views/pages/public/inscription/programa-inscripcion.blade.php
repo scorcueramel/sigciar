@@ -41,10 +41,10 @@
                         <li>Clases de una (1) hora</li>
                         <li>8 cupos disponibles</li>
                     </ul>
-{{--                    <h3 class="mainColor fw-bold altas">Horario</h3>
-                    @foreach($programaResponse as $pr)
-                        <h6 style="font-weight: bold">{{Str::of($pr->horario)->explode('|')[1]}}</h6>
-                    @endforeach--}}
+                    {{--                    <h3 class="mainColor fw-bold altas">Horario</h3>
+                                        @foreach($programaResponse as $pr)
+                                            <h6 style="font-weight: bold">{{Str::of($pr->horario)->explode('|')[1]}}</h6>
+                                        @endforeach--}}
                 </div>
                 <div class="col-11 col-md-5 px-5">
                     <img src="{{asset('storage/subtipos/'.$programaResponse[0]->imagen)}}" class="w-100"/>
@@ -70,6 +70,13 @@
             </div>
         </section>
     @else
+        @php
+        $idMiembro = App\Models\Persona::where('usuario_id',Auth::id())->select('personas.id')->get()[0];
+        @endphp
+        <input type="hidden" id="idPrograma" value="{{$programaResponse[0]->servicios_id}}">
+        <input type="hidden" id="idMiembro" value="{{$idMiembro->id}}">
+        <input type="hidden" id="inscripcionPublica" value="1">
+
         <section class="programas-tipo padding interna">
             <div class="container">
                 <div class="row justify-content-center">
@@ -89,7 +96,8 @@
                                 @foreach($programaResponse as $pr)
                                     <tr>
                                         <td><input class="actividad" type="radio" name="actividadid"
-                                                   id="servid{{$pr->servicios_id}}" data-id="{{$pr->servicios_id}}">
+                                                   id="servid{{$pr->servicios_id}}" data-id="{{$pr->servicios_id}}"
+                                                   data-precio="{{$pr->costohora}}">
                                         </td>
                                         <td><label for="servid{{$pr->servicios_id}}">{{$pr->descripcion}}</label></td>
                                         <td><label
@@ -134,8 +142,7 @@
                             </div>
                             <div class="col-md-2 mb-3 d-flex justify-content-end" style="margin-top: -55px">
                                 <button type="button" class="btn-cta altas mt-5 text-center" id="btn-add-hour"
-                                        style="font-size: 12px;width: 65px" onclick="javascript:calculatotal()"
-                                        disabled>
+                                        style="font-size: 12px;width: 65px" disabled>
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
@@ -152,11 +159,12 @@
                             </div>
                         </div>
 
-                        <h3 class="mainColor fw-bold altas mt-3">Total a pagar: S/<span class="total"> 320</span></h3>
-                        <a class="btn-cta altas mt-5" href="#">
+                        <h3 class="mainColor fw-bold altas mt-3 totalPagar">Total a pagar: S/<span
+                                class="total"> 0.00</span></h3>
+                        <button type="button" class="btn-cta altas mt-5" id="guardarRegistro" >
                             <img src="{{asset('assets/images/arrow-bt.svg')}}" class="icon me-2 me-lg-1"/> Inscríbete
                             aquí
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -173,8 +181,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
             crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-        var coleccion = [];
+        var montoHora = 0;
         // arreglo de horarios
         var totalHorarios = new Array();
         var horasInscripcion = new Array();
@@ -419,11 +429,14 @@
         })
 
         $(".actividad").on('click', function () {
+
+            montoHora = $(this).attr('data-precio');
+
             let id = $(this).attr('data-id');
 
             $("#idPrograma").val(id);
 
-            $("#horasInscripcion").attr('disabled','disabled');
+            $("#horasInscripcion").attr('disabled', 'disabled');
             $("#horasInscripcion").html("");
             $("#horasInscripcion").append(
                 '<option value="" selected disabled>HORAS</option>');
@@ -527,68 +540,77 @@
                         </tr>
                     `);
                 }
+
+                let montoTotal = (totalHorarios.length * 4) * montoHora
+                $('.totalPagar').html('');
+                $('.totalPagar').append(`
+                    Total a pagar: S/<span class="total"> ${montoTotal}.00</span>
+                `);
             }
         });
 
         //
         $("#guardarRegistro").on("click", function () {
-            let documento = $("#documentomiembro").val();
-            if (documento == null || documento == '') {
-                $("#modalcomponent").modal('show');
-                $("#mcbody").html('Debes ingresar un número de documento para continuar con la inscripción al programa de tenis');
-            } else {
-                const idservicio = $("#idPrograma").val();
-                const idmiembro = $("#idMiembro").val();
-                let fechasDefinidas = [];
+            const inscripcionPublica = $("#inscripcionPublica").val();
+            const idservicio = $("#idPrograma").val();
+            const idmiembro = $("#idMiembro").val();
+            let fechasDefinidas = [];
 
-                // Rellenar tabla de turnos y horarios
-                $("#tableComponent").find("tbody tr").each(function (idx, row) {
-                    var JsonData = {};
-                    JsonData.dias = $("td:eq(0)", row).text();
-                    JsonData.horarios = $("td:eq(1)", row).text();
-                    fechasDefinidas.push(JsonData);
-                });
+            console.log(idservicio,idmiembro);
 
-                Swal.fire({
-                    icon: 'info',
-                    html: "Espere un momento porfavor ...",
-                    timerProgressBar: true,
-                    didOpen: () => {
-                        Swal.showLoading();
+            // Rellenar tabla de turnos y horarios
+            $("#tableComponent").find("tbody tr").each(function (idx, row) {
+                var JsonData = {};
+                JsonData.dias = $("td:eq(0)", row).text();
+                JsonData.horarios = $("td:eq(1)", row).text();
+                fechasDefinidas.push(JsonData);
+            });
+
+            Swal.fire({
+                icon: 'info',
+                html: "Espere un momento porfavor ...",
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            $.ajax({
+                method: 'POST',
+                url: "{{route('inscripciones.store')}}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    idservicio,
+                    idmiembro,
+                    fechasDefinidas,
+                    inscripcionPublica
+                },
+                success: function (resp) {
+                    let data = resp;
+                    if (data.success == 'ok') {
+                        Swal.fire({
+                            title: "Inscripción exitosa",
+                            position: "center",
+                            icon: "success",
+                            allowOutsideClick: false,
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: `<span style="color:#27326F">Entendido</span>`,
+                            confirmButtonColor: "#FFF000",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload()
+                            }
+                        });
                     }
-                });
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            });
 
-                $.ajax({
-                    method: 'POST',
-                    url: "{{route('inscripciones.store')}}",
-                    data: {
-                        idservicio,
-                        idmiembro,
-                        fechasDefinidas
-                    },
-                    success: function (resp) {
-                        let data = resp;
-                        if (data.success == 'ok') {
-                            Swal.fire({
-                                title: "Inscripción exitosa",
-                                position: "center",
-                                icon: "success",
-                                allowOutsideClick: false,
-                                showDenyButton: false,
-                                showCancelButton: false,
-                                confirmButtonText: "Continuar",
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "{{route('inscripciones.index')}}"
-                                }
-                            });
-                        }
-                    },
-                    error: function (err) {
-                        console.log(err)
-                    }
-                });
-            }
         });
 
         // funcion remover de tabla horarios
@@ -617,6 +639,12 @@
                 }
             }
 
+            let montoTotal = (totalHorarios.length * 4) * montoHora
+            $('.totalPagar').html('');
+            $('.totalPagar').append(`
+                    Total a pagar: S/<span class="total"> ${montoTotal}.00</span>
+                `);
+
         }
 
         // funcoin de mensaje
@@ -627,25 +655,10 @@
                 html: `<p>${bodyMessage}</p>`,
                 showCloseButton: true,
                 focusConfirm: true,
-                confirmButtonText: `${textButton}`,
+                confirmButtonText: `<span style="color:#27326F">${textButton}</span>`,
+                confirmButtonColor: "#FFF000",
             });
         }
 
-        function calculatotal() {
-            let dia = $("#diasInscripcion").val();
-            let hora = $("#horasInscripcion").val();
-
-            if (dia != null && hora != null) {
-                if (coleccion.includes(dia) && coleccion.includes(dia)) {
-                    alert('ya existe');
-                }else{
-                    coleccion.push({
-                        dia: dia,
-                        hora: hora
-                    });
-                }
-            }
-            console.log(coleccion)
-        }
     </script>
 @endpush

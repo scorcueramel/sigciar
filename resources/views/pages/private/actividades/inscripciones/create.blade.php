@@ -23,6 +23,7 @@
             <div class="card-body mt-3">
                 <div class="container">
                     <form enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
+                        <input type="hidden" id="inscripcionPublica" value="0">
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-12">
                                 <div class="row mb-5">
@@ -625,6 +626,7 @@
             $("#modalcomponent").modal('show');
             $("#mcbody").html('Debes ingresar un número de documento para continuar con la inscripción al programa de tenis');
         } else {
+            const inscripcionPublica = $("#inscripcionPublica").val();
             const idservicio = $("#idPrograma").val();
             const idmiembro = $("#idMiembro").val();
             let fechasDefinidas = [];
@@ -652,7 +654,8 @@
                 data: {
                     idservicio,
                     idmiembro,
-                    fechasDefinidas
+                    fechasDefinidas,
+                    inscripcionPublica
                 },
                 success: function(resp) {
                     let data = resp;
