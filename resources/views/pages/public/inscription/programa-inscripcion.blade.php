@@ -41,10 +41,10 @@
                         <li>Clases de una (1) hora</li>
                         <li>8 cupos disponibles</li>
                     </ul>
-                    <h3 class="mainColor fw-bold altas">Horario</h3>
+{{--                    <h3 class="mainColor fw-bold altas">Horario</h3>
                     @foreach($programaResponse as $pr)
                         <h6 style="font-weight: bold">{{Str::of($pr->horario)->explode('|')[1]}}</h6>
-                    @endforeach
+                    @endforeach--}}
                 </div>
                 <div class="col-11 col-md-5 px-5">
                     <img src="{{asset('storage/subtipos/'.$programaResponse[0]->imagen)}}" class="w-100"/>
@@ -422,6 +422,11 @@
             let id = $(this).attr('data-id');
 
             $("#idPrograma").val(id);
+
+            $("#horasInscripcion").attr('disabled','disabled');
+            $("#horasInscripcion").html("");
+            $("#horasInscripcion").append(
+                '<option value="" selected disabled>HORAS</option>');
 
             $.ajax({
                 method: 'GET',
