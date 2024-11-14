@@ -350,7 +350,7 @@
             <span class="menu-header-text">Mantenimiento de Tipos</span>
         </li>
         @endif
-        @can('ver.tipos.servicios')
+{{--        @can('ver.tipos.servicios')
         <li class="menu-item {{ $activePage == 'tipo.servicio.index' || $activePage == 'tipo.servicio.create' || $activePage == 'tipo.servicio.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'tipo.servicio.index' ? 'active' : '' }}">
                 <i class="fa-solid fa-box-open" style="margin-right: 13px;"></i>
@@ -371,7 +371,7 @@
                 @endcan
             </ul>
         </li>
-        @endcan
+        @endcan--}}
         @can('ver.subtipo.servicios')
         <li class="menu-item {{ $activePage == 'subtipos.servicio.index' || $activePage == 'subtipos.servicio.create' || $activePage == 'subtipos.servicio.edit' ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle {{ $activePage == 'subtipos.servicio.index' ? 'active' : '' }}">
