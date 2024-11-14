@@ -1,7 +1,9 @@
 @extends('layouts.public.landing')
 @push('title', 'Inscripcion a programa')
 @push('css')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
           integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <style>
@@ -80,7 +82,7 @@
                                     <th>#</th>
                                     <th>Cancha</th>
                                     <th>Horario</th>
-                                    <th>Costo</th>
+                                    <th>Costo por hora</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -131,7 +133,9 @@
                                 </div>
                             </div>
                             <div class="col-md-2 mb-3 d-flex justify-content-end" style="margin-top: -55px">
-                                <button type="button" class="btn-cta altas mt-5" id="btn-add-hour" style="font-size: 12px;width: 65px" disabled>
+                                <button type="button" class="btn-cta altas mt-5 text-center" id="btn-add-hour"
+                                        style="font-size: 12px;width: 65px" onclick="javascript:calculatotal()"
+                                        disabled>
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
@@ -166,11 +170,11 @@
 @push('js')
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
             crossorigin="anonymous"></script>
     <script>
+        var coleccion = [];
         // arreglo de horarios
         var totalHorarios = new Array();
         var horasInscripcion = new Array();
@@ -620,6 +624,23 @@
                 focusConfirm: true,
                 confirmButtonText: `${textButton}`,
             });
+        }
+
+        function calculatotal() {
+            let dia = $("#diasInscripcion").val();
+            let hora = $("#horasInscripcion").val();
+
+            if (dia != null && hora != null) {
+                if (coleccion.includes(dia) && coleccion.includes(dia)) {
+                    alert('ya existe');
+                }else{
+                    coleccion.push({
+                        dia: dia,
+                        hora: hora
+                    });
+                }
+            }
+            console.log(coleccion)
         }
     </script>
 @endpush

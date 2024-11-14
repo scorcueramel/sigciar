@@ -110,7 +110,7 @@
             <ul class="menu-sub">
                 <li class="menu-item {{ $activePage == 'nutricion.index' ? 'active' : '' }}">
                     <a href="{{route('nutricion.index')}}" class="menu-link">
-                        <div data-i18n="Notifications">Programas / Inscritos</div>
+                        <div data-i18n="Notifications">Programas / Citas</div>
                     </a>
                 </li>
                 @can('crear.nutricion')

@@ -84,7 +84,8 @@ class NutricionController extends Controller
                                             left join public.tipo_servicios ts on s.tiposervicio_id = ts.id
                                             left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
                                             WHERE s.id = ? and s.estado= 'A';", [$idprograma]);
-        } else {
+        }
+        else {
             $disponibilidad = DB::select("SELECT DISTINCT
                                             sd.inicio as startTime,
                                             sd.fin as endTime,
@@ -99,7 +100,7 @@ class NutricionController extends Controller
                                             left join public.servicios s on sp.servicio_id = s.id
                                             left join public.tipo_servicios ts on s.tiposervicio_id = ts.id
                                             left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                            WHERE s.id = ? and s.estado= 'A'", [$persona[0]->id]);
+                                            WHERE s.id = ? and s.estado= 'A'", [$idprograma]);
         }
         return response()->json($disponibilidad);
     }
