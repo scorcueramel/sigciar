@@ -100,7 +100,7 @@ class NutricionController extends Controller
                                             left join public.servicios s on sp.servicio_id = s.id
                                             left join public.tipo_servicios ts on s.tiposervicio_id = ts.id
                                             left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                            WHERE s.id = ? and s.estado= 'A'", [$idprograma]);
+                                            WHERE s.id = ? and s.estado= 'A'and responsable_id = ?",[$idprograma,$persona[0]->id]);
         }
         return response()->json($disponibilidad);
     }
