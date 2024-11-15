@@ -239,7 +239,7 @@ class ReservationController extends Controller
                                     left join servicios s on sp.servicio_id = s.id
                                     WHERE s.sede_id = ? AND s.lugar_id = ?", [$sede, $lugar]);*/
 
-        $reservations = DB::select("select servicioalquiler_listar(?,?)", [$sede, $lugar]);
+        $reservations = DB::select("select id, tiposervicio_id, sede_id, lugar_id,capacidad, inicio as start, fin as end, estado from public.servicioalquiler_listar(?,?)", [$sede, $lugar]);
 
         return response()->json($reservations);
     }
