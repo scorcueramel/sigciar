@@ -227,7 +227,7 @@
                                 <thead>
                                 <tr>
                                     <th class="text-nowrap">Descripción</th>
-                                    <th class="text-nowrap text-center"></th>
+                                    <th class="text-nowrap text-center">☑️ Seleccionar</th>
                                 </tr>
                                 </thead>
                                 <tbody>

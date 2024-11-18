@@ -388,7 +388,8 @@ class TenisController extends Controller
         return response()->json($detalleActividad);
     }
 
-    public function sendNote(Request $request){
+    public function sendNote(Request $request)
+    {
         $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
         $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
         $nota = new ServicioInforme();
@@ -406,27 +407,29 @@ class TenisController extends Controller
                                     ON si.servicioinscripcion_id = si2.id
                                     LEFT JOIN personas p
                                     ON si2.persona_id = p.id
-                                    WHERE si.id = ?",[$nota->id]);
+                                    WHERE si.id = ?", [$nota->id]);
 
-        $correo = User::where('id',$resultNota[0]->usuario_id)->select('email')->get()[0]->email;
+        $correo = User::where('id', $resultNota[0]->usuario_id)->select('email')->get()[0]->email;
 
         Mail::to($correo)->send(new NotasMiembro($resultNota[0]));
 
         return response()->json("ok");
     }
 
-    public function getNotesMember(string $idService){
+    public function getNotesMember(string $idService)
+    {
         $findNote = DB::select("SELECT si.id ,si.servicioinscripcion_id ,si.detalle, si.adjuntto ,p.nombres ,p.apepaterno ,p.apematerno ,p.usuario_id,si.privado ,si.created_at
                                 FROM servicio_informes si
                                 LEFT JOIN servicio_inscripcions si2
                                 ON si.servicioinscripcion_id = si2.id
                                 LEFT JOIN personas p
                                 ON si2.persona_id = p.id
-                                WHERE si.servicioinscripcion_id = ?",[$idService]);
+                                WHERE si.servicioinscripcion_id = ?", [$idService]);
         return response()->json($findNote);
     }
 
-    public function edit(string $idServicio){
+    public function edit(string $idServicio)
+    {
 
         $responsable = Persona::where('usuario_id', Auth::user()->id)->get()[0];
         $responsables = Persona::where('tipocategoria_id', '<>', 1)->where('tipocategoria_id', '<>', 2)->get();
@@ -452,21 +455,23 @@ class TenisController extends Controller
                                         sp.servicio_id, sh.servicioplantilla_id, sh.dia, sh.horainicio, sh.horafin,  sh.estado
                                         FROM servicio_horarios sh
                                         LEFT JOIN servicio_plantillas sp ON sh.servicioplantilla_id = sp.id
-                                        WHERE sp.servicio_id = ?",[$idServicio]);
+                                        WHERE sp.servicio_id = ?", [$idServicio]);
 
-        return view('pages.private.actividades.tenis.edit', compact("getProgram","getDaysToProgram","responsable", "responsables", "sedes", "lugares","subtiposervicio"));
+        return view('pages.private.actividades.tenis.edit', compact("getProgram", "getDaysToProgram", "responsable", "responsables", "sedes", "lugares", "subtiposervicio"));
     }
 
-    public function getDaysForUpdate(string $idService){
+    public function getDaysForUpdate(string $idService)
+    {
         $getDaysToProgram = DB::select("SELECT
         sp.servicio_id, sh.servicioplantilla_id, sh.dia, sh.horainicio, sh.horafin,  sh.estado
         FROM servicio_horarios sh
         LEFT JOIN servicio_plantillas sp ON sh.servicioplantilla_id = sp.id
-        WHERE sp.servicio_id = ?",[$idService]);
+        WHERE sp.servicio_id = ?", [$idService]);
         return response()->json($getDaysToProgram);
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $idprograma = $request->idPrograma;
         $responsable = $request->responsable;
         $actividad = $request->actividad;
@@ -542,5 +547,26 @@ class TenisController extends Controller
         $respuesta = Str::of($respuestaHorarios)->after(',')->before(')');
 
         return response()->json(['idPlantilla' => $idPlantillaConvert, 'idRegistro' => $idRegistroConvert, 'respRegistro' => $respuesta]);
+    }
+
+    public function quitarHorarioTenis(Request $request)
+    {
+        $programaid = $request->programaid;
+        $dia = $request->dia;
+        $horainicio = $request->horainicio;
+        $horafin = $request->horafin;
+
+        DB::select("DELETE FROM servicio_horarios
+                                        WHERE servicioplantilla_id IN (SELECT id FROM servicio_plantillas
+                                        WHERE servicio_id=?)
+                                        AND dia = ? AND horainicio=? AND horafin=?;",[$programaid,$dia,$horainicio,$horafin]);
+
+        $getDaysToProgram = DB::select("SELECT
+                                        sp.servicio_id, sh.servicioplantilla_id, sh.dia, sh.horainicio, sh.horafin,  sh.estado
+                                        FROM servicio_horarios sh
+                                        LEFT JOIN servicio_plantillas sp ON sh.servicioplantilla_id = sp.id
+                                        WHERE sp.servicio_id = ?",[$programaid]);
+
+        return response()->json($getDaysToProgram);
     }
 }

@@ -15,7 +15,7 @@
         </div>
         <div class="col-md text-end">
             <a href="{{ route('noticias.create') }}" class="btn btn-sm btn-info"><i
-                    class="fa-regular fa-newspaper me-1"></i>Nueva</a>
+                        class="fa-regular fa-newspaper me-1"></i>Nueva</a>
         </div>
     </div>
     <div class="row">
@@ -49,14 +49,14 @@
         </div>
         <div class="row">
             @foreach ($noticias as $noticia)
-                <div class="col-md-6 col-lg-4 mb-3">
+                <div class="col-md-4 col-lg-4 mb-3">
                     @include('components.private.card',
                             [
                                 'titulo'=>Str::title(Str::limit($noticia->titulo, 80)),
                                 'imagen'=>true,
                                 'imagenDestacada'=>asset('/storage/noticias/'.$noticia->imagen_destacada),
                                 'muestraExtracto'=>true,
-                                'extracto'=>$noticia->extracto,
+//                                'extracto'=>$noticia->extracto,
                                 'botones'=>true,
                                 'botonDetalle'=>true,
                                 'detalleId'=>$noticia->noticia_id,

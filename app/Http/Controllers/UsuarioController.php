@@ -73,7 +73,7 @@ class UsuarioController extends Controller
         }
 
         $user = new User();
-        $user->email = $request->email;
+        $user->email = Str::of($request->email)->lower();
         $user->password = Hash::make($request->password);
         $user->save();
 

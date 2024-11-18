@@ -161,6 +161,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/editar/{id}/actividad',[TenisController::class, 'edit'])->name('tenis.editar.actividad');
         Route::get('/obtener/{id}/dias',[TenisController::class, 'getDaysForUpdate'])->name('tenis.obtener.editar');
         Route::post('/editar/actividad',[TenisController::class, 'update'])->name('tenis.actualizar.actividad');
+        Route::post('/quitar/horario/actividad',[TenisController::class, 'quitarHorarioTenis'])->name('tenis.remover.dia.programa');
     });
 
     Route::group(['prefix'=>'nutricion'],function (){

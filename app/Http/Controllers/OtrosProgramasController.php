@@ -65,23 +65,23 @@ class OtrosProgramasController extends Controller
         }
 
         return datatables()->of($tableActivity)
-        ->addColumn('turno', function ($row) {
-            if ($row->turno == "DIURNO") {
-                return 'DIURNO <i class="fa-solid fa-sun text-warning"></i>';
-            }
-            if ($row->turno == "NOCTURNO") {
-                return 'NOCTURNO <i class="fa-solid fa-moon-stars text-primary"></i>';
-            }
-        })
-        ->addColumn('inicio', function ($row) {
-            $inicio = \DateTime::createFromFormat('Y-m-d H:i:s', $row->inicio);
-            return $inicio->format('d/m/Y');
-        })
-        ->addColumn('direccion_sede', function ($row) {
-            return $row->direccion_sede == "" ? "SIN DIRECCIÓN" : $row->direccion_sede;
-        })
-        ->addColumn('acciones', function ($row) {
-            return '<div class="dropdown">
+            ->addColumn('turno', function ($row) {
+                if ($row->turno == "DIURNO") {
+                    return 'DIURNO <i class="fa-solid fa-sun text-warning"></i>';
+                }
+                if ($row->turno == "NOCTURNO") {
+                    return 'NOCTURNO <i class="fa-solid fa-moon-stars text-primary"></i>';
+                }
+            })
+            ->addColumn('inicio', function ($row) {
+                $inicio = \DateTime::createFromFormat('Y-m-d H:i:s', $row->inicio);
+                return $inicio->format('d/m/Y');
+            })
+            ->addColumn('direccion_sede', function ($row) {
+                return $row->direccion_sede == "" ? "SIN DIRECCIÓN" : $row->direccion_sede;
+            })
+            ->addColumn('acciones', function ($row) {
+                return '<div class="dropdown">
                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                             <i class="fa-duotone fa-gear"></i>
                         </button>
@@ -93,18 +93,18 @@ class OtrosProgramasController extends Controller
                             <button class="dropdown-item delete" onclick="deleteNutricion(' . $row->id . ')"><i class="bx bx-trash me-1"></i> Eliminar</button>
                         </div>
                     </div>';
-        })
-        ->addColumn('estado', function ($row) {
-            if ($row->estado == "A") {
-                return '
+            })
+            ->addColumn('estado', function ($row) {
+                if ($row->estado == "A") {
+                    return '
                 <button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" onclick="changeState(' . $row->id . ')"><span class="badge bg-label-success me-1">PUBLICADO</span></button>';
-            } else {
-                return '
+                } else {
+                    return '
                 <button class="bg-transparent border-0 change-state" data-toggle="tooltip" title="Cambiar estado" onclick="changeState(' . $row->id . ')"><span class="badge bg-label-danger me-1">BORRADOR</span></button>';
-            }
-        })
-        ->rawColumns(['direccion_sede', 'inicio', 'estado', 'turno', 'acciones'])
-        ->make(true);
+                }
+            })
+            ->rawColumns(['direccion_sede', 'inicio', 'estado', 'turno', 'acciones'])
+            ->make(true);
     }
 
     public function renderCalendar()
@@ -128,7 +128,7 @@ class OtrosProgramasController extends Controller
                                             WHERE s.deleted_at IS NULL AND s.tiposervicio_id = 4");
         $tipoDocs = TipoDocumento::where('estado', 'A')->get();
 
-        return view("pages.private.actividades.otros-programas.calendar", compact("otrosProgramas","tipoDocs","persona"));
+        return view("pages.private.actividades.otros-programas.calendar", compact("otrosProgramas", "tipoDocs", "persona"));
     }
 
     public function programForDays(string $idprograma)
@@ -167,7 +167,7 @@ class OtrosProgramasController extends Controller
                                             left join public.servicios s on sp.servicio_id = s.id
                                             left join public.tipo_servicios ts on s.tiposervicio_id = ts.id
                                             left join public.subtipo_servicios sts on s.subtiposervicio_id = sts.id
-                                            WHERE s.id = ? and s.estado= 'A'", [$persona[0]->id]);
+                                            WHERE s.id = ? and s.estado= 'A'and responsable_id = ?", [$idprograma, $persona[0]->id]);
         }
         return response()->json($disponibilidad);
     }
@@ -420,7 +420,8 @@ class OtrosProgramasController extends Controller
         return redirect()->back()->with('success', 'El programa de tenis fue eliminado');
     }
 
-    public function sendNote(Request $request){
+    public function sendNote(Request $request)
+    {
         $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
         $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
         $nota = new ServicioInforme();
@@ -438,27 +439,29 @@ class OtrosProgramasController extends Controller
                                     ON si.servicioinscripcion_id = si2.id
                                     LEFT JOIN personas p
                                     ON si2.persona_id = p.id
-                                    WHERE si.id = ?",[$nota->id]);
+                                    WHERE si.id = ?", [$nota->id]);
 
-        $correo = User::where('id',$resultNota[0]->usuario_id)->select('email')->get()[0]->email;
+        $correo = User::where('id', $resultNota[0]->usuario_id)->select('email')->get()[0]->email;
 
         Mail::to($correo)->send(new NotasMiembro($resultNota[0]));
 
         return response()->json("ok");
     }
 
-    public function getNotesMember($idService){
+    public function getNotesMember($idService)
+    {
         $findNote = DB::select("SELECT si.id ,si.servicioinscripcion_id ,si.detalle, si.adjuntto ,p.nombres ,p.apepaterno ,p.apematerno ,p.usuario_id,si.privado ,si.created_at
                                 FROM servicio_informes si
                                 LEFT JOIN servicio_inscripcions si2
                                 ON si.servicioinscripcion_id = si2.id
                                 LEFT JOIN personas p
                                 ON si2.persona_id = p.id
-                                WHERE si.servicioinscripcion_id = ?",[$idService]);
+                                WHERE si.servicioinscripcion_id = ?", [$idService]);
         return response()->json($findNote);
     }
 
-    public function editNote($idNota){
+    public function editNote($idNota)
+    {
         $noteById = DB::select("SELECT
                                     si.id ,si.servicioinscripcion_id ,si.detalle, si.adjuntto ,p.nombres ,p.apepaterno ,p.apematerno ,p.usuario_id
                                 FROM servicio_informes si
@@ -466,11 +469,12 @@ class OtrosProgramasController extends Controller
                                 ON si.servicioinscripcion_id = si2.id
                                 LEFT JOIN personas p
                                 ON si2.persona_id = p.id
-                                WHERE si.id = ?",[$idNota]);
+                                WHERE si.id = ?", [$idNota]);
         return response()->json($noteById);
     }
 
-    public function updateNote(Request $request){
+    public function updateNote(Request $request)
+    {
         $usuario = Persona::where('usuario_id', Auth::user()->id)->get();
         $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
         $nota = ServicioInforme::find($request->id);
@@ -487,9 +491,9 @@ class OtrosProgramasController extends Controller
                                     ON si.servicioinscripcion_id = si2.id
                                     LEFT JOIN personas p
                                     ON si2.persona_id = p.id
-                                    WHERE si.id = ?",[$nota->id]);
+                                    WHERE si.id = ?", [$nota->id]);
 
-        $correo = User::where('id',$resultNota[0]->usuario_id)->select('email')->get()[0]->email;
+        $correo = User::where('id', $resultNota[0]->usuario_id)->select('email')->get()[0]->email;
 
         Mail::to($correo)->send(new NotasMiembro($resultNota[0]));
 
@@ -503,7 +507,7 @@ class OtrosProgramasController extends Controller
         $responsables = Persona::where('tipocategoria_id', '<>', 1)->where('tipocategoria_id', '<>', 2)->get();
         $sedes = Sede::where('estado', 'A')->get();
         $lugares = Lugar::where('estado', 'A')->get();
-        $subtiposervicios = SubtipoServicio::where('estado','A')->where('tiposervicio_id', 4)->orderBy('id', 'desc')->get();
+        $subtiposervicios = SubtipoServicio::where('estado', 'A')->where('tiposervicio_id', 4)->orderBy('id', 'desc')->get();
 
         $getProgram = DB::select("SELECT
                                 s.id , s.responsable_id,
