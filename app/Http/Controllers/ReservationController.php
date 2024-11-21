@@ -89,6 +89,99 @@ class ReservationController extends Controller
         }
     }
 
+    private function authenticateToken()
+    {
+        return base64_encode(config("services.niubiz.user") . ':' . config("services.niubiz.password"));
+    }
+
+    public function generateSessionToken(Request $request)
+    {
+        $precio = (int)$request->data["precioModal"];
+
+        $codigo = Str::random(10);
+
+        $auth = $this->authenticateToken();
+
+        $accessToken = Http::withHeaders([
+            'Authorization' => "Basic $auth"
+        ])->get(config("services.niubiz.url_api") . '/api.security/v1/security')->body();
+
+        $sessionTonken = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $accessToken
+        ])
+            ->post(config("services.niubiz.url_api") . "/api.ecommerce/v2/ecommerce/token/session/" . config('services.niubiz.merchant_id'), [
+                "channel" => "web",
+                "amount" => $precio,
+                "antifraud" => [
+                    "clientIp" => $request->ip(),
+                    "merchantDefineData" => [
+                        "MDD4" => Auth::user()->email,
+                        "MDD21" => 0,
+                        "MDD32" => Auth::user()->email, //puedo utilizarl el correo siempre y cuando no se repita o el dni o el id
+                        "MDD75" => "Registrado",
+                        "MDD77" => now()->diffInDays(auth()->user()->creted_at) + 1
+                    ]
+                ],
+                "dataMap" => [
+                    "cardholderCity" => "Lima",
+                    "cardholderCountry" => "PE",
+                    "cardholderAddress" => "Av Jose Pardo 831",
+                    "cardholderPostalCode" => "12345",
+                    "cardholderState" => "LIM",
+                    "cardholderPhoneNumber" => "987654321"
+                ]
+            ])->json();
+
+        $tokenSession = $sessionTonken["sessionKey"];
+
+        DB::select("INSERT INTO reserva_temporal
+        (personaid, inicio, fin, perciomodal, sede, lugar, codigo)
+        VALUES(?,?,?,?,?,?,?)", [$request->data["personaid"], $request->data["inicio"], $request->data["fin"], $precio, $request->data["sedeModal"], $request->data["lugarModal"], $codigo]);
+
+        return response()->json($tokenSession);
+    }
+
+    public function attemptClientPay(Request $request)
+    {
+        $auth = $this->authenticateToken();
+
+        $accessToken = Http::withHeaders([
+            'Authorization' => "Basic $auth"
+        ])->get(config("services.niubiz.url_api") . '/api.security/v1/security')->body();
+
+        $response = Http::withHeaders([
+            "Content-Type" => "application/json",
+            "Authorization" => $accessToken
+        ])
+        ->post(config('services.niubiz.url_api') . "/api.authorization/v3/authorization/ecommerce/" . config('services.niubiz.merchant_id'), [
+            "channel" => $request->channel,
+            "captureType" => "manual",
+            "countable" => true,
+            "order" => [
+                "tokenId" => $request->transactionToken,
+                "purchaseNumber" => $request->purchaseNumber,
+                "amount" => (int)$request->amount,
+                "currency" => config('services.niubiz.currency')
+            ]
+        ])
+        ->json();
+
+        if (isset($response['dataMap']) && $response['dataMap']['ACTION_CODE']){
+            $lastRegister = DB::select("SELECT * FROM reserva_temporal rt ORDER BY id DESC LIMIT 1;");
+            DB::select("UPDATE reserva_temporal SET codigo = ? WHERE id = ?;", [$request->codigo, $lastRegister[0]->id]);
+
+            if ($this->store($request->codigo)) {
+                return redirect()->route('prfole.user')->with(['success' => 'Tu reserva fue generada satisfactoriamente!']);
+            } else {
+                return back()->with(['error' => 'Hubo un problema al realizar tu reserva!']);
+            }
+        }
+        else{
+            dd("Tu pago no se pudo procesar!");
+        }
+    }
+
     public function store($codigo)
     {
         try {
@@ -141,59 +234,59 @@ class ReservationController extends Controller
         }
     }
 
-    // public function store(Request $request)
-    // {
-    //     $validation = Validator::make($request->all(), [
-    //         "inicio" => ["required"],
-    //         "fin" => ["required"],
-    //         "persona_id" => ["required"],
-    //         "sede" => ["required"],
-    //         "lugar" => ["required"],
-    //     ]);
+    /*     public function store(Request $request)
+     {
+         $validation = Validator::make($request->all(), [
+             "inicio" => ["required"],
+             "fin" => ["required"],
+             "persona_id" => ["required"],
+             "sede" => ["required"],
+             "lugar" => ["required"],
+         ]);
 
-    //     if ($validation->fails()) {
-    //         return redirect()->back()->with('error', $validation->errors());
-    //     }
+         if ($validation->fails()) {
+             return redirect()->back()->with('error', $validation->errors());
+         }
 
-    //     $usc = Persona::where("usuario_id", Auth::user()->id)->select('nombres', 'apepaterno', 'apematerno')->get();
+         $usc = Persona::where("usuario_id", Auth::user()->id)->select('nombres', 'apepaterno', 'apematerno')->get();
 
-    //     $usuario_creador = $usc[0]->nombres . ' ' . $usc[0]->apepaterno . ' ' . $usc[0]->apematerno;
+         $usuario_creador = $usc[0]->nombres . ' ' . $usc[0]->apepaterno . ' ' . $usc[0]->apematerno;
 
-    //     $datos_reserva = [
-    //         "inicio" => $request->inicio,
-    //         "fin" => $request->fin,
-    //         "persona_id" => $request->persona_id,
-    //         "tipo_servicio_id" => 1,
-    //         "sede" => $request->sede,
-    //         "lugar" => $request->lugar,
-    //         "capacidad" => 1,
-    //         "usuario_creador" => $usuario_creador,
-    //         "ip_usuario" => $request->ip(),
-    //         "created_at" => Carbon::now()->toDateTimeString(),
-    //         "periodicidad_id" => 1,
-    //         "conluz" => (string)$request->conluz
-    //     ];
+         $datos_reserva = [
+             "inicio" => $request->inicio,
+             "fin" => $request->fin,
+             "persona_id" => $request->persona_id,
+             "tipo_servicio_id" => 1,
+             "sede" => $request->sede,
+             "lugar" => $request->lugar,
+             "capacidad" => 1,
+             "usuario_creador" => $usuario_creador,
+             "ip_usuario" => $request->ip(),
+             "created_at" => Carbon::now()->toDateTimeString(),
+             "periodicidad_id" => 1,
+             "conluz" => (string)$request->conluz
+         ];
 
-    //     DB::select(
-    //         "SELECT servicio_alquiler(?,?,?,?,?,?,?,?,?,?,?,?)",
-    //         [
-    //             $datos_reserva["inicio"],
-    //             $datos_reserva["fin"],
-    //             $datos_reserva["persona_id"],
-    //             $datos_reserva["tipo_servicio_id"],
-    //             $datos_reserva["sede"],
-    //             $datos_reserva["lugar"],
-    //             $datos_reserva["capacidad"],
-    //             $datos_reserva["usuario_creador"],
-    //             $datos_reserva["ip_usuario"],
-    //             $datos_reserva["created_at"],
-    //             $datos_reserva["periodicidad_id"],
-    //             $datos_reserva["conluz"]
-    //         ]
-    //     );
+         DB::select(
+             "SELECT servicio_alquiler(?,?,?,?,?,?,?,?,?,?,?,?)",
+             [
+                 $datos_reserva["inicio"],
+                 $datos_reserva["fin"],
+                 $datos_reserva["persona_id"],
+                 $datos_reserva["tipo_servicio_id"],
+                 $datos_reserva["sede"],
+                 $datos_reserva["lugar"],
+                 $datos_reserva["capacidad"],
+                 $datos_reserva["usuario_creador"],
+                 $datos_reserva["ip_usuario"],
+                 $datos_reserva["created_at"],
+                 $datos_reserva["periodicidad_id"],
+                 $datos_reserva["conluz"]
+             ]
+         );
 
-    //     return response()->json(['msg' => 'Tu reserva fue generada satisfactoriamente!'], 200);
-    // }
+         return response()->json(['msg' => 'Tu reserva fue generada satisfactoriamente!'], 200);
+     }*/
 
     public function getPlaces($id)
     {
@@ -226,18 +319,18 @@ class ReservationController extends Controller
 
     public function show($sede, $lugar)
     {
-     /*    $reservations = DB::select("select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
-                                     s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
-                                     from servicio_reservas sr
-                                     left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
-                                     left join servicios s on sp.servicio_id = s.id
-                                     WHERE s.sede_id = ? AND s.lugar_id = ? AND sr.estado= 'CA'", [$sede, $lugar]);*/
-    /*      $reservations = DB::select("select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
-                                    s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
-                                    from servicio_reservas sr
-                                    left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
-                                    left join servicios s on sp.servicio_id = s.id
-                                    WHERE s.sede_id = ? AND s.lugar_id = ?", [$sede, $lugar]);*/
+        /*    $reservations = DB::select("select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
+                                        s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
+                                        from servicio_reservas sr
+                                        left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
+                                        left join servicios s on sp.servicio_id = s.id
+                                        WHERE s.sede_id = ? AND s.lugar_id = ? AND sr.estado= 'CA'", [$sede, $lugar]);*/
+        /*      $reservations = DB::select("select s.id, s.tiposervicio_id, s.sede_id, s.lugar_id,
+                                        s.capacidad, sr.inicio AS start, sr.fin AS end, s.estado
+                                        from servicio_reservas sr
+                                        left join servicio_plantillas sp on sr.servicioplantilla_id = sp.id
+                                        left join servicios s on sp.servicio_id = s.id
+                                        WHERE s.sede_id = ? AND s.lugar_id = ?", [$sede, $lugar]);*/
 
         $reservations = DB::select("select id, tiposervicio_id, sede_id, lugar_id,capacidad, inicio as start, fin as end, estado from public.servicioalquiler_listar(?,?)", [$sede, $lugar]);
 

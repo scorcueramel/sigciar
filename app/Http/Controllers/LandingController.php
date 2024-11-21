@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Noticia;
+use App\Models\Persona;
 use App\Models\Promesa;
 use App\Models\Sede;
 use App\Models\Servicio;
 use App\Models\TipoDocumento;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class LandingController extends Controller
@@ -86,14 +89,67 @@ class LandingController extends Controller
     }
 
     //SECTION TORNEOS
-    public function renderTorneos(){
+    public function renderTorneos()
+    {
         return view('pages.public.landing.torneos.torneos');
     }
     //END SECTION TORNEOS
 
     //SECTION PROGRAM INSCRIPTONS
-    public function inscribirProgramaMiembro(int $programaid, string $programatitulo){
 
+    public function generatePreInscriptcion(Request $request)
+    {
+        $user = Auth::user();
+        $persona = Persona::where('usuario_id', $user->id)->get();
+        $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->apepaterno . " " . $persona[0]->apematerno;
+        $servicioId = $request->idservicio;
+        $fechasDefinias = json_encode($request->fechasDefinidas);
+        $usuarioId = $request->idmiembro;
+        $ip = $request->ip();
+        $montoTotal = $request->montoTotal;
+        $nombrePrograma = $request->nombrePrograma;
+
+        $request->validate([
+            'idplantilla',
+            'idmiembro',
+            'fechasDefinidas'
+        ]);
+
+        $codigo = Str::random(20);
+
+        DB::select("INSERT INTO inscripcion_temporal
+                    (usuario_activo, servicio_id, fechas_definidas, usuario_id, ip_cliente, monto_total, nombre_programa, codigo)
+                    VALUES(?,?,?,?,?,?,?,?);", [$usuarioActivo, $servicioId, $fechasDefinias, $usuarioId, $ip, $montoTotal, $nombrePrograma, $codigo]);
+
+//        return response()->json($codigo);
+        $this->redirectToPagePayment($codigo);
+    }
+
+    public function redirectToPagePayment(string $codigo)
+    {
+        $registroPayment = DB::select("SELECT * FROM inscripcion_temporal WHERE codigo = ?;",[$codigo]);
+
+        $auth = base64_encode(config("services.izipay.client_id") . ":" . config("services.izipay.client_secret"));
+
+        $response = Http::withHeaders([
+            "Authorization" => "Basic $auth",
+            "Content-Type" => "application/json"
+        ])->post(config('services.izipay.url'), [
+            'amount' => "{$registroPayment[0]->monto_total}00",
+            'currency' => 'USD',
+            'orderId' => "Inscripcion a programa",
+            'customer' => [
+                'email' => Auth::user()->email
+            ]
+        ])->json();
+
+        $formToken = $response['answer']['formToken'];
+
+        return view('pages.public.inscription.inscription-payment',compact('registroPayment','formToken'));
+    }
+
+    public function inscribirProgramaMiembro(int $programaid, string $programatitulo)
+    {
         $tipoDocs = TipoDocumento::where('estado', 'A')->get();
 
         $programaResponse = DB::select("SELECT DISTINCT
@@ -102,6 +158,7 @@ class LandingController extends Controller
                                             subtipo_servicios.titulo,
                                             subtipo_servicios.subtitulo,
                                             subtipo_servicios.imagen,
+                                            sedes.descripcion as sede,
                                             lugars.descripcion,
                                             ver_horarios (cast(servicios.id as integer)) as horario,
                                             lugar_costos.costohora
@@ -112,9 +169,9 @@ class LandingController extends Controller
                                                  LEFT JOIN public.lugars ON servicios.lugar_id = lugars.id
                                                  LEFT JOIN public.lugar_costos ON lugar_costos.lugars_id = lugars.id --AND lugar_costos.descripcion = 'DIURNO'
                                                  LEFT JOIN public.servicio_plantillas ON servicios.id = servicio_plantillas.servicio_id
-                                        WHERE tipo_servicios.id = ? and titulo = ?",[$programaid,$programatitulo]);
+                                        WHERE tipo_servicios.id = ? and titulo = ?", [$programaid, $programatitulo]);
 
-        return view('pages.public.inscription.programa-inscripcion',compact('programaResponse','tipoDocs'));
+        return view('pages.public.inscription.programa-inscripcion', compact('programaResponse', 'tipoDocs'));
     }
     //END SECTION PROGRAM INSCRIPTONS
 
@@ -156,6 +213,7 @@ class LandingController extends Controller
         $noticiaPromesas = DB::select("SELECT * FROM noticias n WHERE n.categoria_id = 1 AND n.estado = 'A' ORDER BY id DESC LIMIT 1;");
         return view("pages.public.landing.promises", compact('promesas', 'noticiaPromesas'));
     }
+
     public function promisesDetails(string $id)
     {
         $promesa = Promesa::find($id);

@@ -109,7 +109,7 @@
                             <div class="item-actividades position-relative">
                                 <div class="contenedor-item">
                                     <figure class="imagen-item">
-                                        <a href="#">
+                                        <a href="{{ $actividad->tiposervicio_id == 3 ? route('landing.inscripcion.miembro',[$actividad->tiposervicio_id,$actividad->titulo]) : '#' }}">
                                             <img src="{{asset('/storage/subtipos/'.$actividad->imagen)}}"
                                                  class="w-100"/>
                                         </a>
@@ -118,7 +118,7 @@
                                     <div class="overlay-item text-start">
                                         <div class="info-item py-3 px-3">
                                             <h3 class="titulo-item altas mb-0">
-                                                <a href="#">{{$actividad->titulo}}</a>
+                                                <a href="{{ $actividad->tiposervicio_id == 3 ? route('landing.inscripcion.miembro',[$actividad->tiposervicio_id,$actividad->titulo]) : '#' }}">{{$actividad->titulo}}</a>
                                             </h3>
                                             <div class="edades altas">{{$actividad->subtitulo}}</div>
                                         </div>
@@ -127,12 +127,10 @@
                                     <div class="precio text-start">
                                         desde S/ {{$actividad->desde}} <span class="frecuencia">/ 4 clases al mes</span>
                                         {{-- <a href="{{route('actividades.detalle',$actividad->servicios_id)}}" class="enlace"><img src="{{asset('assets/images/link.svg')}}" /></a> --}}
-                                        @if($actividad->tiposervicio_id == 3)
-                                            <a href="{{ route('landing.inscripcion.miembro',[$actividad->tiposervicio_id,$actividad->titulo]) }}"
-                                               class="enlace"><img src="{{asset('assets/images/link.svg')}}"/></a>
-                                        @else
-                                            <a href="#" class="enlace"><img src="{{asset('assets/images/link.svg')}}"/></a>
-                                        @endif
+
+                                        <a href="{{ $actividad->tiposervicio_id == 3 ? route('landing.inscripcion.miembro',[$actividad->tiposervicio_id,$actividad->titulo]) : '#' }}"
+                                           class="enlace"><img src="{{asset('assets/images/link.svg')}}"/></a>
+
                                     </div>
                                 </div>
 

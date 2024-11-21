@@ -52,8 +52,8 @@ function chargeSelects(sede) {
                     if (e.descripcion.includes("CAMPO")) {
                         $('#lugar').append(
                             `
-                            <option value="${e.id}">${e.descripcion}</opttion>
-                        `
+                                <option value="${e.id}">${e.descripcion}</opttion>
+                            `
                         );
                     }
                 });
@@ -186,7 +186,6 @@ function chargeCalendar(sede, lugar) {
                                 var respuesta = resp.data.msg;
                                 var fecStart = formatearFechaInicial(start);
                                 if (respuesta == 'disponible') {
-
                                     // formulario.reset();
                                     var sedeID = $('#sede').val();
 
@@ -233,8 +232,7 @@ function payPlace() {
 
     $('#conluz').is(':checked') ? conluz = 'ON' : conluz = 'OFF';
 
-    const datos =
-    {
+    const datos = {
         'inicio': inicio,
         'fin': fin,
         'persona_id': personaId,
@@ -243,6 +241,7 @@ function payPlace() {
         'precio': precio,
         'conluz': conluz
     }
+
     axios
         .post("/ciar/nueva", datos)
         .then(

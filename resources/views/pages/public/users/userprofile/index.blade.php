@@ -126,10 +126,8 @@ $personalInfo = App\Models\Persona::where('usuario_id', Auth::user()->id)->selec
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header">
                                                     <button class="accordion-button collapsed" type="button"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#flush-collapse{{$programa->servicios_id}}"
-                                                        aria-expanded="false"
-                                                        aria-controls="flush-collapse{{$programa->servicios_id}}">
+                                                        data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$programa->servicios_id}}"
+                                                        aria-expanded="false" aria-controls="flush-collapse{{$programa->servicios_id}}">
                                                         {{$programa->descripcion}}
                                                     </button>
                                                 </h2>
@@ -176,10 +174,8 @@ $personalInfo = App\Models\Persona::where('usuario_id', Auth::user()->id)->selec
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header">
                                                     <button class="accordion-button collapsed" type="button"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="#flush-collapse{{$programa->servicios_id}}"
-                                                        aria-expanded="false"
-                                                        aria-controls="flush-collapse{{$programa->servicios_id}}">
+                                                        data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$programa->servicios_id}}"
+                                                        aria-expanded="false" aria-controls="flush-collapse{{$programa->servicios_id}}">
                                                         {{ Str::of($programa->descripcion)->explode('-')[0]}}
                                                     </button>
                                                 </h2>

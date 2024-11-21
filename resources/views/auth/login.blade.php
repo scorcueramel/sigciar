@@ -58,8 +58,7 @@
 
                             <input type="submit" value="Log In" class="btn btn-block btn-primary">
 
-                            <div class="text-white">
-                                <span class="d-block text-left my-4 text-muted">&mdash; or &mdash;</span>
+                            <div class="text-white text-center mt-4">
                                 <a href="{{route('registro.cliente')}}" class="btn btn-block btn-primary pt-3 text-decoration-none text-light">
                                     Registrate
                                 </a>

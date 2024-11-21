@@ -11,7 +11,7 @@ $codigo = Illuminate\Support\Str::random(10);
             </div>
             <form method="POST" action="{{url('/ciar/formulario/'.$codigo.'/pago')}}">
                 <div class="modal-body">
-                    <input type="hidden" value="{{$codigo}}" name="codigo">
+                    <input type="hidden" value="{{$codigo}}" name="codigo" id="codigo">
                     {{ csrf_field() }}
                     @if (Auth::check())
                     <input type="hidden" value="{{ $personalInfo[0]->id }}" name="personaid" id="personaid">
@@ -49,7 +49,9 @@ $codigo = Illuminate\Support\Str::random(10);
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary" id="continuarReserva">Reservar Cancha</button>
+                    <button type="button" class="btn btn-primary" id="continuarReservaNiubiz">Reservar Cancha</button>
+
+                    {{--<button type="submit" class="btn btn-primary" id="continuarReserva">Reservar Cancha</button>--}}
 
                     <div class="text-center">
                         <div class="spinner-border text-primary d-none" id="boton-carga" role="status">

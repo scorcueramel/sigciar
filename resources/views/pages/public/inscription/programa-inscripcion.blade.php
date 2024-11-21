@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
           integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <style>
-        #btn-add-hour:hover {
+        #btn-add-hour:hover, #guardarRegistro:hover {
             background: #27326F !important;
             color: #FFF000 !important;
         }
@@ -41,10 +41,10 @@
                         <li>Clases de una (1) hora</li>
                         <li>8 cupos disponibles</li>
                     </ul>
-                    {{--                    <h3 class="mainColor fw-bold altas">Horario</h3>
-                                        @foreach($programaResponse as $pr)
-                                            <h6 style="font-weight: bold">{{Str::of($pr->horario)->explode('|')[1]}}</h6>
-                                        @endforeach--}}
+                    {{--<h3 class="mainColor fw-bold altas">Horario</h3>
+                        @foreach($programaResponse as $pr)
+                            <h6 style="font-weight: bold">{{Str::of($pr->horario)->explode('|')[1]}}</h6>
+                        @endforeach--}}
                 </div>
                 <div class="col-11 col-md-5 px-5">
                     <img src="{{asset('storage/subtipos/'.$programaResponse[0]->imagen)}}" class="w-100"/>
@@ -60,7 +60,6 @@
                     <div class="col-11 col-md-10 text-start ps-5">
                         <h5 class="mainColor fw-bold altas">Primero debes iniciar sesión para inscribirte en un
                             programa, si no cuentas con un usuario registrate en unos sencillos pasos.</h5>
-
                         <button class="btn-cta altas mt-3" id="iniciasesion">
                             <img src="{{asset('assets/images/arrow-bt.svg')}}" class="icon me-2 me-lg-1"/> Inicia Sesión
                             Aquí
@@ -71,9 +70,10 @@
         </section>
     @else
         @php
-        $idMiembro = App\Models\Persona::where('usuario_id',Auth::id())->select('personas.id')->get()[0];
+            $idMiembro = App\Models\Persona::where('usuario_id',Auth::id())->select('personas.id')->get()[0];
         @endphp
         <input type="hidden" id="idPrograma" value="{{$programaResponse[0]->servicios_id}}">
+        <input type="hidden" id="namePrograma" value="{{$programaResponse[0]->titulo}}">
         <input type="hidden" id="idMiembro" value="{{$idMiembro->id}}">
         <input type="hidden" id="inscripcionPublica" value="1">
 
@@ -86,24 +86,29 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Cancha</th>
-                                    <th>Horario</th>
-                                    <th>Costo por hora</th>
+                                    <th></th>
+                                    <th>SEDE</th>
+                                    <th>CANCHA</th>
+                                    <th>HORARIO</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($programaResponse as $pr)
                                     <tr>
-                                        <td><input class="actividad" type="radio" name="actividadid"
+                                        <td>
+                                            <input class="actividad" type="radio" name="actividadid"
                                                    id="servid{{$pr->servicios_id}}" data-id="{{$pr->servicios_id}}"
                                                    data-precio="{{$pr->costohora}}">
                                         </td>
-                                        <td><label for="servid{{$pr->servicios_id}}">{{$pr->descripcion}}</label></td>
-                                        <td><label
-                                                for="servid{{$pr->servicios_id}}">{{Str::of($pr->horario)->explode('|')[1]}}</label>
+                                        <td>
+                                            <label for="servid{{$pr->servicios_id}}">{{$pr->sede}}</label>
                                         </td>
-                                        <td><label for="servid{{$pr->servicios_id}}">S/. {{$pr->costohora}}.00</label>
+                                        <td>
+                                            <label for="servid{{$pr->servicios_id}}">{{$pr->descripcion}}</label>
+                                        </td>
+                                        <td>
+                                            <label
+                                                for="servid{{$pr->servicios_id}}">{{Str::of($pr->horario)->explode('|')[1]}}</label>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -113,7 +118,7 @@
                         <div class="row mb-3 d-flex justify-content-between">
                             <div class="col-md-5 mb-3 d-flex justify-content-between">
                                 <input type="hidden" id="idPrograma" value="">
-                                <label class="col-sm-2 col-form-label" for="diasInscripcion">Días</label>
+                                <label class="col-sm-2 col-form-label" for="diasInscripcion">DÍA</label>
                                 <div class="col-sm-8">
                                     <div class="input-group input-group-merge">
                                         <select class="form-control" id="diasInscripcion" aria-label="diasInscripcion"
@@ -127,7 +132,7 @@
                                 </div>
                             </div>
                             <div class="col-md-5 mb-3 d-flex justify-content-between">
-                                <label class="col-sm-4 col-form-label" for="horasInscripcion">Ingreso</label>
+                                <label class="col-sm-4 col-form-label" for="horasInscripcion">HORA</label>
                                 <div class="col-sm-8">
                                     <div class="input-group input-group-merge">
                                         <select class="form-control" id="horasInscripcion" aria-label="horasInscripcion"
@@ -161,7 +166,7 @@
 
                         <h3 class="mainColor fw-bold altas mt-3 totalPagar">Total a pagar: S/<span
                                 class="total"> 0.00</span></h3>
-                        <button type="button" class="btn-cta altas mt-5" id="guardarRegistro" >
+                        <button type="button" class="btn-cta altas mt-5 d-none" id="btnInscribete" disabled>
                             <img src="{{asset('assets/images/arrow-bt.svg')}}" class="icon me-2 me-lg-1"/> Inscríbete
                             aquí
                         </button>
@@ -173,24 +178,28 @@
     @include('components.public.footer')
     @include('components.public.fixed')
     @include('components.public.modal',['titulo'=>false,'botones'=>false])
-
 @endsection
 @push('js')
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
             crossorigin="anonymous"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         var montoHora = 0;
+        var montoTotal = 0;
+
         // arreglo de horarios
         var totalHorarios = new Array();
         var horasInscripcion = new Array();
 
         // Agregar cabecera a la tabla horarios
         const headerTable = $('#headertable');
+
         // Referencia el cuerpo de la tabla
         const bodyTable = $('#bodytable');
 
@@ -200,7 +209,7 @@
                     <th>HORA</th>
                     <th>QUITAR</th>
                 </tr>
-    `);
+        `);
 
         $("#iniciasesion").on('click', function () {
             $("#modal").modal('show');
@@ -469,7 +478,7 @@
         $("#diasInscripcion").on('change', function () {
             let idServicio = $("#idPrograma").val();
             let diaBuscar = $(this).val();
-            console.log(idServicio, diaBuscar);
+
             $(".diasError").addClass("d-none");
             $.ajax({
                 type: "GET",
@@ -518,6 +527,7 @@
                 messagesInfo('<strong>Lo sentimos</strong>', 'warning',
                     `<p>Es obligatorio seleccionar un Día y una Hora</p>`, `Entiendo`)
             } else {
+                $("#sectionpay").removeClass('d-none');
                 totalHorarios.push({
                     "dia": dia.val(),
                     "hora": hora.val()
@@ -527,7 +537,6 @@
 
                 for (let i = 0; i < totalHorarios.length; i++) {
                     const el = totalHorarios[i];
-
                     bodyTable.append(`
                         <tr>
                             <td>${el.dia}</td>
@@ -541,22 +550,25 @@
                     `);
                 }
 
-                let montoTotal = (totalHorarios.length * 4) * montoHora
+                montoTotal = (totalHorarios.length * 4) * montoHora
                 $('.totalPagar').html('');
                 $('.totalPagar').append(`
                     Total a pagar: S/<span class="total"> ${montoTotal}.00</span>
                 `);
+
+                if (totalHorarios.length > 0) {
+                    $("#btnInscribete").removeAttr("disabled");
+                    $("#btnInscribete").removeClass("d-none");
+                }
             }
         });
 
-        //
-        $("#guardarRegistro").on("click", function () {
+        $("#btnInscribete").on('click',function (){
             const inscripcionPublica = $("#inscripcionPublica").val();
             const idservicio = $("#idPrograma").val();
+            const nombrePrograma = $("#namePrograma").val();
             const idmiembro = $("#idMiembro").val();
             let fechasDefinidas = [];
-
-            console.log(idservicio,idmiembro);
 
             // Rellenar tabla de turnos y horarios
             $("#tableComponent").find("tbody tr").each(function (idx, row) {
@@ -576,42 +588,20 @@
             });
 
             $.ajax({
-                method: 'POST',
-                url: "{{route('inscripciones.store')}}",
+                method:'POST',
+                url:"{{route('generate.pre.inscription.programs')}}",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                data: {
-                    idservicio,
-                    idmiembro,
-                    fechasDefinidas,
-                    inscripcionPublica
+                data:{montoTotal,inscripcionPublica,nombrePrograma,idservicio,idmiembro,fechasDefinidas},
+                success:function(resp){
+                    window.location.href = `/ciar/redirect/page/${resp}/payment`
+                    Swal.close();
                 },
-                success: function (resp) {
-                    let data = resp;
-                    if (data.success == 'ok') {
-                        Swal.fire({
-                            title: "Inscripción exitosa",
-                            position: "center",
-                            icon: "success",
-                            allowOutsideClick: false,
-                            showDenyButton: false,
-                            showCancelButton: false,
-                            confirmButtonText: `<span style="color:#27326F">Entendido</span>`,
-                            confirmButtonColor: "#FFF000",
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.reload()
-                            }
-                        });
-                    }
-                },
-                error: function (err) {
-                    console.log(err)
-                }
+                error:function(error){console.log(error)}
             });
 
-        });
+        })
 
         // funcion remover de tabla horarios
         function removerElemento(indice) {
@@ -642,8 +632,8 @@
             let montoTotal = (totalHorarios.length * 4) * montoHora
             $('.totalPagar').html('');
             $('.totalPagar').append(`
-                    Total a pagar: S/<span class="total"> ${montoTotal}.00</span>
-                `);
+                Total a pagar: S/<span class="total"> ${montoTotal}.00</span>
+            `);
 
         }
 

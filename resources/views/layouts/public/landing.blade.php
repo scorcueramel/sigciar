@@ -41,6 +41,7 @@
 
     @stack('css')
 
+    @stack('paidhead')
 </head>
 
 <body>
@@ -48,7 +49,6 @@
         <main>
             @yield('content')
         </main>
-
         <script src="{{asset('assets/auth/js/jquery-3.3.1.min.js')}}"></script>
         <script src="{{asset('assets/landing/libs/swiper/swiper-bundle.min.js')}}"></script>
         <script src="{{asset('assets/landing/libs/aos/aos.js')}}"></script>
