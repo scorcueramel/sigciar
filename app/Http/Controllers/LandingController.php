@@ -210,9 +210,12 @@ class LandingController extends Controller
 
         $tokenSession = $sessionTonken["sessionKey"];
 
+        $obtenerResponsable = DB::select("SELECT usr.email, per.nombres || ' ' || per.apepaterno || ' ' || per.apematerno as nombre_persona FROM servicios ser LEFT JOIN personas per ON per.id = ser.responsable_id LEFT JOIN users usr ON usr.id = per.usuario_id WHERE ser.id = ?;",[$servicioId])[0];
+
+
         DB::select("INSERT INTO inscripcion_temporal
-                    (usuario_activo, servicio_id, fechas_definidas, usuario_id, ip_cliente, monto_total, nombre_programa, codigo)
-                    VALUES(?,?,?,?,?,?,?,?);", [$usuarioActivo, $servicioId, $fechasDefinias, $usuarioId, $ip, $montoTotal, $nombrePrograma, $codigo]);
+                    (usuario_activo, servicio_id, fechas_definidas, usuario_id, ip_cliente, monto_total, nombre_programa, codigo, email_responsable_programa, nombre_responsable)
+                    VALUES(?,?,?,?,?,?,?,?,?,?);", [$usuarioActivo, $servicioId, $fechasDefinias, $usuarioId, $ip, $montoTotal, $nombrePrograma, $codigo, $obtenerResponsable->email, $obtenerResponsable->nombre_persona]);
 
         return response()->json(['tokenSession'=>$tokenSession,'codigo'=>$codigo]);
     }
@@ -267,6 +270,19 @@ class LandingController extends Controller
                                             order by subtipo_servicios.medicion;");
 
         return view("pages.public.landing.actividades.activities", compact("actividades"));
+    }
+
+    public function getHoursForDay(string $idServicio, string $day)
+    {
+        $hours = DB::select("SELECT horarios FROM servicioinscripcion_listarhora(?,?);", [$idServicio, $day]);
+        return response()->json($hours);
+    }
+
+    //get days by activities, IN THIS FUNCTION GETTER THE SUBCATEGORIA, PREPARETE QUERY FOR DAYS IS REGISTERED ON THIS CATEGORY
+    public function getDaysActivity(string $idactivity)
+    {
+        $diasPorActividad = DB::select("SELECT dia FROM servicioinscripcion_listardias(?);", [$idactivity]);
+        return response()->json($diasPorActividad);
     }
 
     public function activitiesDetails(string $id)

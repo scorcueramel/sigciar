@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class InscripcionExitosa extends Mailable
+class NotificarInscripciónResponsable extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -18,7 +18,7 @@ class InscripcionExitosa extends Mailable
      *
      * @return void
      */
-    public function __construct(public $lastRegister, public string $sede, public string $lugar, public $response, public string $persona)
+    public function __construct(public string $nombrePersona, public string $nombrePrograma)
     {
         //
     }
@@ -31,7 +31,7 @@ class InscripcionExitosa extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Inscripcion Exitosa',
+            subject: 'Nueva Inscripción',
         );
     }
 
@@ -43,7 +43,7 @@ class InscripcionExitosa extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mail.inscripcionexitosa',
+            view: 'mail.notificacionresponsable',
         );
     }
 

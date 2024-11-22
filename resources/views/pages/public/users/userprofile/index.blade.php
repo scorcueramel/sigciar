@@ -209,14 +209,14 @@ $personalInfo = App\Models\Persona::where('usuario_id', Auth::user()->id)->selec
                                             @endif
                                             @endforeach
                                         </div>
-                                        @if ($contador2 == 0)
+                                        {{--@if ($contador2 == 0)
                                         <div class="row mb-4">
                                             <div class="col-12 d-grid gap-2">
                                                 <button class="btn btn-sm btn-outline-primary" id="historiaMisReservas" data-id-usuario="{{Auth::user()->id}}">Historial</button>
                                             </div>
                                         </div>
                                         <p class="text-center my-4">Aún no tienes reservas.</p>
-                                        @endif
+                                        @endif--}}
                                         @else
                                         <div class="row mb-4">
                                             <div class="col-12 d-grid gap-2">

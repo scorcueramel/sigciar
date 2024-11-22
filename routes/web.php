@@ -103,6 +103,8 @@ Route::group(['prefix' => 'ciar'], function () {
     Route::post('/intento/pago/cliente/program/niubiz',[InscripcionesController::class,'attemptClientPayProgram'])->name('attempt.client.pay.program.niubiz');
 
     Route::get('/inscripcion/{id}/programa/{titulo}', [LandingController::class, 'inscribirProgramaMiembro'])->name('landing.inscripcion.miembro');
+    Route::get('/obtener/{id}/dias',[LandingController::class, 'getDaysActivity'])->name('landing.days.activity');
+    Route::get('/obtener/{idServicio}/{dia}/horas',[LandingController::class,'getHoursForDay'])->name('landing.obtener.horarios');
 
     /**ENDSECTION INSCRIPCION MIEMBRO */
 

@@ -182,7 +182,7 @@ class ReservationController extends Controller
 
             if ($this->store($request->codigo)) {
 
-                return redirect()->route('prfole.user')->with(['success' => 'Tu reserva fue generada satisfactoriamente!']);
+                return redirect()->route('prfole.user')->with(['success' => 'Tu reserva fue generada satisfactoriamente!, hemos envíado un correo con mayor detalle']);
 
             } else {
 

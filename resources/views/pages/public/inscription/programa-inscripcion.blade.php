@@ -453,7 +453,7 @@
 
             $.ajax({
                 method: 'GET',
-                url: `/admin/inscripciones/obtener/${id}/dias`,
+                url: `/ciar/obtener/${id}/dias`,
                 success: function (resp) {
                     let data = resp;
 
@@ -483,7 +483,7 @@
             $(".diasError").addClass("d-none");
             $.ajax({
                 type: "GET",
-                url: `/admin/inscripciones/obtener/${idServicio}/${diaBuscar}/horas`,
+                url: `/ciar/obtener/${idServicio}/${diaBuscar}/horas`,
                 success: function (data) {
                     if (data) {
                         $("#horasInscripcion").removeAttr('disabled');
@@ -604,6 +604,7 @@
                 icon: 'info',
                 html: "Espere un momento porfavor ...",
                 timerProgressBar: true,
+                allowOutsideClick: false,
                 didOpen: () => {
                     Swal.showLoading();
                 }
@@ -617,6 +618,7 @@
                 },
                 data: {montoTotal, inscripcionPublica, nombrePrograma, idservicio, idmiembro, fechasDefinidas},
                 success: function (resp) {
+                    $(this).attr('disabled','disabled');
                     openForm(resp.tokenSession, montoTotal, resp.codigo);
                 },
                 error: function (error) {

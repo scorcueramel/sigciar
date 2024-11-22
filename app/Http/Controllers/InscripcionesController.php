@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NotificarInscripciónResponsable;
 use App\Models\Persona;
+
 use App\Models\TipoDocumento;
-use Illuminate\Console\View\Components\Component;
+use App\Mail\InscripcionExitosa;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 
 class InscripcionesController extends Controller
 {
@@ -240,12 +244,14 @@ class InscripcionesController extends Controller
                 "amount" => (int)$request->amount,
                 "currency" => config('services.niubiz.currency')
             ]
-        ])
-            ->json();
+        ])->json();
 
         if (isset($response['dataMap']) && $response['dataMap']['ACTION_CODE']) {
 
-            $lastRegister = DB::select("SELECT * FROM inscripcion_temporal it WHERE codigo = ? ORDER BY id DESC LIMIT 1;",[$request->codigo]);
+            $lastRegister = DB::select("SELECT * FROM inscripcion_temporal it WHERE codigo = ? ORDER BY id DESC LIMIT 1;", [$request->codigo]);
+
+            $sede = DB::select("SELECT sed.descripcion as sede FROM servicios ser LEFT JOIN sedes sed ON sed.id = ser.sede_id")[0]->sede;
+            $lugar = DB::select("SELECT lug.descripcion as lugar FROM servicios ser LEFT JOIN lugars lug ON lug.id = ser.lugar_id")[0]->lugar;
 
             DB::select("UPDATE inscripcion_temporal SET codigo = ? WHERE id = ?;", [$request->codigo, $lastRegister[0]->id]);
 
@@ -253,11 +259,16 @@ class InscripcionesController extends Controller
 
             $persona = "$getPersona->nombres $getPersona->apepaterno $getPersona->apematerno";
 
-//            Mail::to(Auth::user()->email)->send(new InscripcionExitosa($lastRegister, $response, $persona));
+            $nombreResponsable = $lastRegister[0]->nombre_responsable;
+            $nomrePrograma = $lastRegister[0]->nombre_programa;
+
+            Mail::to(Auth::user()->email)->send(new InscripcionExitosa($lastRegister, $sede, $lugar, $response, $persona));
+
+            Mail::to($lastRegister[0]->email_responsable_programa)->send(new NotificarInscripciónResponsable($nombreResponsable,$nomrePrograma));
 
             if ($this->store($request->codigo)) {
 
-                return redirect()->route('prfole.user')->with(['success' => 'Tu inscripcion se realizó satisfactoriamente!']);
+                return redirect()->route('prfole.user')->with(['success' => 'Tu inscripcion se realizó satisfactoriamente!, te hemos envíado un correo con más detalle.']);
 
             } else {
 
@@ -282,18 +293,13 @@ class InscripcionesController extends Controller
             $usuarioId = $inscripcionTemporal->usuario_id;
             $ip = request()->ip();
 
-            dd("Do not next action");
-
             $fechasDefinias = json_decode($fechas);
 
-
             foreach ($fechasDefinias as $fd) {
-                $dia = $fd['dias'];
-                $hora = $fd['horarios'];
+                $dia = $fd->dias;
+                $hora = $fd->horarios;
                 DB::select('SELECT servicio_inscripcion(?,?,?,?,?,?)', [$servicioId, $dia, $usuarioId, $hora, $usuarioActivo, $ip]);
             }
-
-
 
             return true;
 

@@ -16,22 +16,54 @@
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <!-- Search -->
-        <div class="navbar-nav align-items-center">
+        {{--<div class="navbar-nav align-items-center">
             <div class="nav-item d-flex align-items-center">
-                {{-- <button type="button" class="btn btn-sm btn-transparent" id="buscador">
+                 <button type="button" class="btn btn-sm btn-transparent" id="buscador">
                     <i class="bx bx-search fs-4 lh-0"></i>
                 </button>
-                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..." aria-label="Search..." /> --}}
-                {{-- @if ($authenticate)
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..." aria-label="Search..." />
+                 @if ($authenticate)
                     <marquee direction="right">
                         {{ $nombres[0]->nombres . ' ' . $nombres[0]->apepaterno . ' ' . $nombres[0]->apematerno }}
                     </marquee>
-                @endif --}}
+                @endif
             </div>
-        </div>
+        </div>--}}
         <!-- /Search -->
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
+            @php
+              $counter = 4;
+            @endphp
+
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow mt-3" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <button type="button" class="btn" style="background: transparent; font-size: 20px; margin-top: -10px">
+                        @if($counter > 0 )
+                            <i class="fa-solid fa-bell-ring"></i><span class="badge badge-danger" style="background: red; border-radius: 50%; font-size:10px !important;">{{$counter}}</span>
+                            <span class="sr-only">unread messages</span>
+                        @else
+                            <i class="fa-solid fa-bell"></i><span class="badge badge-danger" style="background: red; border-radius: 50%; font-size:10px !important;">{{$counter}}</span>
+                            <span class="sr-only">unread messages</span>
+                        @endif
+                    </button>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    @for($i=0; $i < $counter; $i++)
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <span class="d-flex align-items-center align-middle d-flex ">
+                              <i class="flex-shrink-0 bx bx-envelope me-2"></i>
+                              <span class="flex-grow-1 align-middle me-5">Título Mensaje Nuevo</span>
+{{--                              <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">{{$i}}</span>--}}
+                              <span class="flex-shrink-0 badge badge-center bg-danger">X</span>
+                            </span>
+                        </a>
+                    </li>
+                    @endfor
+                </ul>
+            </li>
+
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -60,7 +92,7 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{{route('usuarios.edit',Auth::id())}}">
                             <i class="bx bx-user me-2"></i>
                             <span class="align-middle">Mi Períl</span>
                         </a>
