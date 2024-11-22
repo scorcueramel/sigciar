@@ -129,10 +129,6 @@
 @push('js')
     <script type="text/javascript" src="{{config('services.niubiz.url_js')}}"></script>
 
-    <script type="text/javascript">
-
-    </script>
-
     <script>
         var purchaseNumber = Math.floor(Math.random() * 1000000000) + 1;
 
@@ -177,8 +173,8 @@
                 amount: parseInt(precioModal),
                 expirationminutes: '20',
                 timeouturl: "{{route('reservation')}}",
-                merchantlogo: 'img/comercio.png',
-                formbuttoncolor: '#000000',
+                merchantlogo: "{{asset('assets/images/ciar-logo-azul.png')}}",
+                formbuttoncolor: '#27326F',
                 action: "{{route('attempt.client.pay')}}" + '?purchaseNumber=' + purchaseNumber + "&amount=" + parseInt(precioModal) + "&codigo=" + codigo, //url de intento de pago
                 complete: function (params) {
                     alert(JSON.stringify(params));
@@ -205,11 +201,12 @@
                 url: "{{route('genera.token.niubiz')}}",
                 data: {data},
                 success: function (resp) {
-                    openForm(resp, data.precioModal, data.codigo);
+                    openForm(resp.tokenSession, data.precioModal, resp.codigo);
                     setTimeout(() => {
                         $("#continuarReservaNiubiz").removeClass('d-none');
+                        $("#continuarReservaNiubiz").attr('disabled', 'disabled');
                         $("#boton-carga").addClass('d-none');
-                    }, 2500);
+                    }, 6000);
                 },
                 error: function (error) {
                     console.log(error);

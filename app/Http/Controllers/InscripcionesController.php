@@ -8,6 +8,7 @@ use Illuminate\Console\View\Components\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class InscripcionesController extends Controller
 {
@@ -151,7 +152,7 @@ class InscripcionesController extends Controller
                                         and servicios.estado= 'A' and servicios.responsable_id = ?", [$persona[0]->id]);
         }
         $tipoDocs = TipoDocumento::where('estado', 'A')->get();
-        return view("pages.private.actividades.inscripciones.create", compact("actividades","tipoDocs"));
+        return view("pages.private.actividades.inscripciones.create", compact("actividades", "tipoDocs"));
     }
 
     // public function chargePrograms()
@@ -213,29 +214,92 @@ class InscripcionesController extends Controller
         return response()->json($hours);
     }
 
-    public function store(Request $request)
+    private function authenticateToken()
     {
-        $user = Auth::user();
-        $persona = Persona::where('usuario_id', $user->id)->get();
-        $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->apepaterno . " " . $persona[0]->apematerno;
-        $servicioId = $request->idservicio;
-        $fechasDefinias = $request->fechasDefinidas;
-        $usuarioId = $request->idmiembro;
-        $ip = $request->ip();
+        return base64_encode(config("services.niubiz.user") . ':' . config("services.niubiz.password"));
+    }
 
-        $request->validate([
-            'idplantilla',
-            'idmiembro',
-            'fechasDefinidas'
-        ]);
+    public function attemptClientPayProgram(Request $request)
+    {
+        $auth = $this->authenticateToken();
 
-        foreach ($fechasDefinias as $fd) {
-            $dia = $fd['dias'];
-            $hora = $fd['horarios'];
-            DB::select('SELECT servicio_inscripcion(?,?,?,?,?,?)', [$servicioId, $dia, $usuarioId, $hora, $usuarioActivo, $ip]);
+        $accessToken = Http::withHeaders([
+            'Authorization' => "Basic $auth"
+        ])->get(config("services.niubiz.url_api") . '/api.security/v1/security')->body();
+
+        $response = Http::withHeaders([
+            "Content-Type" => "application/json",
+            "Authorization" => $accessToken
+        ])->post(config('services.niubiz.url_api') . "/api.authorization/v3/authorization/ecommerce/" . config('services.niubiz.merchant_id'), [
+            "channel" => $request->channel,
+            "captureType" => "manual",
+            "countable" => true,
+            "order" => [
+                "tokenId" => $request->transactionToken,
+                "purchaseNumber" => $request->purchaseNumber,
+                "amount" => (int)$request->amount,
+                "currency" => config('services.niubiz.currency')
+            ]
+        ])
+            ->json();
+
+        if (isset($response['dataMap']) && $response['dataMap']['ACTION_CODE']) {
+
+            $lastRegister = DB::select("SELECT * FROM inscripcion_temporal it WHERE codigo = ? ORDER BY id DESC LIMIT 1;",[$request->codigo]);
+
+            DB::select("UPDATE inscripcion_temporal SET codigo = ? WHERE id = ?;", [$request->codigo, $lastRegister[0]->id]);
+
+            $getPersona = Persona::find(Auth::id());
+
+            $persona = "$getPersona->nombres $getPersona->apepaterno $getPersona->apematerno";
+
+//            Mail::to(Auth::user()->email)->send(new InscripcionExitosa($lastRegister, $response, $persona));
+
+            if ($this->store($request->codigo)) {
+
+                return redirect()->route('prfole.user')->with(['success' => 'Tu inscripcion se realizó satisfactoriamente!']);
+
+            } else {
+
+                return back()->with(['error' => 'Hubo un problema al realizar tu reserva, comunicate con el staff de CIAR SPORTS para recibir ayuda.']);
+
+            }
+        } else {
+
+            return back()->with(['error' => $response['data']['ACTION_DESCRIPTION']]);
+
         }
+    }
 
-        return response()->json(['success' => 'ok']);
+    public function store($codigo)
+    {
+        try {
+            $inscripcionTemporal = DB::select("SELECT * FROM inscripcion_temporal WHERE codigo = ?", [$codigo])[0];
+
+            $usuarioActivo = $inscripcionTemporal->usuario_activo;
+            $servicioId = $inscripcionTemporal->servicio_id;
+            $fechas = $inscripcionTemporal->fechas_definidas;
+            $usuarioId = $inscripcionTemporal->usuario_id;
+            $ip = request()->ip();
+
+            dd("Do not next action");
+
+            $fechasDefinias = json_decode($fechas);
+
+
+            foreach ($fechasDefinias as $fd) {
+                $dia = $fd['dias'];
+                $hora = $fd['horarios'];
+                DB::select('SELECT servicio_inscripcion(?,?,?,?,?,?)', [$servicioId, $dia, $usuarioId, $hora, $usuarioActivo, $ip]);
+            }
+
+
+
+            return true;
+
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
     public function show($id)

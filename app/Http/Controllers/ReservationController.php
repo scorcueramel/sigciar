@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ReservaExitosa;
 use App\Models\Lugar;
 use App\Models\Persona;
 use App\Models\Sede;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
 {
@@ -110,28 +112,28 @@ class ReservationController extends Controller
             'Content-Type' => 'application/json',
             'Authorization' => $accessToken
         ])
-            ->post(config("services.niubiz.url_api") . "/api.ecommerce/v2/ecommerce/token/session/" . config('services.niubiz.merchant_id'), [
-                "channel" => "web",
-                "amount" => $precio,
-                "antifraud" => [
-                    "clientIp" => $request->ip(),
-                    "merchantDefineData" => [
-                        "MDD4" => Auth::user()->email,
-                        "MDD21" => 0,
-                        "MDD32" => Auth::user()->email, //puedo utilizarl el correo siempre y cuando no se repita o el dni o el id
-                        "MDD75" => "Registrado",
-                        "MDD77" => now()->diffInDays(auth()->user()->creted_at) + 1
-                    ]
-                ],
-                "dataMap" => [
-                    "cardholderCity" => "Lima",
-                    "cardholderCountry" => "PE",
-                    "cardholderAddress" => "Av Jose Pardo 831",
-                    "cardholderPostalCode" => "12345",
-                    "cardholderState" => "LIM",
-                    "cardholderPhoneNumber" => "987654321"
+        ->post(config("services.niubiz.url_api") . "/api.ecommerce/v2/ecommerce/token/session/" . config('services.niubiz.merchant_id'), [
+            "channel" => "web",
+            "amount" => $precio,
+            "antifraud" => [
+                "clientIp" => $request->ip(),
+                "merchantDefineData" => [
+                    "MDD4" => Auth::user()->email,
+                    "MDD21" => 0,
+                    "MDD32" => Auth::user()->email, //puedo utilizarl el correo siempre y cuando no se repita o el dni o el id
+                    "MDD75" => "Registrado",
+                    "MDD77" => now()->diffInDays(auth()->user()->creted_at) + 1
                 ]
-            ])->json();
+            ],
+            "dataMap" => [
+                "cardholderCity" => "Lima",
+                "cardholderCountry" => "PE",
+                "cardholderAddress" => "Av Jose Pardo 831",
+                "cardholderPostalCode" => "12345",
+                "cardholderState" => "LIM",
+                "cardholderPhoneNumber" => "987654321"
+            ]
+        ])->json();
 
         $tokenSession = $sessionTonken["sessionKey"];
 
@@ -139,7 +141,7 @@ class ReservationController extends Controller
         (personaid, inicio, fin, perciomodal, sede, lugar, codigo)
         VALUES(?,?,?,?,?,?,?)", [$request->data["personaid"], $request->data["inicio"], $request->data["fin"], $precio, $request->data["sedeModal"], $request->data["lugarModal"], $codigo]);
 
-        return response()->json($tokenSession);
+        return response()->json(['tokenSession'=>$tokenSession,'codigo'=>$codigo]);
     }
 
     public function attemptClientPay(Request $request)
@@ -153,32 +155,44 @@ class ReservationController extends Controller
         $response = Http::withHeaders([
             "Content-Type" => "application/json",
             "Authorization" => $accessToken
-        ])
-        ->post(config('services.niubiz.url_api') . "/api.authorization/v3/authorization/ecommerce/" . config('services.niubiz.merchant_id'), [
-            "channel" => $request->channel,
-            "captureType" => "manual",
-            "countable" => true,
-            "order" => [
-                "tokenId" => $request->transactionToken,
-                "purchaseNumber" => $request->purchaseNumber,
-                "amount" => (int)$request->amount,
-                "currency" => config('services.niubiz.currency')
-            ]
-        ])
-        ->json();
+        ])->post(config('services.niubiz.url_api') . "/api.authorization/v3/authorization/ecommerce/" . config('services.niubiz.merchant_id'), [
+                "channel" => $request->channel,
+                "captureType" => "manual",
+                "countable" => true,
+                "order" => [
+                    "tokenId" => $request->transactionToken,
+                    "purchaseNumber" => $request->purchaseNumber,
+                    "amount" => (int)$request->amount,
+                    "currency" => config('services.niubiz.currency')
+                ]
+            ])
+            ->json();
 
-        if (isset($response['dataMap']) && $response['dataMap']['ACTION_CODE']){
-            $lastRegister = DB::select("SELECT * FROM reserva_temporal rt ORDER BY id DESC LIMIT 1;");
+        if (isset($response['dataMap']) && $response['dataMap']['ACTION_CODE']) {
+
+            $lastRegister = DB::select("SELECT * FROM reserva_temporal rt WHERE codigo = ? ORDER BY id DESC LIMIT 1;",[$request->codigo]);
+
             DB::select("UPDATE reserva_temporal SET codigo = ? WHERE id = ?;", [$request->codigo, $lastRegister[0]->id]);
 
+            $getPersona = Persona::find(Auth::id());
+
+            $persona = "$getPersona->nombres $getPersona->apepaterno $getPersona->apematerno";
+
+            Mail::to(Auth::user()->email)->send(new ReservaExitosa($lastRegister, $response, $persona));
+
             if ($this->store($request->codigo)) {
+
                 return redirect()->route('prfole.user')->with(['success' => 'Tu reserva fue generada satisfactoriamente!']);
+
             } else {
-                return back()->with(['error' => 'Hubo un problema al realizar tu reserva!']);
+
+                return back()->with(['error' => 'Hubo un problema al realizar tu reserva, comunicate con el staff de CIAR SPORTS para recibir ayuda.']);
+
             }
-        }
-        else{
-            dd("Tu pago no se pudo procesar!");
+        } else {
+
+            return back()->with(['error' => $response['data']['ACTION_DESCRIPTION']]);
+
         }
     }
 
@@ -228,6 +242,7 @@ class ReservationController extends Controller
             );
 
             // return response()->json(['msg' => 'Tu reserva fue generada satisfactoriamente!'], 200);
+
             return true;
         } catch (\Throwable $th) {
             return false;

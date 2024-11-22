@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\InscripcionExitosa;
+use App\Mail\ReservaExitosa;
 use App\Models\Noticia;
 use App\Models\Persona;
 use App\Models\Promesa;
@@ -14,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class LandingController extends Controller
@@ -146,6 +149,72 @@ class LandingController extends Controller
         $formToken = $response['answer']['formToken'];
 
         return view('pages.public.inscription.inscription-payment',compact('registroPayment','formToken'));
+    }
+
+    private function authenticateToken()
+    {
+        return base64_encode(config("services.niubiz.user") . ':' . config("services.niubiz.password"));
+    }
+
+    public function generateTokenProgramsNiubiz(Request $request)
+    {
+        $user = Auth::user();
+        $persona = Persona::where('usuario_id', $user->id)->get();
+        $usuarioActivo = $persona[0]->nombres . " " . $persona[0]->apepaterno . " " . $persona[0]->apematerno;
+        $servicioId = $request->idservicio;
+        $fechasDefinias = json_encode($request->fechasDefinidas);
+        $usuarioId = $request->idmiembro;
+        $ip = $request->ip();
+        $montoTotal = $request->montoTotal;
+        $nombrePrograma = $request->nombrePrograma;
+
+        $request->validate([
+            'idplantilla',
+            'idmiembro',
+            'fechasDefinidas'
+        ]);
+
+        $codigo = Str::random(10);
+
+        $auth = $this->authenticateToken();
+
+        $accessToken = Http::withHeaders([
+            'Authorization' => "Basic $auth"
+        ])->get(config("services.niubiz.url_api") . '/api.security/v1/security')->body();
+
+        $sessionTonken = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $accessToken
+        ])->post(config("services.niubiz.url_api") . "/api.ecommerce/v2/ecommerce/token/session/" . config('services.niubiz.merchant_id'), [
+                "channel" => "web",
+                "amount" => $montoTotal,
+                "antifraud" => [
+                    "clientIp" => $request->ip(),
+                    "merchantDefineData" => [
+                        "MDD4" => Auth::user()->email,
+                        "MDD21" => 0,
+                        "MDD32" => Auth::user()->email, //puedo utilizarl el correo siempre y cuando no se repita o el dni o el id
+                        "MDD75" => "Registrado",
+                        "MDD77" => now()->diffInDays(auth()->user()->creted_at) + 1
+                    ]
+                ],
+                "dataMap" => [
+                    "cardholderCity" => "Lima",
+                    "cardholderCountry" => "PE",
+                    "cardholderAddress" => "Av Jose Pardo 831",
+                    "cardholderPostalCode" => "12345",
+                    "cardholderState" => "LIM",
+                    "cardholderPhoneNumber" => "987654321"
+                ]
+            ])->json();
+
+        $tokenSession = $sessionTonken["sessionKey"];
+
+        DB::select("INSERT INTO inscripcion_temporal
+                    (usuario_activo, servicio_id, fechas_definidas, usuario_id, ip_cliente, monto_total, nombre_programa, codigo)
+                    VALUES(?,?,?,?,?,?,?,?);", [$usuarioActivo, $servicioId, $fechasDefinias, $usuarioId, $ip, $montoTotal, $nombrePrograma, $codigo]);
+
+        return response()->json(['tokenSession'=>$tokenSession,'codigo'=>$codigo]);
     }
 
     public function inscribirProgramaMiembro(int $programaid, string $programatitulo)

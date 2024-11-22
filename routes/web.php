@@ -74,7 +74,7 @@ Route::group(['prefix' => 'ciar'], function () {
     Route::get('/servicios/{sede}/{lugar}', [ReservationController::class, 'show'])->name('reservas.obtener');
     Route::get('/obtener/{id}/lugares', [ReservationController::class, 'getPlaces'])->name('reservas.obtener.lugares');
 
-    //Reservas con izipay
+    //Reservas con izipay -- OLD
     Route::post('/formulario/{codigo}/pago',[ReservationController::class, 'generateFormToken'])->name('reservation.pay');
     Route::post('/paid/izipay', [ReservationController::class,'izipay'])->name('paid.izipay');
 
@@ -94,9 +94,16 @@ Route::group(['prefix' => 'ciar'], function () {
     /**ENDSECTION TORNEOS */
 
     /**SECTION INSCRIPCION MIEMBRO */
+    //Pago con izipay -- OLD
     Route::post('/generar/formToken/program',[LandingController::class, 'generatePreInscriptcion'])->name('generate.pre.inscription.programs');
     Route::get('/redirect/page/{code}/payment',[LandingController::class, 'redirectToPagePayment'])->name('redirect.page.payment');
+
+    //Inscripcion con niubiz
+    Route::post('/generar/token/program/niubiz',[LandingController::class, 'generateTokenProgramsNiubiz'])->name('generate.token.programs.niubiz');
+    Route::post('/intento/pago/cliente/program/niubiz',[InscripcionesController::class,'attemptClientPayProgram'])->name('attempt.client.pay.program.niubiz');
+
     Route::get('/inscripcion/{id}/programa/{titulo}', [LandingController::class, 'inscribirProgramaMiembro'])->name('landing.inscripcion.miembro');
+
     /**ENDSECTION INSCRIPCION MIEMBRO */
 
 });

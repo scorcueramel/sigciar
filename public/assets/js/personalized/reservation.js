@@ -1,5 +1,19 @@
-import { validPastDateTime, sedeLugarSelection, dateNotAvailability, notRegisterUser, registeredSuccess } from './messages_reservation.js';
-import { formatearFecha, formatearHora, formatearHoraMobil, formatearFechaInicial, formatearFechaFinal, validaHoraActual, obtenerSedeLugar } from './all_in_date.js';
+import {
+    validPastDateTime,
+    sedeLugarSelection,
+    dateNotAvailability,
+    notRegisterUser,
+    registeredSuccess
+} from './messages_reservation.js';
+import {
+    formatearFecha,
+    formatearHora,
+    formatearHoraMobil,
+    formatearFechaInicial,
+    formatearFechaFinal,
+    validaHoraActual,
+    obtenerSedeLugar
+} from './all_in_date.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     // var sede = $("#sede").val();
@@ -114,14 +128,6 @@ function chargeCalendar(sede, lugar) {
             start: fechaActual,
             end: fechaLimite
         },
-        // businessHours: [ //Horas de inactividad de las canchas
-        //     {
-        //         startTime: '10:00',
-        //         endTime: '19:00',
-        //         daysOfWeek: [1], //Días activos de lunes a sábado
-        //         //daysOfWeek: [1, 2, 3, 4, 5, 6], //Días activos de lunes a sábado
-        //     }
-        // ],
         events: `/ciar/servicios/${sede}/${lugar}`,
         select: function (infoSelect) {
             var fecha = infoSelect.startStr;
@@ -136,7 +142,7 @@ function chargeCalendar(sede, lugar) {
             } else {
                 if (checkLogin === "1") {
                     axios
-                        .post("/ciar/conuslta/fecha", { start, end, sede, lugar })
+                        .post("/ciar/conuslta/fecha", {start, end, sede, lugar})
                         .then((resp) => {
                             var respuesta = resp.data.msg;
 
@@ -167,6 +173,10 @@ function chargeCalendar(sede, lugar) {
                 }
             }
         },
+        selectAllow: function (selectInfo) {
+            var duration = moment.duration(selectInfo.end.diff(selectInfo.start));
+            return duration.asHours() <= 1;
+        },
         dateClick: function (infoClick) {
             var fecha = infoClick.dateStr;
             var start = infoClick.dateStr;
@@ -181,7 +191,7 @@ function chargeCalendar(sede, lugar) {
                 if (checkLogin == "1") {
                     if (sede != null && lugar != null) {
                         axios
-                            .post("/ciar/conuslta/fecha", { start, end, sede, lugar })
+                            .post("/ciar/conuslta/fecha", {start, end, sede, lugar})
                             .then((resp) => {
                                 var respuesta = resp.data.msg;
                                 var fecStart = formatearFechaInicial(start);

@@ -14,5 +14,6 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         "/ciar/paid/izipay",
         "/ciar/intento/pago/cliente",
+        "/ciar/intento/pago/cliente/program/niubiz",
     ];
 }

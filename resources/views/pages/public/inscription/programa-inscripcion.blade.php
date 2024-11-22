@@ -182,13 +182,11 @@
 @push('js')
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
             crossorigin="anonymous"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script type="text/javascript" src="{{config('services.niubiz.url_js')}}"></script>
     <script>
         var montoHora = 0;
         var montoTotal = 0;
@@ -196,6 +194,9 @@
         // arreglo de horarios
         var totalHorarios = new Array();
         var horasInscripcion = new Array();
+
+        //Número aleatorio de pedido
+        var purchaseNumber = Math.floor(Math.random() * 1000000000) + 1;
 
         // Agregar cabecera a la tabla horarios
         const headerTable = $('#headertable');
@@ -563,7 +564,28 @@
             }
         });
 
-        $("#btnInscribete").on('click',function (){
+        function openForm(tokenSession, montoTotal, codigo) {
+            Swal.close();
+            VisanetCheckout.configure({
+                sessiontoken: `${tokenSession}`,
+                channel: 'web',
+                merchantid: "{{config('services.niubiz.merchant_id')}}",
+                purchasenumber: purchaseNumber,
+                amount: parseInt(montoTotal),
+                expirationminutes: '20',
+                timeouturl: "{{route('landing.programas')}}",
+                merchantlogo: "{{asset('assets/images/ciar-logo-azul.png')}}",
+                formbuttoncolor: '#27326F',
+                action: "{{route('attempt.client.pay.program.niubiz')}}" + '?purchaseNumber=' + purchaseNumber + "&amount=" + parseInt(montoTotal) + "&codigo=" + codigo, //url de intento de pago
+                complete: function (params) {
+                    alert(JSON.stringify(params));
+                }
+            });
+
+            VisanetCheckout.open();
+        }
+
+        $("#btnInscribete").on('click', function () {
             const inscripcionPublica = $("#inscripcionPublica").val();
             const idservicio = $("#idPrograma").val();
             const nombrePrograma = $("#namePrograma").val();
@@ -588,17 +610,18 @@
             });
 
             $.ajax({
-                method:'POST',
-                url:"{{route('generate.pre.inscription.programs')}}",
+                method: 'POST',
+                url: "{{route('generate.token.programs.niubiz')}}",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                data:{montoTotal,inscripcionPublica,nombrePrograma,idservicio,idmiembro,fechasDefinidas},
-                success:function(resp){
-                    window.location.href = `/ciar/redirect/page/${resp}/payment`
-                    Swal.close();
+                data: {montoTotal, inscripcionPublica, nombrePrograma, idservicio, idmiembro, fechasDefinidas},
+                success: function (resp) {
+                    openForm(resp.tokenSession, montoTotal, resp.codigo);
                 },
-                error:function(error){console.log(error)}
+                error: function (error) {
+                    console.log(error)
+                }
             });
 
         })

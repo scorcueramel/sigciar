@@ -430,7 +430,6 @@ class TenisController extends Controller
 
     public function edit(string $idServicio)
     {
-
         $responsable = Persona::where('usuario_id', Auth::user()->id)->get()[0];
         $responsables = Persona::where('tipocategoria_id', '<>', 1)->where('tipocategoria_id', '<>', 2)->get();
         $sedes = Sede::where('estado', 'A')->get();
