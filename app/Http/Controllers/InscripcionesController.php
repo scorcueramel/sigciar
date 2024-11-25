@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\EnviarMailConfirmacion;
 use App\Mail\NotificarInscripciónResponsable;
 use App\Models\Persona;
 
@@ -236,16 +237,16 @@ class InscripcionesController extends Controller
             "Authorization" => $accessToken
         ])
             ->post(config('services.niubiz.url_api') . "/api.authorization/v3/authorization/ecommerce/" . config('services.niubiz.merchant_id'), [
-            "channel" => $request->channel,
-            "captureType" => "manual",
-            "countable" => true,
-            "order" => [
-                "tokenId" => $request->transactionToken,
-                "purchaseNumber" => $request->purchaseNumber,
-                "amount" => (int)$request->amount,
-                "currency" => config('services.niubiz.currency')
-            ]
-        ])->json();
+                "channel" => $request->channel,
+                "captureType" => "manual",
+                "countable" => true,
+                "order" => [
+                    "tokenId" => $request->transactionToken,
+                    "purchaseNumber" => $request->purchaseNumber,
+                    "amount" => (int)$request->amount,
+                    "currency" => config('services.niubiz.currency')
+                ]
+            ])->json();
 
         if (isset($response['dataMap']) && $response['dataMap']['ACTION_CODE']) {
 
@@ -263,15 +264,17 @@ class InscripcionesController extends Controller
             $nombreResponsable = $lastRegister[0]->nombre_responsable;
             $nomrePrograma = $lastRegister[0]->nombre_programa;
 
-            Mail::to(Auth::user()->email)->send(new InscripcionExitosa($lastRegister, $sede, $lugar, $response, $persona));
+//            Mail::to(Auth::user()->email)->send(new InscripcionExitosa($lastRegister, $sede, $lugar, $response, $persona));
 
-            Mail::to($lastRegister[0]->email_responsable_programa)->send(new NotificarInscripciónResponsable($nombreResponsable,$nomrePrograma));
+//            Mail::to($lastRegister[0]->email_responsable_programa)->send(new NotificarInscripciónResponsable($nombreResponsable,$nomrePrograma));
+
+            EnviarMailConfirmacion::dispatch($lastRegister, $sede, $lugar, $response, $persona, $nombreResponsable, $nomrePrograma);
 
             if ($this->store($request->codigo)) {
 
                 DB::select("INSERT INTO notificaciones (servicio_id, miembro_id, fecha_hora_registro)
                             VALUES (?,?,?)",
-                            [$lastRegister[0]->servicio_id,$lastRegister[0]->usuario_id,now()]);
+                    [$lastRegister[0]->servicio_id, $lastRegister[0]->usuario_id, now()]);
 
                 return redirect()->route('prfole.user')->with(['success' => 'Tu inscripcion se realizó satisfactoriamente!, te hemos envíado un correo con más detalle.']);
 
