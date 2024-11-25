@@ -195,7 +195,7 @@ class LandingController extends Controller
                         "MDD21" => 0,
                         "MDD32" => Auth::user()->email, //puedo utilizarl el correo siempre y cuando no se repita o el dni o el id
                         "MDD75" => "Registrado",
-                        "MDD77" => now()->diffInDays(auth()->user()->creted_at) + 1
+                        "MDD77" => now()->diffInDays(auth()->user()->created_at) + 1
                     ]
                 ],
                 "dataMap" => [

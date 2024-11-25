@@ -33,33 +33,41 @@
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
             @php
-              $counter = 4;
+                $counter = 20;
             @endphp
 
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow mt-3" href="javascript:void(0);" data-bs-toggle="dropdown">
-                    <button type="button" class="btn" style="background: transparent; font-size: 20px; margin-top: -10px">
+                <a class="nav-link dropdown-toggle hide-arrow mt-3" href="javascript:void(0);"
+                   data-bs-toggle="dropdown">
+                    <button type="button" class="btn"
+                            style="background: transparent; font-size: 20px; margin-top: -10px">
                         @if($counter > 0 )
-                            <i class="fa-solid fa-bell-ring"></i><span class="badge badge-danger" style="background: red; border-radius: 50%; font-size:10px !important;">{{$counter}}</span>
+                            <i class="fa-solid fa-bell-ring"></i><span class="badge badge-danger"
+                                                                       style="background: red; border-radius: 50%; font-size:10px !important;">{{$counter}}</span>
                             <span class="sr-only">unread messages</span>
                         @else
-                            <i class="fa-solid fa-bell"></i><span class="badge badge-danger" style="background: red; border-radius: 50%; font-size:10px !important;">{{$counter}}</span>
+                            <i class="fa-solid fa-bell"></i><span class="badge badge-danger"
+                                                                  style="background: red; border-radius: 50%; font-size:10px !important;">{{$counter}}</span>
                             <span class="sr-only">unread messages</span>
                         @endif
                     </button>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     @for($i=0; $i < $counter; $i++)
-                    <li>
-                        <a class="dropdown-item" href="#">
+                        <li>
+                            <a class="dropdown-item" href="#">
                             <span class="d-flex align-items-center align-middle d-flex ">
                               <i class="flex-shrink-0 bx bx-envelope me-2"></i>
-                              <span class="flex-grow-1 align-middle me-5">Título Mensaje Nuevo</span>
-{{--                              <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">{{$i}}</span>--}}
+                              <span class="flex-grow-1 align-middle me-5">
+                                  Título Mensaje Nuevo <br>
+                                  <small>Detalle de la notificación </small> <br>
+                                  <small>Recibido 10:02 am</small>
+                              </span>
+
                               <span class="flex-shrink-0 badge badge-center bg-danger">X</span>
                             </span>
-                        </a>
-                    </li>
+                            </a>
+                        </li>
                     @endfor
                 </ul>
             </li>

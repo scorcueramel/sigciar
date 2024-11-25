@@ -234,7 +234,8 @@ class InscripcionesController extends Controller
         $response = Http::withHeaders([
             "Content-Type" => "application/json",
             "Authorization" => $accessToken
-        ])->post(config('services.niubiz.url_api') . "/api.authorization/v3/authorization/ecommerce/" . config('services.niubiz.merchant_id'), [
+        ])
+            ->post(config('services.niubiz.url_api') . "/api.authorization/v3/authorization/ecommerce/" . config('services.niubiz.merchant_id'), [
             "channel" => $request->channel,
             "captureType" => "manual",
             "countable" => true,
@@ -267,6 +268,10 @@ class InscripcionesController extends Controller
             Mail::to($lastRegister[0]->email_responsable_programa)->send(new NotificarInscripciónResponsable($nombreResponsable,$nomrePrograma));
 
             if ($this->store($request->codigo)) {
+
+                DB::select("INSERT INTO notificaciones (servicio_id, miembro_id, fecha_hora_registro)
+                            VALUES (?,?,?)",
+                            [$lastRegister[0]->servicio_id,$lastRegister[0]->usuario_id,now()]);
 
                 return redirect()->route('prfole.user')->with(['success' => 'Tu inscripcion se realizó satisfactoriamente!, te hemos envíado un correo con más detalle.']);
 
