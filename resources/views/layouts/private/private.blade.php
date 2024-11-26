@@ -229,9 +229,10 @@
     }
 
     function removerTodasLasNotificaciones() {
+        alert("click on me");
         Swal.fire({
             title: "¿Quitar Notificaciones?",
-            text: "Deseas quitar todas la notificaciones?",
+            text: "Con esta opción vas a  quitar todas las notificaciones de tu bandeja",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -242,10 +243,10 @@
             if (result.isConfirmed) {
                 $.ajax({
                     method: 'GET',
-                    url: "/admin/remover/todas/notificacion",
+                    url: "/admin/remover/notificaciones",
                     success:function (response){
                         Swal.fire({
-                            title: "Notificaciones removida",
+                            title: "Notificaciones removidas",
                             icon: "success",
                             showCancelButton: false,
                             confirmButtonColor: "#3085d6",

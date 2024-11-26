@@ -68,8 +68,9 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     @if(count($notificaciones) > 0)
-                        <li class="d-flex justify-content-between">
-                            <button class="dropdown-item detalle-mensaje"
+                        <hr>
+                        <li class="d-flex justify-content-between" style="margin: -15px 0">
+                            <button class="dropdown-item"
                                     onclick="javascript:removerTodasLasNotificaciones()">
                                 <span class="d-flex align-items-center align-middle">
                                       <i class="fa-regular fa-list me-2"></i>
@@ -80,9 +81,10 @@
                                 </span>
                             </button>
                         </li>
+                        <hr>
                         @for($i=0; $i < count($notificaciones); $i++)
                             <li class="d-flex justify-content-between">
-                                <button class="dropdown-item detalle-mensaje"
+                                <button class="dropdown-item"
                                         onclick="javascript:mostatDetalleNotificacion('{{$notificaciones[$i]->notif_id}}')">
                                     <span class="d-flex align-items-center align-middle d-flex ">
                                       <i class="flex-shrink-0 bx bx-envelope me-2"></i>

@@ -73,8 +73,7 @@ class HomeController extends Controller
                                         WHERE u.id = ? AND n.leido = FALSE", [Auth::id()]);
 
         foreach ($notificaciones as $ntf) {
-            dd($ntf->id);
-            DB::select("UPDATE notificaciones n SET leido = true WHERE n.id = ?", [$ntf->id]);
+            DB::select("UPDATE notificaciones n SET leido = true WHERE n.id = ?", [$ntf->notif_id]);
         }
 
         return response()->json('ok');
