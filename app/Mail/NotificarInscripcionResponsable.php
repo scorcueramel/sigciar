@@ -18,7 +18,7 @@ class NotificarInscripcionResponsable extends Mailable
      *
      * @return void
      */
-    public function __construct(public string $nombrePersona, public string $nombrePrograma)
+    public function __construct(public string $nombre_encargado, public string $nombre_programa)
     {
         //
     }

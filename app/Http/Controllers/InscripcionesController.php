@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\EnviarMailConfirmacion;
+use App\Jobs\EnviarMailConfirmacionResponsable;
 use App\Mail\InscripcionExitosa;
 use App\Mail\NotificarInscripcionResponsable;
 use App\Models\Persona;
@@ -258,16 +259,9 @@ class InscripcionesController extends Controller
 
             $getPersona = Persona::find(Auth::id());
 
-            $persona = "$getPersona->nombres $getPersona->apepaterno $getPersona->apematerno";
-
-            $nombreResponsable = $lastRegister->nombre_responsable;
-            $nomrePrograma = $lastRegister->nombre_programa;
-            $emailResponsable = $lastRegister->email_responsable_programa;
-            $emailMiembro = Auth::user()->email;
-
-            $nombre_miembro = $persona;
+            $nombre_miembro = "$getPersona->nombres $getPersona->apepaterno $getPersona->apematerno";
             $estado_pago = $response['dataMap']['ACTION_DESCRIPTION'];
-            $nombre_programa = $nomrePrograma;
+            $nombre_programa = $lastRegister->nombre_programa;
             $registro_id = $lastRegister->id;
             $sede = $sede;
             $lugar = $lugar;
@@ -276,9 +270,9 @@ class InscripcionesController extends Controller
             $nro_tarjeta = $response['dataMap']['CARD'];
             $brand_tarjeta = $response['dataMap']['BRAND'];
             $importe_pagado = $response['dataMap']['AMOUNT'];
-            $nombre_encargado = $nombreResponsable;
-            $correo_miembro = $emailMiembro;
-            $correo_responsable = $emailResponsable;
+            $nombre_encargado = $lastRegister->nombre_responsable;
+            $correo_miembro = Auth::user()->email;
+            $correo_encargado = $lastRegister->email_responsable_programa;
 
 
             //Mail::to(Auth::user()->email)->send(new InscripcionExitosa($lastRegister, $sede, $lugar, $response, $persona));
@@ -297,8 +291,12 @@ class InscripcionesController extends Controller
                 $nro_tarjeta,
                 $brand_tarjeta,
                 $importe_pagado,
-                $correo_responsable,
+            );
+
+            EnviarMailConfirmacionResponsable::dispatch(
+                $correo_encargado,
                 $nombre_encargado,
+                $nombre_programa
             );
 
             if ($this->store($request->codigo)) {

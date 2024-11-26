@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Mail\InscripcionExitosa;
-use App\Mail\NotificarInscripcionResponsable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -34,8 +33,6 @@ class EnviarMailConfirmacion implements ShouldQueue
         public string $nro_tarjeta,
         public string $brand_tarjeta,
         public string $importe_pagado,
-        public string $correo_responsable,
-        public string $nombre_encargado,
     )
     {
 
@@ -49,6 +46,5 @@ class EnviarMailConfirmacion implements ShouldQueue
     public function handle()
     {
         Mail::to($this->correo_miembro)->send(new InscripcionExitosa($this->nombre_miembro, $this->estado_pago, $this->nombre_programa, $this->registro_id, $this->sede, $this->lugar, $this->fechasDefinidas, $this->fecha_pago, $this->nro_tarjeta, $this->brand_tarjeta, $this->importe_pagado));
-        Mail::to($this->correo_responsable)->send(new NotificarInscripcionResponsable($this->nombre_encargado,$this->nombre_programa));
     }
 }
