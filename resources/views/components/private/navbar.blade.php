@@ -10,8 +10,19 @@
 
 
     $notificaciones = DB::select("SELECT
-    n.id as notif_id, n.servicio_id, p.nombres || ' ' || p.apepaterno || ' ' || p.apematerno as nombre_miembro,
-    se.descripcion as sede, lu.descripcion as lugar, s.inicio, s.fin, ss.titulo FROM notificaciones n LEFT JOIN servicios s ON s.id = n.servicio_id LEFT JOIN tipo_servicios ts ON ts.id = s.tiposervicio_id LEFT JOIN subtipo_servicios ss ON ss.id = s.subtiposervicio_id LEFT JOIN users u ON n.miembro_id = u.id LEFT JOIN personas p ON p.usuario_id = u.id LEFT JOIN sedes se ON se.id = s.sede_id  LEFT JOIN lugars lu ON lu.id = s.lugar_id WHERE u.id = ? AND n.leido = FALSE ORDER BY n.fecha_hora_registro DESC;",[Auth::id()]);
+    n.id as notif_id, n.servicio_id,
+    n.fecha_hora_registro
+    FROM notificaciones n
+    LEFT JOIN servicios s ON s.id = n.servicio_id
+    LEFT JOIN tipo_servicios ts ON ts.id = s.tiposervicio_id
+    LEFT JOIN subtipo_servicios ss ON ss.id = s.subtiposervicio_id
+    LEFT JOIN users u ON n.miembro_id = u.id
+    LEFT JOIN personas p ON p.usuario_id = u.id
+    LEFT JOIN sedes se ON se.id = s.sede_id
+    LEFT JOIN lugars lu ON lu.id = s.lugar_id
+    WHERE u.id = ? AND n.leido = FALSE
+    ORDER BY n.fecha_hora_registro DESC;",[Auth::id()]);
+
 @endphp
 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
      id="layout-navbar">
@@ -57,21 +68,34 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     @if(count($notificaciones) > 0)
+                        <li class="d-flex justify-content-between">
+                            <button class="dropdown-item detalle-mensaje"
+                                    onclick="javascript:removerTodasLasNotificaciones()">
+                                <span class="d-flex align-items-center align-middle">
+                                      <i class="fa-regular fa-list me-2"></i>
+                                      <span class="flex-grow-1 align-middle me-5">
+                                          <strong>Quitar Todas</strong> <br>
+                                          <small>Remover todas las notificaciones</small>
+                                      </span>
+                                </span>
+                            </button>
+                        </li>
                         @for($i=0; $i < count($notificaciones); $i++)
-                            {{dd($notificaciones[$i])}}
                             <li class="d-flex justify-content-between">
-                                <button class="dropdown-item detalle-mensaje" data-id="{{$notificaciones[$i]->id}}">
+                                <button class="dropdown-item detalle-mensaje"
+                                        onclick="javascript:mostatDetalleNotificacion('{{$notificaciones[$i]->notif_id}}')">
                                     <span class="d-flex align-items-center align-middle d-flex ">
                                       <i class="flex-shrink-0 bx bx-envelope me-2"></i>
                                       <span class="flex-grow-1 align-middle me-5">
-                                          <strong>Tienes un nuevo mensaje</strong> <br>
+                                          <strong>Mensaje Nuevo</strong> <br>
                                           <small>Recibido el {{Carbon\Carbon::parse($notificaciones[$i]->fecha_hora_registro)->format('j M Y, g:i a')}}</small>
                                       </span>
 
                                     </span>
                                 </button>
-                                <button class="cerrar me-3" style="background: transparent; border:0">
-                                    <span class="flex-shrink-0 badge badge-center bg-danger">X</span>
+                                <button class="cerrar me-3" style="background: transparent; border:0"
+                                        onclick="javascript:removerNotificacion('{{$notificaciones[$i]->notif_id}}')">
+                                    <i class="fa-solid fa-circle-xmark" style="color: #ff3c3c;"></i>
                                 </button>
                             </li>
                         @endfor

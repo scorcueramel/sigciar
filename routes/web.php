@@ -131,6 +131,9 @@ Route::group(['prefix' => 'ciar'], function () {
 // Rutas para el Administrador
 Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
     Route::get('/dashboard', [HomeController::class, 'index'])->name('home.dashboard');
+    Route::get('/detalle/{id}/notificacion', [HomeController::class, 'detalleNotificacion'])->name('detalle.notificacion');
+    Route::get('/remover/{id}/notificacion', [HomeController::class, 'quitarNotificacion'])->name('remover.notificacion');
+    Route::get('/remover/todas/notificacion', [HomeController::class, 'quitarTodasNotificaciones'])->name('remover.todas.notificacion');
     Route::get('/carga/actividades',[HomeController::class, 'activities'])->name('calendario.home');
     Route::get('/calendario/general',[CalendarioGeneral::class,'index'])->name('calendario.general');
     Route::get('/obtener/lugar/{id}/calendario-general',[CalendarioGeneral::class,'chargePlaces'])->name('lugar.calendario.general');

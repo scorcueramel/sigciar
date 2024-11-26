@@ -72,7 +72,7 @@
 </div>
 <!-- @include('components.private.custom-button') -->
 
-@include('components.private.modal',['tamanio'=>'modal-sm'])
+@include('components.private.modal',['withTitle'=>true,'title'=>'DETALLE DE LA NOTIFICACIÓN','tamanio'=>'modal-sm'])
 
 {{-- Template scripts --}}
 <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
@@ -136,23 +136,134 @@
         })
     })()
 
-    $('.cerrar').on('click', () => {
-        alert("CLICK ON CLOSE BUTTON");
-    })
+    function mostatDetalleNotificacion(id) {
+        $.ajax({
+            method: 'GET',
+            url: `/admin/detalle/${id}/notificacion`,
+            success:function (response){
+                let data = response[0];
+                console.log(data)
+                $("#modalcomponent").modal('show');
+                $('#mcbody').html('');
+                $('#mcbody').append(`
+                <table class="table table-sm table-borderless table-hover">
+                  <thead></thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>PROGRAMA</strong></td>
+                      <td>${data.titulo}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>MIEMBRO</strong></td>
+                      <td>${data.nombre_miembro}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>SEDE</strong></td>
+                      <td>${data.sede}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>CANCHA</strong></td>
+                      <td>${data.lugar}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>FECHA DE INICIO</strong></td>
+                      <td>${formatDate(data.inicio.split(' ')[0])}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-end">
+                        <button type="button" class="btn btn-sm btn-danger" onclick="javascript:removerNotificacion('${data.notif_id}')"><i class="fa-solid fa-ban"></i></button>
+                    </div>
+                </div>
+                `);
 
-    $('.detalle-mensaje').on('click', () => {
-        let id = $(".detalle-mensaje").attr('data-id');
+            },
+            error:function (error){
+                console.log(error)
+            }
+        });
+    }
 
-        $("#modalcomponent").modal("show");
-        $("#mcbody").html("");
-        $("#mcbody").append(id);
+    function formatDate(date){
+        let splitDate = date.split('-');
+        return splitDate[2] + '/' + splitDate[1] + '/' +splitDate[0];
+    }
 
-        {{--$.ajax({--}}
-        {{--    method:'GET',--}}
-        {{--    url:"{{route('detalle.notificacion',id)}}"--}}
-        {{--});--}}
-    })
+    function removerNotificacion(id) {
+        $("#modalcomponent").modal('hide');
 
+        Swal.fire({
+            title: "¿Quitar Notificación?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: 'GET',
+                    url: `/admin/remover/${id}/notificacion`,
+                    success:function (response){
+                        Swal.fire({
+                            title: "Notificación removida",
+                            icon: "success",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: 'Cerrar',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    },
+                    error:function (error){
+                        console.log(error)
+                    }
+                });
+            }
+        });
+
+    }
+
+    function removerTodasLasNotificaciones() {
+        Swal.fire({
+            title: "¿Quitar Notificaciones?",
+            text: "Deseas quitar todas la notificaciones?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: 'GET',
+                    url: "/admin/remover/todas/notificacion",
+                    success:function (response){
+                        Swal.fire({
+                            title: "Notificaciones removida",
+                            icon: "success",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: 'Cerrar',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    },
+                    error:function (error){
+                        console.log(error)
+                    }
+                });
+            }
+        });
+
+    }
 
 </script>
 
