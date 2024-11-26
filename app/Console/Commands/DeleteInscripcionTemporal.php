@@ -29,5 +29,6 @@ class DeleteInscripcionTemporal extends Command
     public function handle()
     {
         DB::select("TRUNCATE TABLE inscripcion_temporal");
+        DB::select("ALTER SEQUENCE inscripcion_temporal_id_seq RESTART WITH 1;");
     }
 }

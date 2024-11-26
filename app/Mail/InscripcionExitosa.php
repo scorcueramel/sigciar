@@ -18,7 +18,20 @@ class InscripcionExitosa extends Mailable
      *
      * @return void
      */
-    public function __construct(public $lastRegister, public string $sede, public string $lugar, public $response, public string $persona)
+//    public function __construct(public $lastRegister, public $sede, public $lugar, public $response, public $persona)
+    public function __construct(
+        public string $nombre_miembro,
+        public string $estado_pago,
+        public string $nombre_programa,
+        public string $registro_id,
+        public string $sede,
+        public string $lugar,
+        public string $fechasDefinidas,
+        public string $fecha_pago,
+        public string $nro_tarjeta,
+        public string $brand_tarjeta,
+        public string $importe_pagado,
+    )
     {
         //
     }
@@ -43,7 +56,7 @@ class InscripcionExitosa extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mail.inscripcionexitosa',
+            view: 'mail.notificacionmiembro',
         );
     }
 

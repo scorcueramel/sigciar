@@ -29,5 +29,6 @@ class DeleteReservaTemporal extends Command
     public function handle()
     {
         DB::select("TRUNCATE TABLE reserva_temporal");
+        DB::select("|ALTER SEQUENCE reserva_temporal_id_seq RESTART WITH 1;");
     }
 }

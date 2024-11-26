@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\EnviarMailConfirmacion;
-use App\Mail\NotificarInscripciónResponsable;
-use App\Models\Persona;
-
-use App\Models\TipoDocumento;
 use App\Mail\InscripcionExitosa;
-
+use App\Mail\NotificarInscripcionResponsable;
+use App\Models\Persona;
+use App\Models\TipoDocumento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+
 
 class InscripcionesController extends Controller
 {
@@ -250,31 +249,63 @@ class InscripcionesController extends Controller
 
         if (isset($response['dataMap']) && $response['dataMap']['ACTION_CODE']) {
 
-            $lastRegister = DB::select("SELECT * FROM inscripcion_temporal it WHERE codigo = ? ORDER BY id DESC LIMIT 1;", [$request->codigo]);
+            $lastRegister = DB::select("SELECT * FROM inscripcion_temporal it WHERE codigo = ? ORDER BY id DESC LIMIT 1;", [$request->codigo])[0];
 
             $sede = DB::select("SELECT sed.descripcion as sede FROM servicios ser LEFT JOIN sedes sed ON sed.id = ser.sede_id")[0]->sede;
             $lugar = DB::select("SELECT lug.descripcion as lugar FROM servicios ser LEFT JOIN lugars lug ON lug.id = ser.lugar_id")[0]->lugar;
 
-            DB::select("UPDATE inscripcion_temporal SET codigo = ? WHERE id = ?;", [$request->codigo, $lastRegister[0]->id]);
+            DB::select("UPDATE inscripcion_temporal SET codigo = ? WHERE id = ?;", [$request->codigo, $lastRegister->id]);
 
             $getPersona = Persona::find(Auth::id());
 
             $persona = "$getPersona->nombres $getPersona->apepaterno $getPersona->apematerno";
 
-            $nombreResponsable = $lastRegister[0]->nombre_responsable;
-            $nomrePrograma = $lastRegister[0]->nombre_programa;
+            $nombreResponsable = $lastRegister->nombre_responsable;
+            $nomrePrograma = $lastRegister->nombre_programa;
+            $emailResponsable = $lastRegister->email_responsable_programa;
+            $emailMiembro = Auth::user()->email;
 
-//            Mail::to(Auth::user()->email)->send(new InscripcionExitosa($lastRegister, $sede, $lugar, $response, $persona));
+            $nombre_miembro = $persona;
+            $estado_pago = $response['dataMap']['ACTION_DESCRIPTION'];
+            $nombre_programa = $nomrePrograma;
+            $registro_id = $lastRegister->id;
+            $sede = $sede;
+            $lugar = $lugar;
+            $fechasDefinidas = $lastRegister->fechas_definidas;
+            $fecha_pago = now()->createFromFormat('ymdHis', $response['dataMap']['TRANSACTION_DATE'])->format('d/m/Y H:i:s');
+            $nro_tarjeta = $response['dataMap']['CARD'];
+            $brand_tarjeta = $response['dataMap']['BRAND'];
+            $importe_pagado = $response['dataMap']['AMOUNT'];
+            $nombre_encargado = $nombreResponsable;
+            $correo_miembro = $emailMiembro;
+            $correo_responsable = $emailResponsable;
 
-//            Mail::to($lastRegister[0]->email_responsable_programa)->send(new NotificarInscripciónResponsable($nombreResponsable,$nomrePrograma));
 
-            EnviarMailConfirmacion::dispatch($lastRegister, $sede, $lugar, $response, $persona, $nombreResponsable, $nomrePrograma);
+            //Mail::to(Auth::user()->email)->send(new InscripcionExitosa($lastRegister, $sede, $lugar, $response, $persona));
+            //Mail::to($lastRegister->email_responsable_programa)->send(new NotificarInscripcionResponsable($nombreResponsable,$nomrePrograma));
+
+            EnviarMailConfirmacion::dispatch(
+                $correo_miembro,
+                $nombre_miembro,
+                $estado_pago,
+                $nombre_programa,
+                $registro_id,
+                $sede,
+                $lugar,
+                $fechasDefinidas,
+                $fecha_pago,
+                $nro_tarjeta,
+                $brand_tarjeta,
+                $importe_pagado,
+                $correo_responsable,
+                $nombre_encargado,
+            );
 
             if ($this->store($request->codigo)) {
 
                 DB::select("INSERT INTO notificaciones (servicio_id, miembro_id, fecha_hora_registro)
                             VALUES (?,?,?)",
-                    [$lastRegister[0]->servicio_id, $lastRegister[0]->usuario_id, now()]);
+                    [$lastRegister->servicio_id, $lastRegister->usuario_id, now()]);
 
                 return redirect()->route('prfole.user')->with(['success' => 'Tu inscripcion se realizó satisfactoriamente!, te hemos envíado un correo con más detalle.']);
 

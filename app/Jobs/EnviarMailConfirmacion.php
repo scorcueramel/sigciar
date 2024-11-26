@@ -3,14 +3,13 @@
 namespace App\Jobs;
 
 use App\Mail\InscripcionExitosa;
-use App\Mail\NotificarInscripciónResponsable;
+use App\Mail\NotificarInscripcionResponsable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class EnviarMailConfirmacion implements ShouldQueue
@@ -22,9 +21,24 @@ class EnviarMailConfirmacion implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(private $lastRegister, private $sede, private $lugar, private $response, private $persona, private $nombreResponsable, private $nomrePrograma)
+    public function __construct(
+        public string $correo_miembro,
+        public string $nombre_miembro,
+        public string $estado_pago,
+        public string $nombre_programa,
+        public string $registro_id,
+        public string $sede,
+        public string $lugar,
+        public string $fechasDefinidas,
+        public string $fecha_pago,
+        public string $nro_tarjeta,
+        public string $brand_tarjeta,
+        public string $importe_pagado,
+        public string $correo_responsable,
+        public string $nombre_encargado,
+    )
     {
-        //
+
     }
 
     /**
@@ -34,8 +48,7 @@ class EnviarMailConfirmacion implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to(Auth::user()->email)->send(new InscripcionExitosa($this->lastRegister, $this->sede, $this->lugar, $this->response, $this->persona));
-
-        Mail::to($this->lastRegister[0]->email_responsable_programa)->send(new NotificarInscripciónResponsable($this->nombreResponsable,$this->nomrePrograma));
+        Mail::to($this->correo_miembro)->send(new InscripcionExitosa($this->nombre_miembro, $this->estado_pago, $this->nombre_programa, $this->registro_id, $this->sede, $this->lugar, $this->fechasDefinidas, $this->fecha_pago, $this->nro_tarjeta, $this->brand_tarjeta, $this->importe_pagado));
+        Mail::to($this->correo_responsable)->send(new NotificarInscripcionResponsable($this->nombre_encargado,$this->nombre_programa));
     }
 }
