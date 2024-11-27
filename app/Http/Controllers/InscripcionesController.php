@@ -275,9 +275,9 @@ class InscripcionesController extends Controller
             $correo_encargado = $lastRegister->email_responsable_programa;
 
 
-            //Mail::to(Auth::user()->email)->send(new InscripcionExitosa($lastRegister, $sede, $lugar, $response, $persona));
-            //Mail::to($lastRegister->email_responsable_programa)->send(new NotificarInscripcionResponsable($nombreResponsable,$nomrePrograma));
-
+/*            Mail::to($correo_miembro)->send(new InscripcionExitosa($nombre_miembro,$estado_pago,$nombre_programa,$registro_id,$sede,$lugar,$fechasDefinidas,$fecha_pago,$nro_tarjeta,$brand_tarjeta,$importe_pagado));
+            Mail::to($correo_encargado)->send(new NotificarInscripcionResponsable($nombre_encargado,$nombre_programa));*/
+//
             EnviarMailConfirmacion::dispatch(
                 $correo_miembro,
                 $nombre_miembro,

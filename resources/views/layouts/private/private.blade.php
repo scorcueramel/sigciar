@@ -229,7 +229,6 @@
     }
 
     function removerTodasLasNotificaciones() {
-        alert("click on me");
         Swal.fire({
             title: "¿Quitar Notificaciones?",
             text: "Con esta opción vas a  quitar todas las notificaciones de tu bandeja",
