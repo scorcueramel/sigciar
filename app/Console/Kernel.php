@@ -18,8 +18,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-//        $schedule->command(DeleteReservaTemporal::class)->dailyAt('03:00');
-//        $schedule->command(DeleteInscripcionTemporal::class)->dailyAt('03:05');
+        $schedule->command(DeleteReservaTemporal::class)->dailyAt('03:00');
+        $schedule->command(DeleteInscripcionTemporal::class)->dailyAt('03:05');
     }
 
     /**
