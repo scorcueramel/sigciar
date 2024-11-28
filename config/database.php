@@ -130,7 +130,7 @@ return [
         ],
 
         'default' => [
-            'url' => env('REDIS_URL', 'tcp://localhost:6379?database=0'),
+            'url' => env('REDIS_URL', 'redis'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'username' => env('REDIS_USERNAME'),
             'password' => env('REDIS_PASSWORD'),

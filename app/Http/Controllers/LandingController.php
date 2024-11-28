@@ -89,7 +89,6 @@ class LandingController extends Controller
     //SECTION TORNEOS
     public function renderTorneos()
     {
-        SendTestMail::dispatch();
         return view('pages.public.landing.torneos.torneos');
     }
     //END SECTION TORNEOS
