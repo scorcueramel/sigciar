@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\InscripcionExitosa;
-use App\Mail\ReservaExitosa;
+use App\Jobs\SendTestMail;
 use App\Models\Noticia;
 use App\Models\Persona;
 use App\Models\Promesa;
 use App\Models\Sede;
-use App\Models\Servicio;
 use App\Models\TipoDocumento;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class LandingController extends Controller
@@ -94,6 +89,7 @@ class LandingController extends Controller
     //SECTION TORNEOS
     public function renderTorneos()
     {
+        SendTestMail::dispatch();
         return view('pages.public.landing.torneos.torneos');
     }
     //END SECTION TORNEOS
