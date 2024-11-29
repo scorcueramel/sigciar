@@ -2,38 +2,29 @@
 
 namespace App\Mail;
 
+use App\Models\MailConfirmacion;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class InscripcionExitosa extends Mailable
+class ConfirmacionReservaMail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $mailConfirmacion;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-//    public function __construct(public $lastRegister, public $sede, public $lugar, public $response, public $persona)
-    public function __construct(
-        public string $nombre_miembro,
-        public string $estado_pago,
-        public string $nombre_programa,
-        public string $registro_id,
-        public string $sede,
-        public string $lugar,
-        public string $fechasDefinidas,
-        public string $fecha_pago,
-        public string $nro_tarjeta,
-        public string $brand_tarjeta,
-        public string $importe_pagado,
-    )
+    public function __construct(MailConfirmacion $mailConfirmacion)
     {
-        //
+        $this->mailConfirmacion = $mailConfirmacion;
     }
 
     /**
@@ -44,7 +35,8 @@ class InscripcionExitosa extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Inscripcion Exitosa',
+            from: new Address('userweb@ciarsports.com', 'CIAR SPORTS (RESERVAS)'),
+            subject: 'Confirmacion de reserva - CIAR SPORTS',
         );
     }
 
@@ -56,7 +48,7 @@ class InscripcionExitosa extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mail.notificacionmiembro',
+            view: 'mail.confirmar-reserva',
         );
     }
 
