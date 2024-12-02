@@ -25,7 +25,7 @@
         Hola, <strong>{{$mailConfirmacion->nombre_miembro}}</strong>
       </p>
       <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">
-        Tu <strong>Págo fue {{$mailConfirmacion->estado_pago}}</strong>, al igual que tu
+        Tu <strong>Págo fue {{$mailConfirmacion->estado_pago}}</strong>, al igual que tu inscripción al programa
         <strong>{{$mailConfirmacion->nombre_programa_actividad}}</strong>, a continuacion te mostramos el detalle de tu
         reserva y del pago
         realizado.

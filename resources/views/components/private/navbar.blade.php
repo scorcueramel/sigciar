@@ -20,9 +20,8 @@
     LEFT JOIN personas p ON p.usuario_id = u.id
     LEFT JOIN sedes se ON se.id = s.sede_id
     LEFT JOIN lugars lu ON lu.id = s.lugar_id
-    WHERE u.id = ? AND n.leido = FALSE
+    WHERE s.responsable_id = ? AND n.leido = FALSE
     ORDER BY n.fecha_hora_registro DESC;",[Auth::id()]);
-
 @endphp
 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
      id="layout-navbar">

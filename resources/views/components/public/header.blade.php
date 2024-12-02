@@ -8,11 +8,12 @@
             </div>
             <ul id="navegacion" class="navegacion nolist ls-05 altas mb-0">
                 <li><a class="enlace btn-menu" href="{{route('landing.programas')}}">Programas</a></li>
+                <li><a class="enlace btn-menu" href="#">¿Quiénes somos?</a></li>
+                <li><a class="enlace btn-menu" href="#">Nuestro método</a></li>
                 <li><a class="enlace btn-menu" href="{{$sedes}}">Sedes</a></li>
                 <li><a class="enlace btn-menu" href="{{route('landing.torneos')}}">Torneos</a></li>
                 <li><a class="enlace btn-menu" href="{{route('landing.promises')}}">Nuestras promesas</a></li>
                 <li><a class="enlace btn-menu" href="{{route('landing.news')}}">Noticias</a></li>
-                <li><a class="enlace btn-menu" href="quienes-somos.php">¿Quiénes somos?</a></li>
                 <li>
                     <a class="enlace btn-menu reservar" href="{{ route('reservation') }}" target="_blank"><img
                             src="{{ asset('assets/images/calendar.svg') }}" class="icon me-2 me-lg-1"/>Reservar cancha

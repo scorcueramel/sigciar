@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link
-        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-        rel="stylesheet"/>
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"/>
     {{-- Icons --}}
     <link rel="stylesheet" href="{{ asset('assets/template/fonts/boxicons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/fontawesome/all.min.css') }}">
@@ -106,46 +106,47 @@
 <script src="{{asset('assets/js/chart-utils/chart-utils.min.js')}}"></script>
 {{-- Personalized JS --}}
 <script>
-    $(document).ready(function () {
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+  $(document).ready(function () {
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
     });
+  });
 
-    (() => {
-        'use strict'
+  (() => {
+    'use strict'
 
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        const forms = document.querySelectorAll('.needs-validation')
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
 
-        // Loop over them and prevent submission
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
 
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })()
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
 
-    function mostatDetalleNotificacion(id) {
-        $.ajax({
-            method: 'GET',
-            url: `/admin/detalle/${id}/notificacion`,
-            success:function (response){
-                let data = response[0];
-                console.log(data)
-                $("#modalcomponent").modal('show');
-                $('#mcbody').html('');
-                $('#mcbody').append(`
+  function mostatDetalleNotificacion(id) {
+    $.ajax({
+      method: 'GET',
+      url: `/admin/detalle/${id}/notificacion`,
+      success: function (response) {
+        let data = response[0];
+
+        $("#modalcomponent").modal('show');
+        $(".modal-footer").html('');
+        $('#mcbody').html('');
+        $('#mcbody').append(`
                 <table class="table table-sm table-borderless table-hover">
                   <thead></thead>
                   <tbody>
@@ -178,92 +179,92 @@
                 </div>
                 `);
 
-            },
-            error:function (error){
-                console.log(error)
-            }
+      },
+      error: function (error) {
+        console.log(error)
+      }
+    });
+  }
+
+  function formatDate(date) {
+    let splitDate = date.split('-');
+    return splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0];
+  }
+
+  function removerNotificacion(id) {
+    $("#modalcomponent").modal('hide');
+
+    Swal.fire({
+      title: "¿Quitar Notificación?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          method: 'GET',
+          url: `/admin/remover/${id}/notificacion`,
+          success: function (response) {
+            Swal.fire({
+              title: "Notificación removida",
+              icon: "success",
+              showCancelButton: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: 'Cerrar',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+          },
+          error: function (error) {
+            console.log(error)
+          }
         });
-    }
+      }
+    });
 
-    function formatDate(date){
-        let splitDate = date.split('-');
-        return splitDate[2] + '/' + splitDate[1] + '/' +splitDate[0];
-    }
+  }
 
-    function removerNotificacion(id) {
-        $("#modalcomponent").modal('hide');
-
-        Swal.fire({
-            title: "¿Quitar Notificación?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Si",
-            cancelButtonText: "No",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    method: 'GET',
-                    url: `/admin/remover/${id}/notificacion`,
-                    success:function (response){
-                        Swal.fire({
-                            title: "Notificación removida",
-                            icon: "success",
-                            showCancelButton: false,
-                            confirmButtonColor: "#3085d6",
-                            confirmButtonText: 'Cerrar',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.reload();
-                            }
-                        });
-                    },
-                    error:function (error){
-                        console.log(error)
-                    }
-                });
-            }
+  function removerTodasLasNotificaciones() {
+    Swal.fire({
+      title: "¿Quitar Notificaciones?",
+      text: "Con esta opción vas a  quitar todas las notificaciones de tu bandeja",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          method: 'GET',
+          url: "/admin/remover/notificaciones",
+          success: function (response) {
+            Swal.fire({
+              title: "Notificaciones removidas",
+              icon: "success",
+              showCancelButton: false,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: 'Cerrar',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+          },
+          error: function (error) {
+            console.log(error)
+          }
         });
+      }
+    });
 
-    }
-
-    function removerTodasLasNotificaciones() {
-        Swal.fire({
-            title: "¿Quitar Notificaciones?",
-            text: "Con esta opción vas a  quitar todas las notificaciones de tu bandeja",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Si",
-            cancelButtonText: "No",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    method: 'GET',
-                    url: "/admin/remover/notificaciones",
-                    success:function (response){
-                        Swal.fire({
-                            title: "Notificaciones removidas",
-                            icon: "success",
-                            showCancelButton: false,
-                            confirmButtonColor: "#3085d6",
-                            confirmButtonText: 'Cerrar',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.reload();
-                            }
-                        });
-                    },
-                    error:function (error){
-                        console.log(error)
-                    }
-                });
-            }
-        });
-
-    }
+  }
 
 </script>
 

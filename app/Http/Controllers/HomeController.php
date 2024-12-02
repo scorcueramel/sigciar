@@ -47,7 +47,8 @@ class HomeController extends Controller
                                             LEFT JOIN personas p ON p.usuario_id = u.id
                                             LEFT JOIN sedes se ON se.id = s.sede_id
                                             LEFT JOIN lugars lu ON lu.id = s.lugar_id
-                                            WHERE n.id = ? AND u.id = ? AND n.leido = FALSE", [$id, Auth::id()]);
+                                            WHERE n.id = ? AND s.responsable_id = ? AND n.leido = FALSE", [(int)$id, Auth::id()]);
+
         return response()->json($notificacionDetalle);
     }
 
@@ -70,7 +71,7 @@ class HomeController extends Controller
                                         LEFT JOIN personas p ON p.usuario_id = u.id
                                         LEFT JOIN sedes se ON se.id = s.sede_id
                                         LEFT JOIN lugars lu ON lu.id = s.lugar_id
-                                        WHERE u.id = ? AND n.leido = FALSE", [Auth::id()]);
+                                        WHERE s.responsable_id = ? AND n.leido = FALSE", [Auth::id()]);
 
         foreach ($notificaciones as $ntf) {
             DB::select("UPDATE notificaciones n SET leido = true WHERE n.id = ?", [$ntf->notif_id]);

@@ -146,71 +146,75 @@ class ReservationController extends Controller
 
   public function attemptClientPay(Request $request)
   {
-    $auth = $this->authenticateToken();
+    try {
+      $auth = $this->authenticateToken();
 
-    $accessToken = Http::withHeaders([
-      'Authorization' => "Basic $auth"
-    ])->get(config("services.niubiz.url_api") . '/api.security/v1/security')->body();
+      $accessToken = Http::withHeaders([
+        'Authorization' => "Basic $auth"
+      ])->get(config("services.niubiz.url_api") . '/api.security/v1/security')->body();
 
-    $response = Http::withHeaders([
-      "Content-Type" => "application/json",
-      "Authorization" => $accessToken
-    ])->post(config('services.niubiz.url_api') . "/api.authorization/v3/authorization/ecommerce/" . config('services.niubiz.merchant_id'),
-      [
-        "channel" => $request->channel,
-        "captureType" => "manual",
-        "countable" => true,
-        "order" => [
-          "tokenId" => $request->transactionToken,
-          "purchaseNumber" => $request->purchaseNumber,
-          "amount" => (int)$request->amount,
-          "currency" => config('services.niubiz.currency')
-        ]
-      ])
-      ->json();
+      $response = Http::withHeaders([
+        "Content-Type" => "application/json",
+        "Authorization" => $accessToken
+      ])->post(config('services.niubiz.url_api') . "/api.authorization/v3/authorization/ecommerce/" . config('services.niubiz.merchant_id'),
+        [
+          "channel" => $request->channel,
+          "captureType" => "manual",
+          "countable" => true,
+          "order" => [
+            "tokenId" => $request->transactionToken,
+            "purchaseNumber" => $request->purchaseNumber,
+            "amount" => (int)$request->amount,
+            "currency" => config('services.niubiz.currency')
+          ]
+        ])
+        ->json();
 
-    if (isset($response['dataMap']) && $response['dataMap']['ACTION_CODE'] == "000") {
+      if (isset($response['dataMap']) && $response['dataMap']['ACTION_CODE'] == "000") {
 
-      $lastRegister = DB::select("SELECT * FROM reserva_temporal rt WHERE codigo = ? ORDER BY id DESC LIMIT 1;", [$request->codigo]);
-      $sede = DB::select("SELECT sed.descripcion as sede FROM servicios ser LEFT JOIN sedes sed ON sed.id = ser.sede_id")[0]->sede;
-      $lugar = DB::select("SELECT lug.descripcion as lugar FROM servicios ser LEFT JOIN lugars lug ON lug.id = ser.lugar_id")[0]->lugar;
+        $lastRegister = DB::select("SELECT * FROM reserva_temporal rt WHERE codigo = ? ORDER BY id DESC LIMIT 1;", [$request->codigo]);
+//        $sede = DB::select("SELECT sed.descripcion as sede FROM servicios ser LEFT JOIN sedes sed ON sed.id = ser.sede_id")[0]->sede;
+//        $lugar = DB::select("SELECT lug.descripcion as lugar FROM servicios ser LEFT JOIN lugars lug ON lug.id = ser.lugar_id")[0]->lugar;
 
-      DB::select("UPDATE reserva_temporal SET codigo = ? WHERE id = ?;", [$request->codigo, $lastRegister[0]->id]);
+        DB::select("UPDATE reserva_temporal SET codigo = ? WHERE id = ?;", [$request->codigo, $lastRegister[0]->id]);
 
-      $getPersona = Persona::find(Auth::id());
+        $getPersona = Persona::find(Auth::id());
 
-      $confirmacionMail = new MailConfirmacion();
-      $confirmacionMail->correo_miembro = Auth::user()->email;
-      $confirmacionMail->nombre_miembro = "$getPersona->nombres $getPersona->apepaterno $getPersona->apematerno";
-      $confirmacionMail->estado_pago = $response['dataMap']['ACTION_DESCRIPTION'];
-      $confirmacionMail->nombre_programa_actividad = "ALQUILER DE CANCHA";
-      $confirmacionMail->registro_id = $lastRegister[0]->id;
-      $confirmacionMail->sede = $sede;
-      $confirmacionMail->lugar = $lugar;
-      $confirmacionMail->hora_inicio = Str::of($lastRegister[0]->inicio)->explode(' ')[1];
-      $confirmacionMail->hora_fin = Str::of($lastRegister[0]->fin)->explode(' ')[1];
-      $confirmacionMail->fecha_pago = now()->createFromFormat('ymdHis', $response['dataMap']['TRANSACTION_DATE'])->format('d/m/Y H:i:s');
-      $confirmacionMail->numero_tarjeta = $response['dataMap']['CARD'];
-      $confirmacionMail->brand_tarjeta = $response['dataMap']['BRAND'];
-      $confirmacionMail->importe_pagado = $response['dataMap']['AMOUNT'];
-      $confirmacionMail->codigo = $request->codigo;
-      $confirmacionMail->save();
+        $confirmacionMail = new MailConfirmacion();
+        $confirmacionMail->correo_miembro = Auth::user()->email;
+        $confirmacionMail->nombre_miembro = "$getPersona->nombres $getPersona->apepaterno $getPersona->apematerno";
+        $confirmacionMail->estado_pago = $response['dataMap']['ACTION_DESCRIPTION'];
+        $confirmacionMail->nombre_programa_actividad = "ALQUILER DE CANCHA";
+        $confirmacionMail->registro_id = $lastRegister[0]->id;
+        $confirmacionMail->sede = $lastRegister[0]->sede;
+        $confirmacionMail->lugar = $lastRegister[0]->lugar;
+        $confirmacionMail->hora_inicio = Str::of($lastRegister[0]->inicio)->explode(' ')[1];
+        $confirmacionMail->hora_fin = Str::of($lastRegister[0]->fin)->explode(' ')[1];
+        $confirmacionMail->fecha_pago = now()->createFromFormat('ymdHis', $response['dataMap']['TRANSACTION_DATE'])->format('d/m/Y H:i:s');
+        $confirmacionMail->numero_tarjeta = $response['dataMap']['CARD'];
+        $confirmacionMail->brand_tarjeta = $response['dataMap']['BRAND'];
+        $confirmacionMail->importe_pagado = $response['dataMap']['AMOUNT'];
+        $confirmacionMail->codigo = $request->codigo;
+        $confirmacionMail->save();
+        ConfirmarReservaJob::dispatch($confirmacionMail);
 
-      ConfirmarReservaJob::dispatch($confirmacionMail);
+        if ($this->store($request->codigo)) {
 
-      if ($this->store($request->codigo)) {
+          return redirect()->route('prfole.user')->with(['success' => 'Tu reserva fue generada satisfactoriamente!, hemos envíado un correo con mayor detalle']);
 
-        return redirect()->route('prfole.user')->with(['success' => 'Tu reserva fue generada satisfactoriamente!, hemos envíado un correo con mayor detalle']);
+        } else {
 
+          return back()->with(['error' => 'Hubo un problema al realizar tu reserva, comunicate con el staff de CIAR SPORTS para recibir ayuda.']);
+
+        }
       } else {
 
-        return back()->with(['error' => 'Hubo un problema al realizar tu reserva, comunicate con el staff de CIAR SPORTS para recibir ayuda.']);
+        return back()->with(['error' => $response['data']['ACTION_DESCRIPTION']]);
 
       }
-    } else {
-
-      return back()->with(['error' => $response['data']['ACTION_DESCRIPTION']]);
-
+    } catch (\Exception $e) {
+      $errorMessage = $e->getMessage();
+      return back()->with(['error' => "Error tipo : $errorMessage"]);
     }
   }
 
