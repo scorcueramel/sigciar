@@ -15,15 +15,16 @@ return new class extends Migration
     {
         Schema::create('servicio_informes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('servicioinscripcion_id')->constrained('servicio_inscripcions');
-            $table->string('detalle',300);
-            $table->string('adjuntto',300);
+//            $table->foreignId('servicioinscripcion_id')->constrained('servicio_inscripcions');
+            $table->integer('servicioinscripcion_id',)->nullable(true);
+            $table->string('detalle',300)->nullable(true);
+            $table->string('adjuntto',300)->nullable(true);
             $table->string('estado',1);
             $table->string('usuario_creador',50)->nullable(true);
             $table->string('usuario_editor',50)->nullable(true);
             $table->string('ip_usuario',20);
             $table->boolean('privado')->nullable(true)->default(false);
-            $table->boolean('persona_id')->nullable(true);
+            $table->integer('persona_id')->nullable(true);
             $table->string('titulo',100)->nullable(true);
             $table->softDeletes();
             $table->timestamps();

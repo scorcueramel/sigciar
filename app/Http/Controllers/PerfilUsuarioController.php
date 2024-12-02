@@ -42,7 +42,7 @@ class PerfilUsuarioController extends Controller
 
     $programas = $this->getProgramas($datosPersona["persona_id"], 'A');
 
-    $notasPrivadas = ServicioInforme::where("privado", true)->where('estado', 'A')->where('persona_id', auth()->user()->id)->orderBy('id', 'ASC')->get();
+    $notasPrivadas = ServicioInforme::where('privado', true)->where('estado', 'A')->where('persona_id', $usuario->id)->orderBy('id', 'ASC')->get();
 
     $notasEntrenador = DB::select("SELECT
                                         si.id,
@@ -216,13 +216,13 @@ class PerfilUsuarioController extends Controller
     $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
     $nota = new ServicioInforme();
     $nota->servicioinscripcion_id = $request->servinscid;
-    $nota->detalle = $request->nota;
+    $nota->titulo = Str::ucfirst($request->titulonota);
+    $nota->detalle = Str::ucfirst($request->nota);
     $nota->estado = 'A';
     $nota->usuario_creador = $nombre_usuario;
     $nota->ip_usuario = $request->ip();
     $nota->privado = true;
     $nota->persona_id = Auth::user()->id;
-    $nota->titulo = $request->titulonota;
     $nota->save();
 
     return redirect()->route('prfole.user');
@@ -248,10 +248,10 @@ class PerfilUsuarioController extends Controller
     $nombre_usuario = "{$usuario[0]->nombres} {$usuario[0]->apepaterno} {$usuario[0]->apematerno}";
     $nota = ServicioInforme::find($request->id);
 
-    $nota->detalle = $request->detalle;
+    $nota->titulo = Str::ucfirst($request->titulo);
+    $nota->detalle = Str::ucfirst($request->detalle);
     $nota->estado = 'A';
     $nota->usuario_editor = $nombre_usuario;
-    $nota->titulo = $request->titulo;
     $nota->save();
     return redirect()->route('prfole.user');
   }

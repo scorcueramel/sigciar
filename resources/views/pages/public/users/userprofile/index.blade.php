@@ -130,7 +130,8 @@
                                           data-bs-target="#flush-collapse{{$programa->servicios_id}}"
                                           aria-expanded="false"
                                           aria-controls="flush-collapse{{$programa->servicios_id}}">
-                                    {{Str::of($programa->descripcion)->explode('-')[0]}} | {{Str::of($programa->descripcion)->explode('-')[1]}}
+                                    {{Str::of($programa->descripcion)->explode('-')[0]}}
+                                    | {{Str::of($programa->descripcion)->explode('-')[1]}}
                                   </button>
                                 </h2>
                                 <div id="flush-collapse{{$programa->servicios_id}}"
@@ -651,8 +652,8 @@
       $('.modal_cuerpo').html(`
                 <form method="post" action="{{ route('image.user.update') }}" id="frmactualizafoto" enctype="multipart/form-data">
                     @csrf
-      <div class="mb-3">
-          <input type="hidden" name="idpersona" value="{{ $datosPersona->id }}"/>
+                    <div class="mb-3">
+                        <input type="hidden" name="idpersona" value="{{ $datosPersona->id }}"/>
                         <label for="imageFile" class="form-label">Selecciona una foto</label>
                         <input class="form-control" type="file" id="cargarImagen" name="imagen" accept="image/*"/>
                     </div>
@@ -735,28 +736,28 @@
       $('.modal_cuerpo').html(`
             <form method="post" action="{{ route('notas.privadas.user') }}" id="guardarnota" enctype="multipart/form-data">
                 @csrf
-      <div class="mb-3">
-          <label for="nota-miembro" class="form-label">Título de la nota</label>
-          <input type="text" class="form-control" placeholder="Título para tu nueva nota" name="titulonota" maxlength="100" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" required>
-          <div id="description" class="form-text text-primary text-end">100 caracteres como máximo permitido.</div>
-          <div class="d-none" id="error">
-              <p class="text-danger">Debes ingresar una nota para enviar</p>
-          </div>
-      </div>
-      <div class="mb-3">
-          <label for="nota-miembro" class="form-label">Nota</label>
-          <textarea class="form-control" id="nota-miembro" name="nota" rows="3" placeholder="Escribe una nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required></textarea>
-          <div id="description" class="form-text text-primary text-end">300 caracteres como máximo permitido.</div>
-          <div class="d-none" id="error">
-              <p class="text-danger">Debes ingresar una nota para enviar</p>
-          </div>
-      </div>
-      <div class="mt-3 d-flex justify-content-end">
-          <button type="button" class="btn btn-secondary mx-1" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary" onclick="javascript:whileLoading()">Guardar</button>
-      </div>
-  </form>
-`);
+              <div class="mb-3">
+                  <label for="nota-miembro" class="form-label">Título de la nota</label>
+                  <input type="text" class="form-control" placeholder="Título para tu nueva nota" name="titulonota" maxlength="100" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" required>
+                  <div id="description" class="form-text text-primary text-end">100 caracteres como máximo permitido.</div>
+                  <div class="d-none" id="error">
+                      <p class="text-danger">Debes ingresar una nota para enviar</p>
+                  </div>
+              </div>
+              <div class="mb-3">
+                  <label for="nota-miembro" class="form-label">Nota</label>
+                  <textarea class="form-control" id="nota-miembro" name="nota" rows="3" placeholder="Escribe una nota aquí" maxlength="300" aria-describedby="description" onkeypress="javascript:document.getElementById('error').classList.add('d-none')" style="height: 150px;" required></textarea>
+                  <div id="description" class="form-text text-primary text-end">300 caracteres como máximo permitido.</div>
+                  <div class="d-none" id="error">
+                      <p class="text-danger">Debes ingresar una nota para enviar</p>
+                  </div>
+              </div>
+              <div class="mt-3 d-flex justify-content-end">
+                  <button type="button" class="btn btn-secondary mx-1" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" class="btn btn-primary" onclick="javascript:whileLoading()">Guardar</button>
+              </div>
+          </form>
+        `);
     });
 
     function actualizarNota() {
@@ -767,28 +768,28 @@
       $.ajax({
         type: "POST",
         url: "{{route('actualizar.notas.user')}}",
-            data: {
-                id,
-                detalle,
-                titulo
-            },
-            success: function(response) {
-                whileLoading();
-                window.location.reload();
-            }
-        });
+        data: {
+          id,
+          detalle,
+          titulo
+        },
+        success: function (response) {
+          whileLoading();
+          window.location.reload();
+        }
+      });
     }
 
     function editarNotaModal(idinforme) {
-        $.ajax({
-            type: "GET",
-            url: `/ciar/edit/${idinforme}/notas`,
-            success: function(response) {
-                let data = response[0];
-                $("#modal").modal("show");
-                $('#modalLabel').html('MIS NOTA PRIVADAS');
-                $(".modal_cuerpo").html("");
-                $(".modal_cuerpo").html(`
+      $.ajax({
+        type: "GET",
+        url: `/ciar/edit/${idinforme}/notas`,
+        success: function (response) {
+          let data = response[0];
+          $("#modal").modal("show");
+          $('#modalLabel').html('MIS NOTA PRIVADAS');
+          $(".modal_cuerpo").html("");
+          $(".modal_cuerpo").html(`
                     <input type="hidden" id="informe_id" value="${data.id}">
                     <div class="mb-3">
                         <label for="nota-miembro" class="form-label">Título de la nota</label>
@@ -811,66 +812,66 @@
                         <button type="submit" class="btn btn-primary" onclick="javascript:actualizarNota()">Guardar</button>
                     </div>
                 `);
-            }
-        });
+        }
+      });
     }
 
     function eliminarNota(idinforme) {
-        Swal.fire({
-            title: `¿Eliminar Nota?`,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Si",
-            cancelButtonText: "No",
-            allowOutsideClick: false,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: "GET",
-                    url: `/ciar/eliminar/${idinforme}/notas`,
-                    success: function(response) {
-                        whileLoading();
-                        window.location.reload();
-                    }
-                });
+      Swal.fire({
+        title: `¿Eliminar Nota?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si",
+        cancelButtonText: "No",
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            type: "GET",
+            url: `/ciar/eliminar/${idinforme}/notas`,
+            success: function (response) {
+              whileLoading();
+              window.location.reload();
             }
-        });
+          });
+        }
+      });
     }
 
-    $(".btnQuitarReserva").on('click', function() {
-        let servicioid = $(this).attr("data-id-servicioid");
-        Swal.fire({
-            title: `Ocultar Reserva?`,
-            html: `
+    $(".btnQuitarReserva").on('click', function () {
+      let servicioid = $(this).attr("data-id-servicioid");
+      Swal.fire({
+        title: `Ocultar Reserva?`,
+        html: `
                     <p>Recuerda: Al ocultar la reserva pasará a la sección de historial. Para regresar al estado actual debes coordinar con el staff de CIAR SPORTS</p>
                 `,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Si",
-            cancelButtonText: "No",
-            allowOutsideClick: false,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                whileLoading();
-                $.ajax({
-                    type: "GET",
-                    url: `/ciar/quitar/${servicioid}/reservas`,
-                    success: function(response) {
-                        window.location.reload();
-                    }
-                });
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si",
+        cancelButtonText: "No",
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          whileLoading();
+          $.ajax({
+            type: "GET",
+            url: `/ciar/quitar/${servicioid}/reservas`,
+            success: function (response) {
+              window.location.reload();
             }
-        });
+          });
+        }
+      });
     });
 
-    $("#historiaMisReservas").on("click", function() {
-        $('#modalLabel').html('HISTORIAL MIS RESERVAS');
-        $('.modal_cuerpo').html('');
-        $('.modal_cuerpo').html(`
+    $("#historiaMisReservas").on("click", function () {
+      $('#modalLabel').html('HISTORIAL MIS RESERVAS');
+      $('.modal_cuerpo').html('');
+      $('.modal_cuerpo').html(`
             <div clas="row  mx-4">
                 <div class="col-12">
                     <table class="table table-sm">
@@ -886,23 +887,23 @@
                 </div>
             </div>
         `);
-        let idusuario = $(this).attr('data-id-usuario');
-        $.ajax({
-            type: "GET",
-            url: `/ciar/historial/${idusuario}/reservas`,
-            success: function(response) {
-                $("#modal").modal("show");
-                if (response.length > 0) {
-                    response.forEach((e) => {
+      let idusuario = $(this).attr('data-id-usuario');
+      $.ajax({
+        type: "GET",
+        url: `/ciar/historial/${idusuario}/reservas`,
+        success: function (response) {
+          $("#modal").modal("show");
+          if (response.length > 0) {
+            response.forEach((e) => {
 
-                        $("#tablehistoryreservations").append(`
+              $("#tablehistoryreservations").append(`
                             <tr>
                                 <td>${e.descripcion.split('-')[0]}</td>
                                 <td>${e.horario.split('|')[1]}</td>
                             </tr>`);
-                    });
-                } else {
-                    $('.modal_cuerpo').html(`
+            });
+          } else {
+            $('.modal_cuerpo').html(`
                         <div class="row mb-4">
                             <div class="col-12">
                                 <div class="jumbotron text-center">
@@ -912,10 +913,10 @@
                             </div>
                         </div>
                     `);
-                }
+          }
 
-            }
-        });
+        }
+      });
     });
-</script>
+  </script>
 @endpush
