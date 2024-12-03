@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendNotesJob;
 use App\Mail\NotasMiembro;
 use App\Models\Lugar;
 use App\Models\Persona;
@@ -443,7 +444,7 @@ class OtrosProgramasController extends Controller
 
         $correo = User::where('id', $resultNota[0]->usuario_id)->select('email')->get()[0]->email;
 
-        Mail::to($correo)->send(new NotasMiembro($resultNota[0]));
+      SendNotesJob::dispatch($correo, $resultNota[0]);
 
         return response()->json("ok");
     }

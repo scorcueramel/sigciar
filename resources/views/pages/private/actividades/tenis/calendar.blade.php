@@ -256,6 +256,9 @@
                 if (response.length > 0) {
                     for (let index = 0; index < response.length; index++) {
                         const element = response[index];
+
+                      {{--const fecha_create = "{{Carbon\Carbon::parse(""+`${element.created_at}`+"")->format('j M Y, g:i a')}}";--}}
+
                         if (!element.privado) {
                             $("#modalnotabody").append(`
                         <div class="accordion accordion-flush" id="accordion${index}">
@@ -298,7 +301,7 @@
                                         <p class="lead">Este miembro no cuenta con ninguna nota enviada.</p>
                                     </div>
                                 </div>
-                    `)
+                            `)
                         }
                     }
                 } else {
