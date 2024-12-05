@@ -225,7 +225,7 @@ class InscripcionesController extends Controller
   {
     $auth = $this->authenticateToken();
 
-    $getPersona = Persona::find(Auth::id());
+    $getPersona = Persona::where('usuario_id',Auth::id())->get()[0];
     $lastRegister = DB::select("SELECT * FROM inscripcion_temporal it WHERE codigo = ? ORDER BY id DESC LIMIT 1;", [$request->codigo])[0];
 
     $sede = DB::select("SELECT sed.descripcion as sede FROM servicios ser LEFT JOIN sedes sed ON sed.id = ser.sede_id")[0]->sede;
@@ -316,6 +316,31 @@ class InscripcionesController extends Controller
 
     } catch (\Throwable $th) {
       return false;
+    }
+  }
+
+  public function storeTemporal(Request $request)
+  {
+    try {
+      $getPersona = Persona::where('usuario_id',Auth::id())->get()[0];
+
+
+      $usuarioActivo = "$getPersona->nombres $getPersona->apepaterno $getPersona->apematerno";
+      $servicioId = $request->idservicio;
+      $fechas = $request->fechasDefinidas;
+      $usuarioId = $request->idmiembro;
+      $ip = request()->ip();
+
+      foreach ($fechas as $fd) {
+        $dia = $fd['dias'];
+        $hora = $fd['horarios'];
+        DB::select('SELECT servicio_inscripcion(?,?,?,?,?,?)', [$servicioId, $dia, $usuarioId, $hora, $usuarioActivo, $ip]);
+      }
+
+      return response()->json(['success'=>'ok']);
+
+    } catch (\Exception $e) {
+      return response()->json($e->getMessage());
     }
   }
 

@@ -251,6 +251,7 @@ Route::group(['middleware'=>'isNotUser','prefix'=>'admin'], function(){
         Route::get('/obtener/{id}/dias',[InscripcionesController::class, 'getDaysActivity'])->name('inscripciones.days.activity');
         Route::get('/obtener/{idServicio}/{dia}/horas',[InscripcionesController::class,'getHoursForDay'])->name('inscripciones.obtener.horarios');
         Route::post('/nueva',[InscripcionesController::class,'store'])->name('inscripciones.store');
+        Route::post('/nueva/temporal',[InscripcionesController::class,'storeTemporal'])->name('inscripciones.store.temporal');
     });
 
     Route::group(['prefix'=>'categorias'], function (){
