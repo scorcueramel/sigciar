@@ -16,4 +16,5 @@ class Sede extends Model
         'imagen',
         'estado',
     ];
+    protected $hidden = ['created_at', 'updated_at'];
 }
