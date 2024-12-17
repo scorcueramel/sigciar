@@ -147,7 +147,8 @@
 		Route::get('/obtener/{tiposervicio}/{sede}/{lugar}/eventos', [CalendarioGeneral::class, 'chargeEventsQuery'])->name('calendario.general.consulta.eventos');
 		Route::get('/obtener/eventos', [CalendarioGeneral::class, 'chargeEvents'])->name('calendario.general.eventos');
 		Route::get('/membresias', [MembresiaController::class, 'index'])->name('membresias');
-		Route::get('/membresoa/{id}/lugares', [MembresiaController::class, 'chargePlaces'])->name('membresia.lugares');
+		Route::get('/membresias/{id}/lugares', [MembresiaController::class, 'chargePlaces'])->name('membresia.lugares');
+		Route::get('/membresias/{sedeid}/{lugarid}/programas', [MembresiaController::class, 'chargePrograms'])->name('membresia.programas');
 		
 		Route::group(['prefix' => 'sedes'], function () {
 			Route::get('/lista', [SedesController::class, 'index'])->name('sedes.index');
