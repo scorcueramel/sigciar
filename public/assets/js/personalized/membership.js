@@ -18,3 +18,8 @@ $("#sedes").on('change', function () {
         }
     })
 })
+
+$("#lugares").on('change',function(){
+   let id = $(this).val();
+   $("#programas").removeAttr('disabled');
+});

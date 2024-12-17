@@ -8,9 +8,9 @@
                     <div class="row row-bordered g-0">
                         <div class="pt-4 px-3">
                             <h5 class="text-nowrap mb-2">Membresias</h5>
-                            <div class="row mt-5">
+                            <div class="row mt-4">
                                 <div class="col-sm-12 col-md-2">
-                                    <label for="">Sede</label>
+                                    <label for="sedes">Sede</label>
                                     <select class="form-select" aria-label="sedes" id="sedes" name="sede">
                                         <option value="" selected>SELECCIONAR SEDE</option>
                                         @foreach($sedes as $s)
@@ -19,23 +19,20 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-md-3">
-                                    <label for="">Lugar</label>
+                                    <label for="lugares">Lugar</label>
                                     <select class="form-select" aria-label="Lugares" name="lugar" id="lugares" disabled>
                                         <option value="" selected>SELECCIONA UN LUGAR</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-md-3">
-                                    <label for="">Tipó de Servicio</label>
-                                    <select class="form-select" aria-label="tiposervicio" id="tiposervicios"
-                                            name="tiposervicio" disabled>
-                                        <option value="" selected>SELECCIONAR TIPO DE SERVICIO</option>
-                                        <option value="0">TODOS</option>
+                                    <label for="programas">Programas</label>
+                                    <select class="form-select" aria-label="programas" id="programas"
+                                            name="programas" disabled>
+                                        <option value="" selected>SELECCIONAR PROGRAMA</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-md-3">
-                                    <button class="btn btn-primary mt-4" type="button" id="btnBuscar"
-                                            onclick="saludar()">Búscar
-                                    </button>
+                                    <button class="btn btn-primary mt-4" type="button" id="btnBuscar">Búscar</button>
                                     <button class="btn btn-danger mt-4" type="button" id="btnLimpiar">Limpiar</button>
                                 </div>
                             </div>
