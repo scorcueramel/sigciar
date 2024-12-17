@@ -23,6 +23,32 @@
     WHERE s.responsable_id = ? AND n.leido = FALSE
     ORDER BY n.fecha_hora_registro DESC;",[Auth::id()]);
 @endphp
+<style>
+    .dropdown-menu{
+        max-height: 600px;
+        overflow-y: scroll;
+    }
+    .dropdown-menu::-webkit-scrollbar{
+        -webkit-appearance: none;
+    }
+    .dropdown-menu::-webkit-scrollbar:vertical {
+        width:7px;
+    }
+    .dropdown-menu::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+        display: none;
+    }
+    .dropdown-menu::-webkit-scrollbar:horizontal {
+        height: 10px;
+    }
+    .dropdown-menu::-webkit-scrollbar-thumb {
+        background-color: #797979;
+        border-radius: 20px;
+        border: 2px solid #f1f2f3;
+    }
+    .dropdown-menu::-webkit-scrollbar-track {
+        border-radius: 10px;
+    }
+</style>
 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
      id="layout-navbar">
     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">

@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\DeleteInscripcionTemporal;
 use App\Console\Commands\DeleteReservaTemporal;
+use App\Console\Commands\SendNotificacionMembership;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -20,6 +21,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command(DeleteReservaTemporal::class)->dailyAt('03:00');
         $schedule->command(DeleteInscripcionTemporal::class)->dailyAt('03:05');
+				$schedule->command(SendNotificacionMembership::class)->dailyAt('04:00');
     }
 
     /**
