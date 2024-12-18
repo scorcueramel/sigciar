@@ -101,7 +101,7 @@
                             </button>
                             <div class="dropdown-menu">
                                 <button data-bs-toggle="modal" data-bs-target="#modalcomponent" onclick="showDetail()" class="dropdown-item"><i class="bx bx-message-alt-detail me-1"></i> Detalle</button>
-                                <button class="dropdown-item delete" onclick="deleteInscripcion(' . $row->servicios_id . ')"><i class="bx bx-trash me-1"></i> Eliminar</button>
+                                <button class="dropdown-item delete" onclick="deleteInscripcion(' . $row->servicios_id . ')"><i class="bx bx-trash me-1"></i> Retirar</button>
                             </div>
                         </div>';
 				})

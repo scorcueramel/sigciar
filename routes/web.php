@@ -149,7 +149,7 @@
 		Route::get('/membresias', [MembresiaController::class, 'index'])->name('membresias');
 		Route::get('/membresias/{id}/lugares', [MembresiaController::class, 'chargePlaces'])->name('membresia.lugares');
 		Route::get('/membresias/{sedeid}/{lugarid}/programas', [MembresiaController::class, 'chargePrograms'])->name('membresia.programas');
-		Route::get('/membresias/{sedeid}/{lugarid}/{programaid}/programas', [MembresiaController::class, 'getMembersByPrograms'])->name('membresia.programas.find');
+		Route::get('/sede/{sedeid}/lugar/{lugarid}/programa/{programaid}/estado/{estado?}', [MembresiaController::class, 'getMembersByPrograms'])->name('membresia.find.programs');
 		
 		Route::group(['prefix' => 'sedes'], function () {
 			Route::get('/lista', [SedesController::class, 'index'])->name('sedes.index');
