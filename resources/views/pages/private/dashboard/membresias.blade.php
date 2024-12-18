@@ -18,18 +18,19 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-sm-12 col-md-3">
+                                <div class="col-sm-12 col-md-2">
                                     <label for="lugares">Lugar</label>
                                     <select class="form-select" aria-label="Lugares" name="lugar" id="lugares" disabled>
-                                        <option value="" selected>SELECCIONA UN LUGAR</option>
+                                        <option value="" selected>SELECCIONAR LUGAR</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-12 col-md-3">
+                                <div class="col-sm-12 col-md-4">
                                     <label for="programas">Programas</label>
                                     <select class="form-select" aria-label="programas" id="programas"
                                             name="programas" disabled>
                                         <option value="" selected>SELECCIONAR PROGRAMA</option>
                                     </select>
+                                    <span class="d-none program-validate"></span>
                                 </div>
                                 <div class="col-sm-12 col-md-3">
                                     <button class="btn btn-primary mt-4" type="button" id="btnBuscar">Búscar</button>
