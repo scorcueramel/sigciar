@@ -48,7 +48,7 @@
 			}
 			
 			foreach ($getFilterRegisters as $key => $value) {
-				array_push($emailToNotify, $value->email);
+				array_push($emailToNotify, ['email'=>$value->email,'id'=>$value->id]);
 			}
 			
 			$sendNotify = array_unique($emailToNotify);
@@ -60,6 +60,14 @@
 				$memberName = "$personData->nombres $personData->apepaterno $personData->apematerno";
 				
 				Mail::to($value)->send(new NotificacionMembresiaVencer($memberName));
+				
+			}
+			
+			foreach ($getAllData as $key => $value) {
+				$clearDate = Str::of($getAllData[ $key ]->fechanotif)->explode(' ')[ 0 ];
+				if ($clearDate == $dateNow) {
+				
+				}
 			}
 		}
 	}

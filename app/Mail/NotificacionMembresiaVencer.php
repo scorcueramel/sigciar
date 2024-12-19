@@ -15,14 +15,16 @@
 		use Queueable, SerializesModels;
 		
 		public string $nombreMiembro;
+		public string $nombrePrograma;
 		/**
 		 * Create a new message instance.
 		 *
 		 * @return void
 		 */
-		public function __construct(string $nombreMiembro)
+		public function __construct(string $nombreMiembro, string $nombrePrograma)
 		{
 			$this->nombreMiembro = $nombreMiembro;
+			$this->nombrePrograma = $nombrePrograma;
 		}
 		
 		/**

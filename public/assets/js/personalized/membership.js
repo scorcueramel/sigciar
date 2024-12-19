@@ -73,7 +73,6 @@ $("#btnBuscar").on('click', function () {
         method: 'GET',
         url: `/admin/sede/${sedeid}/lugar/${lugarid}/programa/${programaid}/estado/${estadoid}`,
         success: function (resp) {
-
             $("#table-section").removeClass('d-none');
             $('#table').DataTable({
                 "bDestroy": true,
@@ -144,7 +143,8 @@ $("#btnBuscar").on('click', function () {
                     "paginate": {
                         "next": "›",
                         "previous": "‹"
-                    }
+                    },
+                    "emptyTable":"No hay datos disponibles en la tabla"
                 },
             });
 
@@ -155,23 +155,50 @@ $("#btnBuscar").on('click', function () {
     });
 });
 
-function showDetails(id){
-
+function showDetails(id,nombre){
     $.ajax({
         method:'GET',
-        url:'',
+        url:`/admin/detalles/${id}/membresia`,
         success:function (resp){
-            console.log(resp)
+            $("#modalcomponent").modal('show');
+            $("#mcLabel").html('');
+            $("#mcLabel").html(`${nombre}`);
+            $("#mcbody").html('');
+            $("#mcbody").append(`
+                <table class="table table-sm table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Fechas de inscripcion</th>
+                      <th scope="col">Próximo pago</th>
+                      <th scope="col">Monto a pagar</th>
+                      <th scope="col">Estado de pago</th>
+                      <th scope="col">NOTIFICACIÓN PRÓXIMO PAGO</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tableDetails">                      
+                  </tbody>
+                </table>
+            `);
+            resp.map((e,index)=>{
+                $("#tableDetails").append(`
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${formatearFechas(e.fechainscripcion)}</td>
+                        <td>
+                            <span class="badge rounded-pill ${e.estado == 'CANCELADO' ? 'bg-success' : 'bg-danger'}">${formatearFechas(e.fechapago)}</span>
+                        </td>
+                        <td>S/.${e.valorpago}</td>
+                        <td>${e.estado}</td>
+                        <td class="text-center">${e.notificado ? 'NOTIFICADO' : '<button class="ms-3 btn btn-sm btn-primary">Notificar</button>'} </td>
+                    </tr>
+                `)
+            });
         },
-        error:function(error){
+        error: function (error) {
             console.log(error)
         }
     });
-
-
-    $("#modalcomponent").modal('show');
-
-    $("#mcbody").append('DATA MEMBER ' + id)
 }
 
 $("#btnLimpiar").on('click',function (){
@@ -189,3 +216,9 @@ $("#btnLimpiar").on('click',function (){
     $("#programas").append(`<option selected value="" disabled>SELECCIONAR PROGRAMA</option>`);
     $("#programas").attr('disabled', 'disabled');
 });
+
+function formatearFechas(fecha){
+    let splitFecha = fecha.split(" ")[0];
+    let divideFecha = splitFecha.split("-");
+    return divideFecha[2]+"/"+divideFecha[1]+"/"+divideFecha[0];
+}

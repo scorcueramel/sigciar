@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="row row-bordered g-0">
                         <div class="pt-4 px-3 mb-4">
-                            <h5 class="text-nowrap mb-2">Membresias</h5>
+                            <h5 class="text-nowrap mb-2">Gestión de membresias</h5>
                             <div class="row mt-4">
                                 <div class="col-sm-12 col-md-2">
                                     <label for="sedes">Sede</label>
@@ -37,7 +37,7 @@
                                     <select class="form-select" aria-label="estados" id="estados"
                                             name="estados" disabled>
                                         <option value="" selected disabled>SELECCIONAR ESTADO</option>
-                                        <option value="">TODOS</option>
+                                        <option value="null">TODOS</option>
                                         <option value="PE">PENDIENTE</option>
                                         <option value="CA">CANCELADO</option>
                                         <option value="RE">RETIRADO</option>

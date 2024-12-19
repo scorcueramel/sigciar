@@ -43,7 +43,7 @@
 			return response()->json($programas);
 		}
 		
-		public function getMembersByPrograms(string $sedeid, string $lugarid, string $programaid, ?string $estado = null)
+		public function getMembersByPrograms(string $sedeid, string $lugarid, string $programaid, ?string $estado = 'null')
 		{
 			$estado == 'null' ? $estado = '' : $estado;
 			
@@ -73,15 +73,17 @@
 			
 			return datatables()->of($detailsMemebers)
 				->addColumn('retirado', function ($row) {
-						return $row->retirado == null ? $row->retirado = 'NO' : $row->retirdao;
+						return $row->retirado == null ? $row->retirado = 'NO' : $row->retirdao = 'SI';
 				})
 				->addColumn('acciones', function ($row) {
+					$nombres = $row->nombre;
+					
 					return '<div class="dropdown">
 	                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
 	                        <i class="fa-duotone fa-gear"></i>
 	                    </button>
 	                    <div class="dropdown-menu">
-	                        <button data-bs-toggle="modal" data-bs-target="#modalcomponent" class="dropdown-item" onclick="showDetails('.$row->id.')"><i class="bx bx-message-alt-detail me-1"></i> Detalle</button>
+	                        <button data-bs-toggle="modal" data-bs-target="#modalcomponent" class="dropdown-item" onclick="showDetails('.$row->id.',\''.$nombres.'\')"><i class="bx bx-message-alt-detail me-1"></i> Detalle</button>
 	                        <button class="dropdown-item delete" onclick=""><i class="bx bx-trash me-1"></i> Retirar</button>
 	                    </div>
                 	</div>';
@@ -90,8 +92,14 @@
 				->make(true);
 		}
 		
-		public function getDetailMember(){
-		
+		public function getDetailMember(string $id){
+			$detalle = DB::select("SELECT id,fechainscripcion, fechapago, valorpago,
+																		CASE WHEN estado = 'CA' THEN 'CANCELADO' ELSE 'PENDIENTE' END AS estado,
+																		notificado FROM servicio_membresias sm
+																		WHERE sm.servicioinscripcion_id = ?
+																		ORDER BY id",[$id]);
+			
+			return response()->json($detalle);
 		}
 		
 		/**

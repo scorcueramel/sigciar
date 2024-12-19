@@ -25,8 +25,14 @@
 	use App\Http\Controllers\TipoServicioController;
 	use \App\Http\Controllers\MembresiaController;
 	
+	use App\Mail\NotificacionMembresiaVencer;
+	use App\Models\Persona;
+	use App\Models\User;
+	use Illuminate\Support\Facades\DB;
+	use Illuminate\Support\Facades\Mail;
 	use Illuminate\Support\Facades\Route;
 	use Illuminate\Support\Facades\Auth;
+	use Illuminate\Support\Str;
 	
 	/*
 	|--------------------------------------------------------------------------
@@ -150,6 +156,7 @@
 		Route::get('/membresias/{id}/lugares', [MembresiaController::class, 'chargePlaces'])->name('membresia.lugares');
 		Route::get('/membresias/{sedeid}/{lugarid}/programas', [MembresiaController::class, 'chargePrograms'])->name('membresia.programas');
 		Route::get('/sede/{sedeid}/lugar/{lugarid}/programa/{programaid}/estado/{estado?}', [MembresiaController::class, 'getMembersByPrograms'])->name('membresia.find.programs');
+		Route::get('/detalles/{id}/membresia', [MembresiaController::class, 'getDetailMember'])->name('detalles.membresia');
 		
 		Route::group(['prefix' => 'sedes'], function () {
 			Route::get('/lista', [SedesController::class, 'index'])->name('sedes.index');
@@ -348,5 +355,48 @@
 	});
 	
 	Route::get('test', function () {
+		$getAllData = DB::select("SELECT sm.*, u.email, p.nombres || ' ' || p.apepaterno || ' ' || p.apematerno as nombres FROM servicio_membresias sm LEFT JOIN personas p ON p.id = sm.persona_id LEFT JOIN users u ON u.id = p.usuario_id ORDER BY sm.id DESC");
+		
+		$dateNow = now()->format('Y-m-d');
+		
+		$getFilterRegisters = array ();
+		$emailToNotify = array ();
+		$arrayNames = array ();
+		
+		foreach ($getAllData as $key => $value) {
+			$clearDate = Str::of($getAllData[ $key ]->fechanotif)->explode(' ')[ 0 ];
+			if ($clearDate == $dateNow) {
+				array_push($getFilterRegisters, $getAllData[ $key ]);
+			}
+		}
+		
+		foreach ($getFilterRegisters as $key => $value) {
+			array_push($emailToNotify, ['email' => $value->email, 'id' => $value->id]);
+		}
+		
+		foreach ($emailToNotify as $key => $value) {
+			$userData = User::where('email', $value[ 'email' ])->get()[ 0 ];
+			$personData = Persona::where('usuario_id', $userData->id)->get()[ 0 ];
+			
+			$memberName = "$personData->nombres $personData->apepaterno $personData->apematerno";
+			
+			$programName = DB::select("SELECT
+																				    tp.descripcion ||' '|| sbs.titulo ||' '|| sbs.subtitulo as nombre_programa
+																				FROM servicio_inscripcions si
+																				left join servicios s on s.id = si.servicio_id
+																				left join tipo_servicios tp on tp.id = s.tiposervicio_id
+																				left join subtipo_servicios sbs on sbs.tiposervicio_id = tp.id
+																				where si.id = ?", [$value['id']]);
+			
+			if(!empty($programName)){
+			
+			}
+			
+			//Mail::to($value[ 'email' ])->send(new NotificacionMembresiaVencer($memberName, $programName));
+			
+			//DB::select("UPDATE servicio_membresias SET notificado = false WHERE id = ?;", [$value[ 'id' ]]);
+		}
+		
+		
 		dd('Correctly send notify...');
 	});
