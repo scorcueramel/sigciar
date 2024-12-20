@@ -53,7 +53,15 @@
                         </div>
                         <div class="row mt-5 mb-3 d-none" id="table-section">
                             <div class="col-md-12 mx-2">
-                                <div class="text-nowrap table-responsive">
+                                <div class="d-none text-center" id="loading-data">
+                                    <div class="spinner-border text-primary h2" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                    <div class="h5">
+                                        Cargando ...
+                                    </div>
+                                </div>
+                                <div class="text-nowrap table-responsive d-none">
                                     <table class="table table-striped table-borderless table-hover nowrap" id="table"
                                            style="width:100%">
                                         <thead>

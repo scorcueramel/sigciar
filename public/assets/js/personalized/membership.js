@@ -65,15 +65,21 @@ $("#programas").on('change', function () {
 });
 
 $("#btnBuscar").on('click', function () {
+    $("#table-section").removeClass('d-none');
+    $("#loading-data").removeClass('d-none');
+    $(".table-responsive").addClass('d-none');
+
     let sedeid = $("#sedes").val();
     let lugarid = $("#lugares").val();
     let programaid = $("#programas").val();
     let estadoid = $("#estados").val();
+
     $.ajax({
         method: 'GET',
         url: `/admin/sede/${sedeid}/lugar/${lugarid}/programa/${programaid}/estado/${estadoid}`,
         success: function (resp) {
-            $("#table-section").removeClass('d-none');
+            $("#loading-data").addClass('d-none');
+            $(".table-responsive").removeClass('d-none');
             $('#table').DataTable({
                 "bDestroy": true,
                 paging: true,
@@ -144,7 +150,7 @@ $("#btnBuscar").on('click', function () {
                         "next": "›",
                         "previous": "‹"
                     },
-                    "emptyTable":"No hay datos disponibles en la tabla"
+                    "emptyTable": "No hay datos disponibles en la tabla"
                 },
             });
 
@@ -155,12 +161,24 @@ $("#btnBuscar").on('click', function () {
     });
 });
 
-function showDetails(id,nombre){
+function showDetails(id, nombre) {
+    $("#modalcomponent").modal('show');
+    $("#mcbody").append(`
+    <div class="text-center" id="loading-data">
+        <div class="spinner-border text-primary h2" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="h5">
+            Cargando ...
+        </div>
+    </div>
+    `);
+
     $.ajax({
-        method:'GET',
-        url:`/admin/detalles/${id}/membresia`,
-        success:function (resp){
-            $("#modalcomponent").modal('show');
+        method: 'GET',
+        url: `/admin/detalles/${id}/membresia`,
+        success: function (resp) {
+            $("#loading-data").addClass('d-none');
             $("#mcLabel").html('');
             $("#mcLabel").html(`${nombre}`);
             $("#mcbody").html('');
@@ -180,17 +198,15 @@ function showDetails(id,nombre){
                   </tbody>
                 </table>
             `);
-            resp.map((e,index)=>{
+            resp.map((e, index) => {
                 $("#tableDetails").append(`
                     <tr>
                         <td>${index + 1}</td>
                         <td>${formatearFechas(e.fechainscripcion)}</td>
-                        <td>
-                            <span class="badge rounded-pill ${e.estado == 'CANCELADO' ? 'bg-success' : 'bg-danger'}">${formatearFechas(e.fechapago)}</span>
-                        </td>
+                        <td>${formatearFechas(e.fechapago)}</td>
                         <td>S/.${e.valorpago}</td>
-                        <td>${e.estado}</td>
-                        <td class="text-center">${e.notificado ? 'NOTIFICADO' : '<button class="ms-3 btn btn-sm btn-primary">Notificar</button>'} </td>
+                        <td><span class="badge rounded-pill ${e.estado == 'CANCELADO' ? 'bg-success' : 'bg-danger'}">${e.estado}</span></td>
+                        <td class="text-center">${e.notificado ? '<span class="badge rounded-pill bg-success"><i class="fa-duotone fa-solid fa-money-check-pen"></i> NOTIFICADO</span>' : '<button class="ms-3 btn btn-sm btn-primary" onclick="sendNotification(' + e.id + ')">Notificar</button>'} </td>
                     </tr>
                 `)
             });
@@ -201,15 +217,16 @@ function showDetails(id,nombre){
     });
 }
 
-$("#btnLimpiar").on('click',function (){
+$("#btnLimpiar").on('click', function () {
 
-    $("#sedes option:first").attr('selected','selected');
+    $("#lugares").attr('disabled', 'disabled');
+    $("#sedes option:first").attr('selected', 'selected');
 
     $("#lugares").html("");
     $("#lugares").append(`<option selected value="" disabled>SELECCIONAR LUGAR</option>`);
     $("#lugares").attr('disabled', 'disabled');
 
-    $("#estados option:first").attr('selected','selected');
+    $("#estados option:first").attr('selected', 'selected');
     $("#estados").attr('disabled', 'disabled');
 
     $("#programas").html("");
@@ -217,8 +234,22 @@ $("#btnLimpiar").on('click',function (){
     $("#programas").attr('disabled', 'disabled');
 });
 
-function formatearFechas(fecha){
+function formatearFechas(fecha) {
     let splitFecha = fecha.split(" ")[0];
     let divideFecha = splitFecha.split("-");
-    return divideFecha[2]+"/"+divideFecha[1]+"/"+divideFecha[0];
+    return divideFecha[2] + "/" + divideFecha[1] + "/" + divideFecha[0];
+}
+
+const sendNotification = (id) => {
+    alert('The id is :'+id)
+    /*$.ajax({
+        method: 'GET',
+        url: `/admin/notificar/${id}/membresia`,
+        success: function (res) {
+            console.log(res)
+        },
+        error: function (error) {
+            console.log(error)
+        }
+    });*/
 }

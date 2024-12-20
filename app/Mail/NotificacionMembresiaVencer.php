@@ -21,7 +21,7 @@
 		 *
 		 * @return void
 		 */
-		public function __construct(string $nombreMiembro, string $nombrePrograma)
+		public function __construct($nombreMiembro, $nombrePrograma)
 		{
 			$this->nombreMiembro = $nombreMiembro;
 			$this->nombrePrograma = $nombrePrograma;

@@ -2,20 +2,20 @@
 	
 	namespace App\Http\Controllers;
 	
+	use App\Mail\NotificacionMembresiaVencer;
 	use App\Models\Lugar;
+	use App\Models\Persona;
 	use App\Models\Sede;
 	use App\Models\TipoServicio;
+	use App\Models\User;
 	use Illuminate\Http\Request;
 	use Illuminate\Support\Facades\DB;
+	use Illuminate\Support\Facades\Mail;
+	use Illuminate\Support\Str;
 	use Illuminate\View\View;
 	
 	class MembresiaController extends Controller
 	{
-		/**
-		 * Display a listing of the resource.
-		 *
-		 * @return \Illuminate\Http\Response
-		 */
 		public function index(): View
 		{
 			$sedes = Sede::where("estado", 'A')->get();
@@ -93,78 +93,55 @@
 		}
 		
 		public function getDetailMember(string $id){
-			$detalle = DB::select("SELECT id,fechainscripcion, fechapago, valorpago,
-																		CASE WHEN estado = 'CA' THEN 'CANCELADO' ELSE 'PENDIENTE' END AS estado,
-																		notificado FROM servicio_membresias sm
-																		WHERE sm.servicioinscripcion_id = ?
-																		ORDER BY id",[$id]);
+			$detalle = DB::select("SELECT sm.id,sm.fechainscripcion, sm.fechapago, sm.valorpago,
+																	       CASE WHEN sm.estado = 'CA' THEN 'CANCELADO' ELSE 'PENDIENTE' END as estado,
+																	       sm.notificado,  ts.descripcion || ' - ' || sts.titulo as programa
+																	FROM servicio_membresias sm
+																	         LEFT JOIN servicio_inscripcions ins ON sm.servicioinscripcion_id = ins.id
+																	         LEFT JOIN servicios s ON ins.servicio_id = s.id
+																	         LEFT JOIN tipo_servicios ts ON s.tiposervicio_id = ts.id
+																	         LEFT JOIN subtipo_servicios sts ON s.subtiposervicio_id = sts.id
+																	WHERE sm.servicioinscripcion_id = ?
+																	ORDER BY id",[$id]);
 			
 			return response()->json($detalle);
 		}
 		
-		/**
-		 * Show the form for creating a new resource.
-		 *
-		 * @return \Illuminate\Http\Response
-		 */
-		public function create()
-		{
-			//
-		}
-		
-		/**
-		 * Store a newly created resource in storage.
-		 *
-		 * @param \Illuminate\Http\Request $request
-		 * @return \Illuminate\Http\Response
-		 */
-		public function store(Request $request)
-		{
-			//
-		}
-		
-		/**
-		 * Display the specified resource.
-		 *
-		 * @param int $id
-		 * @return \Illuminate\Http\Response
-		 */
-		public function show($id)
-		{
-			//
-		}
-		
-		/**
-		 * Show the form for editing the specified resource.
-		 *
-		 * @param int $id
-		 * @return \Illuminate\Http\Response
-		 */
-		public function edit($id)
-		{
-			//
-		}
-		
-		/**
-		 * Update the specified resource in storage.
-		 *
-		 * @param \Illuminate\Http\Request $request
-		 * @param int $id
-		 * @return \Illuminate\Http\Response
-		 */
-		public function update(Request $request, $id)
-		{
-			//
-		}
-		
-		/**
-		 * Remove the specified resource from storage.
-		 *
-		 * @param int $id
-		 * @return \Illuminate\Http\Response
-		 */
-		public function destroy($id)
-		{
-			//
+		public function sendNotification(string $id){
+			$getAllData = DB::select("SELECT sm.*, u.email, p.nombres || ' ' || p.apepaterno || ' ' || p.apematerno as nombres FROM servicio_membresias sm LEFT JOIN personas p ON p.id = sm.persona_id LEFT JOIN users u ON u.id = p.usuario_id WHERE sm.id = ? ORDER BY sm.id DESC",[$id]);
+			
+			$dateNow = now()->format('Y-m-d');
+			
+			$getFilterRegisters = array ();
+			$emailToNotify = array ();
+			
+			foreach ($getAllData as $key => $value) {
+				$clearDate = Str::of($getAllData[ $key ]->fechanotif)->explode(' ')[ 0 ];
+				
+				dd($c);
+				
+				if ($clearDate == $dateNow) {
+					array_push($getFilterRegisters, $getAllData[ $key ]);
+				}
+			}
+			
+			foreach ($getFilterRegisters as $key => $value) {
+				array_push($emailToNotify, ['email' => $value->email, 'id' => $value->id, 'servicioinscripcionid' => $value->servicioinscripcion_id]);
+			}
+			
+			foreach ($emailToNotify as $key => $value) {
+				$userData = User::where('email', $value[ 'email' ])->get()[ 0 ];
+				$personData = Persona::where('usuario_id', $userData->id)->get()[ 0 ];
+				
+				$memberName = "$personData->nombres $personData->apepaterno $personData->apematerno";
+				
+				$findProgramName = DB::select("SELECT tp.descripcion ||' - '|| sbs.titulo ||' - '|| sbs.subtitulo as nombre_programa FROM servicio_inscripcions si left join servicios s on s.id = si.servicio_id left join tipo_servicios tp on tp.id = s.tiposervicio_id left join subtipo_servicios sbs on sbs.tiposervicio_id = tp.id where si.id = ?", [$value[ 'servicioinscripcionid' ]]);
+				
+				if (count($findProgramName) > 0) {
+					Mail::to($value[ 'email' ])->send(new NotificacionMembresiaVencer($memberName, $findProgramName[ 0 ]->nombre_programa));
+					
+					DB::select("UPDATE servicio_membresias SET notificado = true WHERE id = ?;", [$value[ 'id' ]]);
+				}
+			}
 		}
 	}

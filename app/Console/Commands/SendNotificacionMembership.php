@@ -48,25 +48,21 @@
 			}
 			
 			foreach ($getFilterRegisters as $key => $value) {
-				array_push($emailToNotify, ['email'=>$value->email,'id'=>$value->id]);
+				array_push($emailToNotify, ['email' => $value->email, 'id' => $value->id, 'servicioinscripcionid' => $value->servicioinscripcion_id]);
 			}
 			
-			$sendNotify = array_unique($emailToNotify);
-			
-			foreach ($sendNotify as $key => $value) {
-				$userData = User::where('email', $value)->get()[ 0 ];
+			foreach ($emailToNotify as $key => $value) {
+				$userData = User::where('email', $value[ 'email' ])->get()[ 0 ];
 				$personData = Persona::where('usuario_id', $userData->id)->get()[ 0 ];
 				
 				$memberName = "$personData->nombres $personData->apepaterno $personData->apematerno";
 				
-				Mail::to($value)->send(new NotificacionMembresiaVencer($memberName));
+				$findProgramName = DB::select("SELECT tp.descripcion ||' - '|| sbs.titulo ||' - '|| sbs.subtitulo as nombre_programa FROM servicio_inscripcions si left join servicios s on s.id = si.servicio_id left join tipo_servicios tp on tp.id = s.tiposervicio_id left join subtipo_servicios sbs on sbs.tiposervicio_id = tp.id where si.id = ?", [$value[ 'servicioinscripcionid' ]]);
 				
-			}
-			
-			foreach ($getAllData as $key => $value) {
-				$clearDate = Str::of($getAllData[ $key ]->fechanotif)->explode(' ')[ 0 ];
-				if ($clearDate == $dateNow) {
-				
+				if (count($findProgramName) > 0) {
+					Mail::to($value[ 'email' ])->send(new NotificacionMembresiaVencer($memberName, $findProgramName[ 0 ]->nombre_programa));
+					
+					DB::select("UPDATE servicio_membresias SET notificado = true WHERE id = ?;", [$value[ 'id' ]]);
 				}
 			}
 		}

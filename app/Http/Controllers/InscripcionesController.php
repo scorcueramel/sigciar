@@ -10,6 +10,7 @@
 	use Illuminate\Support\Facades\Auth;
 	use Illuminate\Support\Facades\DB;
 	use Illuminate\Support\Facades\Http;
+	use Illuminate\Support\Str;
 	
 	
 	class InscripcionesController extends Controller
@@ -85,6 +86,14 @@
 			}
 			
 			return datatables()->of($inscripciones)
+				->addColumn('fecha_pago', function ($row){
+						$fecha = Str::of($row->fechapago)->explode(' ')[0];
+						$hora = Str::of($row->fechapago)->explode(' ')[1];
+						$nuevaHora = Str::of($hora)->explode(':')[0].':'.Str::of($hora)->explode(':')[1];
+						$nuevaFecha = Str::of($fecha)->explode('-')[2].'/'.Str::of($fecha)->explode('-')[1].'/'.Str::of($fecha)->explode('-')[0].' '.$nuevaHora;
+						return $nuevaFecha;
+						
+				})
 				->addColumn('estado_pago', function ($row) {
 					if ($row->estado_pago == "A") {
 						return '
@@ -105,7 +114,7 @@
                             </div>
                         </div>';
 				})
-				->rawColumns(['estado_pago', 'acciones'])
+				->rawColumns(['fecha_pago', 'estado_pago', 'acciones'])
 				->make(true);
 		}
 		

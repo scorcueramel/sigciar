@@ -93,7 +93,7 @@
                     data: 'estado_pago'
                 },
                 {
-                    data: 'fechapago'
+                    data: 'fecha_pago'
                 },
                 {
                     data: 'acciones'
@@ -120,6 +120,10 @@
             },
         });
     });
+
+    function changeState(){
+        alert('change state');
+    }
 
     function deleteInscripcion(id) {
         var id = id;

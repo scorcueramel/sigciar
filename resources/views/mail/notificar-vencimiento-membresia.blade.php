@@ -19,7 +19,7 @@
                 Hola, <strong>{{$nombreMiembro}}</strong>
             </p>
             <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">
-                Tu membresía esta por caducar, recuerda renovarla para continuar con progreso.
+                Tu membresía al programa {{$nombrePrograma}} esta por terminar, recuerda renovarla para continuar con progreso.
             </p>
         </td>
     </tr>
