@@ -263,7 +263,7 @@ const sendNotification = (id, nombre) => {
                     method: 'GET',
                     url: `/admin/detalles/${id}/membresia`,
                     success: function (resp) {
-                        console.log(resp);
+                        console.log(id);
                         $("#loading-data").addClass('d-none');
                         $("#mcLabel").html('');
                         $("#mcLabel").html(`${res.nombre}`);
@@ -292,7 +292,7 @@ const sendNotification = (id, nombre) => {
                                     <td>${formatearFechas(e.fechapago)}</td>
                                     <td>S/.${e.valorpago}</td>
                                     <td><span class="badge rounded-pill ${e.estado == 'CANCELADO' ? 'bg-success' : 'bg-danger'}">${e.estado}</span></td>
-                                    <td class="text-center">${e.notificado ? '<span class="badge rounded-pill bg-success"><i class="fa-duotone fa-solid fa-money-check-pen"></i> NOTIFICADO</span>' : '<button class="ms-3 btn btn-sm btn-primary" onclick="sendNotification(' + e.id + ')">Notificar</button>'} </td>
+                                    <td class="text-center">${e.notificado ? '<span class="badge rounded-pill bg-success"><i class="fa-duotone fa-solid fa-money-check-pen"></i> NOTIFICADO</span>' : '<button class="ms-3 btn btn-sm btn-primary" onclick="sendNotification(' + e.id + ',+ res.nombre +)">Notificar</button>'} </td>
                                 </tr>
                             `)
                         });
