@@ -206,7 +206,7 @@ function showDetails(id, nombre) {
                         <td>${formatearFechas(e.fechapago)}</td>
                         <td>S/.${e.valorpago}</td>
                         <td><span class="badge rounded-pill ${e.estado == 'CANCELADO' ? 'bg-success' : 'bg-danger'}">${e.estado}</span></td>
-                        <td class="text-center">${e.notificado ? '<span class="badge rounded-pill bg-success"><i class="fa-duotone fa-solid fa-money-check-pen"></i> NOTIFICADO</span>' : '<button class="ms-3 btn btn-sm btn-primary" onclick="sendNotification(' + e.id + ')">Notificar</button>'} </td>
+                        <td class="text-center">${e.notificado ? '<span class="badge rounded-pill bg-success"><i class="fa-duotone fa-solid fa-money-check-pen"></i> NOTIFICADO</span>' : '<button class="ms-3 btn btn-sm btn-primary" onclick="sendNotification(' + e.id +','+ nombre +'\')">Notificar</button>'} </td>
                     </tr>
                 `)
             });
@@ -240,16 +240,73 @@ function formatearFechas(fecha) {
     return divideFecha[2] + "/" + divideFecha[1] + "/" + divideFecha[0];
 }
 
-const sendNotification = (id) => {
-    alert('The id is :'+id)
-    /*$.ajax({
+const sendNotification = (id, nombre) => {
+    $.ajax({
         method: 'GET',
         url: `/admin/notificar/${id}/membresia`,
         success: function (res) {
-            console.log(res)
+            if (res.code == 'ok') {
+                $("#modalcomponent").modal('show');
+                $("#mcbody").html('');
+                $("#mcbody").append(`
+                    <div class="text-center" id="loading-data">
+                        <div class="spinner-border text-primary h2" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <div class="h5">
+                            Cargando ...
+                        </div>
+                    </div>
+                `);
+
+                $.ajax({
+                    method: 'GET',
+                    url: `/admin/detalles/${id}/membresia`,
+                    success: function (resp) {
+                        console.log(resp);
+                        $("#loading-data").addClass('d-none');
+                        $("#mcLabel").html('');
+                        $("#mcLabel").html(`${res.nombre}`);
+                        $("#mcbody").html('');
+                        $("#mcbody").append(`
+                            <table class="table table-sm table-bordered">
+                              <thead>
+                                <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">Fechas de inscripcion</th>
+                                  <th scope="col">Próximo pago</th>
+                                  <th scope="col">Monto a pagar</th>
+                                  <th scope="col">Estado de pago</th>
+                                  <th scope="col">NOTIFICACIÓN PRÓXIMO PAGO</th>
+                                </tr>
+                              </thead>
+                              <tbody class="tableDetails">                      
+                              </tbody>
+                            </table>
+                        `);
+                        resp.map((e, index) => {
+                            $(".tableDetails").append(`
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${formatearFechas(e.fechainscripcion)}</td>
+                                    <td>${formatearFechas(e.fechapago)}</td>
+                                    <td>S/.${e.valorpago}</td>
+                                    <td><span class="badge rounded-pill ${e.estado == 'CANCELADO' ? 'bg-success' : 'bg-danger'}">${e.estado}</span></td>
+                                    <td class="text-center">${e.notificado ? '<span class="badge rounded-pill bg-success"><i class="fa-duotone fa-solid fa-money-check-pen"></i> NOTIFICADO</span>' : '<button class="ms-3 btn btn-sm btn-primary" onclick="sendNotification(' + e.id + ')">Notificar</button>'} </td>
+                                </tr>
+                            `)
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+                });
+            } else {
+                alert('Hubo un problema al procesar los datos, comunicate con soporte')
+            }
         },
         error: function (error) {
             console.log(error)
         }
-    });*/
+    });
 }
